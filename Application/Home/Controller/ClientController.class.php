@@ -13,6 +13,15 @@ class ClientController extends Controller {
 		//var_dump($clientList);
 		$this->assign('clientList',$clientList);
 		$this->display();
-
+	}
+	
+	public function editClient(){
+		$arr=I('post.client_name');
+		var_dump ($arr);
+	}
+	
+	public function addClient(){
+		$arr=I('post.client_name');
+		var_dump ($arr);
 	}
 }
