@@ -1,0 +1,112 @@
+<extend name="Public:base" />
+
+	  <block name="page">
+	  
+      <!-- Tables
+      ================================================== -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="page-header">
+              <h1 id="tables">客户列表</h1>
+			  <h4 id="tables">点击客户名称进入编辑；页面末端可以增加新客户</h4>
+            </div>
+
+            <div class="bs-component">
+              <table class="table table-striped table-hover ">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>全称</th>
+                    <th>中文地址</th>
+                    <th>英文地址</th>
+					<th>身份证号/组织机构代码</th>
+					<th>商业登记证号/营业执照号</th>
+					<th>税务登记证号</th>
+                  </tr>
+                </thead>
+				<tbody>
+				<volist name="clientList" id="client">
+                  <tr>
+                    <td>{$i}</td>
+                    <td><a href="edit/{$client.client_id}">{$client.client_name}</a></td>
+                    <td>{$client.client_address_zh}</td>
+                    <td>{$client.client_address_en}</td>
+					<td>{$client.client_id_number}</td>
+					<td>{$client.client_business_number}</td>
+					<td>{$client.client_tax_number}</td>
+                  </tr>
+				</volist>                 
+                </tbody>
+              </table> 
+            </div><!-- /example -->
+          </div>
+        </div>
+
+      <!-- Forms
+      ================================================== -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="page-header">
+              <h1 id="forms">增加新客户</h1>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-10">
+            <div class="well bs-component">
+              <form class="form-horizontal">
+                <fieldset>
+                  <legend>客户信息，“全称”是必须的</legend>
+                  <div class="form-group">
+                    <label for="client_name" class="col-lg-3 control-label">全称</label>
+                    <div class="col-lg-9">
+                      <input type="text" class="form-control" id="client_name" name="client_name" placeholder="全称">
+                    </div>
+                  </div>
+				  <div class="form-group">
+                    <label for="client_address_zh" class="col-lg-3 control-label">中文地址</label>
+                    <div class="col-lg-9">
+                      <input type="text" class="form-control" id="client_address_zh" name="client_address_zh" placeholder="中文地址">
+                    </div>
+                  </div>
+				  <div class="form-group">
+                    <label for="client_address_en" class="col-lg-3 control-label">英文地址</label>
+                    <div class="col-lg-9">
+                      <input type="text" class="form-control" id="client_address_en" name="client_address_en" placeholder="英文地址">
+                    </div>
+                  </div>
+				  <div class="form-group">
+                    <label for="client_id_number" class="col-lg-3 control-label">身份证号/组织机构代码</label>
+                    <div class="col-lg-9">
+                      <input type="text" class="form-control" id="client_id_number" name="client_id_number" placeholder="个人填身份证号，否则填组织机构代码">
+                    </div>
+                  </div>
+				  <div class="form-group">
+                    <label for="client_business_number" class="col-lg-3 control-label">商业登记证号/营业执照号</label>
+                    <div class="col-lg-9">
+                      <input type="text" class="form-control" id="client_business_number" name="client_business_number" placeholder="商业登记证号/营业执照号">
+                    </div>
+                  </div>
+				  <div class="form-group">
+                    <label for="client_tax_number" class="col-lg-3 control-label">税务登记证号</label>
+                    <div class="col-lg-9">
+                      <input type="text" class="form-control" id="client_tax_number" name="client_tax_number" placeholder="税务登记证号">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-lg-9 col-lg-offset-3">
+                      <button class="btn btn-default">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+	  
+	  </block>

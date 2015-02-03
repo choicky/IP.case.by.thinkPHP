@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
   <head>
     <meta charset="utf-8">
 	
@@ -36,11 +36,10 @@
   </head>
   <body>
   
-  
-  
-	<block name="navbar">
-    <div class="navbar navbar-default navbar-fixed-top">
+     <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
+		
+		<block name="navbar-header">
         <div class="navbar-header">
           <a href="../" class="navbar-brand">Bootswatch</a>
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
@@ -49,6 +48,8 @@
             <span class="icon-bar"></span>
           </button>
         </div>
+		</block>
+		
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
             <li class="dropdown">
@@ -95,9 +96,11 @@
             </li>
           </ul>
 		  
+		  <block name="navbar-form">
 		  <form class="navbar-form navbar-left">
             <input type="text" class="form-control col-lg-8" placeholder="Search">
           </form>
+		  </block>
 
           <ul class="nav navbar-nav navbar-right">
             <li><a href="http://builtwithbootstrap.com/" target="_blank">Built With Bootstrap</a></li>
@@ -107,12 +110,13 @@
         </div>
       </div>
     </div>
-	</block>
+
 	
 
 
     <div class="container">
-
+	
+	  <block name="page">
       <div class="page-header" id="banner">
         <div class="row">
           <div class="col-lg-8 col-md-7 col-sm-6">
@@ -126,6 +130,8 @@
           </div>
         </div>
       </div>
+	  </block>
+	  
 
       <!-- Navbar
       ================================================== -->
