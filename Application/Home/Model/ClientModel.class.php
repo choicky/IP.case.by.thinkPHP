@@ -5,20 +5,12 @@ use Think\Model\RelationModel;
 
 class ClientModel extends RelationModel {
 	protected $_link = array(
-		'ClientAddress'	=>	array(
+		'ClientExtend'	=>	array(
 			'mapping_type'		=>	self::HAS_ONE,
+			'class_name'		=>	'ClientExtend',
 			'foreign_key'		=>	'client_id',
-//			'class_name'		=>	'ClientAddress',
-			'mapping_fields'	=>	'client_address_en,client_address_zh',
-			'as_fields'			=>	'client_address_en,client_address_zh',
-		),
-		
-		'ClientId'	=>	array(
-			'mapping_type'		=>	self::HAS_ONE,
-			'foreign_key'		=>	'client_id',
-//			'class_name'		=>	'ClientAddress',
-			'mapping_fields'	=>	'client_id_number,client_business_number,client_tax_number',
-			'as_fields'			=>	'client_id_number,client_business_number,client_tax_number',
+			'mapping_fields'	=>	'name_en,address_zh,address_en,id_number,business_number,tax_number',
+			'as_fields'			=>	'name_en,address_zh,address_en,id_number,business_number,tax_number',
 		),
 		
 	);
