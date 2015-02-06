@@ -1,3 +1,12 @@
+# thinkPHP
+# ==========Cache=========
+Application/Runtime/
+Application/Home/Conf/config.php
+
+
+
+# ==================
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -41,7 +50,3 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-
-# thinkPHP
-# ==========Cache=========
-Application/Runtime/
