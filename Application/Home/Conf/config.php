@@ -14,5 +14,8 @@ return array(
     'DB_PWD'                =>  '',          // 密码
     'DB_PORT'               =>  '3306',        // 端口
     'DB_PREFIX'             =>  'tp_',    // 数据库表前缀
+	
+	// 显示页面Trace信息
+	'SHOW_PAGE_TRACE' =>true, 
 
 );
