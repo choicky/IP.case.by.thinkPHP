@@ -30,7 +30,7 @@ class Page{
         'next'   => '下一页',
         'first'  => '1...',
         'last'   => '...%TOTAL_PAGE%',
-        'theme'  => '%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%',
+        'theme'  => '%UP_PAGE% %FIRST% %LINK_PAGE% %END% %DOWN_PAGE%',
     );
 
     /**
@@ -112,7 +112,7 @@ class Page{
         $the_end = '';
         if($this->totalPages > $this->rollPage && ($this->nowPage + $now_cool_page) < $this->totalPages){
             //$the_end = '<a class="end" href="' . $this->url($this->totalPages) . '">' . $this->config['last'] . '</a>';
-			$the_end = '<li><a class="end" href="' . $this->url($this->totalPages) . '">' . $this->config['last'] . '</a></li>'."\r\n";
+			$the_end = '<li><a class="end" href="' . $this->url($this->totalPages) . '">...' . $this->config['last'] . '</a></li>'."\r\n";
         }
 
         //数字连接

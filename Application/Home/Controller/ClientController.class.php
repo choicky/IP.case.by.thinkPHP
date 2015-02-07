@@ -9,32 +9,19 @@ class ClientController extends Controller {
 	
 	public function listClient(){
 		$p	= I("p",1,"int");
-		$limit	= 2;
-		
-		$client = D('Client');
-		$count = $client->count();
-		//$clientList = $client->relation(true)->order('convert(name_zh using gb2312) asc')->select();
-		$clientList	= $client->relation(true)->order('convert(name_zh using gb2312) asc')->page($p.','.$limit)->select();
-		
-		//$count = $client->where()->count();
-		//$number	= 2;
-		$Page	= new \Think\Page($count,$limit);
-		$show	= $Page->show();
-		//$clientList	= $client->relation(true)->order('convert(name_zh using gb2312) asc')->limit($page->firstRow.','.$page->listRows)->select();
-		$this->assign('clientList',$clientList);
-		$this->assign('page',$show);
+		$limit	= 2;		
+		$list = D('Client')->listClient($p,$limit);
+		//var_dump($list);
+		$this->assign('list',$list);
 		$this->display();
 	}
 	
-	public function addClient(){
+	public function add(){
 		if(!trim(I('post.name_zh'))){
 			$this->error("未填写客户中文名称");
 		} 
-		
-		$client = D('Client');
-		
+
 		$data=array();
-		
 		$data['name_zh'] = trim(I('post.name_zh'));
 		$data['ClientExtend'] = array(
 			'name_en' => trim(I('post.name_en')),
@@ -45,17 +32,18 @@ class ClientController extends Controller {
 			'tax_number' => trim(I('post.tax_number')),
 			);	
 		
-		$result = $client->relation(true)->add($data);
+		$result = D('Client')->relation(true)->addClient($data);
 		
-		if($result == true){
-			$this->success("客户".$data['name_zh']."增加成功");
+		if(false !== $result){
+			$this->success("客户".$data['name_zh']."增加成功",'listClient');
 		}else{
 			$this->error("增加失败");
 		}
 	}
 	
-	public function editClient(){
+	public function edit(){
 		if(IS_POST){
+			$client_id =  trim(I('post.client_id'));
 			
 			$data=array();
 			$data['name_zh'] = trim(I('post.name_zh'));
@@ -68,35 +56,24 @@ class ClientController extends Controller {
 				'tax_number' => trim(I('post.tax_number')),
 				);
 			
-			$id =  trim(I('post.client_id'));
+			$result	=	D('Client')->editClient($client_id,$data);
 			
-			$client_extend = M('ClientExtend');
-			$result = $client_extend->where(array('client_id'=>$id))->find();
-			if(!is_array($result)){
-				$extend['client_id']=$id;
-				$client_extend->add($extend);
-			}
-			
-			$client = D('Client');
-					
-			$result = $client->relation(true)->where(array('client_id'=>$id))->save($data);
-			/*
-			if($result == true){
-				$this->success("客户".$data['name_zh']."修改成功", "listClient");
+			if(false !== $result){
+				$this->success("客户".$data['name_zh']."修改成功", 'listClient');
 			}else{
-				$this->error("增加失败", "listClient"	);
-			}*/
-			header("Location: listClient");
+				$this->error("增加失败", 'listClient');
+			}
+			//header("Location: listClient");
 		} else{
 			//$id = intval($id);
-			$id = I('get.id',0,'int');
+			$client_id = I('get.id',0,'int');
 
-			if(!$id){
+			if(!$client_id){
 				$this->error("未指明要编辑的客户");
 			}
 			
 			$client = D('Client');
-			$client_info = $client->relation(true)->getByClientId($id);
+			$client_info = $client->relation(true)->getByClientId($client_id);
 			
 			$this->assign('client_info',$client_info);
 			$this->display();
