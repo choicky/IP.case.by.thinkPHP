@@ -8,10 +8,21 @@ class ClientController extends Controller {
     }
 	
 	public function listClient(){
+		$p	= I("p",1,"int");
+		$limit	= 2;
+		
 		$client = D('Client');
-		$clientList = $client->relation(true)->order('convert(name_zh using gb2312) asc')->select();
-		//var_dump($clientList);
+		$count = $client->count();
+		//$clientList = $client->relation(true)->order('convert(name_zh using gb2312) asc')->select();
+		$clientList	= $client->relation(true)->order('convert(name_zh using gb2312) asc')->page($p.','.$limit)->select();
+		
+		//$count = $client->where()->count();
+		//$number	= 2;
+		$Page	= new \Think\Page($count,$limit);
+		$show	= $Page->show();
+		//$clientList	= $client->relation(true)->order('convert(name_zh using gb2312) asc')->limit($page->firstRow.','.$page->listRows)->select();
 		$this->assign('clientList',$clientList);
+		$this->assign('page',$show);
 		$this->display();
 	}
 	
