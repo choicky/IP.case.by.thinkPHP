@@ -9,7 +9,7 @@ class ClientController extends Controller {
 	
 	public function listClient(){
 		$p	= I("p",1,"int");
-		$limit	= 2;		
+		$limit	= 10;		
 		$list = D('Client')->listClient($p,$limit);
 		//var_dump($list);
 		$this->assign('list',$list);

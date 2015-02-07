@@ -21,21 +21,22 @@
                   </tr>
                 </thead>
 				<tbody>
-				<volist name="list.list" id="list">
+				<volist name="list.list" id="case_type_info">
                   <tr>
                     <td>{$i}</td>
-                    <td><a href="__CONTROLLER__/edit/id/{$list.case_type_id}">{$list.case_type_name}</a></td>
+                    <td><a href="__CONTROLLER__/edit/id/{$case_type_info.case_type_id}">{$case_type_info.case_type_name}</a></td>
                   </tr>
 				</volist>                 
                 </tbody>
-              </table> 11111
-			  {$list.page}2222
+              </table> 
+			  {$list.page}
             </div><!-- /example -->
           </div>
         </div>
 
       <!-- Forms
       ================================================== -->
+	  <a name="addNew"></a>
         <div class="row">
           <div class="col-lg-12">
             <div class="page-header">

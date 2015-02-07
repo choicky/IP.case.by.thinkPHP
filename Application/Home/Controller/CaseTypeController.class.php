@@ -9,7 +9,7 @@ class CaseTypeController extends Controller {
 	
 	public function listCaseType(){
 		$p	= I("p",1,"int");
-		$limit	= 2;		
+		$limit	= 10;		
 		$list = D('CaseType')->listCaseType($p,$limit);
 		//var_dump($list);
 		$this->assign('list',$list);

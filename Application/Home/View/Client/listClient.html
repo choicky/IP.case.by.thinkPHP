@@ -27,16 +27,16 @@
                   </tr>
                 </thead>
 				<tbody>
-				<volist name="list.list" id="list">
+				<volist name="list.list" id="client_info">
                   <tr>
                     <td>{$i}</td>
-                    <td><a href="__CONTROLLER__/edit/id/{$list.client_id}">{$list.name_zh}</a></td>
-                    <td>{$list.name_en}</td>
-					<td>{$list.address_zh}</td>
-                    <td>{$list.address_en}</td>
-					<td>{$list.id_number}</td>
-					<td>{$list.business_number}</td>
-					<td>{$list.tax_number}</td>
+                    <td><a href="__CONTROLLER__/edit/id/{$client_info.client_id}">{$client_info.name_zh}</a></td>
+                    <td>{$client_info.name_en}</td>
+					<td>{$client_info.address_zh}</td>
+                    <td>{$client_info.address_en}</td>
+					<td>{$client_info.id_number}</td>
+					<td>{$client_info.business_number}</td>
+					<td>{$client_info.tax_number}</td>
                   </tr>
 				</volist>                 
                 </tbody>
@@ -48,6 +48,7 @@
 
       <!-- Forms
       ================================================== -->
+	  <a name="#addNew"></a>
         <div class="row">
           <div class="col-lg-12">
             <div class="page-header">
