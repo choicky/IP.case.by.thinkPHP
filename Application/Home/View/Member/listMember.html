@@ -7,8 +7,8 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="page-header">
-              <h1 id="tables">案件类型列表</h1>
-			  <h4 id="tables">点击案件类型名称进入编辑；页面末端可以增加新案件类型</h4>
+              <h1 id="tables">人员名单</h1>
+			  <h4 id="tables">点击人名进入编辑；页面末端可以增加新人员</h4>
             </div>
 
             <div class="bs-component">
@@ -17,14 +17,18 @@
                 <thead>
                    <tr class="info">
                     <th>#</th>
-                    <th>案件类型名称</th>
+                    <th>姓名</th>
+					<th>email</th>
+					<th>电话</th>
                   </tr>
                 </thead>
 				<tbody>
-				<volist name="list.list" id="case_type_info">
+				<volist name="list.list" id="member_info">
                   <tr>
                     <td>{$i}</td>
-                    <td><a href="__CONTROLLER__/edit/id/{$case_type_info.case_type_id}">{$case_type_info.case_type_name}</a></td>
+                    <td><a href="__CONTROLLER__/edit/id/{$member_info.member_id}">{$member_info.name}</a></td>
+					<td>{$member_info.email}</td>
+					<td>{$member_info.phone}</td>
                   </tr>
 				</volist>                 
                 </tbody>
@@ -40,7 +44,7 @@
 	    <div class="row">
           <div class="col-lg-12">
             <div class="page-header">
-              <h1 id="forms">增加新案件类型</h1>
+              <h1 id="forms">增加新人员</h1>
             </div>
           </div>
         </div>
@@ -50,11 +54,23 @@
             <div class="well bs-component">
               <form class="form-horizontal" method="post" action="__CONTROLLER__/add">
                 <fieldset>
-                  <legend>“案件类型名称”是必须的</legend>
+                  <legend>“姓名”是必须的</legend>
                   <div class="form-group">
-                    <label for="case_type_name" class="col-lg-3 control-label">案件类型名称</label>
+                    <label for="name" class="col-lg-3 control-label">姓名</label>
                     <div class="col-lg-9">
-                      <input type="text" class="form-control" id="case_type_name" name="case_type_name" placeholder="案件类型名称">
+                      <input type="text" class="form-control" id="name" name="name" placeholder="姓名">
+                    </div>
+                  </div>
+				  <div class="form-group">
+				  <label for="email" class="col-lg-3 control-label">email</label>
+                    <div class="col-lg-9">
+                      <input type="text" class="form-control" id="email" name="email" placeholder="email">
+                    </div>
+                  </div>
+				  <div class="form-group">
+				  <label for="phone" class="col-lg-3 control-label">电话</label>
+                    <div class="col-lg-9">
+                      <input type="text" class="form-control" id="phone" name="phone" placeholder="电话">
                     </div>
                   </div>
 				  

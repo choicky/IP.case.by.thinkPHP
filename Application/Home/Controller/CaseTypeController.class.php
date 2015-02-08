@@ -46,16 +46,16 @@ class CaseTypeController extends Controller {
 			//var_dump($data);
 			$result = D('CaseType')->editCaseType($case_type_id,$data);
 			if(false !== $result){
-				$this->success('新增成功', 'listCaseType');
+				$this->success('修改成功', 'listCaseType');
 				//header("Location: listCaseType");
 			}else{
-				$this->error('增加失败');
+				$this->error('修改失败');
 			}
 		} else{
 			$case_type_id = I('get.id',0,'int');
 
 			if(!$case_type_id){
-				$this->error('未指明要编辑的客户');
+				$this->error('未指明要编辑的费用');
 			}
 
 			$case_info = D('CaseType')->getByCaseTypeId($case_type_id);

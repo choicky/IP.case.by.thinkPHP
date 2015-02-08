@@ -1,0 +1,56 @@
+<extend name="Public:base" />
+
+	  <block name="page">
+	  
+      <!-- Forms
+      ================================================== -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="page-header">
+              <h1 id="forms">编辑费用信息</h1>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-10">
+            <div class="well bs-component">
+              <form class="form-horizontal" method="post" action="__CONTROLLER__/edit">
+                <fieldset>
+                  <legend>“费用名称”是必须的</legend>
+                  <div class="form-group">
+                    <label for="name" class="col-lg-3 control-label">费用名称</label>
+                    <div class="col-lg-9">
+                      <input type="hidden" class="form-control" id="fee_id" name="fee_id" value="{$fee_info.fee_id}">
+					  <input type="text" class="form-control" id="name" name="name" value="{$fee_info.name}">
+                    </div>
+                  </div>
+				  <div class="form-group">
+                    <label for="name" class="col-lg-3 control-label">对应的CPC费用名称</label>
+                    <div class="col-lg-9">
+					  <input type="text" class="form-control" id="name_cpc" name="name_cpc" value="{$fee_info.name_cpc}">
+                    </div>
+                  </div>
+				  <div class="form-group">
+                    <label for="default_amount" class="col-lg-3 control-label">默认金额</label>
+                    <div class="col-lg-9">
+					  <input type="text" class="form-control" id="default_amount" name="default_amount" value="{$fee_info.default_amount}">
+                    </div>
+                  </div>
+				  
+                  <div class="form-group">
+                    <div class="col-lg-9 col-lg-offset-3">
+                      <button class="btn btn-default">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
+                </fieldset>
+				
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+	  
+	  </block>
