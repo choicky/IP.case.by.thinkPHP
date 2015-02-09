@@ -17,25 +17,25 @@ class ClientController extends Controller {
 	}
 	
 	public function add(){
-		if(!trim(I('post.name_zh'))){
+		if(!trim(I('post.client_name_zh'))){
 			$this->error("未填写客户中文名称");
 		} 
 
 		$data=array();
-		$data['name_zh'] = trim(I('post.name_zh'));
+		$data['client_name_zh'] = trim(I('post.client_name_zh'));
 		$data['ClientExtend'] = array(
-			'name_en' => trim(I('post.name_en')),
-			'address_zh' => trim(I('post.address_zh')),
-			'address_en' => trim(I('post.address_en')),
-			'id_number' => trim(I('post.id_number')),
-			'business_number' => trim(I('post.business_number')),
-			'tax_number' => trim(I('post.tax_number')),
+			'client_name_en' => trim(I('post.client_name_en')),
+			'client_address_zh' => trim(I('post.client_address_zh')),
+			'client_address_en' => trim(I('post.client_address_en')),
+			'client_id_number' => trim(I('post.client_id_number')),
+			'client_business_number' => trim(I('post.client_business_number')),
+			'client_tax_number' => trim(I('post.client_tax_number')),
 			);	
 		
-		$result = D('Client')->relation(true)->addClient($data);
+		$result = D('Client')->addClient($data);
 		
 		if(false !== $result){
-			$this->success("客户".$data['name_zh']."增加成功",'listClient');
+			$this->success("客户".$data['client_name_zh']."增加成功",'listClient');
 		}else{
 			$this->error("增加失败");
 		}
@@ -46,20 +46,20 @@ class ClientController extends Controller {
 			$client_id =  trim(I('post.client_id'));
 			
 			$data=array();
-			$data['name_zh'] = trim(I('post.name_zh'));
+			$data['client_name_zh'] = trim(I('post.client_name_zh'));
 			$data['ClientExtend'] = array(
-				'name_en' => trim(I('post.name_en')),
-				'address_zh' => trim(I('post.address_zh')),
-				'address_en' => trim(I('post.address_en')),
-				'id_number' => trim(I('post.id_number')),
-				'business_number' => trim(I('post.business_number')),
-				'tax_number' => trim(I('post.tax_number')),
-				);
+				'client_name_en' => trim(I('post.client_name_en')),
+				'client_address_zh' => trim(I('post.client_address_zh')),
+				'client_address_en' => trim(I('post.client_address_en')),
+				'client_id_number' => trim(I('post.client_id_number')),
+				'client_business_number' => trim(I('post.client_business_number')),
+				'client_tax_number' => trim(I('post.client_tax_number')),
+				);	
 			
 			$result	=	D('Client')->editClient($client_id,$data);
 			
 			if(false !== $result){
-				$this->success("客户".$data['name_zh']."修改成功", 'listClient');
+				$this->success("客户".$data['client_name_zh']."修改成功", 'listClient');
 			}else{
 				$this->error("增加失败", 'listClient');
 			}

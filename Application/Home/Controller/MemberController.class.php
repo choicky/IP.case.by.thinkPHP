@@ -18,11 +18,11 @@ class MemberController extends Controller {
 	
 	public function add(){
 		$data	=	array();
-		$data['name']	=	trim(I('post.name'));
-		$data['email']	=	trim(I('post.email'));
-		$data['phone']	=	trim(I('post.phone'));
+		$data['member_name']	=	trim(I('post.member_name'));
+		$data['member_email']	=	trim(I('post.member_email'));
+		$data['member_phone']	=	trim(I('post.member_phone'));
 		
-		if(!$data['name']){
+		if(!$data['member_name']){
 			$this->error('未填写成员姓名');
 		} 
 				
@@ -41,17 +41,17 @@ class MemberController extends Controller {
 			$member_id	=	trim(I('post.member_id'));
 			
 			$data=array();
-			$data['name']	=	trim(I('post.name'));
-			$data['email']	=	trim(I('post.email'));
-			$data['phone']	=	trim(I('post.phone'));
+			$data['member_name']	=	trim(I('post.member_name'));
+			$data['member_email']	=	trim(I('post.member_email'));
+			$data['member_phone']	=	trim(I('post.member_phone'));
 						
 			//var_dump($data);
 			$result = D('Member')->editMember($member_id,$data);
 			if(false !== $result){
-				$this->success('新增成功', 'listMember');
+				$this->success('修改成功', 'listMember');
 				//header("Location: listCaseType");
 			}else{
-				$this->error('增加失败');
+				$this->error('修改成功');
 			}
 		} else{
 			$member_id = I('get.id',0,'int');

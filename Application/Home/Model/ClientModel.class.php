@@ -9,15 +9,15 @@ class ClientModel extends RelationModel {
 			'mapping_type'		=>	self::HAS_ONE,
 			'class_name'		=>	'ClientExtend',
 			'foreign_key'		=>	'client_id',
-			'mapping_fields'	=>	'name_en,address_zh,address_en,id_number,business_number,tax_number',
-			'as_fields'			=>	'name_en,address_zh,address_en,id_number,business_number,tax_number',
+			'mapping_fields'	=>	'client_name_en,client_address_zh,client_address_en,client_id_number,client_business_number,client_tax_number',
+			'as_fields'			=>	'client_name_en,client_address_zh,client_address_en,client_id_number,client_business_number,client_tax_number',
 		),
 		
 	);
 	
 	public function listClient($p,$limit) {
 		//$p为当前页数，$limit为每页显示的记录条数
-		$data	= $this->relation(true)->order('convert(name_zh using gb2312) asc')->page($p.','.$limit)->select();
+		$data	= $this->relation(true)->order('convert(client_name_zh using gb2312) asc')->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		
@@ -29,7 +29,7 @@ class ClientModel extends RelationModel {
 	
 	public function addClient($data){
 		//$data是数组，且不包含主键
-		$result	=	$this->add($data);
+		$result	=	$this->relation(true)->add($data);
 		return $result;
 	}
 	

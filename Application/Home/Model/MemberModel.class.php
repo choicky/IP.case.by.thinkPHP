@@ -6,7 +6,7 @@ use Think\Model\RelationModel;
 class MemberModel extends RelationModel {
 	public function listMember($p,$limit) {
 		//$p为当前页数，$limit为每页显示的记录条数
-		$data	= $this->order('convert(name using gb2312) asc')->page($p.','.$limit)->select();
+		$data	= $this->order('convert(member_name using gb2312) asc')->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		
@@ -22,7 +22,7 @@ class MemberModel extends RelationModel {
 		return $result;
 	}
 	
-	public function editCaseType($member_id,$data){
+	public function editMember($member_id,$data){
 		//$case_type_id为主键，$data是数组，且不包含主键
 		$map['member_id']	=	$member_id;
 		$result	=	$this->where($map)->save($data);
