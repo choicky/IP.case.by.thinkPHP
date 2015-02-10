@@ -4,7 +4,7 @@ use Think\Controller;
 
 class FeeTypeController extends Controller {
     
-	//默认跳转带listFreeType显示列表
+	//默认跳转到listFeeType，显示fee_type表列表
 	public function index(){
         header("Location: listFeeType");
     }

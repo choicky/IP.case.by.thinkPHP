@@ -1,7 +1,7 @@
 <?php
 namespace Home\Model;
 
-//因为数据关联必须集成RelationModel
+//因为数据表关联，必须继承RelationModel，注释Model
 //use Think\Model;
 use Think\Model\RelationModel;
 
