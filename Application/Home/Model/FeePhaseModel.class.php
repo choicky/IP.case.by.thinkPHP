@@ -3,11 +3,10 @@ namespace Home\Model;
 use Think\Model;
 
 class FeePhaseModel extends Model {
-
+	
+	// 获取fee_phase表所有信息
 	public function listFeePhase() {
-		//排序
-		//$list	= $this->order('convert(fee_phase_name using gb2312) asc')->select();
-		$list	= $this->select();
-		return $list;
+		$fee_phase_list	= $this->select();
+		return $fee_phase_list;
 	}
 }
