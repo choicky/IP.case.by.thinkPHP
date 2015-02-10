@@ -1,29 +1,32 @@
 <?php
 namespace Home\Model;
-use Think\Model;
-use Think\Model\RelationModel;
 
-class MemberModel extends RelationModel {
+use Think\Model;
+//因为没有数据表关联，注释RelationModel
+//use Think\Model\RelationModel;
+
+class MemberModel extends Model {
+	
+	//获取member表的列表，$p为当前页数，$limit为每页显示的记录条数
 	public function listMember($p,$limit) {
-		//$p为当前页数，$limit为每页显示的记录条数
-		$data	= $this->order('convert(member_name using gb2312) asc')->page($p.','.$limit)->select();
+		$member_list	= $this->order('convert(member_name using gb2312) asc')->page($p.','.$limit)->select();
 		
-		$count	= $this->count();
+		$member_count	= $this->count();
 		
-		$Page	= new \Think\Page($count,$limit);
+		$Page	= new \Think\Page($member_count,$limit);
 		$show	= $Page->show();
 		
-		return array("list"=>$data,"page"=>$show);
+		return array("member_list"=>$member_list,"page"=>$show);
 	}
 	
+	//向member表插入记录，$data是数组，且不包含主键
 	public function addMember($data){
-		//$data是数组，且不包含主键
 		$result	=	$this->add($data);
 		return $result;
 	}
 	
+	//更新member表中主键为$member_id的记录，$data是数组
 	public function editMember($member_id,$data){
-		//$case_type_id为主键，$data是数组，且不包含主键
 		$map['member_id']	=	$member_id;
 		$result	=	$this->where($map)->save($data);
 		return $result;

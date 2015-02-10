@@ -49,7 +49,7 @@ class AccountController extends Controller {
 			$data['account_name']	=	trim(I('post.account_name'));
 			$data['account_number']	=	trim(I('post.account_number'));
 			$data['bank_name']	=	trim(I('post.bank_name'));
-						
+
 			$result = D('Account')->editAccount($account_id,$data);
 			if(false !== $result){
 				$this->success('修改成功', 'listAccount');
