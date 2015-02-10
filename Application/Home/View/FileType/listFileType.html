@@ -1,81 +1,88 @@
 <extend name="Public:base" />
-
-	  <block name="page">
+	
+	
+	<block name="title">
+		<title>文件类型列表管理</title>
+	</block>
+	
+	
+	<block name="page">
 	  
-      <!-- Tables
-      ================================================== -->
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="page-header">
-				<h1>文件类型名单</h1>
-            </div>
-          </div>
-        </div>
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h1>文件类型列表</h1>
+				</div>
+			</div>
+		</div>
+		
 		<div class="row">
 			<div class="panel panel-warning">
-			  <!-- Default panel contents -->
-			  <div class="panel-heading">
-				点击“文件名称”可以编辑文件信息；表格底部有换页按钮；页面底部可以新增
-			  </div>
+				<!-- Default panel contents -->
+				<div class="panel-heading">
+					点击“文件类型名称”可以编辑文件类型信息；表格底部有换页按钮；页面底部可以新增
+				</div>
 
-            <div class="bs-component">
-			 <table class="table table-striped table-hover table-bordered table-condensed">
-                <thead>
-                   <tr class="info">
-                    <th>#</th>
-                    <th>案件类型名称</th>
-                  </tr>
-                </thead>
-				<tbody>
-				<volist name="list.list" id="file_type_info">
-                  <tr>
-                    <td>{$i}</td>
-                    <td><a href="__CONTROLLER__/edit/id/{$file_type_info.file_type_id}">{$file_type_info.file_type_name}</a></td>
-                  </tr>
-				</volist>                 
-                </tbody>
-              </table> 
-			  {$list.page}
-            </div><!-- /example -->
-          </div>
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								<th>#</th>
+								<th>文件类型名称</th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="file_type_list" id="file_type_list">
+							<tr>
+								<td>{$i}</td>
+								<td><a href="__CONTROLLER__/edit/id/{$file_type_list.file_type_id}">{$file_type_list.file_name}</a></td>
+							</tr>
+							</volist>                 
+						</tbody>
+					</table> 
+					{$file_type_page}
+				</div><!-- /example -->
+			</div>
         </div>
-
+	  
+	  
 		<a name="addNew"></a>
-      <!-- Forms
-      ================================================== -->
+		<!-- Forms
+			================================================== -->
 	    <div class="row">
-          <div class="col-lg-12">
-            <div class="page-header">
-              <h1 id="forms">增加新案件类型</h1>
-            </div>
-          </div>
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h1 id="forms">增加新文件类型</h1>
+				</div>
+			</div>
         </div>
 
         <div class="row">
-          <div class="col-lg-10">
-            <div class="well bs-component">
-              <form class="form-horizontal" method="post" action="__CONTROLLER__/add">
-                <fieldset>
-                  <legend>“案件类型名称”是必须的</legend>
-                  <div class="form-group">
-                    <label for="file_type_name" class="col-lg-3 control-label">案件类型名称</label>
-                    <div class="col-lg-9">
-                      <input type="text" class="form-control" id="file_type_name" name="file_type_name" placeholder="案件类型名称">
-                    </div>
-                  </div>
-				  
-                  <div class="form-group">
-                    <div class="col-lg-9 col-lg-offset-3">
-                      <button class="btn btn-default">Cancel</button>
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                  </div>
-                </fieldset>
-              </form>
-            </div>
-          </div>
+			<div class="col-lg-10">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
+						<fieldset>
+							<legend>“文件类型名称”是必须的</legend>
+							<div class="form-group">
+								<label for="file_name" class="col-lg-3 control-label">文件类型名称</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control" id="file_name" name="file_name" placeholder="文件类型名称">
+								</div>
+							</div>
 
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button class="btn btn-default">Cancel</button>
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
         </div>
 
-	  
-	  </block>
+	</block>
