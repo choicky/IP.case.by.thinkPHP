@@ -16,7 +16,7 @@ class CostCenterModel extends Model {
 		$Page	= new \Think\Page($cost_center_count,$limit);
 		$show	= $Page->show();
 		
-		return array("cost_center_list"=>$cost_center_list,"page"=>$show);
+		return array("cost_center_list"=>$cost_center_list,"cost_center_page"=>$show);
 	}
 	
 	//向cost_center表插入记录，$data是数组，且不包含主键

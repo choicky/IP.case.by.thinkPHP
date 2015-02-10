@@ -15,7 +15,7 @@ class CostCenterController extends Controller {
 		$limit	= 10;
 		$cost_center_list = D('CostCenter')->listCostCenter($p,$limit);
 		$this->assign('cost_center_list',$cost_center_list['cost_center_list']);
-		$this->assign('cost_center_page',$cost_center_list['page']);
+		$this->assign('cost_center_page',$cost_center_list['cost_center_page']);
 
 		$this->display();
 	}

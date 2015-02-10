@@ -15,7 +15,7 @@ class AccountController extends Controller {
 		$limit	= 10;
 		$account_list = D('Account')->listAccount($p,$limit);
 		$this->assign('account_list',$account_list['account_list']);
-		$this->assign('account_page',$account_list['page']);
+		$this->assign('account_page',$account_list['account_page']);
 
 		$this->display();
 	}

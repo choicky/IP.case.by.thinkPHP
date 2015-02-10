@@ -44,7 +44,7 @@
 							<volist name="client_list" id="client_list">
 							<tr>
 								<td>{$i}</td>
-								<td><a href="__CONTROLLER__/edit/id/{$client_list.client_id}">{$client_list.client_name_zh}</a></td>
+								<td><a href="__CONTROLLER__/edit/id/{$client_list.client_id}">{$client_list.client_name}</a></td>
 								<td>{$client_list.client_name_en}</td>
 								<td>{$client_list.client_address_zh}</td>
 								<td>{$client_list.client_address_en}</td>
@@ -79,9 +79,9 @@
 						<fieldset>
 							<legend>“客户/申请人名称”是必须的</legend>
 							<div class="form-group">
-								<label for="client_name_zh" class="col-lg-3 control-label">中文全称</label>
+								<label for="client_name" class="col-lg-3 control-label">中文全称</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control" id="client_name_zh" name="client_name_zh" placeholder="中文全称">
+									<input type="text" class="form-control" id="client_name" name="client_name" placeholder="中文全称">
 								</div>
 							</div>
 							<div class="form-group">

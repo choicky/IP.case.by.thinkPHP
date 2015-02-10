@@ -15,7 +15,7 @@ class MemberController extends Controller {
 		$limit	= 10;
 		$member_list = D('Member')->listMember($p,$limit);
 		$this->assign('member_list',$member_list['member_list']);
-		$this->assign('member_page',$member_list['page']);
+		$this->assign('member_page',$member_list['member_page']);
 
 		$this->display();
 	}

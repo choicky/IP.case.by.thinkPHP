@@ -20,7 +20,7 @@ class ClientModel extends RelationModel {
 	
 	//获取client表的列表，$p为当前页数，$limit为每页显示的记录条数
 	public function listClient($p,$limit) {
-		$client_list	= $this->relation(true)->order('convert(client_name_zh using gb2312) asc')->page($p.','.$limit)->select();
+		$client_list	= $this->relation(true)->order('convert(client_name using gb2312) asc')->page($p.','.$limit)->select();
 		
 		$client_count	= $this->count();
 		

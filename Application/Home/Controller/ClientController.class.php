@@ -22,12 +22,12 @@ class ClientController extends Controller {
 	
 	//新增
 	public function add(){
-		if(!trim(I('post.client_name_zh'))){
+		if(!trim(I('post.client_name'))){
 			$this->error("未填写客户中文名称");
 		} 
 
 		$data=array();
-		$data['client_name_zh'] = trim(I('post.client_name_zh'));
+		$data['client_name'] = trim(I('post.client_name'));
 		$data['ClientExtend'] = array(
 			'client_name_en' => trim(I('post.client_name_en')),
 			'client_address_zh' => trim(I('post.client_address_zh')),
@@ -51,7 +51,7 @@ class ClientController extends Controller {
 			$client_id =  trim(I('post.client_id'));
 			
 			$data=array();
-			$data['client_name_zh'] = trim(I('post.client_name_zh'));
+			$data['client_name'] = trim(I('post.client_name'));
 			$data['ClientExtend'] = array(
 				'client_name_en' => trim(I('post.client_name_en')),
 				'client_address_zh' => trim(I('post.client_address_zh')),
@@ -64,7 +64,7 @@ class ClientController extends Controller {
 			$result	=	D('Client')->editClient($client_id,$data);
 			
 			if(false !== $result){
-				$this->success("客户".$data['client_name_zh']."修改成功", 'listClient');
+				$this->success("客户".$data['client_name']."修改成功", 'listClient');
 			}else{
 				$this->error("增加失败", 'listClient');
 			}

@@ -16,7 +16,7 @@ class MemberModel extends Model {
 		$Page	= new \Think\Page($member_count,$limit);
 		$show	= $Page->show();
 		
-		return array("member_list"=>$member_list,"page"=>$show);
+		return array("member_list"=>$member_list,"member_page"=>$show);
 	}
 	
 	//向member表插入记录，$data是数组，且不包含主键

@@ -16,7 +16,7 @@ class AccountModel extends Model {
 		$Page	= new \Think\Page($account_count,$limit);
 		$show	= $Page->show();
 		
-		return array("account_list"=>$account_list,"page"=>$show);
+		return array("account_list"=>$account_list,"account_page"=>$show);
 	}
 	
 	//向account表插入记录，$data是数组，且不包含主键
