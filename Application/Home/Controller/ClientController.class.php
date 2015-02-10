@@ -3,19 +3,24 @@ namespace Home\Controller;
 use Think\Controller;
 
 class ClientController extends Controller {
-    public function index(){
+    
+	//默认跳转到listClient，显示client表列表
+	public function index(){
         header("Location: listClient");
     }
 	
+	//列表，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listClient(){
 		$p	= I("p",1,"int");
-		$limit	= 10;		
-		$list = D('Client')->listClient($p,$limit);
-		//var_dump($list);
-		$this->assign('list',$list);
+		$limit	= 10;
+		$client_list = D('Client')->listClient($p,$limit);
+		$this->assign('client_list',$client_list['client_list']);
+		$this->assign('client_page',$client_list['client_page']);
+		
 		$this->display();
 	}
 	
+	//新增
 	public function add(){
 		if(!trim(I('post.client_name_zh'))){
 			$this->error("未填写客户中文名称");
@@ -35,12 +40,12 @@ class ClientController extends Controller {
 		$result = D('Client')->addClient($data);
 		
 		if(false !== $result){
-			$this->success("客户".$data['client_name_zh']."增加成功",'listClient');
+			$this->success("增加成功",'listClient');
 		}else{
 			$this->error("增加失败");
 		}
 	}
-	
+		
 	public function edit(){
 		if(IS_POST){
 			$client_id =  trim(I('post.client_id'));
@@ -73,12 +78,11 @@ class ClientController extends Controller {
 			}
 			
 			$client = D('Client');
-			$client_info = $client->relation(true)->getByClientId($client_id);
+			$client_list = $client->relation(true)->getByClientId($client_id);
 			
-			$this->assign('client_info',$client_info);
+			$this->assign('client_list',$client_list);
 			$this->display();
 		}
 
 	}
-
 }

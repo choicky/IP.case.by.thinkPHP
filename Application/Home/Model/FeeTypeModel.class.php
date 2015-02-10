@@ -7,7 +7,7 @@ use Think\Model\RelationModel;
 
 class FeeTypeModel extends RelationModel {
 	
-	//定义fee_type表与free_phase表的关联性
+	//定义fee_type表与fee_phase表的关联性
 	protected $_link = array(
 		'FeePhase'	=>	array(
 			'mapping_type'		=>	self::BELONGS_TO,

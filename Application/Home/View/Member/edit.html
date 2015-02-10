@@ -1,56 +1,56 @@
 <extend name="Public:base" />
-
-	  <block name="page">
+	
+	<block name="title">
+		<title>编辑人员</title>
+	</block>
+	
+	<block name="page">
 	  
-      <!-- Forms
-      ================================================== -->
+		<!-- Page Header
+		================================================== -->
         <div class="row">
-          <div class="col-lg-12">
-            <div class="page-header">
-              <h1 id="forms">编辑人员信息</h1>
-            </div>
-          </div>
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h1 id="forms">编辑人员信息</h1>
+				</div>
+			</div>
         </div>
 
         <div class="row">
-          <div class="col-lg-10">
-            <div class="well bs-component">
-              <form class="form-horizontal" method="post" action="__CONTROLLER__/edit">
-                <fieldset>
-                  <legend>“姓名”是必须的</legend>
-                  <div class="form-group">
-                    <label for="member_name" class="col-lg-3 control-label">姓名</label>
-                    <div class="col-lg-9">
-                      <input type="hidden" class="form-control" id="member_id" name="member_id" value="{$member_info.member_id}">
-					  <input type="text" class="form-control" id="member_name" name="member_name" value="{$member_info.member_name}">
-                    </div>
-                  </div>
-				  <div class="form-group">
-                    <label for="member_name" class="col-lg-3 control-label">email</label>
-                    <div class="col-lg-9">
-					  <input type="text" class="form-control" id="member_email" name="member_email" value="{$member_info.member_email}">
-                    </div>
-                  </div>
-				  <div class="form-group">
-                    <label for="member_phone" class="col-lg-3 control-label">phone</label>
-                    <div class="col-lg-9">
-					  <input type="text" class="form-control" id="member_phone" name="member_phone" value="{$member_info.member_phone}">
-                    </div>
-                  </div>
-				  
-                  <div class="form-group">
-                    <div class="col-lg-9 col-lg-offset-3">
-                      <button class="btn btn-default">Cancel</button>
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                  </div>
-                </fieldset>
-				
-              </form>
-            </div>
-          </div>
+			<div class="col-lg-10">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/edit">
+						<fieldset>
+							<legend>“人员名称”是必须的</legend>
+							<div class="form-group">
+								<label for="member_name" class="col-lg-3 control-label">人员名称</label>
+								<div class="col-lg-9">
+									<input type="hidden" class="form-control" id="member_id" name="member_id" value="{$member_list.member_id}">
+									<input type="text" class="form-control" id="member_name" name="member_name" value="{$member_list.member_name}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="member_email" class="col-lg-3 control-label">email</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control" id="member_email" name="member_email" value="{$member_list.member_email}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="member_phone" class="col-lg-3 control-label">电话号码</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control" id="member_phone" name="member_phone" value="{$member_list.member_phone}">
+								</div>
+							</div>
 
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button class="btn btn-default">Cancel</button>
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
         </div>
-
-	  
-	  </block>
+	</block>

@@ -28,7 +28,7 @@ class AccountController extends Controller {
 		$data['bank_name']	=	trim(I('post.bank_name'));
 		
 		if(!$data['account_name']){
-			$this->error('未填写费用名称');
+			$this->error('未填写账户名称');
 		} 
 
 		$result = D('Account')->addAccount($data);
@@ -61,7 +61,7 @@ class AccountController extends Controller {
 			$account_id = I('get.id',0,'int');
 
 			if(!$account_id){
-				$this->error('未指明要编辑的客户');
+				$this->error('未指明要编辑的账户');
 			}
 
 			$account_list = D('Account')->getByAccountId($account_id);
