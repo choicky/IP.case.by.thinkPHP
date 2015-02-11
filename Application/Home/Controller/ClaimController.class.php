@@ -13,15 +13,18 @@ class ClaimController extends Controller {
 	public function listClaim(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$claim_list = D('Claim')->listClaim($p,$limit);
+		$claim_list = D('ClaimView')->listClaim($p,$limit);
+		 
 		$this->assign('claim_list',$claim_list['claim_list']);
 		$this->assign('claim_page',$claim_list['claim_page']);
+		//var_dump($claim_list['claim_list']);
 		
-		$member_list	=	D('Member')->listMember();
+		$member_list	=	D('Member')->listBasic();
 		$this->assign('member_list',$member_list);
 		
-		$client_list	=	D('Client')->listClient();
+		$client_list	=	D('Client')->listBasic();
 		$this->assign('client_list',$client_list);
+		//var_dump($client_list['client_list']);
 		
 		$this->display();
 	}
@@ -32,11 +35,13 @@ class ClaimController extends Controller {
 		$data['claimer_id']	=	trim(I('post.claimer_id'));
 		$data['client_id']	=	trim(I('post.client_id'));
 		$data['claim_date']	=	trim(I('post.claim_date'));
+		//转为时间戳
+		$data['claim_date']	=	time($data['claim_date']);
 		$data['balance_id']	=	trim(I('post.balance_id'));
 		$data['total_amount']	=	trim(I('post.total_amount'));
 		$data['official_fee']	=	trim(I('post.official_fee'));
 		$data['service_fee']	=	trim(I('post.service_fee'));
-				
+		//var_dump($data);	
 		if(!$data['claimer_id']){
 			$this->error('未选择认领人');
 		} 
@@ -59,6 +64,8 @@ class ClaimController extends Controller {
 			$data['claimer_id']	=	trim(I('post.claimer_id'));
 			$data['client_id']	=	trim(I('post.client_id'));
 			$data['claim_date']	=	trim(I('post.claim_date'));
+			//转为时间戳
+			$data['claim_date']	=	time($data['claim_date']);
 			$data['balance_id']	=	trim(I('post.balance_id'));
 			$data['total_amount']	=	trim(I('post.total_amount'));
 			$data['official_fee']	=	trim(I('post.official_fee'));
@@ -79,14 +86,15 @@ class ClaimController extends Controller {
 				$this->error('未指明要编辑的认领单号');
 			}
 
-			$claim_list = D('Claim')->relation(true)->getByClaimId($claim_id);
-			$member_list	=	D('Member')->listMember();
-			$client_list	=	D('Client')->listClient();
-			
-			
+			$claim_list = D('Claim')->getByClaimId($claim_id);
 			$this->assign('claim_list',$claim_list);
+			
+			$member_list	=	D('Member')->listBasic();
 			$this->assign('member_list',$member_list);
+			
+			$client_list	=	D('Client')->listBasic();
 			$this->assign('client_list',$client_list);
+			
 			$this->display();
 		}
 	}

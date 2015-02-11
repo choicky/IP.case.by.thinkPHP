@@ -19,7 +19,7 @@ class FeeTypeController extends Controller {
 		$this->assign('fee_type_page',$fee_type_list['fee_type_page']);
 		
 		$fee_phase_list	=	D('FeePhase')->listFeePhase();
-		$this->assign('fee_phase_list',$fee_phase_list);
+		$this->assign('fee_phase_list',$fee_phase_list['fee_phase_list']);
 		
 		$this->display();
 	}

@@ -7,7 +7,13 @@ use Think\Model;
 
 class MemberModel extends Model {
 	
-	//获取member表的列表，$p为当前页数，$limit为每页显示的记录条数
+	//获取member表的列表
+	public function listBasic() {
+		$member_list	= $this->order('convert(member_name using gb2312) asc')->select();
+		return $member_list;
+	}
+	
+	//分页获取member表的列表，$p为当前页数，$limit为每页显示的记录条数
 	public function listMember($p,$limit) {
 		$member_list	= $this->order('convert(member_name using gb2312) asc')->page($p.','.$limit)->select();
 		
@@ -18,6 +24,8 @@ class MemberModel extends Model {
 		
 		return array("member_list"=>$member_list,"member_page"=>$show);
 	}
+	
+	
 	
 	//向member表插入记录，$data是数组，且不包含主键
 	public function addMember($data){
