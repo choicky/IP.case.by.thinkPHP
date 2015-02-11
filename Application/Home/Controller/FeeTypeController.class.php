@@ -13,7 +13,8 @@ class FeeTypeController extends Controller {
 	public function listFeeType(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$fee_type_list = D('FeeType')->listFeeType($p,$limit);
+		$fee_type_list = D('FeeTypeView')->listFeeType($p,$limit);
+
 		$this->assign('fee_type_list',$fee_type_list['fee_type_list']);
 		$this->assign('fee_type_page',$fee_type_list['fee_type_page']);
 		
@@ -70,7 +71,7 @@ class FeeTypeController extends Controller {
 				$this->error('未指明要编辑的客户');
 			}
 
-			$fee_type_list = D('FeeType')->relation(true)->getByFeeTypeId($fee_type_id);
+			$fee_type_list = M('FeeType')->getByFeeTypeId($fee_type_id);
 			$fee_phase_list	=	D('FeePhase')->listFeePhase();
 			//var_dump($fee_phase_list);
 			
