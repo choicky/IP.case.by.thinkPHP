@@ -2,33 +2,44 @@
 namespace Home\Model;
 
 use Think\Model;
-//因为没有数据表关联，注释RelationModel
+//因为不需要数据表关联，注释RelationModel
 //use Think\Model\RelationModel;
 
 class CaseTypeModel extends Model {
 	
-	//获取case_type表的列表，$p为当前页数，$limit为每页显示的记录条数
-	public function listCaseType($p,$limit) {
-		$case_type_list	= $this->order('convert(case_type_name using gb2312) asc')->page($p.','.$limit)->select();
+	//返回本数据表的所有数据
+	public function listAll() {
+		$Model	=	M('CaseType');
+		$order['convert(case_type_name using gb2312)']	=	'asc';
+		$list	=	$Model->field(true)->order($order)->select();
+		return $list;
+	}
 		
-		$case_type_count	= $this->count();
+	//返回本数据表的基本数据
+	public function listBasic() {
+		$list	=	$this->listAll();
+		return $list;
+	}
+	
+	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
+	public function listPage($p,$limit) {
+		$Model	=	M('CaseType');
+		$order['convert(case_type_name using gb2312)']	=	'asc';
+		$list	= $Model->field(true)->order($order)->page($p.','.$limit)->select();
 		
-		$Page	= new \Think\Page($case_type_count,$limit);
+		$count	= $this->count();
+		
+		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("case_type_list"=>$case_type_list,"case_type_page"=>$show);
+		return array("list"=>$list,"page"=>$show);
 	}
 	
-	//向case_type表插入记录，$data是数组，且不包含主键
-	public function addCaseType($data){
-		$result	=	$this->add($data);
-		return $result;
-	}
-	
-	//更新case_type表中主键为$case_type_id的记录，$data是数组
-	public function editCaseType($case_type_id,$data){
+	//更新本数据表中主键为$case_type_id的记录，$data是数组
+	public function edit($case_type_id,$data){
+		$Model	=	M('CaseType');
 		$map['case_type_id']	=	$case_type_id;
-		$result	=	$this->where($map)->save($data);
+		$result	=	$Model->where($map)->save($data);
 		return $result;
 	}
 

@@ -4,18 +4,18 @@ use Think\Controller;
 
 class ClientController extends Controller {
     
-	//默认跳转到listClient，显示client表列表
+	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: listClient");
+        header("Location: listPage");
     }
 	
-	//列表，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function listClient(){
+	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
+	public function listPage(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$client_list = D('Client')->listClient($p,$limit);
-		$this->assign('client_list',$client_list['client_list']);
-		$this->assign('client_page',$client_list['client_page']);
+		$client_list = D('Client')->listPage($p,$limit);
+		$this->assign('client_list',$client_list['list']);
+		$this->assign('client_page',$client_list['page']);
 		
 		$this->display();
 	}
@@ -37,15 +37,16 @@ class ClientController extends Controller {
 			'client_tax_number' => trim(I('post.client_tax_number')),
 			);	
 		
-		$result = D('Client')->addClient($data);
+		$result = D('Client')->relation(true)->add($data);
 		
 		if(false !== $result){
-			$this->success("增加成功",'listClient');
+			$this->success("增加成功",'listPage');
 		}else{
 			$this->error("增加失败");
 		}
 	}
-		
+	
+	//编辑
 	public function edit(){
 		if(IS_POST){
 			$client_id =  trim(I('post.client_id'));
@@ -61,24 +62,22 @@ class ClientController extends Controller {
 				'client_tax_number' => trim(I('post.client_tax_number')),
 				);	
 			
-			$result	=	D('Client')->editClient($client_id,$data);
+			$result	=	D('Client')->edit($client_id,$data);
 			
 			if(false !== $result){
-				$this->success("客户".$data['client_name']."修改成功", 'listClient');
+				$this->success("修改成功", 'listPage');
 			}else{
-				$this->error("增加失败", 'listClient');
+				$this->error("增加失败", 'listPage');
 			}
-			//header("Location: listClient");
 		} else{
-			//$id = intval($id);
 			$client_id = I('get.id',0,'int');
 
 			if(!$client_id){
 				$this->error("未指明要编辑的客户");
 			}
 			
-			$client = D('Client');
-			$client_list = $client->relation(true)->getByClientId($client_id);
+			$Client = D('Client');
+			$client_list = $Client->relation(true)->getByClientId($client_id);
 			
 			$this->assign('client_list',$client_list);
 			$this->display();

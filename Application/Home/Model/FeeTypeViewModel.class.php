@@ -23,15 +23,28 @@ class FeeTypeViewModel extends ViewModel {
 		),	
 	);
 	
-	//获取fee_type表的列表，$p为当前页数，$limit为每页显示的记录条数
-	public function listFeeType($p,$limit) {
-		$fee_type_list	=	$this->order(array('convert(fee_name using gb2312)'=>'asc'))->page($p.','.$limit)->select();
+	//返回本数据视图的所有数据
+	public function listAll() {
+		$order['convert(fee_name using gb2312)']	=	'asc';
+		$list	=	$this->field(true)->order($order)->select();
+		return $list;
+	}
 		
-		$fee_type_count	= $this->count();
+	//返回本数据视图的基本数据
+	public function listBasic() {
+		$list	=	$this->listAll();
+		return $list;
+	}
+	
+	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
+	public function listPage($p,$limit) {
+		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
 		
-		$Page	= new \Think\Page($fee_type_count,$limit);
+		$count	= $this->count();
+		
+		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("fee_type_list"=>$fee_type_list,"fee_type_page"=>$show);
+		return array("list"=>$list,"page"=>$show);
 	}
 }

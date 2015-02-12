@@ -7,37 +7,39 @@ use Think\Model;
 
 class MemberModel extends Model {
 	
-	//获取member表的列表
+	//返回本数据表的所有数据
+	public function listAll() {
+		$Model	=	M('Member');
+		$order['convert(member_name using gb2312)']	=	'asc';
+		$list	=	$Model->field(true)->order($order)->select();
+		return $list;
+	}
+		
+	//返回本数据表的基本数据
 	public function listBasic() {
-		$member_list	= $this->order('convert(member_name using gb2312) asc')->select();
-		return $member_list;
+		$list	=	$this->listAll();
+		return $list;
 	}
 	
-	//分页获取member表的列表，$p为当前页数，$limit为每页显示的记录条数
-	public function listMember($p,$limit) {
-		$member_list	= $this->order('convert(member_name using gb2312) asc')->page($p.','.$limit)->select();
+	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
+	public function listPage($p,$limit) {
+		$Model	=	M('Account');
+		$order['convert(member_name using gb2312)']	=	'asc';
+		$list	= $this->field(true)->order($order)->page($p.','.$limit)->select();
 		
-		$member_count	= $this->count();
+		$count	= $this->count();
 		
-		$Page	= new \Think\Page($member_count,$limit);
+		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("member_list"=>$member_list,"member_page"=>$show);
-	}
-	
-	
-	
-	//向member表插入记录，$data是数组，且不包含主键
-	public function addMember($data){
-		$result	=	$this->add($data);
-		return $result;
+		return array("list"=>$list,"page"=>$show);
 	}
 	
 	//更新member表中主键为$member_id的记录，$data是数组
 	public function editMember($member_id,$data){
+		$Model	=	M('Member');
 		$map['member_id']	=	$member_id;
-		$result	=	$this->where($map)->save($data);
+		$result	=	$Model->where($map)->save($data);
 		return $result;
 	}
-
 }

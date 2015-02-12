@@ -2,7 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 
-class CostCenterController extends Controller {
+class FeePhaseController extends Controller {
     
 	//默认跳转到listPage，分页显示
 	public function index(){
@@ -13,9 +13,9 @@ class CostCenterController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$cost_center_list = D('CostCenter')->listPage($p,$limit);
-		$this->assign('cost_center_list',$cost_center_list['list']);
-		$this->assign('cost_center_page',$cost_center_list['page']);
+		$fee_phase_list = D('FeePhase')->listPage($p,$limit);
+		$this->assign('fee_phase_list',$fee_phase_list['list']);
+		$this->assign('fee_phase_page',$fee_phase_list['page']);
 
 		$this->display();
 	}
@@ -23,45 +23,44 @@ class CostCenterController extends Controller {
 	//新增
 	public function add(){
 		$data	=	array();
-		$data['cost_center_name']	=	trim(I('post.cost_center_name'));
+		$data['fee_phase_name']	=	trim(I('post.fee_phase_name'));
 		
-		if(!$data['cost_center_name']){
+		if(!$data['fee_phase_name']){
 			$this->error('未填写费用名称');
 		} 
 
-		$result = M('CostCenter')->add($data);
+		$result = M('FeePhase')->add($data);
 		
 		if(false !== $result){
 			$this->success('新增成功', 'listPage');
 		}else{
-			$this->error('增加失败');
+			$this->error('增加失败', 'listPage');
 		}
 	}
 		
 	public function edit(){
 		if(IS_POST){
-			
-			$cost_center_id	=	trim(I('post.cost_center_id'));
+			$fee_phase_id	=	trim(I('post.fee_phase_id'));
 			
 			$data=array();
-			$data['cost_center_name']	=	trim(I('post.cost_center_name'));
+			$data['fee_phase_name']	=	trim(I('post.fee_phase_name'));
 
-			$result = D('CostCenter')->edit($cost_center_id,$data);
+			$result = D('FeePhase')->edit($fee_phase_id,$data);
 			if(false !== $result){
 				$this->success('修改成功', 'listPage');
 			}else{
 				$this->error('修改失败', 'listPage');
 			}
 		} else{
-			$cost_center_id = I('get.id',0,'int');
+			$fee_phase_id = I('get.id',0,'int');
 
-			if(!$cost_center_id){
+			if(!$fee_phase_id){
 				$this->error('未指明要编辑的客户');
 			}
 
-			$cost_center_list = M('CostCenter')->getByCostCenterId($cost_center_id);
+			$fee_phase_list = M('FeePhase')->getByFeePhaseId($fee_phase_id);
 			
-			$this->assign('cost_center_list',$cost_center_list);
+			$this->assign('fee_phase_list',$fee_phase_list);
 
 			$this->display();
 		}

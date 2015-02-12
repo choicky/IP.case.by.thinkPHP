@@ -18,47 +18,45 @@ class ClientModel extends RelationModel {
 		),
 	);
 	
-	//获取client表的列表
-	public function listBasic() {
-		$client_list	= $this->order('convert(client_name using gb2312) asc')->select();
-		return $client_list;
-	}
-	
-	//获取client表的列表
+	//返回本数据表的所有数据
 	public function listAll() {
-		$client_list	= $this->relation(true)->order('convert(client_name using gb2312) asc')->select();
-		return $client_list;
+		$order['convert(client_name using gb2312)']	=	'asc';
+		$list	=	$this->relation(true)->field(true)->order($order)->select();
+		return $list;
 	}
 	
-	//分页获取client表的列表，$p为当前页数，$limit为每页显示的记录条数
-	public function listClient($p,$limit) {
-		$client_list	= $this->relation(true)->order('convert(client_name using gb2312) asc')->page($p.','.$limit)->select();
+	//返回本数据表的基本数据
+	public function listBasic() {
+		$Model	=	M('Client');
+		$order['convert(client_name using gb2312)']	=	'asc';
+		$list	= $Model->field(true)->order()->select();
+		return $list;
+	}
+	
+	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
+	public function listPage($p,$limit) {
+		$order['convert(client_name using gb2312)']	=	'asc';
+		$list	= $this->relation(true)->field(true)->order($order)->page($p.','.$limit)->select();
 		
-		$client_count	= $this->count();
+		$count	= $this->count();
 		
 		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("client_list"=>$client_list,"client_page"=>$show);
+		return array("list"=>$list,"client_page"=>$show);
 	}
 	
-	//向client表插入记录，$data是数组，且不包含主键
-	public function addClient($data){
-		$result	=	$this->relation(true)->add($data);
-		return $result;
-	}
-	
-	//更新client表中主键为$client_id的记录，$data是数组
-	public function editClient($client_id,$data){
+	//更新本数据表中主键为$client_id的记录，$data是数组
+	public function edit($client_id,$data){
 		//先在client_extend表新建与client_id对应的记录，否则无法更新；这是thinkPHP的数据关联的bug
-		$client_extend = M('ClientExtend');
-		$result = $client_extend->where(array('client_id'=>$client_id))->find();
+		$Model = M('ClientExtend');
+		$map['client_id']	=	$client_id;
+		$result = $Model->where($map)->find();
 		if(!is_array($result)){
-			$extend['client_id']=$client_id;
-			$client_extend->add($extend);
+			$dataExtend['client_id']=$client_id;
+			$Model->add($dataExtend);
 		}
 		
-		$map['client_id']	=	$client_id;
 		$result	=	$this->relation(true)->where($map)->save($data);
 		return $result;
 	}

@@ -4,18 +4,18 @@ use Think\Controller;
 
 class AccountController extends Controller {
     
-	//默认跳转到listAccount，显示account表列表
+	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: listAccount");
+        header("Location: listPage");
     }
 	
-	//列表，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function listAccount(){
+	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
+	public function listPage(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$account_list = D('Account')->listAccount($p,$limit);
-		$this->assign('account_list',$account_list['account_list']);
-		$this->assign('account_page',$account_list['account_page']);
+		$account_list = D('Account')->listPage($p,$limit);
+		$this->assign('account_list',$account_list['list']);
+		$this->assign('account_page',$account_list['page']);
 
 		$this->display();
 	}
@@ -31,15 +31,16 @@ class AccountController extends Controller {
 			$this->error('未填写账户名称');
 		} 
 
-		$result = D('Account')->addAccount($data);
+		$result = M('Account')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'listAccount');
+			$this->success('新增成功', 'listPage');
 		}else{
 			$this->error('增加失败');
 		}
 	}
-		
+	
+	//新增	
 	public function edit(){
 		if(IS_POST){
 			
@@ -50,12 +51,11 @@ class AccountController extends Controller {
 			$data['account_number']	=	trim(I('post.account_number'));
 			$data['bank_name']	=	trim(I('post.bank_name'));
 
-			$result = D('Account')->editAccount($account_id,$data);
+			$result = D('Account')->edit($account_id,$data);
 			if(false !== $result){
-				$this->success('修改成功', 'listAccount');
-				//header("Location: listAccount");
+				$this->success('修改成功', 'listPage');
 			}else{
-				$this->error('修改失败');
+				$this->error('修改失败', 'listPage');
 			}
 		} else{
 			$account_id = I('get.id',0,'int');
@@ -64,7 +64,7 @@ class AccountController extends Controller {
 				$this->error('未指明要编辑的账户');
 			}
 
-			$account_list = D('Account')->getByAccountId($account_id);
+			$account_list = M('Account')->getByAccountId($account_id);
 			
 			$this->assign('account_list',$account_list);
 

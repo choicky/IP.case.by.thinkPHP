@@ -4,27 +4,25 @@ use Think\Controller;
 
 class ClaimController extends Controller {
     
-	//默认跳转到listClaim，显示claim表列表
+	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: listClaim");
+        header("Location: listPage");
     }
 	
-	//列表，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function listClaim(){
+	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
+	public function listPage(){
 		$p	= I("p",1,"int");
-		$limit	= 10;
-		$claim_list = D('ClaimView')->listClaim($p,$limit);
+		$limit	= 2;
+		$claim_list = D('ClaimView')->listPage($p,$limit);
 		 
-		$this->assign('claim_list',$claim_list['claim_list']);
-		$this->assign('claim_page',$claim_list['claim_page']);
-		//var_dump($claim_list['claim_list']);
-		
+		$this->assign('claim_list',$claim_list['list']);
+		$this->assign('claim_page',$claim_list['page']);
+	
 		$member_list	=	D('Member')->listBasic();
 		$this->assign('member_list',$member_list);
 		
 		$client_list	=	D('Client')->listBasic();
 		$this->assign('client_list',$client_list);
-		//var_dump($client_list['client_list']);
 		
 		$this->display();
 	}
@@ -41,23 +39,23 @@ class ClaimController extends Controller {
 		$data['total_amount']	=	trim(I('post.total_amount'));
 		$data['official_fee']	=	trim(I('post.official_fee'));
 		$data['service_fee']	=	trim(I('post.service_fee'));
-		//var_dump($data);	
+
 		if(!$data['claimer_id']){
 			$this->error('未选择认领人');
 		} 
 
-		$result = D('Claim')->addClaim($data);
+		$result = M('Claim')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'listClaim');
+			$this->success('新增成功', 'listPage');
 		}else{
 			$this->error('增加失败');
 		}
 	}
-		
+	
+	//编辑
 	public function edit(){
 		if(IS_POST){
-			
 			$claim_id	=	trim(I('post.claim_id'));
 			
 			$data=array();
@@ -71,13 +69,11 @@ class ClaimController extends Controller {
 			$data['official_fee']	=	trim(I('post.official_fee'));
 			$data['service_fee']	=	trim(I('post.service_fee'));
 						
-			//var_dump($data);
-			$result = D('Claim')->editClaim($claim_id,$data);
+			$result = D('Claim')->edit($claim_id,$data);
 			if(false !== $result){
-				$this->success('修改成功', 'listClaim');
-				//header("Location: listClaim");
+				$this->success('修改成功', 'listPage');
 			}else{
-				$this->error('修改失败');
+				$this->error('修改失败', 'listPage');
 			}
 		} else{
 			$claim_id = I('get.id',0,'int');
@@ -86,7 +82,7 @@ class ClaimController extends Controller {
 				$this->error('未指明要编辑的认领单号');
 			}
 
-			$claim_list = D('Claim')->getByClaimId($claim_id);
+			$claim_list = M('Claim')->getByClaimId($claim_id);
 			$this->assign('claim_list',$claim_list);
 			
 			$member_list	=	D('Member')->listBasic();

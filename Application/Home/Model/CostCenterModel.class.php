@@ -7,28 +7,39 @@ use Think\Model;
 
 class CostCenterModel extends Model {
 	
-	//获取cost_center表的列表，$p为当前页数，$limit为每页显示的记录条数
-	public function listCostCenter($p,$limit) {
-		$cost_center_list	= $this->order('convert(cost_center_name using gb2312) asc')->page($p.','.$limit)->select();
+	//返回本数据表的所有数据
+	public function listAll() {
+		$Model	=	M('CostCenter');
+		$order['convert(cost_center_name using gb2312)']	=	'asc';
+		$list	=	$Model->field(true)->order($order)->select();
+		return $list;
+	}
 		
-		$cost_center_count	= $this->count();
-		
-		$Page	= new \Think\Page($cost_center_count,$limit);
-		$show	= $Page->show();
-		
-		return array("cost_center_list"=>$cost_center_list,"cost_center_page"=>$show);
+	//返回本数据表的基本数据
+	public function listBasic() {
+		$list	=	$this->listAll();
+		return $list;
 	}
 	
-	//向cost_center表插入记录，$data是数组，且不包含主键
-	public function addCostCenter($data){
-		$result	=	$this->add($data);
-		return $result;
+	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
+	public function listPage($p,$limit) {
+		$Model	=	M('CostCenter');
+		$order['convert(cost_center_name using gb2312)']	=	'asc';
+		$list	= $Model->field(true)->order($order)->page($p.','.$limit)->select();
+		
+		$count	= $this->count();
+		
+		$Page	= new \Think\Page($count,$limit);
+		$show	= $Page->show();
+		
+		return array("list"=>$list,"page"=>$show);
 	}
 	
 	//更新cost_center表中主键为$cost_center_id的记录，$data是数组
-	public function editCostCenter($cost_center_id,$data){
+	public function edit($cost_center_id,$data){
+		$Model	=	M('CostCenter');
 		$map['cost_center_id']	=	$cost_center_id;
-		$result	=	$this->where($map)->save($data);
+		$result	=	$Model->where($map)->save($data);
 		return $result;
 	}
 

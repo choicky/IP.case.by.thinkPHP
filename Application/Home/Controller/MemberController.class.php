@@ -4,18 +4,18 @@ use Think\Controller;
 
 class MemberController extends Controller {
     
-	//默认跳转到listMember，显示member表列表
+	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: listMember");
+        header("Location: listPage");
     }
 	
 	//列表，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function listMember(){
+	public function listPage(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$member_list = D('Member')->listMember($p,$limit);
-		$this->assign('member_list',$member_list['member_list']);
-		$this->assign('member_page',$member_list['member_page']);
+		$member_list = D('Member')->listPage($p,$limit);
+		$this->assign('member_list',$member_list['list']);
+		$this->assign('member_page',$member_list['page']);
 
 		$this->display();
 	}
@@ -31,12 +31,12 @@ class MemberController extends Controller {
 			$this->error('未填写姓名');
 		} 
 
-		$result = D('Member')->addMember($data);
+		$result = M('Member')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'listMember');
+			$this->success('新增成功', 'listPage');
 		}else{
-			$this->error('增加失败');
+			$this->error('增加失败', 'listPage');
 		}
 	}
 		
@@ -52,10 +52,9 @@ class MemberController extends Controller {
 
 			$result = D('Member')->editMember($member_id,$data);
 			if(false !== $result){
-				$this->success('修改成功', 'listMember');
-				//header("Location: listMember");
+				$this->success('修改成功', 'listPage');
 			}else{
-				$this->error('修改失败');
+				$this->error('修改失败','listPage');
 			}
 		} else{
 			$member_id = I('get.id',0,'int');
@@ -64,7 +63,7 @@ class MemberController extends Controller {
 				$this->error('未指明要编辑的成员');
 			}
 
-			$member_list = D('Member')->getByMemberId($member_id);
+			$member_list = M('Member')->getByMemberId($member_id);
 			
 			$this->assign('member_list',$member_list);
 
