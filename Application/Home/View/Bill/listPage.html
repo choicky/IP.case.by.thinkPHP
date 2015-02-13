@@ -37,6 +37,7 @@
 								<th>总金额</th>
 								<th>官费</th>
 								<th>服务费</th>
+								<th>发票编号</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -49,6 +50,11 @@
 								<td>{$bill_list.total_amount}</td>
 								<td>{$bill_list.official_fee}</td>
 								<td>{$bill_list.service_fee}</td>
+								<td>
+									<volist name="bill_list['BillInvoice']" id="invoice_list">
+									<a href="__APP__/Home/Invoice/view/id/{$invoice_list.invoice_id}">{$invoice_list.invoice_id}</a><br/>
+									</volist>
+								</td>
 							</tr>
 							</volist>                 
 						</tbody>
@@ -75,7 +81,7 @@
 				<div class="well bs-component">
 					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
 						<fieldset>
-							<legend>“认领人”是必须的</legend>
+							<legend>“出单人”、“收单人”是必须的</legend>
 							<div class="form-group">
 								<label for="handler_id" class="col-lg-3 control-label">认领人</label>
 								<div class="col-lg-4">
@@ -90,9 +96,9 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="bill_date" class="col-lg-3 control-label">认领日期</label>
+								<label for="bill_date" class="col-lg-3 control-label">出单日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="bill_date" name="bill_date" placeholder="认领日期" value="{$bill_list.bill_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="bill_date" name="bill_date" placeholder="认领日期" value="{$today}">
 								</div>
 								<div class="col-lg-5">
 									*注意*
@@ -101,9 +107,9 @@
 							<div class="form-group">
 								<label for="client_id" class="col-lg-3 control-label">收支流水编号</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="client_id" size="{$member_count<20?$member_count:20}">
+									<select multiple class="form-control" name="client_id" size="{$client_count<20?$client_count:20}">
 										<volist name="client_list" id="client_list">
-										<option value="{$client_list.member_id}"  >{$client_list.member_name}</option>
+										<option value="{$client_list.client_id}"  >{$client_list.client_name}</option>
 										</volist>
 									</select>
 								</div>

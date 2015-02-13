@@ -13,7 +13,7 @@ class BillController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$bill_list = D('Bill')->listPage($p,$limit);
+		$bill_list = D('BillView')->listPage($p,$limit);
 		$this->assign('bill_list',$bill_list['list']);
 		$this->assign('bill_page',$bill_list['page']);
 		
@@ -21,7 +21,6 @@ class BillController extends Controller {
 		$member_count	=	count($member_list);
 		$this->assign('member_list',$member_list);
 		$this->assign('member_count',$member_count);
-		
 		
 		$client_list	=	D('Client')->listBasic();
 		$client_count	=	count($client_list);
@@ -62,7 +61,6 @@ class BillController extends Controller {
 	//编辑
 	public function edit(){
 		if(IS_POST){
-			
 			$bill_id = I('post.bill_id',0,'int');
 			
 			$data	=	array();
@@ -74,67 +72,18 @@ class BillController extends Controller {
 			$data['total_amount'] = I('post.total_amount',0,'int');
 			$data['official_fee'] = I('post.official_fee',0,'int');
 			$data['service_fee'] = I('post.service_fee',0,'int');
+			$data['invoice_id'] = I('post.invoice_id','','string');
 			
 			if(!$data['handler_id']	or	!$data['client_id']){
 				$this->error('未填写开开单人、收单人');
 			} 
 			
-			$map['bill_id']	=	I('post.bill_id',0,'int');
-			$result = M('Bill')->where($map)->save($data);
-			/*
-			if(false == $result){
-					$this->error('修改1失败');
-				}*/
+			$result = D('Bill')->edit($bill_id,$data);
 			
-			$Model	=	M('BillInvoice');
-			for($i=0;	$i<count(I('post.invoice_id'));	$i++){
-				$bill_invoice_id	=	trim(I('post.bill_invoice_id')[$i]);
-				$invoice_id	=	trim(I('post.invoice_id')[$i]);
-				
-				var_dump($bill_invoice_id);
-				var_dump($invoice_id);
-				var_dump('aaaa');
-				
-				//如果主键不存在
-				if(!$bill_invoice_id){
-					//如果主键不存在，且 invoice_id 不为零，就增加
-					if($invoice_id){
-						$bill_invoice[$i]	=	array(
-							'bill_id'			=>	$bill_id,
-							'invoice_id'		=>	$invoice_id
-						);
-						$result	=	$Model->add($bill_invoice[$i]);
-						/*if(false == $result){
-							$this->error('修改2失败');
-						}*/
-					}else{
-					//如果主键不存在，且 invoice_id 为0，不做处理；
-					}
-				
-				//如果主键存在
-				}else{
-					//如果主键存在，且 invoice_id 不为零，就更新
-					if($invoice_id){ 
-						$map['bill_invoice_id']	=	$bill_invoice_id;
-						$bill_invoice[$i]	=	array(
-							'bill_id'			=>	$bill_id,
-							'invoice_id'		=>	$invoice_id
-						);
-						$result	=	$Model->where($map)->save($bill_invoice[$i]);
-						/*if(false == $result){
-							$this->error('修改3失败');
-						}*/
-					}else{
-					//如果主键存在，且invoice_id 为零，就删除
-						$map['bill_invoice_id']	=	$bill_invoice_id;
-						$result	=	$Model->where($map)->delete();
-						/*if(false == $result){
-							$this->error('修改4失败');
-						}*/
-					}
-					
-				}
-				
+			if(false !== $result){
+				$this->success('修改成功', 'listPage');
+			}else{
+				$this->error('修改失败', 'listPage');
 			}
 		} else{
 			$bill_id = I('get.id',0,'int');
@@ -143,7 +92,7 @@ class BillController extends Controller {
 				$this->error('未指明要编辑的认领单号');
 			}
 			
-			$bill_list = D('Bill')->relation(true)->getByBillId($bill_id);
+			$bill_list = M('Bill')->getByBillId($bill_id);
 			$this->assign('bill_list',$bill_list);
 
 			$member_list	=	D('Member')->listBasic();
@@ -156,14 +105,12 @@ class BillController extends Controller {
 			$this->assign('client_list',$client_list);
 			$this->assign('client_count',$client_count);
 
-
 			$this->display();
 		}
 	}
-	public function testa(){
-		$bill_list = D('Bill')->listAll();
-		print_r($bill_list);
-		print_r($bill_list['BillInvoice']);
-		
+	
+	public function test(){
+		$data	=	D('Bill')->relation(true)->select();
+		var_dump($data);
 	}
 }

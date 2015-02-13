@@ -17,17 +17,18 @@ class BillViewModel extends ViewModel {
 			'total_amount',
 			'official_fee',
 			'service_fee',
+			'invoice_id',
 			'_type'=>'LEFT'
 		),
 		
 		'Member'	=>	array(
 			'member_name',
-			'_on'	=>	'Bill.claimer_id=Member.member_id'
+			'_on'	=>	'Bill.handler_id=Member.member_id'
 		),	
 		
 		'Client'	=>	array(
 			'client_name',
-			'_on'	=>	'Bill.other_party_id=Client.client_id'
+			'_on'	=>	'Bill.client_id=Client.client_id'
 		),
 	);
 	
