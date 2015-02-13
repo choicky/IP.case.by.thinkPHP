@@ -12,7 +12,7 @@ class ClaimController extends Controller {
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
 		$p	= I("p",1,"int");
-		$limit	= 2;
+		$limit	= 10;
 		$claim_list = D('ClaimView')->listPage($p,$limit);
 		 
 		$this->assign('claim_list',$claim_list['list']);

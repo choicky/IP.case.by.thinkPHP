@@ -10,7 +10,7 @@ class BalanceViewModel extends ViewModel {
 	//定义Balance表与fee_phase表的视图关系
 	protected $viewFields = array(
 		'Balance'	=>	array(
-			'Balance_id',
+			'balancer_id',
 			'account_id',
 			'deal_date',
 			'income_amount',
@@ -19,11 +19,12 @@ class BalanceViewModel extends ViewModel {
 			'other_party_id',
 			'claimer_id',
 			'cost_center_id',
+			'invoice_number',
 			'_type'=>'LEFT'
 		),
 		
 		'Account'	=>	array(
-			'Account',
+			'account_name',
 			'_on'	=>	'Balance.account_id=Account.account_id'
 		),	
 		
@@ -45,7 +46,7 @@ class BalanceViewModel extends ViewModel {
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
-		$order['convert(Balance_date using gb2312)']	=	'asc';
+		$order['deal_date']	=	'desc';
 		$list	=	$this->field(true)->order($order)->select();
 		return $list;
 	}
@@ -58,8 +59,8 @@ class BalanceViewModel extends ViewModel {
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['convert(Balance_date using gb2312)']	=	'asc';		
-		$list	=	$this->field(true)->order($order)->page($p.','.'3')->select();
+		$order['deal_date']	=	'desc';	
+		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		
