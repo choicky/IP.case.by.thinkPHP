@@ -65,7 +65,7 @@
 		<!-- Forms
 			================================================== -->
 	    <div class="row">
-			<div class="col-lg-6">
+			<div class="col-lg-9">
 				<div class="page-header">
 					<h1 id="forms">增加新收支认领</h1>
 				</div>
@@ -73,64 +73,89 @@
         </div>
 
         <div class="row">
-			<div class="col-lg-6">
+			<div class="col-lg-9">
 				<div class="well bs-component">
 					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
 						<fieldset>
 							<legend>“认领人”是必须的</legend>
 							<div class="form-group">
-								<label for="claimer_id" class="col-lg-6 control-label">认领人</label>
-								<div class="col-lg-6">
-									<select multiple class="form-control" name="claimer_id">
+								<label for="claimer_id" class="col-lg-3 control-label">认领人</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="claimer_id" size="{$member_count<20?$member_count:20}">
 										<volist name="member_list" id="member_list">
 										<option value="{$member_list.member_id}"  >{$member_list.member_name}</option>
 										</volist>
 									</select>
 								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
 							</div>
 							<div class="form-group">
-								<label for="claim_date" class="col-lg-6 control-label">认领日期</label>
-								<div class="col-lg-6">
+								<label for="claim_date" class="col-lg-3 control-label">认领日期</label>
+								<div class="col-lg-4">
 									<input type="date" class="form-control" id="claim_date" name="claim_date" placeholder="认领日期" value="{$claim_list.claim_date|date="Y-m-d",###}">
 								</div>
-							</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>							
 							<div class="form-group">
-								<label for="balance_id" class="col-lg-6 control-label">收支流水编号</label>
-								<div class="col-lg-6">
+								<label for="balance_id" class="col-lg-3 control-label">收支流水编号</label>
+								<div class="col-lg-4">
 									<input type="text" class="form-control" id="balance_id" name="balance_id" placeholder="收支流水编号">
 								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
 							</div>
+							
 							<div class="form-group">
-								<label for="total_amount" class="col-lg-6 control-label">总金额</label>
-								<div class="col-lg-6">
+								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
+								<div class="col-lg-4">
 									<input type="text" class="form-control" id="total_amount" name="total_amount" placeholder="默认金额">
 								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
 							</div>
 							<div class="form-group">
-								<label for="official_fee" class="col-lg-6 control-label">官费</label>
-								<div class="col-lg-6">
+								<label for="official_fee" class="col-lg-3 control-label">官费</label>
+								<div class="col-lg-4">
 									<input type="text" class="form-control" id="official_fee" name="official_fee" placeholder="默认金额">
 								</div>
-							</div>
-							<div class="form-group">
-								<label for="service_fee" class="col-lg-6 control-label">服务费</label>
-								<div class="col-lg-6">
-									<input type="text" class="form-control" id="service_fee" name="service_fee" placeholder="默认金额">
+								<div class="col-lg-5">
+									*注意*
 								</div>
 							</div>
+							
 							<div class="form-group">
-								<label for="client_id" class="col-lg-6 control-label">客户</label>
-								<div class="col-lg-6">
-									<select multiple class="form-control" name="client_id">
+								<label for="service_fee" class="col-lg-3 control-label">服务费</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="service_fee" name="service_fee" placeholder="默认金额">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="client_id" class="col-lg-3 control-label">客户</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="client_id" size="size="{$client_count<20?$client_count:20}">
 										<volist name="client_list" id="client_list">
 										<option value="{$client_list.client_id}"> {$client_list.client_name}</option>
 										</volist>
 									</select>
 								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
 							</div>
+							
 							  
 							<div class="form-group">
-								<div class="col-lg-6 col-lg-offset-3">
+								<div class="col-lg-4 col-lg-offset-3">
 									<button class="btn btn-default">Cancel</button>
 									<button type="submit" class="btn btn-primary">Submit</button>
 								</div>

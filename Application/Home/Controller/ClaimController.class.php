@@ -19,10 +19,14 @@ class ClaimController extends Controller {
 		$this->assign('claim_page',$claim_list['page']);
 	
 		$member_list	=	D('Member')->listBasic();
+		$member_count	=	count($member_list);
 		$this->assign('member_list',$member_list);
+		$this->assign('member_count',$member_count);
 		
 		$client_list	=	D('Client')->listBasic();
+		$client_count	=	count($client_count);
 		$this->assign('client_list',$client_list);
+		$this->assign('client_count',$client_count);
 		
 		$this->display();
 	}
