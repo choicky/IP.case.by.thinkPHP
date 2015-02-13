@@ -5,48 +5,35 @@ namespace Home\Model;
 //use Think\Model;
 use Think\Model\ViewModel;
 
-class BalanceViewModel extends ViewModel {
+class BillViewModel extends ViewModel {
 	
-	//定义Balance表与fee_phase表的视图关系
+	//定义Bill表与fee_phase表的视图关系
 	protected $viewFields = array(
-		'Balance'	=>	array(
-			'balance_id',
-			'account_id',
-			'deal_date',
-			'income_amount',
-			'outcome_amount',
-			'summary',
-			'other_party_id',
-			'claimer_id',
-			'cost_center_id',
-			'invoice_number',
+		'Bill'	=>	array(
+			'bill_id',
+			'handler_id',
+			'bill_date',
+			'client_id',
+			'total_amount',
+			'official_fee',
+			'service_fee',
 			'_type'=>'LEFT'
-		),
-		
-		'Account'	=>	array(
-			'account_name',
-			'_on'	=>	'Balance.account_id=Account.account_id'
-		),	
-		
-		'Client'	=>	array(
-			'client_name',
-			'_on'	=>	'Balance.other_party_id=Client.client_id'
 		),
 		
 		'Member'	=>	array(
 			'member_name',
-			'_on'	=>	'Balance.claimer_id=Member.member_id'
+			'_on'	=>	'Bill.claimer_id=Member.member_id'
 		),	
 		
-		'CostCenter'	=>	array(
-			'cost_center_name',
-			'_on'	=>	'Balance.cost_center_id=CostCenter.cost_center_name'
-		),	
+		'Client'	=>	array(
+			'client_name',
+			'_on'	=>	'Bill.other_party_id=Client.client_id'
+		),
 	);
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
-		$order['deal_date']	=	'desc';
+		$order['bill_date']	=	'desc';
 		$list	=	$this->field(true)->order($order)->select();
 		return $list;
 	}
@@ -59,7 +46,7 @@ class BalanceViewModel extends ViewModel {
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['deal_date']	=	'desc';	
+		$order['bill_date']	=	'desc';	
 		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();

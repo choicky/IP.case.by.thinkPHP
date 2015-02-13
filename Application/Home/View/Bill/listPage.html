@@ -2,7 +2,7 @@
 	
 	
 	<block name="title">
-		<title>收支认领列表管理</title>
+		<title>账单列表管理</title>
 	</block>
 	
 	
@@ -13,7 +13,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1>收支认领列表</h1>
+					<h1>账单列表</h1>
 				</div>
 			</div>
 		</div>
@@ -31,40 +31,29 @@
 						<thead>
 							<tr class="info">
 								<th>编号</th>
-								<th>账户</th>
-								<th>交易日期</th>
-								<th>收入金额</th>
-								<th>支出金额</th>
-								<th>摘要</th>
-								<th>交易的另一方当事人</th>
-								<th>责任人</th>
-								<th>归到核算账户</th>
-								<th>发票号</th>
+								<th>出单人</th>
+								<th>出单日期</th>
+								<th>收单人（客户）</th>
+								<th>总金额</th>
+								<th>官费</th>
+								<th>服务费</th>
 							</tr>
 						</thead>
 						<tbody>
-							<volist name="balance_list" id="balance_list">
+							<volist name="bill_list" id="bill_list">
 							<tr>
-								<td><a href="__CONTROLLER__/edit/id/{$balance_list.balance_id}">{$balance_list.balance_id}</a></td>
-								<td>{$balance_list.account_name}</td>
-								<td>{$balance_list.deal_date|date="Y/m/d",###}</td>
-								<td>{balance_list.income_amount}</td>
-								<td>{balance_list.outcome_amount}</td>
-								<td>{balance_list.summary}</td>
-								<td>{balance_list.client_name}</td>
-								<td>{balance_list.member_name}</td>
-								<td>{balance_list.cost_center_name}</td>
-								<td>{balance_list.income_amount}</td>
-								<td><a href="__APP__/Home/Balance/view/id/{$balance_list.balance_id}">{$balance_list.balance_id}</a></td>
-								<td><a href="__APP__/Home/Balance/search/amount/{$balance_list.total_amount}">{$balance_list.total_amount}</a></td>
-								<td>{$balance_list.official_fee}</td>
-								<td>{$balance_list.service_fee}</td>
-								<td>{$balance_list.client_name}</td>
+								<td><a href="__CONTROLLER__/edit/id/{$bill_list.bill_id}">{$bill_list.bill_id}</a></td>
+								<td>{$bill_list.member_name}</td>
+								<td>{$bill_list.bill_date|date="Y/m/d",###}</td>
+								<td><a href="__APP__/Home/Balance/view/id/{$bill_list.client_id}">{$bill_list.client_name}</a></td>
+								<td>{$bill_list.total_amount}</td>
+								<td>{$bill_list.official_fee}</td>
+								<td>{$bill_list.service_fee}</td>
 							</tr>
 							</volist>                 
 						</tbody>
 					</table> 
-					{$balance_page}
+					{$bill_page}
 				</div><!-- /example -->
 			</div>
         </div>
@@ -76,7 +65,7 @@
 	    <div class="row">
 			<div class="col-lg-9">
 				<div class="page-header">
-					<h1 id="forms">增加新收支认领</h1>
+					<h1 id="forms">增加新账单</h1>
 				</div>
 			</div>
         </div>
@@ -88,9 +77,9 @@
 						<fieldset>
 							<legend>“认领人”是必须的</legend>
 							<div class="form-group">
-								<label for="balanceer_id" class="col-lg-3 control-label">认领人</label>
+								<label for="handler_id" class="col-lg-3 control-label">认领人</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="balanceer_id" size="{$member_count<20?$member_count:20}">
+									<select multiple class="form-control" name="handler_id" size="{$member_count<20?$member_count:20}">
 										<volist name="member_list" id="member_list">
 										<option value="{$member_list.member_id}"  >{$member_list.member_name}</option>
 										</volist>
@@ -101,21 +90,22 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="balance_date" class="col-lg-3 control-label">认领日期</label>
+								<label for="bill_date" class="col-lg-3 control-label">认领日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="balance_date" name="balance_date" placeholder="认领日期" value="{$balance_list.balance_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="bill_date" name="bill_date" placeholder="认领日期" value="{$bill_list.bill_date|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
 									*注意*
 								</div>
 							</div>							
 							<div class="form-group">
-								<label for="balance_id" class="col-lg-3 control-label">收支流水编号</label>
+								<label for="client_id" class="col-lg-3 control-label">收支流水编号</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="balance_id" name="balance_id" placeholder="收支流水编号">
-								</div>
-								<div class="col-lg-5">
-									*注意*
+									<select multiple class="form-control" name="client_id" size="{$member_count<20?$member_count:20}">
+										<volist name="client_list" id="client_list">
+										<option value="{$client_list.member_id}"  >{$client_list.member_name}</option>
+										</volist>
+									</select>
 								</div>
 							</div>
 							
@@ -147,22 +137,7 @@
 									*注意*
 								</div>
 							</div>
-							
-							<div class="form-group">
-								<label for="client_id" class="col-lg-3 control-label">客户</label>
-								<div class="col-lg-4">
-									<select multiple class="form-control" name="client_id" size="size="{$client_count<20?$client_count:20}">
-										<volist name="client_list" id="client_list">
-										<option value="{$client_list.client_id}"> {$client_list.client_name}</option>
-										</volist>
-									</select>
-								</div>
-								<div class="col-lg-5">
-									*注意*
-								</div>
-							</div>
-							
-							  
+						  
 							<div class="form-group">
 								<div class="col-lg-4 col-lg-offset-3">
 									<button class="btn btn-default">Cancel</button>
