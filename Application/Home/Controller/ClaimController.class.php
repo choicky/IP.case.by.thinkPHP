@@ -24,7 +24,7 @@ class ClaimController extends Controller {
 		$this->assign('member_count',$member_count);
 		
 		$client_list	=	D('Client')->listBasic();
-		$client_count	=	count($client_count);
+		$client_count	=	count($client_list);
 		$this->assign('client_list',$client_list);
 		$this->assign('client_count',$client_count);
 		

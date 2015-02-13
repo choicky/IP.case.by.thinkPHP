@@ -5,36 +5,47 @@ namespace Home\Model;
 //use Think\Model;
 use Think\Model\ViewModel;
 
-class ClaimViewModel extends ViewModel {
+class BalanceViewModel extends ViewModel {
 	
-	//定义claim表与fee_phase表的视图关系
+	//定义Balance表与fee_phase表的视图关系
 	protected $viewFields = array(
-		'Claim'	=>	array(
-			'claim_id',
+		'Balance'	=>	array(
+			'Balance_id',
+			'account_id',
+			'deal_date',
+			'income_amount',
+			'outcome_amount',
+			'summary',
+			'other_party_id',
 			'claimer_id',
-			'claim_date',
-			'balance_id',
-			'total_amount',
-			'official_fee',
-			'service_fee',
-			'client_id',
+			'cost_center_id',
 			'_type'=>'LEFT'
 		),
 		
-		'Member'	=>	array(
-			'member_name',
-			'_on'	=>	'Claim.claimer_id=Member.member_id'
+		'Account'	=>	array(
+			'Account',
+			'_on'	=>	'Balance.account_id=Account.account_id'
 		),	
 		
 		'Client'	=>	array(
 			'client_name',
-			'_on'	=>	'Claim.client_id=Client.client_id'
+			'_on'	=>	'Balance.other_party_id=Client.client_id'
+		),
+		
+		'Member'	=>	array(
+			'member_name',
+			'_on'	=>	'Balance.claimer_id=Member.member_id'
+		),	
+		
+		'CostCenter'	=>	array(
+			'cost_center_name',
+			'_on'	=>	'Balance.cost_center_id=CostCenter.cost_center_name'
 		),	
 	);
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
-		$order['claim_date']	=	'desc';
+		$order['convert(Balance_date using gb2312)']	=	'asc';
 		$list	=	$this->field(true)->order($order)->select();
 		return $list;
 	}
@@ -47,7 +58,7 @@ class ClaimViewModel extends ViewModel {
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['claim_date']	=	'desc';		
+		$order['convert(Balance_date using gb2312)']	=	'asc';		
 		$list	=	$this->field(true)->order($order)->page($p.','.'3')->select();
 		
 		$count	= $this->count();
