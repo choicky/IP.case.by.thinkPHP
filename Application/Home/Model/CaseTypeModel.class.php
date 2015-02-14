@@ -21,6 +21,21 @@ class CaseTypeModel extends Model {
 		return $list;
 	}
 	
+	//返回本数据表的 case_type_name 含有 $p 所有数据
+	public function listAllLike($p) {
+		$Model	=	M('CaseType');
+		$map['case_type_name']	=	array('like', $p);
+		$order['convert(case_type_name using gb2312)']	=	'asc';
+		$list	=	$Model->field(true)->where($map)->order($order)->select();
+		return $list;
+	}
+		
+	//返回本数据表的 case_type_name 含有 $p 所有数据
+	public function listBasicLike($p) {
+		$list	=	$this->listAllLike($p);
+		return $list;
+	}
+	
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
 		$Model	=	M('CaseType');
