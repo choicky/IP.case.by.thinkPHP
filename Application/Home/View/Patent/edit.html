@@ -143,40 +143,37 @@
 								</div>
 							</div>
 							
-							<volist name="case_list['CasePriority']" id="case_priority_list">
+							<volist name="case_list['CasePriority']" id="case_priority_list" key="j">
 							<div class="form-group">
-								<label for="priority_number" class="col-lg-3 control-label">第 {$i} 个优先权的优先权号码</label>
-								<div class="col-lg-4">
+								<label for="priority_number" class="col-lg-3 control-label">
+									<p>第 {$j} {$key}个优先权的信息{$key}</p>
+									<p>从左到右分别是优先权号码、优先权日、优先权国家</p>
+								</label>
+								<div class="col-lg-3">
 									<input type='hidden' class="form-control" id="case_priority_id[]" name="case_priority_id[]" value="{$case_priority_list.case_priority_id}">
-									<input type="text" class="form-control" id="priority_number[]" name="priority_number[]" value="{$case_priority_list.priority_number}">
+									<input type="text" class="form-control" id="priority_number[]" name="priority_number[]" placeholder="优先权号码" value="{$case_priority_list.priority_number}">
 								</div>
-								<div class="col-lg-5">
-									注意
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="priority_country_id" class="col-lg-3 control-label">第 {$i} 个优先权的优先权国家</label>
-								<div class="col-lg-4">
+								
+								<div class="col-lg-3">
 									<select multiple class="form-control" name="priority_country_id[]" size="{$country_count<$rows_limit? $country_count: $rows_limit}">
-										<volist name="country_list" id="country_list">
-										<option value="{$country_list.country_id}" {$country_list['country_id']==$case_priority_list['priority_country_id']? 'selected="selected"' :''}>{$country_list.country_name}</option>
-										</volist>
+									
+										<foreach name="country_list" item="aaaaaa">
+										
+										<option value="{$aaaaaa.country_id}" {$aaaaaa['country_id']==$case_priority_list['priority_country_id']? 'selected="selected"' :''}>{$aaaaaa.country_name}</option>
+										
+										</foreach>
+										
 									</select>
 								</div>
-								<div class="col-lg-5">
-									注意
+								
+								<div class="col-lg-3">
+									<input type="text" class="form-control" id="priority_date[]" name="priority_date[]" placeholder="优先权日期" value="{$case_priority_list.priority_date}">
 								</div>
-							</div>
-							<div class="form-group">
-								<label for="priority_date" class="col-lg-3 control-label">第 {$i} 个优先权的优先权日期</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="priority_date[]" name="priority_date[]" value="{$case_priority_list.priority_date}">
-								</div>
-								<div class="col-lg-5">
-									注意
-								</div>
+
 							</div>
 							</volist>
+
+							
 							
 							<div class="form-group">
 								<label for="priority_number" class="col-lg-3 control-label">新增优先权1</label>

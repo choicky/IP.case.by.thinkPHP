@@ -148,9 +148,13 @@ class PatentController extends Controller {
 				$this->error('未指明要编辑的案号');
 			}
 			//$map['case_id']	=	$case_id;
-			$case_list = D('Case')->getByID($case_id);
+			$case_list = D('Case')->relation(true)->field(true)->getByCaseId($case_id);
+			$priority_count	=	count($case_list['CasePriority']);
+			$priority_limit	=	$priority_count+2;
 			$this->assign('case_list',$case_list);
-			
+			$this->assign('priority_count',$priority_count);
+			$this->assign('priority_limit',$priority_limit);
+						
 			$p	=	'P%';
 			$case_type_list	=	D('CaseType')->listBasicLike($p);
 			$case_type_count	=	count($case_type_list);
@@ -174,10 +178,14 @@ class PatentController extends Controller {
 			$this->assign('applicant_list',$client_list);
 			$this->assign('applicant_count',$client_count);
 			
+			
 			$country_list	=	D('Country')->listBasic();
 			$country_count	=	count($country_list);
-			$this->assign('country_list',$country_list);
 			$this->assign('country_count',$country_count);
+			$this->assign('country_list',$country_list);	
+			//var_dump($priority_count);
+			
+		
 			
 			$today	=	time();
 			$this->assign('today',$today);
@@ -190,7 +198,7 @@ class PatentController extends Controller {
 		}
 	}
 	
-	public function testa(){
+		public function testa(){
 		$case_list = D('Patent')->listAll();
 		print_r($case_list);
 		print_r($case_list['PatentInvoice']);

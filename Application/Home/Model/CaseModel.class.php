@@ -14,8 +14,8 @@ class CaseModel extends RelationModel {
 			'class_name'		=>	'CaseExtend',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_ONE,		//主从关系的一对一关联			
 			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'tm_category,publicaton_date,registration_date,related_our_refer,remarks',		//关联字段
-			'as_fields'			=>	'tm_category,publicaton_date,registration_date,related_our_refer,remarks'		//字段别名
+			'mapping_fields'	=>	'tm_category_id,publication_date,registration_date,related_our_refer,remarks',		//关联字段
+			'as_fields'			=>	'tm_category_id,publication_date,registration_date,related_our_refer,remarks'		//字段别名
 		),
 		
 		'CaseType'	=>	array(							//本数据关联的名称
@@ -37,7 +37,7 @@ class CaseModel extends RelationModel {
 		),
 		
 		'Handler'	=>	array(							//本数据关联的名称
-			'mapping_name'		=>	'Follower',			//重新定义本数据关联的名称
+			'mapping_name'		=>	'Handler',			//重新定义本数据关联的名称
 			'class_name'		=>	'Member',			//被关联的数据表
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系的一对一关联
 			'foreign_key'		=>	'handler_id',		//外键，
@@ -47,8 +47,8 @@ class CaseModel extends RelationModel {
 		
 		'Client'	=>	array(							//本数据关联的名称
 			'mapping_name'		=>	'Client',			//重新定义本数据关联的名称
-			'mapping_type'		=>	self::BELONGS_TO,	//属于关系的一对一关联
 			'class_name'		=>	'Client',			//被关联的数据表
+			'mapping_type'		=>	self::BELONGS_TO,	//属于关系的一对一关联
 			'foreign_key'		=>	'client_id',		//外键
 			'mapping_fields'	=>	'client_name',		//关联字段
 			'as_fields'			=>	'client_name'		//字段别名
@@ -56,8 +56,8 @@ class CaseModel extends RelationModel {
 		
 		'Applicant'	=>	array(							//本数据关联的名称
 			'mapping_name'		=>	'Client',			//重新定义本数据关联的名称
-			'mapping_type'		=>	self::BELONGS_TO,	//属于关系的一对一关联
 			'class_name'		=>	'Client',			//被关联的数据表
+			'mapping_type'		=>	self::BELONGS_TO,	//属于关系的一对一关联
 			'foreign_key'		=>	'applicant_id',		//外键
 			'mapping_fields'	=>	'client_name',		//关联字段
 			'as_fields'			=>	'applicant_name'		//字段别名
@@ -68,8 +68,8 @@ class CaseModel extends RelationModel {
 			'class_name'		=>	'CasePriority',			//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'case_priority_id,priority_number,priority_country,priority_date',		//关联字段
-			'as_fields'			=>	'case_priority_id,priority_number,priority_country,priority_date'		//字段别名
+			'mapping_fields'	=>	'case_priority_id,priority_number,priority_country_id,priority_date',		//关联字段
+			'as_fields'			=>	'case_priority_id,priority_number,priority_country_id,priority_date'		//字段别名
 		),
 		
 		'CaseFee'	=>	array(							//本数据关联的名称
@@ -77,8 +77,8 @@ class CaseModel extends RelationModel {
 			'class_name'		=>	'CaseFee',			//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'case_fee_id,fee_type_id,official_fee,service_fee,oa_date,due_date,allow_date,finish_date,payer_id,bill_id,invoice_id,claim_id',		//关联字段
-			'as_fields'			=>	'case_fee_id,fee_type_id,official_fee,service_fee,fee_oa_date,fee_due_date,fee_allow_date,fee_finish_date,payer_id,bill_id,invoice_id,claim_id'		//字段别名
+			'mapping_fields'	=>	'case_fee_id,fee_type_id,official_fee,service_fee,oa_date,due_date,allow_date,completion_date,payer_id,bill_id,invoice_id,claim_id',		//关联字段
+			'as_fields'			=>	'case_fee_id,fee_type_id,official_fee,service_fee,fee_oa_date,fee_due_date,fee_allow_date,fee_completion_date,payer_id,bill_id,invoice_id,claim_id'		//字段别名
 		),
 		
 		'CaseFile'	=>	array(							//本数据关联的名称
@@ -86,8 +86,8 @@ class CaseModel extends RelationModel {
 			'class_name'		=>	'CaseFile',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'case_file_id,file_type_id,oa_date,due_date,finish_date',		//关联字段
-			'as_fields'			=>	'case_file_id,file_type_id,file_oa_date,file_due_date,file_finish_date'		//字段别名
+			'mapping_fields'	=>	'case_file_id,file_type_id,oa_date,due_date,completion_date',		//关联字段
+			'as_fields'			=>	'case_file_id,file_type_id,file_oa_date,file_due_date,file_completion_date'		//字段别名
 		),
 	);
 	
