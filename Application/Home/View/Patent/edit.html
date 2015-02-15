@@ -25,8 +25,8 @@
 							<div class="form-group">
 								<label for="our_ref" class="col-lg-3 control-label">盈方案号</label>
 								<div class="col-lg-4">
-									<input type="hidden" class="form-control" id="case_id" name="case_id" value="{$case_list.case_id}">
-									<input type="text" class="form-control" id="our_ref" name="our_ref" value="{$case_list.our_ref}">
+									<input type="hidden" class="form-control" id="case_id" name="case_id" value="{$case_data.case_id}">
+									<input type="text" class="form-control" id="our_ref" name="our_ref" value="{$case_data.our_ref}">
 								</div>
 								<div class="col-lg-5">
 									注意
@@ -37,8 +37,8 @@
 								<label for="case_type_id" class="col-lg-3 control-label">案件类型</label>
 								<div class="col-lg-4">
 									<select multiple class="form-control" name="case_type_id" size="{$case_type_count<$rows_limit ? $case_type_count : $rows_limit}">
-										<volist name="case_type_list" id="case_type_list">
-										<option value="{$case_type_list.case_type_id}" {$case_type_list['case_type_id']==$case_list['case_type_id']? 'selected="selected"' :''}>{$case_type_list.case_type_name}</option>
+										<volist name="case_type_data" id="case_type_vo">
+										<option value="{$case_type_vo.case_type_id}" {$case_type_vo['case_type_id']==$case_data['case_type_id']? 'selected="selected"' :''}>{$case_type_vo.case_type_name}</option>
 										</volist>
 									</select>
 								</div>
@@ -51,8 +51,13 @@
 								<label for="follower_id" class="col-lg-3 control-label">跟案人</label>
 								<div class="col-lg-4">
 									<select multiple class="form-control" name="follower_id" size="{$member_count<$rows_limit ? $member_count : $rows_limit}">
+<<<<<<< HEAD
 										<volist name="member_list" id="follower_list">
 										<option value="{$follower_list.member_id}" {$follower_list['member_id']==$case_list['follower_id']? 'selected="selected"' :''}>{$follower_list.member_name}</option>
+=======
+										<volist name="member_data" id="follower_vo">
+										<option value="{$follower_vo.member_id}" {$follower_vo['member_id']==$case_data['follower_id']? 'selected="selected"' :''}>{$follower_vo.member_name}</option>
+>>>>>>> origin/master
 										</volist>
 									</select>
 								</div>
@@ -64,7 +69,7 @@
 							<div class="form-group">
 								<label for="create_date" class="col-lg-3 control-label">开案日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="create_date" name="create_date" value="{$case_list.create_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="create_date" name="create_date" value="{$case_data.create_date|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
 									注意
@@ -74,7 +79,7 @@
 							<div class="form-group">
 								<label for="form_date" class="col-lg-3 control-label">提供开案单日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="form_date" name="form_date" value="{$case_list.today|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="form_date" name="form_date" value="{$case_data.today|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
 									注意
@@ -85,8 +90,8 @@
 								<label for="client_id" class="col-lg-3 control-label">客源/客户</label>
 								<div class="col-lg-4">
 									<select multiple class="form-control" name="client_id" size="{$client_count<$rows_limit ? $client_count : $rows_limit}">
-										<volist name="client_list" id="client_list">
-										<option value="{$client_list.client_id}" {$client_list['client_id']==$case_list['client_id']? 'selected="selected"' :''}>{$client_list.client_name}</option>
+										<volist name="client_data" id="client_vo">
+										<option value="{$client_vo.client_id}" {$client_vo['client_id']==$case_data['client_id']? 'selected="selected"' :''}>{$client_vo.client_name}</option>
 										</volist>
 									</select>
 								</div>
@@ -98,7 +103,7 @@
 							<div class="form-group">
 								<label for="client_ref" class="col-lg-3 control-label">客源案件编号</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="client_ref" name="client_ref" value="{$case_list.client_ref}">
+									<input type="text" class="form-control" id="client_ref" name="client_ref" value="{$case_data.client_ref}">
 								</div>
 								<div class="col-lg-5">
 									注意
@@ -108,9 +113,9 @@
 							<div class="form-group">
 								<label for="applicant_id" class="col-lg-3 control-label">申请人</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="applicant_id" size="{$applicant_count<$rows_limit ? $applicant_count : $rows_limit }">
-										<volist name="applicant_list" id="applicant_list">
-										<option value="{$applicant_list.client_id}" {$applicant_list['client_id']==$case_list['applicant_id']? 'selected="selected"' :''}>{$applicant_list.client_name}</option>
+									<select multiple class="form-control" name="applicant_id" size="{$client_count<$rows_limit ? $client_count : $rows_limit }">
+										<volist name="client_data" id="applicant_vo">
+										<option value="{$applicant_vo.client_id}" {$applicant_vo['client_id']==$case_data['applicant_id']? 'selected="selected"' :''}>{$applicant_vo.client_name}</option>
 										</volist>
 									</select>
 								</div>
@@ -122,7 +127,7 @@
 							<div class="form-group">
 								<label for="original_title" class="col-lg-3 control-label">暂定专利名称</label>
 								<div class="col-lg-7">
-									<input type="text" class="form-control" id="original_title" name="original_title" value="{$case_list.original_title}">
+									<input type="text" class="form-control" id="original_title" name="original_title" value="{$case_data.original_title}">
 								</div>
 								<div class="col-lg-2">
 									注意
@@ -133,8 +138,13 @@
 								<label for="handler_id" class="col-lg-3 control-label">处理人</label>
 								<div class="col-lg-4">
 									<select multiple class="form-control" name="handler_id" size="{$member_count<$rows_limit ? $member_count : $rows_limit}">
+<<<<<<< HEAD
 										<volist name="member_list" id="handler_list">
 										<option value="{$handler_list.member_id}" {$handler_list['member_id']==$case_list['handler_id']? 'selected="selected"' :''}>{$handler_list.member_name}</option>
+=======
+										<volist name="member_data" id="handler_vo">
+										<option value="{$handler_vo.member_id}" {$handler_vo['member_id']==$case_data['handler_id']? 'selected="selected"' :''}>{$handler_vo.member_name}</option>
+>>>>>>> origin/master
 										</volist>
 									</select>
 								</div>
@@ -143,60 +153,57 @@
 								</div>
 							</div>
 							
-							<volist name="case_list['CasePriority']" id="case_priority_list" key="j">
+							<volist name="case_data['CasePriority']" id="case_priority_vo">
 							<div class="form-group">
 								<label for="priority_number" class="col-lg-3 control-label">
-									<p>第 {$j} {$key}个优先权的信息{$key}</p>
-									<p>从左到右分别是优先权号码、优先权日、优先权国家</p>
+									<p>第 {$i} 个优先权的信息</p>
+									<p>每个优先权包括：优先权号码、优先权日、优先权国家</p>
 								</label>
-								<div class="col-lg-3">
-									<input type='hidden' class="form-control" id="case_priority_id[]" name="case_priority_id[]" value="{$case_priority_list.case_priority_id}">
-									<input type="text" class="form-control" id="priority_number[]" name="priority_number[]" placeholder="优先权号码" value="{$case_priority_list.priority_number}">
-								</div>
 								
 								<div class="col-lg-3">
 									<select multiple class="form-control" name="priority_country_id[]" size="{$country_count<$rows_limit? $country_count: $rows_limit}">
-									
-										<foreach name="country_list" item="aaaaaa">
-										
-										<option value="{$aaaaaa.country_id}" {$aaaaaa['country_id']==$case_priority_list['priority_country_id']? 'selected="selected"' :''}>{$aaaaaa.country_name}</option>
-										
-										</foreach>
-										
+										<volist name="country_data" id="country_vo">
+										<option value="{$country_vo.country_id}" {$country_vo['country_id']==$case_priority_vo['priority_country_id']? 'selected="selected"' :''}>{$country_vo.country_name}</option>
+										</volist>
 									</select>
 								</div>
 								
 								<div class="col-lg-3">
-									<input type="text" class="form-control" id="priority_date[]" name="priority_date[]" placeholder="优先权日期" value="{$case_priority_list.priority_date}">
+									<input type='hidden' class="form-control" id="case_priority_id[]" name="case_priority_id[]" value="{$case_priority_vo.case_priority_id}">
+									<input type="text" class="form-control" id="priority_number[]" name="priority_number[]" placeholder="优先权号码" value="{$case_priority_vo.priority_number}">
 								</div>
-
+								
+								<div class="col-lg-3">
+									<input type="date" class="form-control" id="priority_date[]" name="priority_date[]" placeholder="优先权日期" value="{$case_priority_vo.priority_date|date="Y-m-d",###}">
+								</div>
 							</div>
 							</volist>
 
-							
-							
 							<div class="form-group">
 								<label for="priority_number" class="col-lg-3 control-label">新增优先权1</label>
+								
+								<div class="col-lg-3">
+									<select multiple class="form-control" name="priority_country_id[]" size="{$country_count<$rows_limit? $country_count: $rows_limit}">
+										<volist name="country_data" id="country_vo2">
+										<option value="{$country_vo2.country_id}" {$country_vo2['country_id']==$case_priority_vo['priority_country_id']? 'selected="selected"' :''}>{$country_vo2.country_name}</option>
+										</volist>
+									</select>
+								</div>
+								
 								<div class="col-lg-3">
 									<input type='hidden' class="form-control" id="case_priority_id[]" name="case_priority_id[]" value="">
 									<input type="text" class="form-control" id="priority_number[]" name="priority_number[]" placeholder="请填入优先权号码">
 								</div>
+								
 								<div class="col-lg-3">
-									<select multiple class="form-control" name="priority_country_id[]" size="{$country_count<$rows_limit? $country_count: $rows_limit}">
-										<volist name="country_list" id="country_list">
-										<option value="{$country_list.country_id}" {$country_list['country_id']==$case_priority_list['priority_country_id']? 'selected="selected"' :''}>{$country_list.country_name}</option>
-										</volist>
-									</select>
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" id="priority_date[]" name="priority_date[]" value="{$case_priority_list.priority_date}">
+									<input type="date" class="form-control" id="priority_date[]" name="priority_date[]" placeholder="请填入优先权日期">
 								</div>
 							</div>
 							
 							<div class="form-group">
 								<label for="remarks" class="col-lg-3 control-label">备注</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="remarks" name="remarks" value="{$case_list.remarks}">
+									<input type="text" class="form-control" id="remarks" name="remarks" value="{$case_data.remarks}">
 								</div>
 								<div class="col-lg-5">
 									注意
@@ -206,7 +213,7 @@
 							<div class="form-group">
 								<label for="application_date" class="col-lg-3 control-label">申请日</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="application_date" name="application_date" value="{$case_list.application_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="application_date" name="application_date" value="{$case_data.application_date|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
 									注意
@@ -216,7 +223,7 @@
 							<div class="form-group">
 								<label for="application_number" class="col-lg-3 control-label">申请号</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="application_number" name="application_number" value="{$case_list.application_number}">
+									<input type="text" class="form-control" id="application_number" name="application_number" value="{$case_data.application_number}">
 								</div>
 								<div class="col-lg-5">
 									注意
@@ -226,7 +233,7 @@
 							<div class="form-group">
 								<label for="formal_title" class="col-lg-3 control-label">专利名称</label>
 								<div class="col-lg-7">
-									<input type="text" class="form-control" id="formal_title" name="formal_title" value="{$case_list.formal_title}">
+									<input type="text" class="form-control" id="formal_title" name="formal_title" value="{$case_data.formal_title}">
 								</div>
 								<div class="col-lg-2">
 									注意
@@ -236,7 +243,7 @@
 							<div class="form-group">
 								<label for="registration_date" class="col-lg-3 control-label">专利证书日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="registration_date" name="registration_date" value="{$case_list.registration_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="registration_date" name="registration_date" value="{$case_data.registration_date|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
 									注意

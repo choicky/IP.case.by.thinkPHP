@@ -60,17 +60,27 @@ class CaseModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系的一对一关联
 			'foreign_key'		=>	'applicant_id',		//外键
 			'mapping_fields'	=>	'client_name',		//关联字段
-			'as_fields'			=>	'applicant_name'		//字段别名
+			'as_fields'			=>	'applicant_name'	//字段别名
 		),
 		
-		'CasePriority'	=>	array(							//本数据关联的名称
-			'mapping_name'		=>	'CasePriority',			//重新定义本数据关联的名称
-			'class_name'		=>	'CasePriority',			//被关联的数据表
+		'CasePriority'	=>	array(						//本数据关联的名称
+			'mapping_name'		=>	'CasePriority',		//重新定义本数据关联的名称
+			'class_name'		=>	'CasePriority',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
 			'mapping_fields'	=>	'case_priority_id,priority_number,priority_country_id,priority_date',		//关联字段
-			'as_fields'			=>	'case_priority_id,priority_number,priority_country_id,priority_date'		//字段别名
+			//'as_fields'			=>	'case_priority_id,priority_number,priority_country_id,priority_date'		//字段别名在一对多情况下无效
 		),
+		
+		'Country'	=>	array(							//本数据关联的名称
+			'mapping_name'		=>	'Country',			//重新定义本数据关联的名称
+			'class_name'		=>	'Country',			//被关联的数据表
+			'mapping_type'		=>	self::MANY_TO_MANY,		//主从关系的一对多关联
+			'relation_table'    =>  'tp_case_priority', //此处应显式定义中间表名称，且不能使用C函数读取表前缀
+			'foreign_key'		=>	'case_id',			//中间表与本表的外键
+			'relation_foreign_key'  =>  'priority_country_id', //中间表与目的表的外键
+		),
+
 		
 		'CaseFee'	=>	array(							//本数据关联的名称
 			'mapping_name'		=>	'CaseFee',			//重新定义本数据关联的名称
@@ -78,7 +88,16 @@ class CaseModel extends RelationModel {
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
 			'mapping_fields'	=>	'case_fee_id,fee_type_id,official_fee,service_fee,oa_date,due_date,allow_date,completion_date,payer_id,bill_id,invoice_id,claim_id',		//关联字段
-			'as_fields'			=>	'case_fee_id,fee_type_id,official_fee,service_fee,fee_oa_date,fee_due_date,fee_allow_date,fee_completion_date,payer_id,bill_id,invoice_id,claim_id'		//字段别名
+			//'as_fields'			=>	'case_fee_id,fee_type_id,official_fee,service_fee,fee_oa_date,fee_due_date,fee_allow_date,fee_completion_date,payer_id,bill_id,invoice_id,claim_id'		//字段别名在一对多情况下无效
+		),
+		
+		'FeeType'	=>	array(							//本数据关联的名称
+			'mapping_name'		=>	'FeeType',			//重新定义本数据关联的名称
+			'class_name'		=>	'FeeType',			//被关联的数据表
+			'mapping_type'		=>	self::MANY_TO_MANY,		//主从关系的一对多关联
+			'relation_table'    =>  'tp_case_fee', //此处应显式定义中间表名称，且不能使用C函数读取表前缀
+			'foreign_key'		=>	'case_id',			//中间表与本表的外键
+			'relation_foreign_key'  =>  'fee_type_id', //中间表与目的表的外键
 		),
 		
 		'CaseFile'	=>	array(							//本数据关联的名称
@@ -87,14 +106,16 @@ class CaseModel extends RelationModel {
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
 			'mapping_fields'	=>	'case_file_id,file_type_id,oa_date,due_date,completion_date',		//关联字段
-			'as_fields'			=>	'case_file_id,file_type_id,file_oa_date,file_due_date,file_completion_date'		//字段别名
+			//'as_fields'			=>	'case_file_id,file_type_id,file_oa_date,file_due_date,file_completion_date'		//字段别名字段别名在一对多情况下无效
 		),
+		
+		
 	);
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
 		$order['convert(our_ref using gb2312)']	=	'desc';
-		$list	=	$this->relation(true)->field(true)->order($order)->select();
+		$list	=	$this->order($order)->select();
 		return $list;
 	}
 		
@@ -107,7 +128,7 @@ class CaseModel extends RelationModel {
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
 		$order['convert(our_ref using gb2312)']	=	'desc';	
-		$list	=	$this->relation(true)->field(true)->order($order)->page($p.','.$limit)->select();
+		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		
