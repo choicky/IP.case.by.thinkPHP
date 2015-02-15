@@ -50,8 +50,8 @@
 							<div class="form-group">
 								<label for="follower_id" class="col-lg-3 control-label">跟案人</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="follower_id" size="{$follower_count<$rows_limit ? $follower_count : $rows_limit}">
-										<volist name="follower_list" id="follower_list">
+									<select multiple class="form-control" name="follower_id" size="{$member_count<$rows_limit ? $member_count : $rows_limit}">
+										<volist name="member_list" id="follower_list">
 										<option value="{$follower_list.member_id}" {$follower_list['member_id']==$case_list['follower_id']? 'selected="selected"' :''}>{$follower_list.member_name}</option>
 										</volist>
 									</select>
@@ -132,8 +132,8 @@
 							<div class="form-group">
 								<label for="handler_id" class="col-lg-3 control-label">处理人</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="handler_id" size="{$handler_count<$rows_limit ? $handler_count : $rows_limit}">
-										<volist name="handler_list" id="handler_list">
+									<select multiple class="form-control" name="handler_id" size="{$member_count<$rows_limit ? $member_count : $rows_limit}">
+										<volist name="member_list" id="handler_list">
 										<option value="{$handler_list.member_id}" {$handler_list['member_id']==$case_list['handler_id']? 'selected="selected"' :''}>{$handler_list.member_name}</option>
 										</volist>
 									</select>

@@ -163,11 +163,11 @@ class PatentController extends Controller {
 
 			$member_list	=	D('Member')->listBasic();
 			$member_count	=	count($member_list);
-			$this->assign('follower_list',$member_list);
-			$this->assign('follower_count',$member_count);
+			$this->assign('member_list',$member_list);
+			$this->assign('member_count',$member_count);
 			
-			$this->assign('handler_list',$member_list);
-			$this->assign('handler_count',$member_count);
+			//$this->assign('handler_list',$member_list);
+			//$this->assign('handler_count',$member_count);
 			
 			
 			$client_list	=	D('Client')->listBasic();
