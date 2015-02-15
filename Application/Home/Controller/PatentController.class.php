@@ -9,36 +9,41 @@ class PatentController extends Controller {
         header("Location: listPage");
     }
 	
+	//初步开案登记
+	public function addBasic(){
+        $this->display();
+    }
+	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$case_list = D('Case')->listPage($p,$limit);
-		$this->assign('case_list',$case_list['list']);
-		$this->assign('patent_page',$case_list['page']);
+		$case_data = D('Case')->listPage($p,$limit);
+		$this->assign('case_data',$case_data['list']);
+		$this->assign('patent_page',$case_data['page']);
 		
-		$case_type_list	=	D('CaseType')->listBasic();
-		$case_type_count	=	count($case_type_list);
-		$this->assign('case_type_list',$case_type_list);
+		$case_type_data	=	D('CaseType')->listBasic();
+		$case_type_count	=	count($case_type_data);
+		$this->assign('case_type_data',$case_type_data);
 		$this->assign('case_type_count',$case_type_count);
 		
-		$follower_list	=	D('Member')->listBasic();
-		$follower_count	=	count($follower_list);
-		$this->assign('follower_list',$follower_list);
+		$follower_data	=	D('Member')->listBasic();
+		$follower_count	=	count($follower_data);
+		$this->assign('follower_data',$follower_data);
 		$this->assign('follower_count',$follower_count);
 				
-		$handler_list	=	D('Member')->listBasic();
-		$handler_count	=	count($handler_list);
-		$this->assign('handler_list',$handler_list);
+		$handler_data	=	D('Member')->listBasic();
+		$handler_count	=	count($handler_data);
+		$this->assign('handler_data',$handler_data);
 		$this->assign('handler_count',$handler_count);
 		
-		var_dump($follower_list);
+		var_dump($follower_data);
 		varm_dump('---');
-		var_dump($handler_list);
+		var_dump($handler_data);
 		
-		$client_list	=	D('Client')->listBasic();
-		$client_count	=	count($client_list);
-		$this->assign('client_list',$client_list);
+		$client_data	=	D('Client')->listBasic();
+		$client_count	=	count($client_data);
+		$this->assign('client_data',$client_data);
 		$this->assign('client_count',$client_count);
 		
 		$today	=	date("Y-m-d",time());
@@ -148,41 +153,37 @@ class PatentController extends Controller {
 				$this->error('未指明要编辑的案号');
 			}
 			//$map['case_id']	=	$case_id;
-			$case_list = D('Case')->relation(true)->field(true)->getByCaseId($case_id);
-			$priority_count	=	count($case_list['CasePriority']);
+			$case_data = D('Case')->relation(true)->field(true)->getByCaseId($case_id);
+			$priority_count	=	count($case_data['CasePriority']);
 			$priority_limit	=	$priority_count+2;
-			$this->assign('case_list',$case_list);
+			$this->assign('case_data',$case_data);
 			$this->assign('priority_count',$priority_count);
 			$this->assign('priority_limit',$priority_limit);
 						
 			$p	=	'P%';
-			$case_type_list	=	D('CaseType')->listBasicLike($p);
-			$case_type_count	=	count($case_type_list);
-			$this->assign('case_type_list',$case_type_list);
+			$case_type_data	=	D('CaseType')->listBasicLike($p);
+			$case_type_count	=	count($case_type_data);
+			$this->assign('case_type_data',$case_type_data);
 			$this->assign('case_type_count',$case_type_count);
 
-			$member_list	=	D('Member')->listBasic();
-			$member_count	=	count($member_list);
-			$this->assign('follower_list',$member_list);
-			$this->assign('follower_count',$member_count);
-			
-			$this->assign('handler_list',$member_list);
-			$this->assign('handler_count',$member_count);
-			
-			
-			$client_list	=	D('Client')->listBasic();
-			$client_count	=	count($client_list);
-			$this->assign('client_list',$client_list);
+			$member_data	=	D('Member')->listBasic();
+			$member_count	=	count($member_data);
+			$this->assign('member_data',$member_data);
+			$this->assign('member_count',$member_count);
+						
+			$client_data	=	D('Client')->listBasic();
+			$client_count	=	count($client_data);
+			$this->assign('client_data',$client_data);
 			$this->assign('client_count',$client_count);
 			
-			$this->assign('applicant_list',$client_list);
+			$this->assign('applicant_data',$client_data);
 			$this->assign('applicant_count',$client_count);
 			
 			
-			$country_list	=	D('Country')->listBasic();
-			$country_count	=	count($country_list);
+			$country_data	=	D('Country')->listBasic();
+			$country_count	=	count($country_data);
 			$this->assign('country_count',$country_count);
-			$this->assign('country_list',$country_list);	
+			$this->assign('country_data',$country_data);	
 			//var_dump($priority_count);
 			
 		
@@ -199,9 +200,9 @@ class PatentController extends Controller {
 	}
 	
 		public function testa(){
-		$case_list = D('Patent')->listAll();
-		print_r($case_list);
-		print_r($case_list['PatentInvoice']);
+		$case_data = D('Patent')->listAll();
+		print_r($case_data);
+		print_r($case_data['PatentInvoice']);
 		
 	}
 }
