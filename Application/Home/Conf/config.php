@@ -19,10 +19,10 @@ return array(
 	'SHOW_PAGE_TRACE' =>true, 
 	
 	//自定义分页显示时每页显示的最大条目数
-	'RECORDS_LIMIT_PER_PAGE'			=>	'15',
+	'RECORDS_PER_PAGE'			=>	'15',
 	
 	//自定义下拉选框的最大行数
-	'ROWS_LIMIT_PER_SELECT'			=>	'10',	
+	'ROWS_PER_SELECT'			=>	'10',	
 	
 
 );

@@ -11,7 +11,7 @@ class CaseTypeModel extends Model {
 	public function listAll() {
 		$Model	=	M('CaseType');
 		$order['convert(case_type_name using gb2312)']	=	'asc';
-		$list	=	$Model->field(true)->order($order)->select();
+		$list	=	$Model->order($order)->select();
 		return $list;
 	}
 		
@@ -36,15 +36,15 @@ class CaseTypeModel extends Model {
 		return $list;
 	}
 	
-	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function listPage($p,$limit) {
+	//分页返回本数据表的所有数据，$current_page 为当前页数，$recodes_per_page 为每页显示的记录条数
+	public function listPage($current_page,$recodes_per_page) {
 		$Model	=	M('CaseType');
 		$order['convert(case_type_name using gb2312)']	=	'asc';
-		$list	= $Model->field(true)->order($order)->page($p.','.$limit)->select();
+		$list	= $Model->field(true)->order($order)->page($current_page.','.$recodes_per_page)->select();
 		
-		$count	= $this->count();
+		$count	= $Model->count();
 		
-		$Page	= new \Think\Page($count,$limit);
+		$Page	= new \Think\Page($count,$recodes_per_page);
 		$show	= $Page->show();
 		
 		return array("list"=>$list,"page"=>$show);

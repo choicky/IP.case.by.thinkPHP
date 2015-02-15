@@ -11,8 +11,26 @@ class PatentController extends Controller {
 	
 	//初步开案登记
 	public function addBasic(){
-        $this->display();
+        $year_option_data	=	yearOption();
+		$this->assign('year_option_data',$year_option_data);
+		
+		$patent_type_data	=	D('CaseTypeGroup')->field(true)->listAllPatent();
+		$this->assign('patent_type_data',$patent_type_data);
+		
+		
+		
+		$this->display();
     }
+	
+	public function yearOptions(){
+		$current_year	=	date(Y,time());
+		$start_year	=	2006;
+		$year_date	=	array();
+		for ($current_year;$current_year>$start_year;$current_year--){
+			$year_date[]	=	$current_year;
+		}
+		return($year_date);
+	}
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
@@ -166,20 +184,6 @@ class PatentController extends Controller {
 			$this->assign('case_type_data',$case_type_data);
 			$this->assign('case_type_count',$case_type_count);
 
-<<<<<<< HEAD
-			$member_list	=	D('Member')->listBasic();
-			$member_count	=	count($member_list);
-			$this->assign('member_list',$member_list);
-			$this->assign('member_count',$member_count);
-			
-			//$this->assign('handler_list',$member_list);
-			//$this->assign('handler_count',$member_count);
-			
-			
-			$client_list	=	D('Client')->listBasic();
-			$client_count	=	count($client_list);
-			$this->assign('client_list',$client_list);
-=======
 			$member_data	=	D('Member')->listBasic();
 			$member_count	=	count($member_data);
 			$this->assign('member_data',$member_data);
@@ -188,20 +192,13 @@ class PatentController extends Controller {
 			$client_data	=	D('Client')->listBasic();
 			$client_count	=	count($client_data);
 			$this->assign('client_data',$client_data);
->>>>>>> origin/master
 			$this->assign('client_count',$client_count);
-			
-			$this->assign('applicant_data',$client_data);
-			$this->assign('applicant_count',$client_count);
-			
-			
+		
 			$country_data	=	D('Country')->listBasic();
 			$country_count	=	count($country_data);
 			$this->assign('country_count',$country_count);
 			$this->assign('country_data',$country_data);	
 			//var_dump($priority_count);
-			
-		
 			
 			$today	=	time();
 			$this->assign('today',$today);

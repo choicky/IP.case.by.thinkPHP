@@ -51,13 +51,8 @@
 								<label for="follower_id" class="col-lg-3 control-label">跟案人</label>
 								<div class="col-lg-4">
 									<select multiple class="form-control" name="follower_id" size="{$member_count<$rows_limit ? $member_count : $rows_limit}">
-<<<<<<< HEAD
-										<volist name="member_list" id="follower_list">
-										<option value="{$follower_list.member_id}" {$follower_list['member_id']==$case_list['follower_id']? 'selected="selected"' :''}>{$follower_list.member_name}</option>
-=======
 										<volist name="member_data" id="follower_vo">
 										<option value="{$follower_vo.member_id}" {$follower_vo['member_id']==$case_data['follower_id']? 'selected="selected"' :''}>{$follower_vo.member_name}</option>
->>>>>>> origin/master
 										</volist>
 									</select>
 								</div>
@@ -138,13 +133,8 @@
 								<label for="handler_id" class="col-lg-3 control-label">处理人</label>
 								<div class="col-lg-4">
 									<select multiple class="form-control" name="handler_id" size="{$member_count<$rows_limit ? $member_count : $rows_limit}">
-<<<<<<< HEAD
-										<volist name="member_list" id="handler_list">
-										<option value="{$handler_list.member_id}" {$handler_list['member_id']==$case_list['handler_id']? 'selected="selected"' :''}>{$handler_list.member_name}</option>
-=======
 										<volist name="member_data" id="handler_vo">
 										<option value="{$handler_vo.member_id}" {$handler_vo['member_id']==$case_data['handler_id']? 'selected="selected"' :''}>{$handler_vo.member_name}</option>
->>>>>>> origin/master
 										</volist>
 									</select>
 								</div>
