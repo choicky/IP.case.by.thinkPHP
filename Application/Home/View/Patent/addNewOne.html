@@ -22,27 +22,42 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
-					<form class="form-inline" method="post" action="__CONTROLLER__/addNewAfterSearch">
+					<form class="form-inline" id="form_for_search_new" method="post" action="__CONTROLLER__/addNewAfterSearch">
 					  <div class="form-group">
 						<label for="exampleInputName2">年份</label>
-						<select  class="form-control" name="handler_id">
+						<select  class="form-control" name="year_option" id="year_option">
 							<volist name="year_option_data" id="year_option_vo">
-							<option value="{$year_option_vo}"}>{$year_option_vo}年 &nbsp;</option>
+							<option value="{$year_option_vo}"} >{$year_option_vo}年 &nbsp;</option>
 							</volist>
 						</select>
 					  </div>
 
 					  <div class="form-group">
 						<label for="exampleInputEmail2"> &nbsp; 案件类型</label>
-						<select  class="form-control" name="handler_id">
+						<select  class="form-control" name="case_type_group_option" id="case_type_group_option">
 							<volist name="patent_type_data" id="patent_type_vo">
 							<option value="{$patent_type_vo['case_type_group_id']}"}>{$patent_type_vo['case_type_group_name']} &nbsp;</option>
 							</volist>
 						</select>
 					  </div>
-					  <button type="submit" class="btn btn-primary">查看最近使用的案号</button>
+					  <input type="button" class="btn btn-primary" name="search_for_new" id="button_for_search_new" value="查看最近使用的案号" onclick="disp_alert()"></input>
 					</form>
 				</div>
+				<script type="text/javascript">
+					function disp_alert()
+					{
+					var $year_option    =   $('#year_option').val();
+                    var $case_type_group_option    =   $('#case_type_group_option').val();
+                    alert($year_option);
+                    //alert($case_type_group_option);
+                    
+                    
+                    
+					}
+				</script>
+
+				
+				
 				<!-- Default panel contents -->
 				<div class="panel-heading">
 					点击“客户/申请人名称”可以编辑客户/申请人信息；表格底部有换页按钮；页面底部可以新增

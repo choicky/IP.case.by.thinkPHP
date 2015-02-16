@@ -22,6 +22,19 @@ class PatentController extends Controller {
 		$this->display();
     }
 	
+	//单页式立案
+	public function addNewOne(){
+        $year_option_data	=	yearOption();
+		$this->assign('year_option_data',$year_option_data);
+		
+		$patent_type_data	=	D('CaseTypeGroup')->field(true)->listAllPatent();
+		$this->assign('patent_type_data',$patent_type_data);
+		
+		
+		
+		$this->display();
+    }
+	
 	public function yearOptions(){
 		$current_year	=	date(Y,time());
 		$start_year	=	2006;
