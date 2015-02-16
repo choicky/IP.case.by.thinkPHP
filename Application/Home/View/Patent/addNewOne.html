@@ -13,7 +13,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1>先查找最近的案号</h2>
+					<h2>先查找最近的案号</h2>
 				</div>
 			</div>
 		</div>
@@ -22,7 +22,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
-					<form class="form-inline" id="form_for_search_new" method="post" action="__CONTROLLER__/addNewAfterSearch">
+					<form class="form-inline" id="form_for_search_new" method="get" action="__CONTROLLER__/addNewOne">
 					  <div class="form-group">
 						<label for="exampleInputName2">年份</label>
 						<select  class="form-control" name="year_option" id="year_option">
@@ -40,60 +40,51 @@
 							</volist>
 						</select>
 					  </div>
-					  <input type="button" class="btn btn-primary" name="search_for_new" id="button_for_search_new" value="查看最近使用的案号" onclick="disp_alert()"></input>
+					  <button type="submit" class="btn btn-primary" name="search_for_new" id="button_for_search_new">查看最近使用的案号</button>
 					</form>
 				</div>
-				<script type="text/javascript">
-					function disp_alert()
-					{
-					var $year_option    =   $('#year_option').val();
-                    var $case_type_group_option    =   $('#case_type_group_option').val();
-                    alert($year_option);
-                    //alert($case_type_group_option);
-                    
-                    
-                    
-					}
-				</script>
+
 
 				
-				
-				<!-- Default panel contents -->
+				<!-- Default panel contents 
 				<div class="panel-heading">
 					点击“客户/申请人名称”可以编辑客户/申请人信息；表格底部有换页按钮；页面底部可以新增
 				</div>
+				-->
 
 				<!-- Table -->
-				<div class="bs-component">
+				<div class="bs-component" id="table_for_current_case">
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
-								<th>#</th>
-								<th>中文全称</th>
-								<th>英文全称</th>
-								<th>中文地址</th>
-								<th>英文地址</th>
-								<th>身份证号/组织机构代码</th>
-								<th>商业登记证号/营业执照号</th>
-								<th>税务登记证号</th>
+								<th>编号</th>
+								<th>盈方案号</th>
+								<th>业务类型</th>
+								<th>开案人</th>
+								<th>开案日</th>
+								<th>客源</th>
+								<th>对方案号</th>
+								<th>申请人</th>
+								<th>暂定名称</th>
+								
 							</tr>
 						</thead>
 						<tbody>
-							<volist name="client_list" id="client_list">
 							<tr>
 								<td>{$i}</td>
-								<td><a href="__CONTROLLER__/edit/id/{$client_list.client_id}">{$client_list.client_name}</a></td>
-								<td>{$client_list.client_name_en}</td>
-								<td>{$client_list.client_address_zh}</td>
-								<td>{$client_list.client_address_en}</td>
-								<td>{$client_list.client_id_number}</td>
-								<td>{$client_list.client_business_number}</td>
-								<td>{$client_list.client_tax_number}</td>
+								<td><a href="__CONTROLLER__/edit/id/{$current_case_data.client_id}">{$current_case_data.client_name}</a></td>
+								<td>{$current_case_data.client_name_en}</td>
+								<td>{$current_case_data.client_address_zh}</td>
+								<td>{$current_case_data.client_address_en}</td>
+								<td>{$current_case_data.client_id_number}</td>
+								<td>{$current_case_data.client_business_number}</td>
+								<td>{$current_case_data.client_tax_number}</td>
+								<td>{$current_case_data.client_tax_number}</td>
+								<td>{$current_case_data.client_tax_number}</td>
 							</tr>
-							</volist>                 
 						</tbody>
 					</table> 
-					{$client_page}
+				
 				</div><!-- /example -->
 			</div>
         </div>
@@ -105,60 +96,280 @@
 	    <div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1 id="forms">开案初步登记</h1>
+					<h2 id="forms">开案初步登记 <span>test span</span></h2>
 				</div>
 			</div>
         </div>
 
         <div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-9">
 				<div class="well bs-component">
-					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/addNewOne">
 						<fieldset>
-							<legend>“客户/申请人名称”是必须的</legend>
+							<legend>“盈方案号”是必须的</legend>
 							<div class="form-group">
-								<label for="client_name" class="col-lg-3 control-label">中文全称</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control" id="client_name" name="client_name" placeholder="中文全称">
+								<label for="our_ref" class="col-lg-3 control-label">盈方案号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="our_ref" name="our_ref" placeholder="填写盈方案号">
+								</div>
+								<div class="col-lg-5">
+									注意
 								</div>
 							</div>
+							
 							<div class="form-group">
-								<label for="client_name_en" class="col-lg-3 control-label">英文全称</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control" id="client_name_en" name="client_name_en" placeholder="英文全称">
+								<label for="case_type_id" class="col-lg-3 control-label">案件类型</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="case_type_id" size="{$case_type_count<$rows_limit ? $case_type_count : $rows_limit}">
+										<volist name="case_type_data" id="case_type_vo">
+										<option value="{$case_type_vo.case_type_id}">{$case_type_vo.case_type_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									注意
 								</div>
 							</div>
+							
 							<div class="form-group">
-								<label for="client_address_zh" class="col-lg-3 control-label">中文地址</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control" id="client_address_zh" name="client_address_zh" placeholder="中文地址">
+								<label for="follower_id" class="col-lg-3 control-label">跟案人</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="follower_id" size="{$member_count<$rows_limit ? $member_count : $rows_limit}">
+										<volist name="member_data" id="follower_vo">
+										<option value="{$follower_vo.member_id}"}>{$follower_vo.member_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									注意
 								</div>
 							</div>
+							
 							<div class="form-group">
-								<label for="client_address_en" class="col-lg-3 control-label">英文地址</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control" id="client_address_en" name="client_address_en" placeholder="英文地址">
+								<label for="create_date" class="col-lg-3 control-label">开案日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="create_date" name="create_date" value="{$today|date="Y-m-d",###}">
+								</div>
+								<div class="col-lg-5">
+									注意
 								</div>
 							</div>
+							
 							<div class="form-group">
-								<label for="client_id_number" class="col-lg-3 control-label">身份证号/组织机构代码</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control" id="client_id_number" name="client_id_number" placeholder="个人填身份证号，否则填组织机构代码">
+								<label for="form_date" class="col-lg-3 control-label">提供开案单日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="form_date" name="form_date">
+								</div>
+								<div class="col-lg-5">
+									注意
 								</div>
 							</div>
+							
 							<div class="form-group">
-								<label for="client_business_number" class="col-lg-3 control-label">商业登记证号/营业执照号</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control" id="client_business_number" name="client_business_number" placeholder="商业登记证号/营业执照号">
+								<label for="client_id" class="col-lg-3 control-label">客源/客户</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="client_id" size="{$client_count<$rows_limit ? $client_count : $rows_limit}">
+										<volist name="client_data" id="client_vo">
+										<option value="{$client_vo.client_id}"}>{$client_vo.client_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									注意
 								</div>
 							</div>
+							
 							<div class="form-group">
-								<label for="client_tax_number" class="col-lg-3 control-label">税务登记证号</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control" id="client_tax_number" name="client_tax_number" placeholder="税务登记证号">
+								<label for="client_ref" class="col-lg-3 control-label">对方案号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="client_ref" name="client_ref" placeholder="对方编号">
+								</div>
+								<div class="col-lg-5">
+									注意
 								</div>
 							</div>
-							  
+							
+							<div class="form-group">
+								<label for="applicant_id" class="col-lg-3 control-label">申请人</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="applicant_id" size="{$client_count<$rows_limit ? $client_count : $rows_limit }">
+										<volist name="client_data" id="applicant_vo">
+										<option value="{$applicant_vo.client_id}"}>{$applicant_vo.client_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									注意
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="tentative_title" class="col-lg-3 control-label">暂定专利名称</label>
+								<div class="col-lg-7">
+									<input type="text" class="form-control" id="tentative_title" name="tentative_title" placeholder="暂定专利名称">
+								</div>
+								<div class="col-lg-2">
+									注意
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="handler_id" class="col-lg-3 control-label">处理人</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="handler_id" size="{$member_count<$rows_limit ? $member_count : $rows_limit}">
+										<volist name="member_data" id="handler_vo">
+										<option value="{$handler_vo.member_id}"}>{$handler_vo.member_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									注意
+								</div>
+							</div>
+							
+							
+
+							<div class="form-group">
+								<label for="priority_number" class="col-lg-3 control-label">优先权1</label>
+								
+								<div class="col-lg-3">
+									<p>优先权国家</p>
+									<select multiple class="form-control" name="priority_country_id[]" size="{$country_count<$rows_limit? $country_count: $rows_limit}">
+										<option value="none" select="selected"}>没有要求优先权</option>
+										<volist name="country_data" id="country_vo">
+										<option value="{$country_vo.country_id}"}>{$country_vo.country_name}</option>
+										</volist>
+									</select>
+								</div>
+								
+								<div class="col-lg-3">
+									<p>优先权号码</p>
+									<input type="text" class="form-control" id="priority_number[]" name="priority_number[]" placeholder="请填入优先权号码">
+								</div>
+								
+								<div class="col-lg-3">
+									<p>优先权日期</p>
+									<input type="date" class="form-control" id="priority_date[]" name="priority_date[]" placeholder="请填入优先权日期">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="priority_number" class="col-lg-3 control-label">优先权2</label>
+								
+								<div class="col-lg-3">
+									<p>优先权国家</p>
+									<select multiple class="form-control" name="priority_country_id[]" size="{$country_count<$rows_limit? $country_count: $rows_limit}">
+										<option value="none" select="selected"}>没有要求优先权</option>
+										<volist name="country_data" id="country_vo">
+										<option value="{$country_vo.country_id}"}>{$country_vo.country_name}</option>
+										</volist>
+									</select>
+								</div>
+								
+								<div class="col-lg-3">
+									<p>优先权号码</p>
+									<input type="text" class="form-control" id="priority_number[]" name="priority_number[]" placeholder="请填入优先权号码">
+								</div>
+								
+								<div class="col-lg-3">
+									<p>优先权日期</p>
+									<input type="date" class="form-control" id="priority_date[]" name="priority_date[]" placeholder="{$today|date="Y-m-d",###}">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="priority_number" class="col-lg-3 control-label">优先权3</label>
+								
+								<div class="col-lg-3">
+									<select multiple class="form-control" name="priority_country_id[]" size="{$country_count<$rows_limit? $country_count: $rows_limit}">
+										<option value="none" select="selected"}>没有要求优先权</option>
+										<volist name="country_data" id="country_vo">
+										<option value="{$country_vo.country_id}"}>{$country_vo.country_name}</option>
+										</volist>
+									</select>
+								</div>
+								
+								<div class="col-lg-3">
+									<input type="text" class="form-control" id="priority_number[]" name="priority_number[]" placeholder="请填入优先权号码">
+								</div>
+								
+								<div class="col-lg-3">
+									<input type="date" class="form-control" id="priority_date[]" name="priority_date[]" placeholder="请填入优先权日期">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="remarks" class="col-lg-3 control-label">备注</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="remarks" name="remarks" placeholder="备注">
+								</div>
+								<div class="col-lg-5">
+									注意
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="related_our_ref" class="col-lg-3 control-label">关联的盈方案号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="related_our_ref" name="related_our_ref" placeholder="关联的盈方案号">
+								</div>
+								<div class="col-lg-5">
+									注意
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="application_date" class="col-lg-3 control-label">申请日</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="application_date" name="application_date" placeholder="{$today|date="Y-m-d",###}">
+								</div>
+								<div class="col-lg-5">
+									注意
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="application_number" class="col-lg-3 control-label">申请号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="application_number" name="application_number" placeholder="申请号">
+								</div>
+								<div class="col-lg-5">
+									注意
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="formal_title" class="col-lg-3 control-label">专利名称</label>
+								<div class="col-lg-7">
+									<input type="text" class="form-control" id="formal_title" name="formal_title" placeholder="专利名称">
+								</div>
+								<div class="col-lg-2">
+									注意
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="registration_date" class="col-lg-3 control-label">专利授权日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="registration_date" name="registration_date" placeholder="{$today}|date="Y-m-d",###}">
+								</div>
+								<div class="col-lg-5">
+									注意
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="expired_date" class="col-lg-3 control-label">专利失效日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="expired_date" name="expired_date" placeholder="{$today}|date="Y-m-d",###}">
+								</div>
+								<div class="col-lg-5">
+									注意
+								</div>
+							</div>
+							
+							
+							
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">
 									<button class="btn btn-default">Cancel</button>

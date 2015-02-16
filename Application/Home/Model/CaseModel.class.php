@@ -14,8 +14,8 @@ class CaseModel extends RelationModel {
 			'class_name'		=>	'CaseExtend',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_ONE,		//主从关系的一对一关联			
 			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'tm_category_id,publication_date,registration_date,related_our_refer,remarks',		//关联字段
-			'as_fields'			=>	'tm_category_id,publication_date,registration_date,related_our_refer,remarks'		//字段别名
+			'mapping_fields'	=>	'tm_category_id,publication_date,registration_date,related_our_ref,remarks',		//关联字段
+			'as_fields'			=>	'tm_category_id,publication_date,registration_date,related_our_ref,remarks'		//字段别名
 		),
 		
 		'CaseType'	=>	array(							//本数据关联的名称
@@ -25,6 +25,15 @@ class CaseModel extends RelationModel {
 			'foreign_key'		=>	'case_type_id',		//外键，
 			'mapping_fields'	=>	'case_type_name',	//关联字段
 			'as_fields'			=>	'case_type_name'	//字段别名
+		),
+		
+		'CaseTypeGroup'	=>	array(							//本数据关联的名称
+			'mapping_name'		=>	'CaseTypeGroup',			//重新定义本数据关联的名称
+			'class_name'		=>	'CaseTypeGroup',			//被关联的数据表
+			'mapping_type'		=>	self::MANY_TO_MANY,		//主从关系的一对多关联
+			'relation_table'    =>  'tp_case_type', //此处应显式定义中间表名称，且不能使用C函数读取表前缀
+			'foreign_key'		=>	'case_type_id',			//中间表与本表的外键
+			'relation_foreign_key'  =>  'case_type_group_id', //中间表与目的表的外键
 		),
 		
 		'Follower'	=>	array(							//本数据关联的名称

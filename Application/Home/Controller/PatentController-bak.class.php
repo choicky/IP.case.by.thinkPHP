@@ -5,9 +5,8 @@ use Think\Controller;
 class PatentController extends Controller {
     
 	//默认跳转到listPage，分页显示
-	public function index1(){
-       // header("Location: listPage");
-	   $this->display();
+	public function index(){
+        header("Location: listPage");
     }
 	
 	//初步开案登记
@@ -28,7 +27,7 @@ class PatentController extends Controller {
         $year_option_data	=	yearOption();
 		$this->assign('year_option_data',$year_option_data);
 		
-		$patent_type_data	=	patentCaseGroupOption();
+		$patent_type_data	=	D('CaseTypeGroup')->field(true)->listAllPatent();
 		$this->assign('patent_type_data',$patent_type_data);
 		
 		if(IS_POST){
@@ -84,50 +83,18 @@ class PatentController extends Controller {
 		} else{
 			
 			$year_option	=	date("Y",time());
-			$year_option	=	I("get.year_option",$year_option,'int');
-			$case_type_group_id	=	I("get.year_option",1,'int');
+			$case_type_group_id	=	1;
 			$case_prefix	=	'P'.$year_option.'%';
 			$case_type_group_id	=	I('post.case_type_group_option');
 			
 			$basic_map['our_ref']	=	array('like',$case_prefix);
 			$order['convert(our_ref using gb2312)']	=	'desc';
 			$Model	=	D('Case');
-			$current_case_data	=	$Model->relation(true)->field(true)->where($basic_map)->order($order)->limit(1)->select();
-			//$current_case_id	=	$current_case[0]['case_id'];
+			$current_case	=	$Model->field('case_id','our_ref')->where($basic_map)->order($order)->limit(1)->select();
+			$current_case_id	=	$current_case['case_id'];
+			$case_data	=	$Model->relation(true)->field(true)->getByCaseId($current_case_id);
 			
-			//$current_case_data	=	$Model->relation(true)->field(true)->getByCaseId($current_case_id);
-			var_dump($current_case_data[0]);
-			$this->assign('current_case_data',$current_case_data[0]);
-			
-							
-			$patent_case_prefix	=	'P%';
-			$case_type_data	=	D('CaseType')->listAllLike($patent_case_prefix);
-			$case_type_count	=	count($case_type_data);
-			$this->assign('case_type_data',$case_type_data);
-			$this->assign('case_type_count',$case_type_count);
-
-			$member_data	=	D('Member')->listBasic();
-			$member_count	=	count($member_data);
-			$this->assign('member_data',$member_data);
-			$this->assign('member_count',$member_count);
-						
-			$client_data	=	D('Client')->listBasic();
-			$client_count	=	count($client_data);
-			$this->assign('client_data',$client_data);
-			$this->assign('client_count',$client_count);
-		
-			$country_data	=	D('Country')->listBasic();
-			$country_count	=	count($country_data);
-			$this->assign('country_count',$country_count);
-			$this->assign('country_data',$country_data);	
-			//var_dump($priority_count);
-			
-			$today	=	time();
-			$this->assign('today',$today);
-			
-			$rows_limit	=	C('ROWS_PER_SELECT');
-			$this->assign('rows_limit',$rows_limit);
-			
+			$this->assign('case_data',$case_data);
 
 		}
 		
@@ -153,16 +120,7 @@ class PatentController extends Controller {
 		$this->ajaxReturn($case_data);
 		
     }
-	
-	public function yearOptions(){
-		$current_year	=	date(Y,time());
-		$start_year	=	2006;
-		$year_date	=	array();
-		for ($current_year;$current_year>$start_year;$current_year--){
-			$year_date[]	=	$current_year;
-		}
-		return($year_date);
-	}
+
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
