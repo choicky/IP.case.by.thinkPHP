@@ -25,15 +25,86 @@ class PatentController extends Controller {
 	
 	//单页式立案
 	public function addNewOne(){
+        //2007至当前年度的选单
         $year_option_data	=	yearOption();
 		$this->assign('year_option_data',$year_option_data);
 		
+        //专利业务类型，总共9种
 		$patent_type_data	=	patentCaseGroupOption();
 		$this->assign('patent_type_data',$patent_type_data);
+        
+        //获取案号的前缀，形式为Pyyyy，其中yyyy默认为当前年份
+        $default_year	=	date("Y",time());
+        $year_option	=	I("post.year_option",$default_year,'int');
+        $case_prefix	=	'P'.$year_option.'%';
+        
+        //获取专利业务类型，默认为P1
+        $case_type_group_id	=	I("post.case_type_group_option");
+        $map_for_case_type_id['case_type_group_id'] =   $case_type_group_id;
+        $CaseTypeGroup =   M('CaseTypeGroup');
+        $case_type_group_data   =   $CaseTypeGroup->getByCaseTypeGroupId($case_type_group_id);
+        $this->assign('case_type_group_name',$case_type_group_data[0]['case_type_group_name']);
+        var_dump($case_type_group_data);
+        
+        $Case_Type_Model  =   M('CaseType');
+        $case_type_array   =   $Case_Type_Model->field(true)->where($map_for_case_type_id)->select();
+        for($i=0;$i<count($case_type_array);$i++){
+            $in_array[$i]   =   $case_type_array[$i]['case_type_id'];            
+        }
+        dump($in_array);
+        
+        $basic_map['case_type_id']  = array('in',$in_array);
+        $basic_map['our_ref']	=	array('like',$case_prefix);
+        //$basic_map['CaseTypeGroup']['case_type_group_id']   =   $case_type_group_id;
+        
+        dump($basic_map);
+   
+        $order['convert(our_ref using gb2312)']	=	'desc';
+        $Model	=	D('Case');
+        $current_case_data	=	$Model->relation(true)->field(true)->where($basic_map)->order($order)->select();
+        
+       // dump($current_case_data);
+        $this->assign('current_case_data',$current_case_data[0]);
+        
+        
+        $patent_case_prefix	=	'P%';
+        $case_type_data	=	D('CaseType')->listAllLike($patent_case_prefix);
+        $case_type_count	=	count($case_type_data);
+        $this->assign('case_type_data',$case_type_data);
+        $this->assign('case_type_count',$case_type_count);
+
+        $member_data	=	D('Member')->listBasic();
+        $member_count	=	count($member_data);
+        $this->assign('member_data',$member_data);
+        $this->assign('member_count',$member_count);
+                    
+        $client_data	=	D('Client')->listBasic();
+        $client_count	=	count($client_data);
+        $this->assign('client_data',$client_data);
+        $this->assign('client_count',$client_count);
+    
+        $country_data	=	D('Country')->listBasic();
+        $country_count	=	count($country_data);
+        $this->assign('country_count',$country_count);
+        $this->assign('country_data',$country_data);	
+        //var_dump($priority_count);
+        
+        $today	=	time();
+        $this->assign('today',$today);
+        
+        $rows_limit	=	C('ROWS_PER_SELECT');
+        $this->assign('rows_limit',$rows_limit);
+
 		
-		if(IS_POST){
+		$this->display();
+    }
+    
+    //新增的保存
+    public function save(){
+        if(IS_POST){
 			$data	=	array();
-			$data['our_ref'] = I('post.our_ref');
+			$data['case_id'] = I('post.case_id','','int');
+            $data['our_ref'] = I('post.our_ref');
 			$data['case_type_id']	=	I('post.case_type_id');
 			$data['follower_id']	=	I('post.follower_id');
 			$data['create_date']	=	I('post.create_date');
@@ -81,57 +152,7 @@ class PatentController extends Controller {
 			}
 				
 			
-		} else{
-			
-			$year_option	=	date("Y",time());
-			$year_option	=	I("get.year_option",$year_option,'int');
-			$case_type_group_id	=	I("get.year_option",1,'int');
-			$case_prefix	=	'P'.$year_option.'%';
-			$case_type_group_id	=	I('post.case_type_group_option');
-			
-			$basic_map['our_ref']	=	array('like',$case_prefix);
-			$order['convert(our_ref using gb2312)']	=	'desc';
-			$Model	=	D('Case');
-			$current_case_data	=	$Model->relation(true)->field(true)->where($basic_map)->order($order)->limit(1)->select();
-			//$current_case_id	=	$current_case[0]['case_id'];
-			
-			//$current_case_data	=	$Model->relation(true)->field(true)->getByCaseId($current_case_id);
-			var_dump($current_case_data[0]);
-			$this->assign('current_case_data',$current_case_data[0]);
-			
-							
-			$patent_case_prefix	=	'P%';
-			$case_type_data	=	D('CaseType')->listAllLike($patent_case_prefix);
-			$case_type_count	=	count($case_type_data);
-			$this->assign('case_type_data',$case_type_data);
-			$this->assign('case_type_count',$case_type_count);
-
-			$member_data	=	D('Member')->listBasic();
-			$member_count	=	count($member_data);
-			$this->assign('member_data',$member_data);
-			$this->assign('member_count',$member_count);
-						
-			$client_data	=	D('Client')->listBasic();
-			$client_count	=	count($client_data);
-			$this->assign('client_data',$client_data);
-			$this->assign('client_count',$client_count);
-		
-			$country_data	=	D('Country')->listBasic();
-			$country_count	=	count($country_data);
-			$this->assign('country_count',$country_count);
-			$this->assign('country_data',$country_data);	
-			//var_dump($priority_count);
-			
-			$today	=	time();
-			$this->assign('today',$today);
-			
-			$rows_limit	=	C('ROWS_PER_SELECT');
-			$this->assign('rows_limit',$rows_limit);
-			
-
 		}
-		
-		$this->display();
     }
 
 	

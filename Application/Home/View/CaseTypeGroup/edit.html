@@ -23,20 +23,10 @@
 						<fieldset>
 							<legend>“案件类型名称”是必须的</legend>
 							<div class="form-group">
-								<label for="case_type_name" class="col-lg-3 control-label">案件类型名称</label>
+								<label for="case_type_group_name" class="col-lg-3 control-label">案件类型名称</label>
 								<div class="col-lg-9">
-									<input type="hidden" class="form-control" id="case_type_id" name="case_type_id" value="{$case_type_list.case_type_id}">
-									<input type="text" class="form-control" id="case_type_name" name="case_type_name" value="{$case_type_list.case_type_name}">
-								</div>
-							</div>
-                            <div class="form-group">
-								<label for="case_type_name" class="col-lg-3 control-label">案件大类型名称</label>
-								<div class="col-lg-9">
-									<select multiple class="form-control" name="case_type_group_id" size="{$group_count<$rows_limit ? $group_count : $rows_limit}">
-										<volist name="group_data" id="group_vo">
-										<option value="{$group_vo.case_type_group_id}" {$group_vo['case_type_group_id']==$case_data['case_type_group_id']? 'selected="selected"' :''}>{$group_vo.case_type_group_name}</option>
-										</volist>
-									</select>
+									<input type="hidden" class="form-control" id="case_type_group_id" name="case_type_group_id" value="{$case_type_group_list.case_type_group_id}">
+									<input type="text" class="form-control" id="case_type_group_name" name="case_type_group_name" value="{$case_type_group_list.case_type_group_name}">
 								</div>
 							</div>
 

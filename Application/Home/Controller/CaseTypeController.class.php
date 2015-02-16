@@ -13,9 +13,13 @@ class CaseTypeController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$case_type_list = D('CaseType')->listPage($p,$limit);
-		$this->assign('case_type_list',$case_type_list['list']);
+		$case_type_list = D('CaseType')->relation(true)->field(true)->listPage($p,$limit);
+		$this->assign('case_type_list',$case_type_list['data']);
 		$this->assign('case_type_page',$case_type_list['page']);
+        
+       
+        
+        var_dump(case_type_list);
 
 		$this->display();
 	}
@@ -24,6 +28,7 @@ class CaseTypeController extends Controller {
 	public function add(){
 		$data	=	array();
 		$data['case_type_name']	=	trim(I('post.case_type_name'));
+        $data['case_type_group_id']	=	trim(I('post.case_type_group_id'));
 		
 		if(!$data['case_type_name']){
 			$this->error('未填写费用名称');
@@ -45,6 +50,7 @@ class CaseTypeController extends Controller {
 			
 			$data=array();
 			$data['case_type_name']	=	trim(I('post.case_type_name'));
+            $data['case_type_group_id']	=	trim(I('post.case_type_group_id'));
 
 			$result = D('CaseType')->edit($case_type_id,$data);
 			if(false !== $result){
@@ -60,6 +66,13 @@ class CaseTypeController extends Controller {
 			}
 
 			$case_type_list = M('CaseType')->getByCaseTypeId($case_type_id);
+            
+            $group_data =   D('CaseTypeGroup')->select();
+           // var_dump($group_data);
+            $group_count    =   count($group_data);
+            $this->assign('group_data',$group_data);
+            $this->assign('group_count',$group_count);
+
 			
 			$this->assign('case_type_list',$case_type_list);
 

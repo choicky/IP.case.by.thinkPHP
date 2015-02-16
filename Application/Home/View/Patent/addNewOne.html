@@ -22,7 +22,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
-					<form class="form-inline" id="form_for_search_new" method="get" action="__CONTROLLER__/addNewOne">
+					<form class="form-inline" id="form_for_search_new" method="post" action="__CONTROLLER__/addNewOne">
 					  <div class="form-group">
 						<label for="exampleInputName2">年份</label>
 						<select  class="form-control" name="year_option" id="year_option">
@@ -57,30 +57,26 @@
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
-								<th>编号</th>
-								<th>盈方案号</th>
 								<th>业务类型</th>
+								<th>盈方案号</th>
 								<th>开案人</th>
 								<th>开案日</th>
 								<th>客源</th>
 								<th>对方案号</th>
 								<th>申请人</th>
-								<th>暂定名称</th>
-								
+								<th>暂定名称</th>								
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td>{$i}</td>
-								<td><a href="__CONTROLLER__/edit/id/{$current_case_data.client_id}">{$current_case_data.client_name}</a></td>
-								<td>{$current_case_data.client_name_en}</td>
-								<td>{$current_case_data.client_address_zh}</td>
-								<td>{$current_case_data.client_address_en}</td>
-								<td>{$current_case_data.client_id_number}</td>
-								<td>{$current_case_data.client_business_number}</td>
-								<td>{$current_case_data.client_tax_number}</td>
-								<td>{$current_case_data.client_tax_number}</td>
-								<td>{$current_case_data.client_tax_number}</td>
+								<td>{$current_case_data.case_type_name ? $current_case_data.case_type_name : $case_type_group_name}</td>
+								<td><a href="__CONTROLLER__/view/id/{$current_case_data.case_id}">{$current_case_data.our_ref ? $current_case_data.our_ref : 尚未开案}</a></td>
+								<td>{$current_case_data.followr_name}</td>
+								<td>{$current_case_data.create_date}</td>
+								<td>{$current_case_data.client_name}</td>
+								<td>{$current_case_data.client_ref}</td>
+								<td>{$current_case_data.applicant_name}</td>
+								<td>{$current_case_data.tentative_title}</td>
 							</tr>
 						</tbody>
 					</table> 
@@ -104,7 +100,7 @@
         <div class="row">
 			<div class="col-lg-9">
 				<div class="well bs-component">
-					<form class="form-horizontal" method="post" action="__CONTROLLER__/addNewOne">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/save">
 						<fieldset>
 							<legend>“盈方案号”是必须的</legend>
 							<div class="form-group">

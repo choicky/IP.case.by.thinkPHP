@@ -32,20 +32,18 @@
 							<tr class="info">
 								<th>#</th>
 								<th>案件类型名称</th>
-                                <th>隶属于</th>
 							</tr>
 						</thead>
 						<tbody>
-							<volist name="case_type_list" id="case_type_vo">
+							<volist name="case_type_group_list" id="case_type_group_vo">
 							<tr>
 								<td>{$i}</td>
-								<td><a href="__CONTROLLER__/edit/id/{$case_type_vo.case_type_id}">{$case_type_vo.case_type_name}</a></td>
-                                <td>{$case_type_vo.case_type_group_name}</td>
+								<td><a href="__CONTROLLER__/edit/id/{$case_type_group_vo.case_type_group_id}">{$case_type_group_vo.case_type_group_name}</a></td>
 							</tr>
 							</volist>                 
 						</tbody>
 					</table> 
-					{$case_type_page}
+					{$case_type_group_page}
 				</div><!-- /example -->
 			</div>
         </div>
@@ -69,9 +67,9 @@
 						<fieldset>
 							<legend>“案件类型名称”是必须的</legend>
 							<div class="form-group">
-								<label for="case_type_name" class="col-lg-3 control-label">案件类型名称</label>
+								<label for="case_type_group_name" class="col-lg-3 control-label">案件类型名称</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control" id="case_type_name" name="case_type_name" placeholder="案件类型名称">
+									<input type="text" class="form-control" id="case_type_group_name" name="case_type_group_name" placeholder="案件类型名称">
 								</div>
 							</div>
 
