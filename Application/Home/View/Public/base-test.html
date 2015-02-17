@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+<!-- 区块 title 开始-->
+	<block name="title">
+    <title>Bootswatch: Cerulean</title>
+	</block>
+<!-- 区块 title 结束-->
+	
+	<!-- Bootstrap -->
+    <link rel="stylesheet" href="__ROOT__/Application/Home/View/Public/css/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="__ROOT__/Application/Home/View/Public/css/bootswatch.min.css">
+	
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="__ROOT__/Application/Home/View/Public/js/html5shiv.min-3.7.2.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min-1.4.2.js"></script>
+    <![endif]-->
+	
+	<!-- 引入 jQuery 和 bootstrap -->
+	<script src="__ROOT__/Application/Home/View/Public/js/jquery-1.10.2.min.js"></script>
+	<script src="__ROOT__/Application/Home/View/Public/js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+  
+     <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+		
+<!-- 区块 navbar-header 开始-->
+		<block name="navbar-header">
+        <div class="navbar-header">
+          <a href="__ROOT__/" class="navbar-brand">首页</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+		</block>
+<!-- 区块 navbar-header 结束-->
+
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">分组（Group） <span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+                <li><a href="__APP__/Home/Group/listAll">显示所有分组</a></li>
+                <li class="divider"></li>
+                <li><a href="__APP__/Home/Group/listAll#addNew">新建分组</a></li>               
+              </ul>
+            </li>
+			<li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">分类（Type） <span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+                <li><a href="__APP__/Home/Type/listAll">显示所有分类</a></li>
+                <li class="divider"></li>
+                <li><a href="__APP__/Home/Type/listAll#addNew">新建分类</a></li>    
+               
+              </ul>
+            </li>
+			
+			
+          </ul>
+		  
+<!-- 定义区块 navbar-form 开始-->
+		  <block name="navbar-form">
+		  <form class="navbar-form navbar-left" role="search" method="post" action="xxxx">
+			<div class="form-group">
+               <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-warning">搜</button>
+          </form>
+		  </block>
+<!-- 定义区块 navbar-form 结束-->
+
+          <ul class="nav navbar-nav navbar-right">
+           <li><a href="https://wrapbootstrap.com/?ref=bsw" target="_blank">页面</a></li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+	
+
+
+    <div class="container">
+<!-- 区块 page 开始-->
+	  <block name="page">
+      <div class="page-header" id="banner">
+        <div class="row">
+          <div class="col-lg-8 col-md-7 col-sm-6">
+            <h1>Cerulean</h1>
+            <p class="lead">A calm blue sky</p>
+          </div>
+          <div class="col-lg-4 col-md-5 col-sm-6">
+            <div class="sponsor">
+              <a href="http://www.shopify.com/?ref=bootswatch" target="_blank" onclick="_gaq.push(['_trackEvent', 'banner', 'click', 'shopify']);"><img src="../assets/img/shopify.png" alt="Shopify" onload="_gaq.push(['_trackEvent', 'banner', 'impression', 'shopify']);"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+	  </block>
+<!-- 区块 page 结束-->
+
+    
+
+<!-- 区块 footer 开始-->
+      <footer>
+	  <block name="footer">
+        <div class="row">
+          <div class="col-lg-12">
+
+            <ul class="list-unstyled">
+              <li class="pull-right"><a href="#top">Back to top</a></li>
+              <li><a href="http://news.bootswatch.com" onclick="pageTracker._link(this.href); return false;">Blog</a></li>
+              <li><a href="http://feeds.feedburner.com/bootswatch">RSS</a></li>
+              <li><a href="https://twitter.com/bootswatch">Twitter</a></li>
+              <li><a href="https://github.com/thomaspark/bootswatch/">GitHub</a></li>
+              <li><a href="../help/#api">API</a></li>
+              <li><a href="../help/#support">Support</a></li>
+            </ul>
+            <p>Made by <a href="http://thomaspark.me" rel="nofollow">Thomas Park</a>. Contact him at <a href="mailto:thomas@bootswatch.com">thomas@bootswatch.com</a>.</p>
+            <p>Code released under the <a href="https://github.com/thomaspark/bootswatch/blob/gh-pages/LICENSE">MIT License</a>.</p>
+            <p>Based on <a href="http://getbootstrap.com" rel="nofollow">Bootstrap</a>. Icons from <a href="http://fortawesome.github.io/Font-Awesome/" rel="nofollow">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts" rel="nofollow">Google</a>.</p>
+
+          </div>
+        </div>
+		</block>
+<!-- 区块 footer 结束-->
+
+      </footer>
+
+
+    </div>
+
+
+    
+    
+    
+  </body>
+</html>
