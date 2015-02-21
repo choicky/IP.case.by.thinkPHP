@@ -34,7 +34,7 @@ class ClientModel extends RelationModel {
 	}
 	
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function listPage($p,$limit) {
+	public function pageList($p,$limit) {
 		$order['convert(client_name using gb2312)']	=	'asc';
 		$list	= $this->relation(true)->field(true)->order($order)->page($p.','.$limit)->select();
 		

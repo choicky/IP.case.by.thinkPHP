@@ -4,16 +4,16 @@ use Think\Controller;
 
 class CostCenterController extends Controller {
     
-	//默认跳转到listPage，分页显示
+	//默认跳转到pageList，分页显示
 	public function index(){
-        header("Location: listPage");
+        header("Location: pageList");
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function listPage(){
+	public function pageList(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$cost_center_list = D('CostCenter')->listPage($p,$limit);
+		$cost_center_list = D('CostCenter')->pageList($p,$limit);
 		$this->assign('cost_center_list',$cost_center_list['list']);
 		$this->assign('cost_center_page',$cost_center_list['page']);
 
@@ -32,7 +32,7 @@ class CostCenterController extends Controller {
 		$result = M('CostCenter')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'listPage');
+			$this->success('新增成功', 'pageList');
 		}else{
 			$this->error('增加失败');
 		}
@@ -48,9 +48,9 @@ class CostCenterController extends Controller {
 
 			$result = D('CostCenter')->edit($cost_center_id,$data);
 			if(false !== $result){
-				$this->success('修改成功', 'listPage');
+				$this->success('修改成功', 'pageList');
 			}else{
-				$this->error('修改失败', 'listPage');
+				$this->error('修改失败', 'pageList');
 			}
 		} else{
 			$cost_center_id = I('get.id',0,'int');

@@ -27,13 +27,13 @@ class CaseModel extends RelationModel {
 			'as_fields'			=>	'case_type_name'	//字段别名
 		),
 		
-		'CaseTypeGroup'	=>	array(							//本数据关联的名称
-			'mapping_name'		=>	'CaseTypeGroup',			//重新定义本数据关联的名称
-			'class_name'		=>	'CaseTypeGroup',			//被关联的数据表
+		'CaseGroup'	=>	array(							//本数据关联的名称
+			'mapping_name'		=>	'CaseGroup',			//重新定义本数据关联的名称
+			'class_name'		=>	'CaseGroup',			//被关联的数据表
 			'mapping_type'		=>	self::MANY_TO_MANY,		//主从关系的一对多关联
 			'relation_table'    =>  'tp_case_type', //此处应显式定义中间表名称，且不能使用C函数读取表前缀
 			'foreign_key'		=>	'case_type_id',			//中间表与本表的外键
-			'relation_foreign_key'  =>  'case_type_group_id', //中间表与目的表的外键
+			'relation_foreign_key'  =>  'case_group_id', //中间表与目的表的外键
 		),
 		
 		'Follower'	=>	array(							//本数据关联的名称
@@ -135,7 +135,7 @@ class CaseModel extends RelationModel {
 	}
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function listPage($p,$limit) {
+	public function pageList($p,$limit) {
 		$order['convert(our_ref using gb2312)']	=	'desc';	
 		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
@@ -154,7 +154,7 @@ class CaseModel extends RelationModel {
 		return $result;
 	}	
 	
-	//更新本数据表中主键为$case_id的记录，$data是数组
+	//返回本数据表中主键为$case_id的记录，$data是数组
 	public function getByID($case_id){
 		$map['case_id']	=	$case_id;
 		$result	=	$this->relation(true)->field(true)->where($map)->select();

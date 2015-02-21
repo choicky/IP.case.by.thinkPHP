@@ -4,16 +4,16 @@ use Think\Controller;
 
 class BalanceController extends Controller {
     
-	//默认跳转到listPage，分页显示
+	//默认跳转到pageList，分页显示
 	public function index(){
-        header("Location: listPage");
+        header("Location: pageList");
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function listPage(){
+	public function pageList(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$balance_list = D('BalanceView')->listPage($p,$limit);
+		$balance_list = D('BalanceView')->pageList($p,$limit);
 		 
 		$this->assign('balance_list',$balance_list['list']);
 		$this->assign('balance_page',$balance_list['page']);
@@ -63,7 +63,7 @@ class BalanceController extends Controller {
 		$result = M('Balance')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'listPage');
+			$this->success('新增成功', 'pageList');
 		}else{
 			$this->error('增加失败');
 		}
@@ -93,9 +93,9 @@ class BalanceController extends Controller {
 			
 			$result = D('Balance')->edit($balance_id,$data);
 			if(false !== $result){
-				$this->success('修改成功', 'listPage');
+				$this->success('修改成功', 'pageList');
 			}else{
-				$this->error('修改失败', 'listPage');
+				$this->error('修改失败', 'pageList');
 			}
 		} else{
 			$balance_id = I('get.id',0,'int');

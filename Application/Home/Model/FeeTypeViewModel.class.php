@@ -37,7 +37,7 @@ class FeeTypeViewModel extends ViewModel {
 	}
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function listPage($p,$limit) {
+	public function pageList($p,$limit) {
 		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();

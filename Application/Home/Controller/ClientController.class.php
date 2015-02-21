@@ -4,16 +4,16 @@ use Think\Controller;
 
 class ClientController extends Controller {
     
-	//默认跳转到listPage，分页显示
+	//默认跳转到pageList，分页显示
 	public function index(){
-        header("Location: listPage");
+        header("Location: pageList");
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function listPage(){
+	public function pageList(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$client_list = D('Client')->listPage($p,$limit);
+		$client_list = D('Client')->pageList($p,$limit);
 		$this->assign('client_list',$client_list['list']);
 		$this->assign('client_page',$client_list['page']);
 		
@@ -40,7 +40,7 @@ class ClientController extends Controller {
 		$result = D('Client')->relation(true)->add($data);
 		
 		if(false !== $result){
-			$this->success("增加成功",'listPage');
+			$this->success("增加成功",'pageList');
 		}else{
 			$this->error("增加失败");
 		}
@@ -65,9 +65,9 @@ class ClientController extends Controller {
 			$result	=	D('Client')->edit($client_id,$data);
 			
 			if(false !== $result){
-				$this->success("修改成功", 'listPage');
+				$this->success("修改成功", 'pageList');
 			}else{
-				$this->error("增加失败", 'listPage');
+				$this->error("增加失败", 'pageList');
 			}
 		} else{
 			$client_id = I('get.id',0,'int');

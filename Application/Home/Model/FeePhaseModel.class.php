@@ -19,7 +19,7 @@ class FeePhaseModel extends Model {
 	}
 	
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function listPage($p,$limit) {
+	public function pageList($p,$limit) {
 		$Model	=	M('FeePhase');
 		$order['convert(fee_phase_name using gb2312)']	=	'asc';
 		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
