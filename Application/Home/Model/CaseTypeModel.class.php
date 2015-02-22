@@ -2,7 +2,7 @@
 namespace Home\Model;
 
 //use Think\Model;
-//因为不需要数据表关联，注释RelationModel
+//因为需要数据表关联，启用RelationModel
 use Think\Model\RelationModel;
 
 class CaseTypeModel extends RelationModel {
