@@ -135,7 +135,7 @@ class CaseModel extends RelationModel {
 	}
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function pageList($p,$limit) {
+	public function listPage($p,$limit) {
 		$order['convert(our_ref using gb2312)']	=	'desc';	
 		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
@@ -148,7 +148,7 @@ class CaseModel extends RelationModel {
 	}
 	
 	//更新本数据表中主键为$case_id的记录，$data是数组
-	public function edit($case_id,$data){
+	public function update($case_id,$data){
 		$map['case_id']	=	$case_id;
 		$result	=	$this->relation(true)->where($map)->save($data);
 		return $result;

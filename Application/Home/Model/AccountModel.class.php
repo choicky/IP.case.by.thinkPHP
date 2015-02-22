@@ -22,7 +22,7 @@ class AccountModel extends Model {
 	}
 	
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function pageList($p,$limit) {
+	public function listPage($p,$limit) {
 		$Model	=	M('Account');
 		$order['convert(account_name using gb2312)']	=	'asc';
 		$list	=	$Model->field(true)->order($order)->page($p.','.$limit)->select();
@@ -36,7 +36,7 @@ class AccountModel extends Model {
 	}
 
 	//更新本数据表中主键为$account_id的记录，$data是数组
-	public function edit($account_id,$data){
+	public function update($account_id,$data){
 		$Model	=	M('Account');
 		$map['account_id']	=	$account_id;
 		$result	=	$Model->where($map)->save($data);

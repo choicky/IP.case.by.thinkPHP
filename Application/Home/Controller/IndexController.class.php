@@ -49,7 +49,7 @@ class IndexController extends Controller {
 	}
 	
 	//编辑
-	public function edit(){
+	public function update(){
 		
 		//检测是否 post ，此时是接收数据并保存
 		if(IS_POST){
@@ -63,8 +63,8 @@ class IndexController extends Controller {
 			//通过 I 方法获取 post 过来的 index_content ，并去掉两端的空格
 			$data['index_content']	=	trim(I('post.index_content'));
 			
-			//通过 D 方法实例化 IndexModel 并调用其 edit 方法
-			$result = D('Index')->edit($index_id,$data);
+			//通过 D 方法实例化 IndexModel 并调用其 update 方法
+			$result = D('Index')->update($index_id,$data);
 			if(false !== $result){
 				$this->success('修改成功', 'listAll');
 			}else{
@@ -87,7 +87,7 @@ class IndexController extends Controller {
 			//将 $data 赋给 data ，以便于模板调用
 			$this->assign('data',$data);
 			
-			//渲染模板，模板名与方法名对应，即，应该是 edit.html
+			//渲染模板，模板名与方法名对应，即，应该是 update.html
 			$this->display();
 		}
 	}

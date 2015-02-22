@@ -44,7 +44,7 @@ class FeeTypeController extends Controller {
 		}
 	}
 		
-	public function edit(){
+	public function update(){
 		if(IS_POST){
 			
 			$fee_type_id	=	trim(I('post.fee_type_id'));
@@ -56,7 +56,7 @@ class FeeTypeController extends Controller {
 			$data['fee_phase_id']	=	trim(I('post.fee_phase_id'));
 						
 			//var_dump($data);
-			$result = D('FeeType')->editFeeType($fee_type_id,$data);
+			$result = D('FeeType')->updateFeeType($fee_type_id,$data);
 			if(false !== $result){
 				$this->success('修改成功', 'listFeeType');
 				//header("Location: listFeeType");

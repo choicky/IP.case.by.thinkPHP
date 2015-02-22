@@ -37,7 +37,7 @@ class FeeTypeModel extends RelationModel {
 	}
 	
 	//更新fee_type表中主键为$fee_type_id的记录，$data是数组
-	public function editFeeType($fee_type_id,$data){
+	public function updateFeeType($fee_type_id,$data){
 		$map['fee_type_id']	=	$fee_type_id;
 		$result	=	$this->relation(true)->where($map)->save($data);
 		return $result;

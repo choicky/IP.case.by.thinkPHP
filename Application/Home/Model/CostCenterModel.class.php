@@ -22,7 +22,7 @@ class CostCenterModel extends Model {
 	}
 	
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function pageList($p,$limit) {
+	public function listPage($p,$limit) {
 		$Model	=	M('CostCenter');
 		$order['convert(cost_center_name using gb2312)']	=	'asc';
 		$list	= $Model->field(true)->order($order)->page($p.','.$limit)->select();
@@ -36,7 +36,7 @@ class CostCenterModel extends Model {
 	}
 	
 	//更新cost_center表中主键为$cost_center_id的记录，$data是数组
-	public function edit($cost_center_id,$data){
+	public function update($cost_center_id,$data){
 		$Model	=	M('CostCenter');
 		$map['cost_center_id']	=	$cost_center_id;
 		$result	=	$Model->where($map)->save($data);

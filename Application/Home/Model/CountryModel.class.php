@@ -22,7 +22,7 @@ class CountryModel extends Model {
 	}
 	
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function pageList($p,$limit) {
+	public function listPage($p,$limit) {
 		$Model	=	M('Country');
 		$order['convert(country_id_name using gb2312)']	=	'asc';
 		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
@@ -36,7 +36,7 @@ class CountryModel extends Model {
 	}
 	
 	//更新本数据表中主键为$country_id_id的记录，$data是数组
-	public function edit($country_id_id,$data){
+	public function update($country_id_id,$data){
 		$Model	=	M('Country');
 		$map['country_id_id']	=	$country_id_id;
 		$result	=	$Model->where($map)->save($data);

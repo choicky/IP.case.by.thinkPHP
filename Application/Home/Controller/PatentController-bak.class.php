@@ -4,9 +4,9 @@ use Think\Controller;
 
 class PatentController extends Controller {
     
-	//默认跳转到pageList，分页显示
+	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: pageList");
+        header("Location: listPage");
     }
 	
 	//初步开案登记
@@ -123,10 +123,10 @@ class PatentController extends Controller {
 
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function pageList(){
+	public function listPage(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$case_data = D('Case')->pageList($p,$limit);
+		$case_data = D('Case')->listPage($p,$limit);
 		$this->assign('case_data',$case_data['list']);
 		$this->assign('patent_page',$case_data['page']);
 		
@@ -179,14 +179,14 @@ class PatentController extends Controller {
 		$result = M('Patent')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'pageList');
+			$this->success('新增成功', 'listPage');
 		}else{
 			$this->error('增加失败');
 		}
 	}
 	
 	//编辑
-	public function edit(){
+	public function update(){
 		if(IS_POST){
 			
 			/*

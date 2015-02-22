@@ -34,7 +34,7 @@ class ClientModel extends RelationModel {
 	}
 	
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function pageList($p,$limit) {
+	public function listPage($p,$limit) {
 		$order['convert(client_name using gb2312)']	=	'asc';
 		$list	= $this->relation(true)->field(true)->order($order)->page($p.','.$limit)->select();
 		
@@ -47,7 +47,7 @@ class ClientModel extends RelationModel {
 	}
 	
 	//更新本数据表中主键为$client_id的记录，$data是数组
-	public function edit($client_id,$data){
+	public function update($client_id,$data){
 		//先在client_extend表新建与client_id对应的记录，否则无法更新；这是thinkPHP的数据关联的bug
 		$Model = M('ClientExtend');
 		$map['client_id']	=	$client_id;

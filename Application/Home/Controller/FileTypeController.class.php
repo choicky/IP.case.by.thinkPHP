@@ -4,16 +4,16 @@ use Think\Controller;
 
 class FileTypeController extends Controller {
     
-	//默认跳转到pageList，分页显示
+	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: pageList");
+        header("Location: listPage");
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function pageList(){
+	public function listPage(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$file_type_list = D('FileType')->pageList($p,$limit);
+		$file_type_list = D('FileType')->listPage($p,$limit);
 		$this->assign('file_type_list',$file_type_list['list']);
 		$this->assign('file_type_page',$file_type_list['page']);
 
@@ -32,24 +32,24 @@ class FileTypeController extends Controller {
 		$result = M('FileType')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'pageList');
+			$this->success('新增成功', 'listPage');
 		}else{
-			$this->error('增加失败', 'pageList');
+			$this->error('增加失败', 'listPage');
 		}
 	}
 		
-	public function edit(){
+	public function update(){
 		if(IS_POST){
 			$file_type_id	=	trim(I('post.file_type_id'));
 			
 			$data=array();
 			$data['file_name']	=	trim(I('post.file_name'));
 
-			$result = D('FileType')->edit($file_type_id,$data);
+			$result = D('FileType')->update($file_type_id,$data);
 			if(false !== $result){
-				$this->success('修改成功', 'pageList');
+				$this->success('修改成功', 'listPage');
 			}else{
-				$this->error('修改失败', 'pageList');
+				$this->error('修改失败', 'listPage');
 			}
 		} else{
 			$file_type_id = I('get.id',0,'int');

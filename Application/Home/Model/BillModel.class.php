@@ -51,7 +51,7 @@ class BillModel extends RelationModel {
 	}
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
-	public function pageList($p,$limit) {
+	public function listPage($p,$limit) {
 		$order['bill_date']	=	'desc';	
 		$list	=	$this->relation(true)->field(true)->order($order)->page($p.','.$limit)->select();
 		
@@ -64,7 +64,7 @@ class BillModel extends RelationModel {
 	}
 	
 	//更新本数据表中主键为$Bill_id的记录，$data是数组
-	public function edit($bill_id,$data){
+	public function update($bill_id,$data){
 		$map['bill_id']	=	$bill_id;
 		$result	=	$this->relation(true)->where($map)->save($data);
 		return $result;

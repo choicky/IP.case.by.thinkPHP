@@ -50,7 +50,7 @@ class CaseTypeModel extends RelationModel {
 	}
 	
 	//分页返回本数据表的所有数据，$current_page 为当前页数，$recodes_per_page 为每页显示的记录条数
-	public function pageList($current_page,$recodes_per_page) {
+	public function listPage($current_page,$recodes_per_page) {
 		$Model	=	D('CaseType');
 		$order['convert(case_type_name using gb2312)']	=	'asc';
 		$list	= $Model->field(true)->order($order)->page($current_page.','.$recodes_per_page)->select();
@@ -64,7 +64,7 @@ class CaseTypeModel extends RelationModel {
 	}
 	
 	//更新本数据表中主键为$case_type_id的记录，$data是数组
-	public function edit($case_type_id,$data){
+	public function update($case_type_id,$data){
 		$Model	=	M('CaseType');
 		$map['case_type_id']	=	$case_type_id;
 		$result	=	$Model->where($map)->save($data);

@@ -4,16 +4,16 @@ use Think\Controller;
 
 class ClaimController extends Controller {
     
-	//默认跳转到pageList，分页显示
+	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: pageList");
+        header("Location: listPage");
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function pageList(){
+	public function listPage(){
 		$p	= I("p",1,"int");
 		$limit	= 10;
-		$claim_list = D('ClaimView')->pageList($p,$limit);
+		$claim_list = D('ClaimView')->listPage($p,$limit);
 		 
 		$this->assign('claim_list',$claim_list['list']);
 		$this->assign('claim_page',$claim_list['page']);
@@ -51,14 +51,14 @@ class ClaimController extends Controller {
 		$result = M('Claim')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'pageList');
+			$this->success('新增成功', 'listPage');
 		}else{
 			$this->error('增加失败');
 		}
 	}
 	
 	//编辑
-	public function edit(){
+	public function update(){
 		if(IS_POST){
 			$claim_id	=	trim(I('post.claim_id'));
 			
@@ -73,11 +73,11 @@ class ClaimController extends Controller {
 			$data['official_fee']	=	trim(I('post.official_fee'));
 			$data['service_fee']	=	trim(I('post.service_fee'));
 						
-			$result = D('Claim')->edit($claim_id,$data);
+			$result = D('Claim')->update($claim_id,$data);
 			if(false !== $result){
-				$this->success('修改成功', 'pageList');
+				$this->success('修改成功', 'listPage');
 			}else{
-				$this->error('修改失败', 'pageList');
+				$this->error('修改失败', 'listPage');
 			}
 		} else{
 			$claim_id = I('get.id',0,'int');
