@@ -39,7 +39,7 @@
 						<tbody>
 							<volist name="case_type_data" id="case_type_vo">
 							<tr>
-								<td>{$case_type_id}</td>
+								<td>{$case_type_vo.case_type_id}</td>
 								<td>{$case_type_vo.case_type_name}</td>
                                 <td>{$case_type_vo.case_group_name}</td>
                                 <td><a href="__CONTROLLER__/update/id/{$case_type_vo.case_type_id}">编辑</a>、<a href="__CONTROLLER__/delete/id/{$case_type_vo.case_type_id}">删除</a></td>

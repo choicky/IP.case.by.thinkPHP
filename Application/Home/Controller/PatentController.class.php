@@ -5,10 +5,29 @@ use Think\Controller;
 class PatentController extends Controller {
     
 	//默认跳转到listPage，分页显示
-	public function index1(){
+	public function index(){
        // header("Location: listPage");
        
-	   $this->display();
+	   $time1=date(("Y"),time());
+
+       $time2=mktime(0,0,0,2,23,$time1);
+       $time3=mktime(0,0,0,2,23,$time1+1);
+       $time4=mktime(0,0,0,2,23,$time1)-1;
+       var_dump('当前年份:'.$time1);
+       var_dump('当前年份的最小时间戳：'.$time2);
+       var_dump('下一年度的最小时间戳：'.$time3);
+       var_dump('比当前年份最小时间戳更小1：'.$time4);
+       
+       $date1=date("Y-m-d H:i:s",$time1);
+       $date2=date("Y-m-d H:i:s",$time2);
+       $date3=date("Y-m-d H:i:s",$time3);
+       $date4=date("Y-m-d H:i:s",$time4);
+       
+       var_dump('当前年份:'.$date1);
+       var_dump('当前年份的最小时间戳：'.$date2);
+       var_dump('下一年度的最小时间戳：'.$date3);
+       var_dump('比当前年份最小时间戳更小1：'.$date4);
+       
     }
 	
 	//初步开案登记
@@ -16,7 +35,7 @@ class PatentController extends Controller {
         $year_option_data	=	yearOption();
 		$this->assign('year_option_data',$year_option_data);
 		
-		$patent_type_data	=	D('CaseTypeGroup')->field(true)->listAllPatent();
+		$patent_type_data	=	D('CaseGroup')->field(true)->listAllPatent();
 		$this->assign('patent_type_data',$patent_type_data);
 		
 		

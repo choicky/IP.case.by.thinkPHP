@@ -6,13 +6,15 @@ class CaseTypeController extends Controller {
     
 	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: listPage");
+        //header("Location: listPage");
+        $data   =   D('CaseType')->getCaseTypeId(1);
+        var_dump($data);
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
 		$p  =   I("p",1,"int");
-		$limit  =   C('RECORDES_PER_PAGE');
+		$limit  =   C('RECORDS_PER_PAGE');
 		$case_type_data = D('CaseType')->relation(true)->field(true)->listPage($p,$limit);
 		$this->assign('case_type_data',$case_type_data['data']);
 		$this->assign('case_type_page',$case_type_data['page']);

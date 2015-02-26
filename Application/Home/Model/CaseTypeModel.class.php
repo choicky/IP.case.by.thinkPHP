@@ -74,8 +74,13 @@ class CaseTypeModel extends RelationModel {
     //返回某个 $case_group_id 的所有 case_type_id
 	public function getCaseTypeId($case_group_id) {
 		$map['case_group_id']    =   $case_group_id;
-        $result_array   =   $this->where($map)->select();
-        return $result_array;
+        $result   =   $this->field('case_type_id')->where($map)->select();
+        
+        for($i=0;   $i<count($result);  $i++){
+            $data[$i]   =   $result[$i]['case_type_id'];
+        }
+        
+        return $data;
 	}
 
 }

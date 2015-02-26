@@ -9,22 +9,13 @@ class CaseModel extends RelationModel {
 	//定义本数据表的数据关联
 	protected $_link = array(
 		
-		'CaseExtend'	=>	array(						//本数据关联的名称
-			'mapping_name'		=>	'CaseExtend',		//重新定义本数据关联的名称
-			'class_name'		=>	'CaseExtend',		//被关联的数据表
-			'mapping_type'		=>	self::HAS_ONE,		//主从关系的一对一关联			
-			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'tm_category_id,publication_date,registration_date,related_our_ref,remarks',		//关联字段
-			'as_fields'			=>	'tm_category_id,publication_date,registration_date,related_our_ref,remarks'		//字段别名
-		),
-		
 		'CaseType'	=>	array(							//本数据关联的名称
 			'mapping_name'		=>	'CaseType',			//重新定义本数据关联的名称
 			'class_name'		=>	'CaseType',			//被关联的数据表
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'case_type_id',		//外键，
-			'mapping_fields'	=>	'case_type_name',	//关联字段
-			'as_fields'			=>	'case_type_name'	//字段别名
+			'mapping_fields'	=>	'case_type_name,case_group_id',	//关联字段
+			'as_fields'			=>	'case_type_name,case_group_id'	//字段别名
 		),
 		
 		'CaseGroup'	=>	array(							//本数据关联的名称
@@ -159,5 +150,20 @@ class CaseModel extends RelationModel {
 		$map['case_id']	=	$case_id;
 		$result	=	$this->relation(true)->field(true)->where($map)->select();
 		return $result;
-	}	
+	}
+    
+    //返回本数据表中 $year 开案的、 分组为 $case_group_id 的最后一条记录
+	public function getLastOne($year,$case_group_id){
+		$begin_time =	mktime(0,0,0,1,1,$year);
+        $end_time =   mktime(0,0,0,1,1,$year+1)-1;
+        $map['create_time'] =   array('between','$begin_time,$end_time');
+        
+        $case_type_id   =   D('CaseType')->getCaseTypeId($case_group_id)
+        $map['case_type_id']    =   array('in',$case_type_id);
+        
+        $order['convert(our_ref using gb2312)']	=	'desc';
+        
+		$result	=	$this->relation(true)->field(true)->where($map)->order($order)->select();
+		return $result[0];
+	}
 }
