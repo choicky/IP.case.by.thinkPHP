@@ -9,6 +9,7 @@ class ClaimViewModel extends ViewModel {
 		'Claim'	=>	array(
 			'claim_id',
 			'claimer_id',
+			'cost_center_id',
 			'claim_date',
 			'balance_id',
 			'total_amount',
@@ -26,7 +27,13 @@ class ClaimViewModel extends ViewModel {
 		'Client'	=>	array(
 			'client_name',
 			'_on'	=>	'Claim.client_id=Client.client_id'
-		),	
+		),
+		
+		'CostCenter'	=>	array(
+			'cost_center_name',
+			'_on'	=>	'Claim.cost_center_id=CostCenter.cost_center_id'
+		),
+	
 	);
 	
 	//返回本数据视图的所有数据

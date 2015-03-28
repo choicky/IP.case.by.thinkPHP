@@ -21,14 +21,14 @@ class BalanceModel extends RelationModel {
 			'class_name'		=>	'ClaimView',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'balance_id',			//外键
-			'mapping_fields'	=>	'claim_id,claimer_id,member_name,claim_date,total_amount,client_id,client_name',		//关联字段
+			'mapping_fields'	=>	'claim_id,claimer_id,cost_center_name,claim_date,total_amount,client_id,client_name',		//关联字段
 		),
 	
 	);
 	
 	//返回本数据表的所有数据
 	public function listAll() {			
-		$order['convert(deal_date)']	=	'desc';
+		$order['deal_date']	=	'desc';
 		$list	=	$this->relation(true)->field(true)->order($order)->select();
 		return $list;
 	}
@@ -52,11 +52,5 @@ class BalanceModel extends RelationModel {
 		$result	=	$this->where($map)->save($data);
 		return $result;
 	}
-	
-	//删除本数据表中主键为$balance_id的记录
-	public function delete($balance_id){
-		$map['balance_id']	=	$balance_id;	//自定义 where() 语句的参数
-		$result	=	$this->where($map)->delete();	//基于 where() 删除对应的数据，
-		return $result;	//返回值为删除的记录数量
-	}
+
 }

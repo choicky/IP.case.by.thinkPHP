@@ -42,7 +42,7 @@
 								<th>对方当事人</th>
 								<th>其他操作</th>
 								<th>&nbsp;|&nbsp;</th>
-								<th>结算到成本中心</th>
+								<th>结算账户</th>
 								<th>已结算金额</th>
 							</tr>
 						</thead>
@@ -62,13 +62,13 @@
 								<td>
 									<?php $total_amount	=	0;?>
 									<volist name="balance_vo['Claim']" id="claim_vo">
-										{$claim_vo.member_name}；
+										{$claim_vo.cost_center_name}；
 										<?php $total_amount	+=	$claim_vo['total_amount'];?>
 									</volist>
 									<a href="__APP__/Claim/update/id/{$balance_vo.balance_id}">更新</a>
 								</td>
 								<td align="right">
-									{$balance_vo['income_amount']+$balance_vo['outcome_amount']==$total_amount ? '' :'未全部分摊' }
+									{$balance_vo['income_amount']+$balance_vo['outcome_amount']==$total_amount ? '' :'未全部结算' }
 									{$total_amount/100}
 								</td>
 							</tr>
