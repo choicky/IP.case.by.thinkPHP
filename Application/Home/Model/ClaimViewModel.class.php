@@ -1,13 +1,10 @@
 <?php
 namespace Home\Model;
-
-//因为启动数据表视图模型，必须继承ViewModel，注释Model
-//use Think\Model;
 use Think\Model\ViewModel;
 
 class ClaimViewModel extends ViewModel {
 	
-	//定义claim表与fee_phase表的视图关系
+	//定义本数据表的视图关系
 	protected $viewFields = array(
 		'Claim'	=>	array(
 			'claim_id',

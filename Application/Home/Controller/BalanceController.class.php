@@ -9,88 +9,77 @@ class BalanceController extends Controller {
         header("Location: listPage");
     }
 	
+	//默认跳转到listPage，分页显示
+	public function listAll(){
+        header("Location: listPage");
+    }
+	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
 		$p	= I("p",1,"int");
-		$limit	= 10;
-		$balance_list = D('BalanceView')->listPage($p,$limit);
-		 
+		$page_limit  =   C("RECORDS_PER_PAGE");
+		$balance_list = D('Balance')->listPage($p,$page_limit);
 		$this->assign('balance_list',$balance_list['list']);
 		$this->assign('balance_page',$balance_list['page']);
 		
-		$account_list	=	D('Account')->listBasic();
+		//取出 Account 表的内容以及数量
+		$account_list	=	D('Account')->field(true)->listAll();
 		$account_count	=	count($account_list);
 		$this->assign('account_list',$account_list);
 		$this->assign('account_count',$account_count);
 		
-		$client_list	=	D('Client')->listBasic();
-		$client_count	=	count($client_list);
-		$this->assign('client_list',$client_list);
-		$this->assign('client_count',$client_count);
+		//取出其他变量
+		$row_limit  =   C("ROWS_PER_SELECT");
+		$today	=	time();
+		$this->assign('row_limit',$row_limit);
+        $this->assign('today',$today);
 	
-		$member_list	=	D('Member')->listBasic();
-		$member_count	=	count($member_list);
-		$this->assign('member_list',$member_list);
-		$this->assign('member_count',$member_count);
-		
-		$cost_center_list	=	D('CostCenter')->listBasic();
-		$cost_center_count	=	count($cost_center_list);
-		$this->assign('cost_center_list',$cost_center_list);
-		$this->assign('cost_center_count',$cost_center_count);
-				
 		$this->display();
 	}
 	
 	//新增
 	public function add(){
 		$data	=	array();
-		$data['account_id'] = I('post.account_id',0,'int');
+		$data['account_id']	=	trim(I('post.account_id'));
 		$data['deal_date']	=	trim(I('post.deal_date'));
-		//转为时间戳
-		$data['deal_date']	=	time($data['deal_date']);
-		$data['income_amount'] = I('post.income_amount',0,'int');
-		$data['outcome_amount'] = I('post.outcome_amount',0,'int');
-		$data['summary']	=	trim(I('post.summary','','string'));
-		$data['other_party_id'] = I('post.other_party_id',0,'int');
-		$data['claimer_id'] = I('post.claimer_id',0,'int');
-		$data['cost_center_id'] = I('post.cost_center_id',0,'int');
-		$data['invoice_number']	=	trim(I('post.invoice_number','','string'));
+		$data['deal_date']	=	strtotime($data['deal_date']);
+		$data['income_amount']	=	trim(I('post.income_amount'));
+		$data['income_amount']	=	$data['income_amount']*100;
+		$data['outcome_amount']	=	trim(I('post.outcome_amount'));
+		$data['outcome_amount']	=	$data['outcome_amount']*100;
+		$data['summary']	=	trim(I('post.summary'));
+		$data['other_party']	=	trim(I('post.other_party'));
 
-		if(!$data['0==$data['income_amount']'] && 0==$data['outcome_amount']){
-			$this->error('未填写金额');
+		if(!$data['account_id']){
+			$this->error('未填写账户名称');
 		} 
 
 		$result = M('Balance')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'listPage');
+			$this->success('新增成功', 'listAll');
 		}else{
 			$this->error('增加失败');
 		}
 	}
 	
-	//编辑
+	//更新	
 	public function update(){
 		if(IS_POST){
-			$balance_id = I('post.balance_id',0,'int');
+			
+			$balance_id	=	trim(I('post.balance_id'));
 			
 			$data=array();
-			$data['account_id'] = I('post.account_id',0,'int');
+			$data['account_id']	=	trim(I('post.account_id'));
 			$data['deal_date']	=	trim(I('post.deal_date'));
-			//转为时间戳
-			$data['deal_date']	=	time($data['deal_date']);
-			$data['income_amount'] = I('post.income_amount',0,'int');
-			$data['outcome_amount'] = I('post.outcome_amount',0,'int');
-			$data['summary']	=	trim(I('post.summary','','string'));
-			$data['other_party_id'] = I('post.other_party_id',0,'int');
-			$data['claimer_id'] = I('post.claimer_id',0,'int');
-			$data['cost_center_id'] = I('post.cost_center_id',0,'int');
-			$data['invoice_number']	=	trim(I('post.invoice_number','','string'));
-			
-			if(!$data['0==$data['income_amount']'] && 0==$data['outcome_amount']){
-				$this->error('未填写金额');
-			} 
-			
+			$data['deal_date']	=	strtotime($data['deal_date']);
+			$data['income_amount']	=	trim(I('post.income_amount'));
+			$data['income_amount']	=	$data['income_amount']*100;
+			$data['outcome_amount']	=	trim(I('post.outcome_amount'));
+			$data['outcome_amount']	=	$data['outcome_amount']*100;
+			$data['summary']	=	trim(I('post.summary'));
+			$data['other_party']	=	trim(I('post.other_party'));
+
 			$result = D('Balance')->update($balance_id,$data);
 			if(false !== $result){
 				$this->success('修改成功', 'listPage');
@@ -101,24 +90,76 @@ class BalanceController extends Controller {
 			$balance_id = I('get.id',0,'int');
 
 			if(!$balance_id){
-				$this->error('未指明要编辑的认领单号');
+				$this->error('未指明要编辑的账户');
 			}
 
-			$balance_list = M('Balance')->getByBalanceId($balance_id);
+			$balance_list = M('Balance')->getByBalanceId($balance_id);			
 			$this->assign('balance_list',$balance_list);
 			
-			$account_list	=	D('Account')->listBasic();
+			//取出 Account 表的内容以及数量
+			$account_list	=	D('Account')->field(true)->listAll();
+			$account_count	=	count($account_list);
 			$this->assign('account_list',$account_list);
+			$this->assign('account_count',$account_count);
 			
-			$client_list	=	D('Client')->listBasic();
-			$this->assign('client_list',$client_list);
+			//取出其他变量
+			$row_limit  =   C("ROWS_PER_SELECT");
+			$this->assign('row_limit',$row_limit);
+
+			$this->display();
+		}
+	}
+	
+	//删除
+	public function delete(){
+		if(IS_POST){
 			
-			$member_list	=	D('Member')->listBasic();
-			$this->assign('member_list',$member_list);
+			//通过 I 方法获取 post 过来的 balance_id
+			$balance_id	=	trim(I('post.balance_id'));
+			$no_btn	=	I('post.no_btn');
+			$yes_btn	=	I('post.yes_btn');
 			
-			$cost_center_list	=	D('CostCenter')->listBasic();
-			$this->assign('cost_center_list',$cost_center_list);
+			if(1==$no_btn){
+				$this->success('取消删除', 'listAll');
+			}
 			
+			if(1==$yes_btn){
+				$map['balance_id']	=	$balance_id;
+				$condition	=	M('Claim')->where($map)->find();
+				if(is_array($condition)){
+					$this->error('本收支流水已结算到成本中心，不可删除');
+				}
+				
+				$result = M('Balance')->where($map)->delete();
+				if($result){
+					$this->success('删除成功', 'listAll');
+				}
+			}
+			
+		} else{
+			$balance_id = I('get.id',0,'int');
+
+			if(!$balance_id){
+				$this->error('未指明要删除的流水');
+			}
+			
+			$balance_list = M('Balance')->getByBalanceId($balance_id);
+			
+			$this->assign('balance_list',$balance_list);
+			
+			$balance_list = D('Balance')->relation(true)->field(true)->getByBalanceId($balance_id);			
+			$this->assign('balance_list',$balance_list);
+			
+			//取出 Account 表的内容以及数量
+			$account_list	=	D('Account')->field(true)->listAll();
+			$account_count	=	count($account_list);
+			$this->assign('account_list',$account_list);
+			$this->assign('account_count',$account_count);
+			
+			//取出其他变量
+			$row_limit  =   C("ROWS_PER_SELECT");
+			$this->assign('row_limit',$row_limit);
+
 			$this->display();
 		}
 	}

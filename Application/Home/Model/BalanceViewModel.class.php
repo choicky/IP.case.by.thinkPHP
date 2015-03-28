@@ -1,13 +1,10 @@
 <?php
 namespace Home\Model;
-
-//因为启动数据表视图模型，必须继承ViewModel，注释Model
-//use Think\Model;
 use Think\Model\ViewModel;
 
 class BalanceViewModel extends ViewModel {
 	
-	//定义Balance表与fee_phase表的视图关系
+	//定义本数据表的视图关系
 	protected $viewFields = array(
 		'Balance'	=>	array(
 			'balance_id',
@@ -16,17 +13,19 @@ class BalanceViewModel extends ViewModel {
 			'income_amount',
 			'outcome_amount',
 			'summary',
-			'other_party_id',
-			'claimer_id',
-			'cost_center_id',
-			'invoice_number',
+			'other_party',
 			'_type'=>'LEFT'
 		),
 		
 		'Account'	=>	array(
 			'account_name',
 			'_on'	=>	'Balance.account_id=Account.account_id'
-		),	
+		),
+		
+		'Claim'	=>	array(
+			'claim_id',
+			'_on'	=>	'Balance.account_id=Account.account_id'
+		),
 		
 		'Client'	=>	array(
 			'client_name',

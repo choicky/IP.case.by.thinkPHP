@@ -1,11 +1,14 @@
+<!-- 继承模板页面 base --> 
+<!-- 该模板位于  ./Application\Home\View\Public --> 
 <extend name="Public:base" />
 	
-	
+<!-- 区块 title 替换开始 --> 	
 	<block name="title">
-		<title>收支认领列表管理</title>
+		<title>列表</title>
 	</block>
+<!-- 区块 title 替换结束 --> 	
 	
-	
+<!-- 区块 page 替换开始 --> 
 	<block name="page">
 	  
 		<!-- Page Header
@@ -13,7 +16,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1>收支认领列表</h1>
+					<h1>列表</h1>
 				</div>
 			</div>
 		</div>
@@ -22,7 +25,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
-					<p>点击“编号”可以编辑费用信息；点击“收支流水编号”能查看该笔收支流水的基本信息；点击"总金额"能搜索出相应的结果</p>
+					“编号”是唯一的；表格底部有换页按钮；页面底部可以新增
 				</div>
 
 				<!-- Table -->
@@ -31,41 +34,49 @@
 						<thead>
 							<tr class="info">
 								<th>编号</th>
-								<th>账户</th>
+								<th>交易账户</th>
 								<th>交易日期</th>
 								<th>收入金额</th>
 								<th>支出金额</th>
 								<th>摘要</th>
-								<th>交易的另一方当事人</th>
-								<th>责任人</th>
-								<th>归到核算账户</th>
-								<th>发票号</th>
+								<th>对方当事人</th>
+								<th>其他操作</th>
+								<th>&nbsp;|&nbsp;</th>
+								<th>结算到成本中心</th>
+								<th>已结算金额</th>
 							</tr>
 						</thead>
 						<tbody>
-							<volist name="balance_list" id="balance_list">
+							<!-- 将controller assign过来的 balance_list 赋给  balance_vo--> 
+							<volist name="balance_list" id="balance_vo">
 							<tr>
-								<td><a href="__CONTROLLER__/edit/id/{$balance_list.balance_id}">{$balance_list.balance_id}</a></td>
-								<td>{$balance_list.account_name}</td>
-								<td>{$balance_list.deal_date|date="Y/m/d",###}</td>
-								<td>{balance_list.income_amount}</td>
-								<td>{balance_list.outcome_amount}</td>
-								<td>{balance_list.summary}</td>
-								<td>{balance_list.client_name}</td>
-								<td>{balance_list.member_name}</td>
-								<td>{balance_list.cost_center_name}</td>
-								<td>{balance_list.income_amount}</td>
-								<td><a href="__APP__/Home/Balance/view/id/{$balance_list.balance_id}">{$balance_list.balance_id}</a></td>
-								<td><a href="__APP__/Home/Balance/search/amount/{$balance_list.total_amount}">{$balance_list.total_amount}</a></td>
-								<td>{$balance_list.official_fee}</td>
-								<td>{$balance_list.service_fee}</td>
-								<td>{$balance_list.client_name}</td>
+								<td>{$balance_vo.balance_id}</td>
+								<td>{$balance_vo.account_name}</td>
+								<td>{$balance_vo.deal_date|date="Y-m-d",###}</td>
+								<td align="right">{$balance_vo['income_amount']/100}</td>
+								<td align="right">{$balance_vo['outcome_amount']/100}</td>
+								<td>{$balance_vo.summary}</td>
+								<td>{$balance_vo.other_party}</td>
+								<td><a href="__CONTROLLER__/update/id/{$balance_vo.balance_id}">更新</a> <a href="__CONTROLLER__/delete/id/{$balance_vo.balance_id}">删除</td>
+								<th>&nbsp;|&nbsp;</th>
+								<td>
+									<?php $total_amount	=	0;?>
+									<volist name="balance_vo['Claim']" id="claim_vo">
+										{$claim_vo.member_name}；
+										<?php $total_amount	+=	$claim_vo['total_amount'];?>
+									</volist>
+									<a href="__APP__/Claim/update/id/{$balance_vo.balance_id}">更新</a>
+								</td>
+								<td align="right">
+									{$balance_vo['income_amount']+$balance_vo['outcome_amount']==$total_amount ? '' :'未全部分摊' }
+									{$total_amount/100}
+								</td>
 							</tr>
 							</volist>                 
 						</tbody>
 					</table> 
 					{$balance_page}
-				</div><!-- /example -->
+				</div>
 			</div>
         </div>
 	  
@@ -74,9 +85,9 @@
 		<!-- Forms
 			================================================== -->
 	    <div class="row">
-			<div class="col-lg-9">
+			<div class="col-lg-12">
 				<div class="page-header">
-					<h1 id="forms">增加新收支认领</h1>
+					<h1 id="forms">新增</h1>
 				</div>
 			</div>
         </div>
@@ -86,87 +97,70 @@
 				<div class="well bs-component">
 					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
 						<fieldset>
-							<legend>“认领人”是必须的</legend>
+							<legend>尽量填写完整每一项</legend>
 							<div class="form-group">
-								<label for="balanceer_id" class="col-lg-3 control-label">认领人</label>
+								<label for="account_id" class="col-lg-3 control-label">账户名称</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="balanceer_id" size="{$member_count<20?$member_count:20}">
-										<volist name="member_list" id="member_list">
-										<option value="{$member_list.member_id}"  >{$member_list.member_name}</option>
+									<select class="form-control" name="account_id" size="{$account_count<$row_limit ? $account_count : $row_limit}">
+										<volist name="account_list" id="account_vo">
+										<option value="{$account_vo.account_id}"  >{$account_vo.account_name}</option>
 										</volist>
 									</select>
 								</div>
 								<div class="col-lg-5">
-									*注意*
+									<p>用鼠标选择</p>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="balance_date" class="col-lg-3 control-label">认领日期</label>
+								<label for="deal_date" class="col-lg-3 control-label">交易日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="balance_date" name="balance_date" placeholder="认领日期" value="{$balance_list.balance_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="deal_date" name="deal_date" placeholder="deal_date" value="{$today|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
-									*注意*
-								</div>
-							</div>							
-							<div class="form-group">
-								<label for="balance_id" class="col-lg-3 control-label">收支流水编号</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="balance_id" name="balance_id" placeholder="收支流水编号">
-								</div>
-								<div class="col-lg-5">
-									*注意*
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="total_amount" name="total_amount" placeholder="默认金额">
-								</div>
-								<div class="col-lg-5">
-									*注意*
+									日期格式为 yyyy-mm-dd，可用鼠标选择
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="official_fee" class="col-lg-3 control-label">官费</label>
+								<label for="income_amount" class="col-lg-3 control-label">收入金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="official_fee" name="official_fee" placeholder="默认金额">
+									<input type="text" class="form-control" id="income_amount" name="income_amount" placeholder="收入金额">
 								</div>
 								<div class="col-lg-5">
-									*注意*
+									小数点必须使用英文的“.”
 								</div>
 							</div>
-							
 							<div class="form-group">
-								<label for="service_fee" class="col-lg-3 control-label">服务费</label>
+								<label for="outcome_amount" class="col-lg-3 control-label">支出金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="service_fee" name="service_fee" placeholder="默认金额">
+									<input type="text" class="form-control" id="outcome_amount" name="outcome_amount" placeholder="支出金额">
 								</div>
 								<div class="col-lg-5">
-									*注意*
+									小数点必须使用英文的“.”
 								</div>
 							</div>
-							
 							<div class="form-group">
-								<label for="client_id" class="col-lg-3 control-label">客户</label>
+								<label for="summary" class="col-lg-3 control-label">交易摘要</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="client_id" size="size="{$client_count<20?$client_count:20}">
-										<volist name="client_list" id="client_list">
-										<option value="{$client_list.client_id}"> {$client_list.client_name}</option>
-										</volist>
-									</select>
+									<input type="text" class="form-control" id="summary" name="summary" placeholder="交易摘要">
 								</div>
 								<div class="col-lg-5">
-									*注意*
+									用于备注本笔流水
 								</div>
 							</div>
-							
-							  
 							<div class="form-group">
-								<div class="col-lg-4 col-lg-offset-3">
-									<button class="btn btn-default">Cancel</button>
-									<button type="submit" class="btn btn-primary">Submit</button>
+								<label for="other_party" class="col-lg-3 control-label">对方当事人</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="other_party" name="other_party" placeholder="对方当事人">
+								</div>
+								<div class="col-lg-5">
+									“收入”则填付款人名称，“支出”则填收款人名称			
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button class="btn btn-default"> 取消 </button>
+									<button type="submit" class="btn btn-primary"> 确认 </button>
 								</div>
 							</div>
 						</fieldset>
@@ -176,3 +170,4 @@
         </div>
 
 	</block>
+<!-- 区块 page 替换结束 --> 
