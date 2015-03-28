@@ -9,10 +9,15 @@ class AccountController extends Controller {
         header("Location: listPage");
     }
 	
+	//默认跳转到listPage，分页显示
+	public function listAll(){
+        header("Location: listPage");
+    }
+	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
 		$p	= I("p",1,"int");
-		$limit	= 10;
+		$limit  =   C("RECORDS_PER_PAGE");
 		$account_list = D('Account')->listPage($p,$limit);
 		$this->assign('account_list',$account_list['list']);
 		$this->assign('account_page',$account_list['page']);
@@ -34,13 +39,13 @@ class AccountController extends Controller {
 		$result = M('Account')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'listPage');
+			$this->success('新增成功', 'listAll');
 		}else{
 			$this->error('增加失败');
 		}
 	}
 	
-	//新增	
+	//更新	
 	public function update(){
 		if(IS_POST){
 			
@@ -64,6 +69,49 @@ class AccountController extends Controller {
 				$this->error('未指明要编辑的账户');
 			}
 
+			$account_list = M('Account')->getByAccountId($account_id);
+			
+			$this->assign('account_list',$account_list);
+
+			$this->display();
+		}
+	}
+	
+	//删除
+	public function delete(){
+		if(IS_POST){
+			
+			//通过 I 方法获取 post 过来的 account_id
+			$account_id	=	trim(I('post.account_id'));
+			$no_btn	=	I('post.no_btn');
+			$yes_btn	=	I('post.yes_btn');
+			
+			
+			if(1==$no_btn){
+				$this->success('取消删除', 'listAll');
+			}
+			
+			if(1==$yes_btn){
+				$map['account_id']	=	$account_id;
+				$condition	=	M('Balance')->where($map)->find();
+				if(is_array($condition)){
+					$this->error('本账户下面有收支流水，不可删除');
+				}
+				
+				$result = M('Account')->where($map)->delete();
+				if($result){
+					$this->success('删除成功', 'listAll');
+				}
+			
+			}
+			
+		} else{
+			$account_id = I('get.id',0,'int');
+
+			if(!$account_id){
+				$this->error('未指明要编辑的账户');
+			}
+			
 			$account_list = M('Account')->getByAccountId($account_id);
 			
 			$this->assign('account_list',$account_list);
