@@ -63,7 +63,7 @@ class AccountController extends Controller {
 				$this->error('修改失败', 'listPage');
 			}
 		} else{
-			$account_id = I('get.id',0,'int');
+			$account_id = I('get.account_id',0,'int');
 
 			if(!$account_id){
 				$this->error('未指明要编辑的账户');
@@ -106,7 +106,7 @@ class AccountController extends Controller {
 			}
 			
 		} else{
-			$account_id = I('get.id',0,'int');
+			$account_id = I('get.account_id',0,'int');
 
 			if(!$account_id){
 				$this->error('未指明要编辑的账户');

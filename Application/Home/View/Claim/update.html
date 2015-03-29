@@ -23,12 +23,13 @@
 						<fieldset>
 							<legend>尽量填写完整每一项</legend>
 							<div class="form-group">
-								<label for="account_id" class="col-lg-3 control-label">账户名称</label>
+								<label for="claimer_id" class="col-lg-3 control-label">认领人</label>
 								<div class="col-lg-4">
-									<input type="hidden" class="form-control" id="balance_id" name="balance_id" value="{$balance_list.balance_id}">
-									<select class="form-control" name="account_id" size="{$account_count<$row_limit ? $account_count : $row_limit}">
-										<volist name="account_list" id="account_vo">
-										<option value="{$account_vo.account_id}" {$account_vo['account_id']==$balance_list['account_id']? 'selected="selected"' :'' }>{$account_vo.account_name}</option>
+									<input type="hidden" class="form-control" id="claim_id" name="claim_id" value="{$claim_list.claim_id}">
+									<input type="hidden" class="form-control" id="balance_id" name="balance_id" value="{$claim_list.balance_id}">
+									<select class="form-control" name="claimer_id" size="{$member_count<$row_limit ? $member_count : $row_limit}">
+										<volist name="member_list" id="member_list">
+										<option value="{$member_list.member_id}" {$claim_list['claimer_id']==$member_list['member_id']? 'selected="selected"' :'' }>{$member_list.member_name}</option>
 										</volist>
 									</select>
 								</div>
@@ -37,48 +38,65 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="deal_date" class="col-lg-3 control-label">交易日期</label>
+								<label for="cost_center_id" class="col-lg-3 control-label">结算账户</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="deal_date" name="deal_date" placeholder="deal_date" value="{$balance_list.deal_date|date="Y-m-d",###}">
+									<select class="form-control" name="cost_center_id" size="{$cost_center_count<$row_limit ? $cost_center_count : $row_limit}">
+										<volist name="cost_center_list" id="cost_center_vo">
+										<option value="{$cost_center_vo.cost_center_id}" {$cost_center_vo['cost_center_id']==$claim_list['cost_center_id']? 'selected="selected"' :'' }>{$cost_center_vo.cost_center_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									<p>用鼠标选择</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="claim_date" class="col-lg-3 control-label">认领日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="claim_date" name="claim_date" value="{$claim_list.claim_date|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
 									日期格式为 yyyy-mm-dd，可用鼠标选择
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="income_amount" class="col-lg-3 control-label">收入金额</label>
+								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="income_amount" name="income_amount" value="{$balance_list['income_amount']/100}">
+									<input type="text" class="form-control" id="total_amount" name="total_amount" value="{$claim_list['total_amount']/100}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="outcome_amount" class="col-lg-3 control-label">支出金额</label>
+								<label for="official_fee" class="col-lg-3 control-label">官费</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="outcome_amount" name="outcome_amount" value="{$balance_list['outcome_amount']/100}">
+									<input type="text" class="form-control" id="official_fee" name="official_fee" value="{$claim_list['official_fee']/100}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="summary" class="col-lg-3 control-label">交易摘要</label>
+								<label for="service_fee" class="col-lg-3 control-label">服务费</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="summary" name="summary" value="{$balance_list.summary}">
+									<input type="text" class="form-control" id="service_fee" name="service_fee" value="{$claim_list['service_fee']/100}">
 								</div>
 								<div class="col-lg-5">
-									用于备注本笔流水
+									小数点必须使用英文的“.”
 								</div>
-							</div>
+							</div>							
 							<div class="form-group">
-								<label for="other_party" class="col-lg-3 control-label">对方当事人</label>
+								<label for="client_id" class="col-lg-3 control-label">客户</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="other_party" name="other_party" value="{$balance_list.other_party}">
+									<select class="form-control" name="client_id" size="{$client_count<$row_limit ? $client_count : $row_limit}">
+										<volist name="client_list" id="client_vo">
+										<option value="{$client_vo.client_id}" {$client_vo['client_id']==$claim_list['client_id']? 'selected="selected"' :'' }>{$client_vo.client_name}</option>
+										</volist>
+									</select>
 								</div>
 								<div class="col-lg-5">
-									“收入”则填付款人名称，“支出”则填收款人名称			
+									<p>用鼠标选择</p>
 								</div>
 							</div>
 							<div class="form-group">

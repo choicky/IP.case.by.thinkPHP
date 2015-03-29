@@ -44,7 +44,7 @@
 								<th>账单编号</th>
 								<th>其他操作</th>
 								<th>&nbsp;|&nbsp;</th>
-								<th>结算账户</th>
+								<th>已结算到</th>
 								<th>已结算金额</th>
 							</tr>
 						</thead>
@@ -61,7 +61,7 @@
 								<td>{$balance_vo.other_party}</td>
 								<td>{$balance_vo.member_name}</td>
 								<td>{$balance_vo.bill_id}</td>
-								<td><a href="__CONTROLLER__/update/id/{$balance_vo.balance_id}">更新</a> <a href="__CONTROLLER__/delete/id/{$balance_vo.balance_id}">删除</td>
+								<td><a href="__CONTROLLER__/update/balance_id/{$balance_vo.balance_id}">更新</a> <a href="__CONTROLLER__/delete/balance_id/{$balance_vo.balance_id}">删除</td>
 								<th>&nbsp;|&nbsp;</th>
 								<td>
 									<?php $total_amount	=	0;?>
@@ -69,7 +69,7 @@
 										{$claim_vo.cost_center_name}；
 										<?php $total_amount	+=	$claim_vo['total_amount'];?>
 									</volist>
-									<a href="__APP__/Claim/update/id/{$balance_vo.balance_id}">更新</a>
+									<a href="__APP__/Home/Claim/view/balance_id/{$balance_vo.balance_id}">详情</a>
 								</td>
 								<td align="right">
 									{$balance_vo['income_amount']+$balance_vo['outcome_amount']==$total_amount ? '' :'未全部结算' }

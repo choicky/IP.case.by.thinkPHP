@@ -4,7 +4,7 @@
 	
 <!-- 区块 title 替换开始 --> 	
 	<block name="title">
-		<title>列表</title>
+		<title>搜索</title>
 	</block>
 <!-- 区块 title 替换结束 --> 	
 	
@@ -27,36 +27,36 @@
 				<div class="panel-heading">
 					<form class="form-inline" method="post" action="__CONTROLLER__/search">
 					  <div class="form-group">
-						<label for="claimer_id">认领人</label>
+						<label for="claimer_id">&nbsp;认领人：</label>
 						<select class="form-control" name="claimer_id">
 							<option value="0"> 不限 </option>
 							<volist name="member_list" id="member_vo">
-							<option value="{$member_vo.member_id}"}>{$member_vo.member_name}年 &nbsp;</option>
+							<option value="{$member_vo.member_id}"}>{$member_vo.member_name}</option>
 							</volist>
 						</select>
 					  </div>
 					  <div class="form-group">
-						<label for="cost_center_id">结算账户</label>
+						<label for="cost_center_id">&nbsp;结算账户：</label>
 						<select class="form-control" name="cost_center_id">
 							<option value="0"> 不限 </option>
 							<volist name="cost_center_list" id="cost_center_vo">
-							<option value="{$cost_center_vo.cost_center_id}"}>{$cost_center_vo.cost_center_name}年 &nbsp;</option>
+							<option value="{$cost_center_vo.cost_center_id}"}>{$cost_center_vo.cost_center_name}</option>
 							</volist>
 						</select>
 					  </div>
 					  <div class="form-group">
-						<label for="start_amount">最小金额</label>
-							<input type="date" class="form-control" id="start_amount" name="start_amount" value="{$start_amount}">
+						<label for="start_amount">&nbsp;最小金额：</label>
+							<input type="text" class="form-control" id="start_amount" name="start_amount" size="8" value="{$start_amount}">
 					  </div>
-					  <div class="form-group">最大金额</label>
-							<input type="date" class="form-control" id="end_amount" name="end_amount" value="{$end_amount}">
+					  <div class="form-group">&nbsp;最大金额：</label>
+							<input type="text" class="form-control" id="end_amount" name="end_amount" size="8" value="{$end_amount}">
 					  </div>
 					  <div class="form-group">
-						<label for="client_id">客户</label>
+						<label for="client_id">&nbsp;客户：</label>
 						<select class="form-control" name="client_id">
 							<option value="0"> 不限 </option>
 							<volist name="client_list" id="client_vo">
-							<option value="{$client_vo.client_id}"}>{$client_vo.client_name}年 &nbsp;</option>
+							<option value="{$client_vo.client_id}"}>{$client_vo.client_name}</option>
 							</volist>
 						</select>
 					  </div>
@@ -69,7 +69,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1>列表</h1>
+					<h1>搜索结果</h1>
 				</div>
 			</div>
 		</div>
@@ -113,11 +113,11 @@
 								<td>{$claim_vo.official_fee}</td>
 								<td>{$claim_vo.service_fee}</td>
 								<td>{$claim_vo.client_name}</td>
-								<td><a href="__CONTROLLER__/update/id/{$claim_vo.claim_id}">更新</a> <a href="__CONTROLLER__/delete/id/{$claim_vo.claim_id}">删除</td>
+								<td><a href="__CONTROLLER__/update/claim_id/{$claim_vo.claim_id}">更新</a> <a href="__CONTROLLER__/delete/claim_id/{$claim_vo.claim_id}">删除</td>
 								<th>&nbsp;|&nbsp;</th>
 								<td>
 									{$claim_vo.balance_id}；
-									<a href="__APP__/Claim/updateByBalance/id/{$claim_vo.balance_id}">更新该笔流水的认领信息</a>
+									<a href="__APP__/Claim/view/balance_id/{$claim_vo.balance_id}">更新该笔流水的认领信息</a>
 								</td>
 							</tr>
 							</volist>                 

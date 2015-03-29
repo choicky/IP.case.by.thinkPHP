@@ -95,7 +95,7 @@ class BalanceController extends Controller {
 				$this->error('修改失败', 'listPage');
 			}
 		} else{
-			$balance_id = I('get.id',0,'int');
+			$balance_id = I('get.balance_id',0,'int');
 
 			if(!$balance_id){
 				$this->error('未指明要编辑的账户');
@@ -141,7 +141,7 @@ class BalanceController extends Controller {
 				$map['balance_id']	=	$balance_id;
 				$condition	=	M('Claim')->where($map)->find();
 				if(is_array($condition)){
-					$this->error('本收支流水已结算到成本中心，不可删除');
+					$this->error('本收支流水已结算，不可删除，只能修改');
 				}
 				
 				$result = M('Balance')->where($map)->delete();
@@ -151,7 +151,7 @@ class BalanceController extends Controller {
 			}
 			
 		} else{
-			$balance_id = I('get.id',0,'int');
+			$balance_id = I('get.balance_id',0,'int');
 
 			if(!$balance_id){
 				$this->error('未指明要删除的流水');

@@ -53,6 +53,7 @@ class ClaimController extends Controller {
 	public function add(){
 		$data	=	array();
 		$data['claimer_id']	=	trim(I('post.claimer_id'));
+		$data['cost_center_id']	=	trim(I('post.cost_center_id'));
 		$data['claim_date']	=	trim(I('post.claim_date'));		
 		$data['claim_date']	=	strtotime($data['claim_date']);
 		$data['balance_id']	=	trim(I('post.balance_id'));
@@ -73,7 +74,7 @@ class ClaimController extends Controller {
 		$result = M('Claim')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'listPage');
+			$this->success('新增成功', 'view/balance_id/'.$data['balance_id']);
 		}else{
 			$this->error('增加失败');
 		}
@@ -86,6 +87,7 @@ class ClaimController extends Controller {
 			
 			$data=array();
 			$data['claimer_id']	=	trim(I('post.claimer_id'));
+			$data['cost_center_id']	=	trim(I('post.cost_center_id'));
 			$data['claim_date']	=	trim(I('post.claim_date'));		
 			$data['claim_date']	=	strtotime($data['claim_date']);
 			$data['balance_id']	=	trim(I('post.balance_id'));
@@ -99,12 +101,12 @@ class ClaimController extends Controller {
 						
 			$result = D('Claim')->update($claim_id,$data);
 			if(false !== $result){
-				$this->success('修改成功', 'listPage');
+				$this->success('修改成功','view/balance_id/'.$data['balance_id']);
 			}else{
-				$this->error('修改失败', 'listPage');
+				$this->error('修改失败');
 			}
 		} else{
-			$claim_id = I('get.id',0,'int');
+			$claim_id = I('get.claim_id',0,'int');
 
 			if(!$claim_id){
 				$this->error('未指明要编辑的认领单号');
@@ -127,7 +129,7 @@ class ClaimController extends Controller {
 			
 			//取出 CostCenter 表的内容以及数量
 			$cost_center_list	=	D('CostCenter')->listBasic();
-			$cost_center_count	=	count($client_list);
+			$cost_center_count	=	count($cost_center_list);
 			$this->assign('cost_center_list',$cost_center_list);
 			$this->assign('cost_center_count',$cost_center_count);
 			
@@ -143,38 +145,32 @@ class ClaimController extends Controller {
 	public function delete(){
 		if(IS_POST){
 			
-			//通过 I 方法获取 post 过来的 claim_id
+			//通过 I 方法获取 post 过来的 claim_id 和 balance_id
 			$claim_id	=	trim(I('post.claim_id'));
+			$balance_id	=	trim(I('post.balance_id'));
 			$no_btn	=	I('post.no_btn');
 			$yes_btn	=	I('post.yes_btn');
-			
+
 			if(1==$no_btn){
 				$this->success('取消删除', 'listAll');
 			}
 			
 			if(1==$yes_btn){
-				$map['claim_id']	=	$claim_id;
-				$condition	=	M('Claim')->where($map)->find();
-				if(is_array($condition)){
-					$this->error('本收支流水已结算到成本中心，不可删除');
-				}
 				
+				$map['claim_id']	=	$claim_id;
+
 				$result = M('Claim')->where($map)->delete();
 				if($result){
-					$this->success('删除成功', 'listAll');
+					$this->success('删除成功', 'view/balance_id/'.$balance_id);
 				}
 			}
 			
 		} else{
-			$claim_id = I('get.id',0,'int');
+			$claim_id = I('get.claim_id',0,'int');
 
 			if(!$claim_id){
 				$this->error('未指明要删除的流水');
 			}
-			
-			$claim_list = M('Claim')->getByClaimId($claim_id);
-			
-			$this->assign('claim_list',$claim_list);
 			
 			$claim_list = D('Claim')->relation(true)->field(true)->getByClaimId($claim_id);			
 			$this->assign('claim_list',$claim_list);
@@ -244,5 +240,48 @@ class ClaimController extends Controller {
 		} 
 	
 	$this->display();
+	}
+	
+	//查看主键为 $balance_id 的收支流水的所有 claim
+	public function view(){
+		$balance_id = I('get.balance_id',0,'int');
+
+		if(!$balance_id){
+			$this->error('未指明要查看的收支流水');
+		}
+
+		$balance_list = D('Balance')->relation(true)->field(true)->getByBalanceId($balance_id);			
+		$this->assign('balance_list',$balance_list);
+		
+		$map['balance_id']	=	$balance_id;
+		$claim_list	=	D('Claim')->where($map)->listAll();
+		$this->assign('claim_list',$claim_list);
+		
+		//取出 Member 表的内容以及数量
+		$member_list	=	D('Member')->listBasic();
+		$member_count	=	count($member_list);
+		$this->assign('member_list',$member_list);
+		$this->assign('member_count',$member_count);
+		
+		//取出 Client 表的内容以及数量
+		$client_list	=	D('Client')->listBasic();
+		$client_count	=	count($client_list);
+		$this->assign('client_list',$client_list);
+		$this->assign('client_count',$client_count);
+		
+		//取出 CostCenter 表的内容以及数量
+		$cost_center_list	=	D('CostCenter')->listBasic();
+		$cost_center_count	=	count($cost_center_list);
+		$this->assign('cost_center_list',$cost_center_list);
+		$this->assign('cost_center_count',$cost_center_count);
+		
+		//取出其他变量
+		$row_limit  =   C("ROWS_PER_SELECT");
+		$today	=	time();
+		$this->assign('row_limit',$row_limit);
+        $this->assign('today',$today);
+
+
+		$this->display();
 	}
 }
