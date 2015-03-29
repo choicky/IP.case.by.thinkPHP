@@ -23,70 +23,71 @@
 						<fieldset>
 							<legend>尽量填写完整每一项</legend>
 							<div class="form-group">
-								<label for="account_id" class="col-lg-3 control-label">账户名称</label>
+								<label for="invoice_number" class="col-lg-3 control-label">发票号码</label>
 								<div class="col-lg-4">
-									<input type="hidden" class="form-control" id="balance_id" name="balance_id" value="{$balance_list.balance_id}">
-									<select class="form-control" name="account_id" size="{$account_count<$row_limit ? $account_count : $row_limit}">
-										<volist name="account_list" id="account_vo">
-										<option value="{$account_vo.account_id}" {$account_vo['account_id']==$balance_list['account_id']? 'selected="selected"' :'' }>{$account_vo.account_name}</option>
-										</volist>
-									</select>
+									<input type="hidden" class="form-control" id="invoice_id" name="invoice_id" value="{$invoice_list.invoice_id}">
+									<input type="text" class="form-control" id="invoice_number" name="invoice_number" value="{$invoice_list.invoice_number}">
 								</div>
 								<div class="col-lg-5">
-									<p>用鼠标选择</p>
+									发票号码是必须的			
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="deal_date" class="col-lg-3 control-label">交易日期</label>
+								<label for="invoice_date" class="col-lg-3 control-label">发票日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="deal_date" name="deal_date" placeholder="deal_date" value="{$balance_list.deal_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="invoice_date" name="invoice_date" value="{$invoice_list.invoice_date|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
 									日期格式为 yyyy-mm-dd，可用鼠标选择
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="income_amount" class="col-lg-3 control-label">收入金额</label>
+								<label for="client_id" class="col-lg-3 control-label">发票抬头</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="income_amount" name="income_amount" value="{$balance_list['income_amount']/100}">
+									<select class="form-control" name="client_id" size="{$client_count<$row_limit ? $client_count : $row_limit}">
+										<volist name="client_list" id="client_vo">
+										<option value="{$client_vo.client_id}" {$client_vo['client_id']==$invoice_list['client_id']? 'selected="selected"' :'' }>{$client_vo.client_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									如找不到就到<a href="__APP__/Home/Client/listPage#addNew" target="_blank">这里</a>添加
+								</div>
+							</div>							
+							<div class="form-group">
+								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="total_amount" name="total_amount" value="{$invoice_list['total_amount']/100}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="outcome_amount" class="col-lg-3 control-label">支出金额</label>
+								<label for="official_fee" class="col-lg-3 control-label">官费金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="outcome_amount" name="outcome_amount" value="{$balance_list['outcome_amount']/100}">
+									<input type="text" class="form-control" id="official_fee" name="official_fee" value="{$invoice_list['official_fee']/100}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="summary" class="col-lg-3 control-label">交易摘要</label>
+								<label for="service_fee" class="col-lg-3 control-label">服务费金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="summary" name="summary" value="{$balance_list.summary}">
+									<input type="text" class="form-control" id="service_fee" name="service_fee" value="{$invoice_list['service_fee']/100}">
 								</div>
 								<div class="col-lg-5">
-									用于备注本笔流水
+									小数点必须使用英文的“.”
 								</div>
 							</div>
-							<div class="form-group">
-								<label for="other_party" class="col-lg-3 control-label">对方当事人</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="other_party" name="other_party" value="{$balance_list.other_party}">
-								</div>
-								<div class="col-lg-5">
-									“收入”则填付款人名称，“支出”则填收款人名称			
-								</div>
-							</div>
+		
 							<div class="form-group">
 								<label for="follower_id" class="col-lg-3 control-label">跟进人员</label>
 								<div class="col-lg-4">
 									<select class="form-control" name="follower_id" size="{$member_count<$row_limit ? $member_count : $row_limit}">
 										<volist name="member_list" id="member_vo">
-										<option value="{$member_vo.member_id}" {$member_vo['member_id']==$balance_list['follower_id']? 'selected="selected"' :'' }>{$member_vo.member_name}</option>
+										<option value="{$member_vo.member_id}" {$member_vo['member_id']==$invoice_list['follower_id']? 'selected="selected"' :'' }>{$member_vo.member_name}</option>
 										</volist>
 									</select>
 								</div>
@@ -97,12 +98,14 @@
 							<div class="form-group">
 								<label for="bill_id" class="col-lg-3 control-label">账单编号</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="bill_id" name="bill_id" value="{$balance_list.bill_id}">
+									<input type="text" class="form-control" id="bill_id" name="bill_id" value="{$invoice_list.bill_id}">
 								</div>
 								<div class="col-lg-5">
 									可从<a href="__APP__/Home/Bill/searchBill" target="_blank">这里</a>找到可用的账单编号			
 								</div>
 							</div>
+							
+							
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">
 									<button class="btn btn-default"> 取消 </button>

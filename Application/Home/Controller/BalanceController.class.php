@@ -85,7 +85,7 @@ class BalanceController extends Controller {
 			$data['outcome_amount']	=	$data['outcome_amount']*100;
 			$data['summary']	=	trim(I('post.summary'));
 			$data['other_party']	=	trim(I('post.other_party'));
-			$data['dealer_id']	=	trim(I('post.dealer_id'));
+			$data['follower_id']	=	trim(I('post.follower_id'));
 			$data['bill_id']	=	trim(I('post.bill_id'));
 
 			$result = D('Balance')->update($balance_id,$data);
@@ -188,7 +188,7 @@ class BalanceController extends Controller {
 			$start_time	=	strtotime($start_time);
 			$end_time	=	trim(I('post.end_time'));
 			$end_time	=	strtotime($end_time);
-			$dealer_id	=	I('post.dealer_id','0','int');
+			$follower_id	=	I('post.follower_id','0','int');
 			
 			//构造 maping
 			$map['deal_date']	=	array('EGT',$start_time);
@@ -197,7 +197,7 @@ class BalanceController extends Controller {
 				$map['account_id']	=	$account_id;
 			}
 			if($member_id){
-				$map['dealer_id']	=	$dealer_id;
+				$map['follower_id']	=	$follower_id;
 			}	
 			
 			$p	= I("p",1,"int");
