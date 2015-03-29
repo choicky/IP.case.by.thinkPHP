@@ -159,9 +159,55 @@ class BalanceController extends Controller {
 
 			$balance_list = D('Balance')->relation(true)->field(true)->getByBalanceId($balance_id);			
 			$this->assign('balance_list',$balance_list);
-			var_dump($balance_list);
 
 			$this->display();
 		}
+	}
+	
+	//搜索
+	public function search(){
+		//取出 Account 表的基本内容，作为 options
+		$account_list	=	D('Account')->listBasic();
+		$this->assign('account_list',$account_list);
+		
+		//默认查询最近一个月
+		$start_time	=	strtotime("-1 month");
+		$end_time	=	time();
+		$this->assign('start_time',$start_time);
+		$this->assign('end_time',$end_time);
+		
+		//取出 Member 表的基本内容，作为 options
+		$member_list	=	D('Member')->listBasic();
+		$this->assign('member_list',$member_list);
+		
+		if(IS_POST){
+			
+			//接收搜索参数
+			$account_id	=	I('post.account_id','0','int');
+			$start_time	=	trim(I('post.start_time'));
+			$start_time	=	strtotime($start_time);
+			$end_time	=	trim(I('post.end_time'));
+			$end_time	=	strtotime($end_time);
+			$dealer_id	=	I('post.dealer_id','0','int');
+			
+			//构造 maping
+			$map['deal_date']	=	array('EGT',$start_time);
+			$map['deal_date']	=	array('ELT',$end_time);			
+			if($account_id){
+				$map['account_id']	=	$account_id;
+			}
+			if($member_id){
+				$map['dealer_id']	=	$dealer_id;
+			}	
+			
+			//$p	= I("p",1,"int");
+			//$page_limit  =   C("RECORDS_PER_PAGE");
+			$balance_list = D('Balance')->where($map)->listPage($p,$page_limit);
+			$this->assign('balance_list',$balance_list['list']);
+			//$this->assign('balance_page',$balance_list['page']);
+		
+		} 
+	
+	$this->display();
 	}
 }

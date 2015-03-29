@@ -4,6 +4,13 @@ use Think\Model;
 
 class AccountModel extends Model {		
 	
+	//返回本数据表的基本数据，可作为选单
+	public function listBasic() {			
+		$order['convert(account_name using gb2312)']	=	'asc';
+		$list	=	$this->field('account_id,account_name')->order($order)->select();
+		return $list;
+	}
+	
 	//返回本数据表的所有数据
 	public function listAll() {			
 		$order['convert(account_name using gb2312)']	=	'asc';
