@@ -92,7 +92,16 @@
 				<div class="well bs-component">
 					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
 						<fieldset>
-							<legend>尽量填写完整每一项</legend>
+							<legend>收支流水编号必须准确，否则无法新增</legend>
+							<div class="form-group">
+								<label for="balance_id" class="col-lg-3 control-label">收支流水编号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="balance_id" name="balance_id" placeholder="收支流水编号">
+								</div>
+								<div class="col-lg-5">
+									可从<a href="__APP__/Home/Balance/search" target="_blank">这里</a>查找收支流水编号
+								</div>
+							</div>
 							<div class="form-group">
 								<label for="claimer_id" class="col-lg-3 control-label">认领人</label>
 								<div class="col-lg-4">

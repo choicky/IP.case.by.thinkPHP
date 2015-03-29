@@ -36,7 +36,7 @@ class ClaimController extends Controller {
 		
 		//取出 CostCenter 表的内容以及数量
 		$cost_center_list	=	D('CostCenter')->listBasic();
-		$cost_center_count	=	count($client_list);
+		$cost_center_count	=	count($cost_center_list);
 		$this->assign('cost_center_list',$cost_center_list);
 		$this->assign('cost_center_count',$cost_center_count);
 		
@@ -64,9 +64,11 @@ class ClaimController extends Controller {
 		$data['service_fee']	=	$data['service_fee']*100;
 		$data['client_id']	=	trim(I('post.client_id'));
 
-		if(!$data['claimer_id']){
-			$this->error('未选择认领人');
-		} 
+		$map['balance_id']	=	$data['balance_id'];
+		$condition	=	M('Balance')->where($map)->find();
+		if(!is_array($condition)){
+			$this->error('收支流水编号不正确');
+		}
 
 		$result = M('Claim')->add($data);
 		
@@ -189,5 +191,58 @@ class ClaimController extends Controller {
 
 			$this->display();
 		}
+	}
+	//搜索
+	public function search(){
+		
+		//取出 Member 表的基本内容，作为 options
+		$member_list	=	D('Member')->listBasic();
+		$this->assign('member_list',$member_list);
+		
+		//取出 CostCenter 表的基本内容，作为 options
+		$cost_center_list	=	D('CostCenter')->listBasic();
+		$this->assign('cost_center_list',$cost_center_list);
+				
+		//默认查询 0 元 至 20000 元
+		$start_amount	=	0;
+		$end_amount	=	20000;
+		$this->assign('start_amount',$start_amount);
+		$this->assign('end_amount',$end_amount);
+				
+		//取出 Client 表的基本内容，作为 options
+		$client_list	=	D('Client')->listBasic();
+		$this->assign('client_list',$client_list);
+		
+		if(IS_POST){
+			
+			//接收搜索参数
+			$claimer_id	=	I('post.claimer_id','0','int');
+			$cost_center_id	=	I('post.cost_center_id','0','int');
+			$start_amount	=	trim(I('post.start_amount'))*100;			
+			$end_amount	=	trim(I('post.end_amount'))*100;			
+			$client_id	=	I('post.client_id','0','int');
+			
+			//构造 maping
+			$map['total_amount']	=	array('EGT',$start_amount);
+			$map['deal_date']	=	array('ELT',$end_amount);			
+			if($claimer_id){
+				$map['claimer_id']	=	$claimer_id;
+			}
+			if($cost_center_id){
+				$map['cost_center_id']	=	$cost_center_id;
+			}
+			if($client_id){
+				$map['client_id']	=	$client_id;
+			}	
+			
+			$p	= I("p",1,"int");
+			$page_limit  =   C("RECORDS_PER_PAGE");
+			$claim_list = D('Claim')->where($map)->listPage($p,$page_limit);
+			$this->assign('claim_list',$claim_list['list']);
+			$this->assign('claim_page',$claim_list['page']);
+		
+		} 
+	
+	$this->display();
 	}
 }

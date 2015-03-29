@@ -18,18 +18,17 @@ class ClientModel extends RelationModel {
 		),
 	);
 	
+	//返回本数据表的基本数据，可作为选单
+	public function listBasic() {			
+		$order['convert(client_name using gb2312)']	=	'asc';
+		$list	=	$this->field('client_id,client_name')->order($order)->select();
+		return $list;
+	}
+	
 	//返回本数据表的所有数据
 	public function listAll() {
 		$order['convert(client_name using gb2312)']	=	'asc';
 		$list	=	$this->relation(true)->field(true)->order($order)->select();
-		return $list;
-	}
-	
-	//返回本数据表的基本数据
-	public function listBasic() {
-		$Model	=	M('Client');
-		$order['convert(client_name using gb2312)']	=	'asc';
-		$list	= $Model->field(true)->order()->select();
 		return $list;
 	}
 	

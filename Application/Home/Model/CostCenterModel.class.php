@@ -7,17 +7,17 @@ use Think\Model;
 
 class CostCenterModel extends Model {
 	
-	//返回本数据表的所有数据
-	public function listAll() {
-		$Model	=	M('CostCenter');
+	//返回本数据表的基本数据，可作为选单
+	public function listBasic() {			
 		$order['convert(cost_center_name using gb2312)']	=	'asc';
-		$list	=	$Model->field(true)->order($order)->select();
+		$list	=	$this->field('cost_center_id,cost_center_name')->order($order)->select();
 		return $list;
 	}
-		
-	//返回本数据表的基本数据
-	public function listBasic() {
-		$list	=	$this->listAll();
+	
+	//返回本数据表的所有数据
+	public function listAll() {
+		$order['convert(cost_center_name using gb2312)']	=	'asc';
+		$list	=	$this->field(true)->order($order)->select();
 		return $list;
 	}
 	

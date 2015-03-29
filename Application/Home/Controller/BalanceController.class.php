@@ -200,11 +200,11 @@ class BalanceController extends Controller {
 				$map['dealer_id']	=	$dealer_id;
 			}	
 			
-			//$p	= I("p",1,"int");
-			//$page_limit  =   C("RECORDS_PER_PAGE");
+			$p	= I("p",1,"int");
+			$page_limit  =   C("RECORDS_PER_PAGE");
 			$balance_list = D('Balance')->where($map)->listPage($p,$page_limit);
 			$this->assign('balance_list',$balance_list['list']);
-			//$this->assign('balance_page',$balance_list['page']);
+			$this->assign('balance_page',$balance_list['page']);
 		
 		} 
 	
