@@ -31,6 +31,8 @@
 									<th>支出金额</th>
 									<th>摘要</th>
 									<th>对方当事人</th>
+									<th>跟进人员</th>
+									<th>账单编号</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -41,7 +43,9 @@
 									<td align="right">{$balance_list['income_amount']/100}</td>
 									<td align="right">{$balance_list['outcome_amount']/100}</td>
 									<td>{$balance_list.summary}</td>
-									<td>{$balance_list.other_party}</td>								
+									<td>{$balance_list.other_party}</td>
+									<td>{$balance_list.member_name}</td>
+									<td>{$balance_list.bill_id}</td>									
 								</tr>											   
 							</tbody>
 						</table> 

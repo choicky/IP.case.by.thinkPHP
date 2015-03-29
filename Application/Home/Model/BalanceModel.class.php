@@ -16,6 +16,15 @@ class BalanceModel extends RelationModel {
 			'as_fields'			=>	'account_name'	//字段别名
 		),
 		
+		'Dealer'	=>	array(							//本数据关联的名称
+			'mapping_name'		=>	'Dealer',			//重新定义本数据关联的名称
+			'class_name'		=>	'Member',			//被关联的数据表
+			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
+			'foreign_key'		=>	'dealer_id',		//外键，
+			'mapping_fields'	=>	'member_name',	//关联字段
+			'as_fields'			=>	'member_name'	//字段别名
+		),
+		
 		'Claim'	=>	array(						//本数据关联的名称
 			'mapping_name'		=>	'Claim',		//重新定义本数据关联的名称
 			'class_name'		=>	'ClaimView',		//被关联的数据表

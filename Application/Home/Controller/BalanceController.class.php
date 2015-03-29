@@ -28,6 +28,12 @@ class BalanceController extends Controller {
 		$this->assign('account_list',$account_list);
 		$this->assign('account_count',$account_count);
 		
+		//取出 Member 表的内容以及数量
+		$member_list	=	D('Member')->field(true)->listAll();
+		$member_count	=	count($member_list);
+		$this->assign('member_list',$member_list);
+		$this->assign('member_count',$member_count);
+		
 		//取出其他变量
 		$row_limit  =   C("ROWS_PER_SELECT");
 		$today	=	time();
@@ -79,6 +85,8 @@ class BalanceController extends Controller {
 			$data['outcome_amount']	=	$data['outcome_amount']*100;
 			$data['summary']	=	trim(I('post.summary'));
 			$data['other_party']	=	trim(I('post.other_party'));
+			$data['dealer_id']	=	trim(I('post.dealer_id'));
+			$data['bill_id']	=	trim(I('post.bill_id'));
 
 			$result = D('Balance')->update($balance_id,$data);
 			if(false !== $result){
@@ -101,6 +109,12 @@ class BalanceController extends Controller {
 			$account_count	=	count($account_list);
 			$this->assign('account_list',$account_list);
 			$this->assign('account_count',$account_count);
+			
+			//取出 Member 表的内容以及数量
+			$member_list	=	D('Member')->field(true)->listAll();
+			$member_count	=	count($member_list);
+			$this->assign('member_list',$member_list);
+			$this->assign('member_count',$member_count);
 			
 			//取出其他变量
 			$row_limit  =   C("ROWS_PER_SELECT");
@@ -142,23 +156,10 @@ class BalanceController extends Controller {
 			if(!$balance_id){
 				$this->error('未指明要删除的流水');
 			}
-			
-			$balance_list = M('Balance')->getByBalanceId($balance_id);
-			
-			$this->assign('balance_list',$balance_list);
-			
+
 			$balance_list = D('Balance')->relation(true)->field(true)->getByBalanceId($balance_id);			
 			$this->assign('balance_list',$balance_list);
-			
-			//取出 Account 表的内容以及数量
-			$account_list	=	D('Account')->field(true)->listAll();
-			$account_count	=	count($account_list);
-			$this->assign('account_list',$account_list);
-			$this->assign('account_count',$account_count);
-			
-			//取出其他变量
-			$row_limit  =   C("ROWS_PER_SELECT");
-			$this->assign('row_limit',$row_limit);
+			var_dump($balance_list);
 
 			$this->display();
 		}
