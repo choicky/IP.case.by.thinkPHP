@@ -31,6 +31,20 @@ class CaseGroupModel extends Model {
 		return $data;
 	}
 	
+			
+	//返回本数据表的基本数据
+	public function listBasic() {
+		$list	=	$this->listAll();
+		return $list;
+	}
+
+	//返回本数据表的所有数据
+	public function listAll() {
+		$order['convert(case_group_name using gb2312)']	=	'asc';
+		$list	=	$this->order($order)->select();
+		return $list;
+	}
+	
 	//分页返回本数据表的所有数据，$current_page 为当前页数，$recodes_per_page 为每页显示的记录条数
 	public function listPage($current_page,$recodes_per_page) {
 		$order['convert(case_group_name using gb2312)']	=	'asc';

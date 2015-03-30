@@ -4,9 +4,9 @@ function yearOption(){
 	$start_year	=	2006;
 	$year_date	=	array();
 	for ($current_year;$current_year>$start_year;$current_year--){
-		$year_date[]	=	$current_year;
+		$year_list[]	=	$current_year;
 	}
-	return($year_date);	
+	return($year_list);	
 }
 
 function patentCaseGroupOption(){

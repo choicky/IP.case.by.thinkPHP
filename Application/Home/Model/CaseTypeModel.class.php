@@ -20,17 +20,17 @@ class CaseTypeModel extends RelationModel {
 		),
     );
     
-    //返回本数据表的所有数据
-	public function listAll() {
-		$Model	=	M('CaseType');
+    //返回本数据表的基本数据，可作为选项用
+	public function listBasic() {
 		$order['convert(case_type_name using gb2312)']	=	'asc';
-		$list	=	$Model->order($order)->select();
+		$list	=	$this->field('case_type_id,case_group_name')->order($order)->select();
 		return $list;
 	}
-		
-	//返回本数据表的基本数据
-	public function listBasic() {
-		$list	=	$this->listAll();
+	
+	//返回本数据表的所有数据
+	public function listAll() {
+		$order['convert(case_type_name using gb2312)']	=	'asc';
+		$list	=	$this->order($order)->select();
 		return $list;
 	}
 	
