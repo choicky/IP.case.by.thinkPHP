@@ -33,7 +33,10 @@ class CaseTypeViewModel extends ViewModel {
 		$map['case_group_name']	=	array('like','%专利%');
 		$order['case_type_id']	=	'asc';
 		$list	=	$this->field('case_type_id')->where($map)->order($order)->select();
-		return $list;
+		for($i=0;$i<count($list);$i++){
+			$case_type_list[$i]	=	$list[$i]['case_type_id'];
+		}
+		return $case_type_list;
 	}
 	
 	//返回本数据表中与商标有关的数据
@@ -49,7 +52,10 @@ class CaseTypeViewModel extends ViewModel {
 		$map['case_group_name']	=	array('like','%商标%');
 		$order['case_type_id']	=	'asc';
 		$list	=	$this->field('case_type_id')->where($map)->order($order)->select();
-		return $list;
+		for($i=0;$i<count($list);$i++){
+			$case_type_list[$i]	=	$list[$i]['case_type_id'];
+		}
+		return $case_type_list;
 	}
 	
 	//返回本数据表中与版权有关的数据
@@ -65,7 +71,10 @@ class CaseTypeViewModel extends ViewModel {
 		$map['case_group_name']	=	array('like','%版权%');
 		$order['case_type_id']	=	'asc';
 		$list	=	$this->field('case_type_id')->where($map)->order($order)->select();
-		return $list;
+		for($i=0;$i<count($list);$i++){
+			$case_type_list[$i]	=	$list[$i]['case_type_id'];
+		}
+		return $case_type_list;
 	}
 	
 	//返回本数据视图的基本数据
@@ -105,12 +114,5 @@ class CaseTypeViewModel extends ViewModel {
 		$result	=	$Model->where($map)->save($data);
 		return $result;
 	}
-	
-	//删除本数据表中主键为$account_id的记录
-	public function delete($case_type_id){
-		$map['case_type_id']	=	$case_type_id;	//自定义 where() 语句的参数
-		$Model	=	M('CaseType');
-		$result	=	$Model->where($map)->delete();	//基于 where() 删除对应的数据，
-		return $result;	//返回值为删除的记录数量
-	}
+
 }

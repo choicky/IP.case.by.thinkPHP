@@ -6,388 +6,208 @@ class PatentController extends Controller {
     
 	//默认跳转到listPage，分页显示
 	public function index(){
-       // header("Location: listPage");
-       
-	   $time1=date(("Y"),time());
-
-       $time2=mktime(0,0,0,2,23,$time1);
-       $time3=mktime(0,0,0,2,23,$time1+1);
-       $time4=mktime(0,0,0,2,23,$time1)-1;
-       var_dump('当前年份:'.$time1);
-       var_dump('当前年份的最小时间戳：'.$time2);
-       var_dump('下一年度的最小时间戳：'.$time3);
-       var_dump('比当前年份最小时间戳更小1：'.$time4);
-       
-       $date1=date("Y-m-d H:i:s",$time1);
-       $date2=date("Y-m-d H:i:s",$time2);
-       $date3=date("Y-m-d H:i:s",$time3);
-       $date4=date("Y-m-d H:i:s",$time4);
-       
-       var_dump('当前年份:'.$date1);
-       var_dump('当前年份的最小时间戳：'.$date2);
-       var_dump('下一年度的最小时间戳：'.$date3);
-       var_dump('比当前年份最小时间戳更小1：'.$date4);
-       
+        header("Location: listPage");
     }
 	
-	//初步开案登记
-	public function addBasic(){
-        $year_option_data	=	yearOption();
-		$this->assign('year_option_data',$year_option_data);
-		
-		$patent_type_data	=	D('CaseGroup')->field(true)->listAllPatent();
-		$this->assign('patent_type_data',$patent_type_data);
-		
-		
-		
-		$this->display();
+	//默认跳转到listPage，分页显示
+	public function listAll(){
+        header("Location: listPage");
     }
-	
-	//单页式立案
-	public function addNewOne(){
-        //2007至当前年度的选单
-        $year_option_data	=	yearOption();
-		$this->assign('year_option_data',$year_option_data);
-		
-        //专利业务类型，总共9种
-		$patent_type_data	=	patentCaseGroupOption();
-		$this->assign('patent_type_data',$patent_type_data);
-        
-        //获取案号的前缀，形式为Pyyyy，其中yyyy默认为当前年份
-        $default_year	=	date("Y",time());
-        $year_option	=	I("post.year_option",$default_year,'int');
-        $case_prefix	=	'P'.$year_option.'%';
-        
-        //获取专利业务类型，默认为P1
-        $case_type_group_id	=	I("post.case_type_group_option");
-        $map_for_case_type_id['case_type_group_id'] =   $case_type_group_id;
-        $CaseTypeGroup =   M('CaseTypeGroup');
-        $case_type_group_data   =   $CaseTypeGroup->getByCaseTypeGroupId($case_type_group_id);
-        $this->assign('case_type_group_name',$case_type_group_data[0]['case_type_group_name']);
-        var_dump($case_type_group_data);
-        
-        $Case_Type_Model  =   M('CaseType');
-        $case_type_array   =   $Case_Type_Model->field(true)->where($map_for_case_type_id)->select();
-        for($i=0;$i<count($case_type_array);$i++){
-            $in_array[$i]   =   $case_type_array[$i]['case_type_id'];            
-        }
-        dump($in_array);
-        
-        $basic_map['case_type_id']  = array('in',$in_array);
-        $basic_map['our_ref']	=	array('like',$case_prefix);
-        //$basic_map['CaseTypeGroup']['case_type_group_id']   =   $case_type_group_id;
-        
-        dump($basic_map);
-   
-        $order['convert(our_ref using gb2312)']	=	'desc';
-        $Model	=	D('Case');
-        $current_case_data	=	$Model->relation(true)->field(true)->where($basic_map)->order($order)->select();
-        
-       // dump($current_case_data);
-        $this->assign('current_case_data',$current_case_data[0]);
-        
-        
-        $patent_case_prefix	=	'P%';
-        $case_type_data	=	D('CaseType')->listAllLike($patent_case_prefix);
-        $case_type_count	=	count($case_type_data);
-        $this->assign('case_type_data',$case_type_data);
-        $this->assign('case_type_count',$case_type_count);
-
-        $member_data	=	D('Member')->listBasic();
-        $member_count	=	count($member_data);
-        $this->assign('member_data',$member_data);
-        $this->assign('member_count',$member_count);
-                    
-        $client_data	=	D('Client')->listBasic();
-        $client_count	=	count($client_data);
-        $this->assign('client_data',$client_data);
-        $this->assign('client_count',$client_count);
-    
-        $country_data	=	D('Country')->listBasic();
-        $country_count	=	count($country_data);
-        $this->assign('country_count',$country_count);
-        $this->assign('country_data',$country_data);	
-        //var_dump($priority_count);
-        
-        $today	=	time();
-        $this->assign('today',$today);
-        
-        $rows_limit	=	C('ROWS_PER_SELECT');
-        $this->assign('rows_limit',$rows_limit);
-
-		
-		$this->display();
-    }
-    
-    //新增的保存
-    public function save(){
-        if(IS_POST){
-			$data	=	array();
-			$data['case_id'] = I('post.case_id','','int');
-            $data['our_ref'] = I('post.our_ref');
-			$data['case_type_id']	=	I('post.case_type_id');
-			$data['follower_id']	=	I('post.follower_id');
-			$data['create_date']	=	I('post.create_date');
-			$data['form_date']	=	I('post.form_date');
-			//转为时间戳
-			$data['create_date']	=	time($data['create_date']);
-			$data['form_date']	=	time($data['form_date']);
-			$data['client_id']	=	I('post.client_id');
-			$data['client_ref']	=	I('post.client_ref');
-			$data['applicant_id']	=	I('post.applicant_id');
-			$data['tentative_title']	=	I('post.tentative_title');
-			for($i=0;	$i<count(I('post.priority_country_id'));	$i++){
-				$priority_country_id	=	I('post.priority_country_id')[$i];
-				$priority_number	=	I('post.priority_number')[$i];
-				$priority_date	=	I('post.priority_date')[$i];
-				//转为时间戳
-				$priority_date	=	time($priority_date);
-				if('none'!=$priority_country_id){
-					$data['CasePriority'][$i]	=	array(
-					'priority_country_id'	=>	$priority_country_id,
-					'priority_number'	=>	$priority_number,
-					'priority_date'	=>	$priority_date
-					);
-				}
-			}
-			$data['handler_id']	=	I('post.handler_id');
-			$data['CaseExtend']['remarks']	=	I('post.remarks');
-			$data['CaseExtend']['related_our_ref']	=	I('post.related_our_ref');
-			$data['application_date']	=	I('post.application_date');
-			//转为时间戳
-			$data['application_date']	=	time($data['application_date']);
-			$data['application_number']	=	I('post.application_number');
-			$data['formal_title']	=	I('post.formal_title');
-			$data['CaseExtend']['registration_date']	=	I('post.registration_date');
-			//转为时间戳
-			$data['CaseExtend']['registration_date']	=	time($data['CaseExtend']['registration_date']);
-			
-			$Model	=	D('Case');
-			$result	=	$Model->relation(true)->add($data);
-			
-			if(false !== $result){
-				$this->success('新增成功', '/');
-			}else{
-				$this->error('增加失败');
-			}
-				
-			
-		}
-    }
-
-	
-	//搜索现有的案号
-	public function searchCurrentCase(){
-        $year_option	=	I('post.year_option');
-		$case_prefix	=	'P'.$year_option.'%';
-		
-		$case_type_group_id	=	I('post.case_type_group_option');
-	
-		$map['our_ref']	=	array('like',$case_prefix);
-		$map['CaseTypeGroup']['case_type_group_id']	=	$case_type_group_id;
-		$map['_logic'] = 'AND';
-		$order['convert(our_ref using gb2312)']	=	'desc';
-		
-		$Model	=	D('Case');
-		$case_data	=	$Model->relation(true)->field(true)->where($map)->order($order)->limit(2)->select();
-		
-		$this->ajaxReturn($case_data);
-		
-    }
-	
-	public function yearOptions(){
-		$current_year	=	date(Y,time());
-		$start_year	=	2006;
-		$year_date	=	array();
-		for ($current_year;$current_year>$start_year;$current_year--){
-			$year_date[]	=	$current_year;
-		}
-		return($year_date);
-	}
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
 		$p	= I("p",1,"int");
-		$limit	= 10;
-		$case_data = D('Case')->listPage($p,$limit);
-		$this->assign('case_data',$case_data['list']);
-		$this->assign('patent_page',$case_data['page']);
+		$page_limit  =   C("RECORDS_PER_PAGE");
+		$patent_list = D('Case')->listPagePatent($p,$page_limit);
+		$this->assign('patent_list',$patent_list['list']);
+		$this->assign('patent_page',$patent_list['page']);
+		/*
+		//取出 Account 表的内容以及数量
+		$account_list	=	D('Account')->field(true)->listAll();
+		$account_count	=	count($account_list);
+		$this->assign('account_list',$account_list);
+		$this->assign('account_count',$account_count);
 		
-		$case_type_data	=	D('CaseType')->listBasic();
-		$case_type_count	=	count($case_type_data);
-		$this->assign('case_type_data',$case_type_data);
-		$this->assign('case_type_count',$case_type_count);
+		//取出 Member 表的内容以及数量
+		$member_list	=	D('Member')->field(true)->listAll();
+		$member_count	=	count($member_list);
+		$this->assign('member_list',$member_list);
+		$this->assign('member_count',$member_count);
 		
-		$follower_data	=	D('Member')->listBasic();
-		$follower_count	=	count($follower_data);
-		$this->assign('follower_data',$follower_data);
-		$this->assign('follower_count',$follower_count);
-				
-		$handler_data	=	D('Member')->listBasic();
-		$handler_count	=	count($handler_data);
-		$this->assign('handler_data',$handler_data);
-		$this->assign('handler_count',$handler_count);
-		
-		var_dump($follower_data);
-		var_dump('---');
-		var_dump($handler_data);
-		
-		$client_data	=	D('Client')->listBasic();
-		$client_count	=	count($client_data);
-		$this->assign('client_data',$client_data);
-		$this->assign('client_count',$client_count);
-		
-		$today	=	date("Y-m-d",time());
-		$this->assign('today',$today);
-
+		//取出其他变量
+		$row_limit  =   C("ROWS_PER_SELECT");
+		$today	=	time();
+		$this->assign('row_limit',$row_limit);
+        $this->assign('today',$today);*/
+	
 		$this->display();
 	}
 	
 	//新增
 	public function add(){
 		$data	=	array();
-		$data['handler_id'] = I('post.handler_id',0,'int');
-		$data['patent_date']	=	trim(I('post.patent_date'));
-		//转为时间戳
-		$data['patent_date']	=	time($data['patent_date']);
-		$data['client_id'] = I('post.client_id',0,'int');
-		$data['total_amount'] = I('post.total_amount',0,'int');
-		$data['official_fee'] = I('post.official_fee',0,'int');
-		$data['service_fee'] = I('post.service_fee',0,'int');
-		
-		if(!$data['handler_id']	or	!$data['client_id']){
-			$this->error('未填写开开单人、收单人');
+		$data['account_id']	=	trim(I('post.account_id'));
+		$data['deal_date']	=	trim(I('post.deal_date'));
+		$data['deal_date']	=	strtotime($data['deal_date']);
+		$data['income_amount']	=	trim(I('post.income_amount'));
+		$data['income_amount']	=	$data['income_amount']*100;
+		$data['outcome_amount']	=	trim(I('post.outcome_amount'));
+		$data['outcome_amount']	=	$data['outcome_amount']*100;
+		$data['summary']	=	trim(I('post.summary'));
+		$data['other_party']	=	trim(I('post.other_party'));
+
+		if(!$data['account_id']){
+			$this->error('未填写账户名称');
 		} 
 
 		$result = M('Patent')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'listPage');
+			$this->success('新增成功', 'listAll');
 		}else{
 			$this->error('增加失败');
 		}
 	}
 	
-	//编辑
+	//更新	
 	public function update(){
 		if(IS_POST){
 			
-			/*
-			$case_id = I('post.case_id',0,'int');
+			$patent_id	=	trim(I('post.patent_id'));
 			
-			$data	=	array();
-			$data['handler_id'] = I('post.handler_id',0,'int');
-			$data['patent_date']	=	trim(I('post.patent_date'));
-			//转为时间戳
-			$data['patent_date']	=	time($data['patent_date']);
-			$data['client_id'] = I('post.client_id',0,'int');
-			$data['total_amount'] = I('post.total_amount',0,'int');
-			$data['official_fee'] = I('post.official_fee',0,'int');
-			$data['service_fee'] = I('post.service_fee',0,'int');
-			
-			if(!$data['handler_id']	or	!$data['client_id']){
-				$this->error('未填写开开单人、收单人');
-			} 
-			
-			$map['case_id']	=	I('post.case_id',0,'int');
-			$result = M('Patent')->where($map)->save($data);
+			$data=array();
+			$data['account_id']	=	trim(I('post.account_id'));
+			$data['deal_date']	=	trim(I('post.deal_date'));
+			$data['deal_date']	=	strtotime($data['deal_date']);
+			$data['income_amount']	=	trim(I('post.income_amount'));
+			$data['income_amount']	=	$data['income_amount']*100;
+			$data['outcome_amount']	=	trim(I('post.outcome_amount'));
+			$data['outcome_amount']	=	$data['outcome_amount']*100;
+			$data['summary']	=	trim(I('post.summary'));
+			$data['other_party']	=	trim(I('post.other_party'));
+			$data['follower_id']	=	trim(I('post.follower_id'));
+			$data['bill_id']	=	trim(I('post.bill_id'));
 
-			
-			$Model	=	M('PatentInvoice');
-			for($i=0;	$i<count(I('post.invoice_id'));	$i++){
-				$patent_invoice_id	=	trim(I('post.patent_invoice_id')[$i]);
-				$invoice_id	=	trim(I('post.invoice_id')[$i]);
-				
-				var_dump($patent_invoice_id);
-				var_dump($invoice_id);
-				var_dump('aaaa');
-				
-				//如果主键不存在
-				if(!$patent_invoice_id){
-					//如果主键不存在，且 invoice_id 不为零，就增加
-					if($invoice_id){
-						$patent_invoice[$i]	=	array(
-							'case_id'			=>	$case_id,
-							'invoice_id'		=>	$invoice_id
-						);
-						$result	=	$Model->add($patent_invoice[$i]);
-
-					}else{
-					//如果主键不存在，且 invoice_id 为0，不做处理；
-					}
-				
-				//如果主键存在
-				}else{
-					//如果主键存在，且 invoice_id 不为零，就更新
-					if($invoice_id){ 
-						$map['patent_invoice_id']	=	$patent_invoice_id;
-						$patent_invoice[$i]	=	array(
-							'case_id'			=>	$case_id,
-							'invoice_id'		=>	$invoice_id
-						);
-						$result	=	$Model->where($map)->save($patent_invoice[$i]);
-
-					}else{
-					//如果主键存在，且invoice_id 为零，就删除
-						$map['patent_invoice_id']	=	$patent_invoice_id;
-						$result	=	$Model->where($map)->delete();
-
-					}
-					
-				}
-				
-			}*/
-		} else{
-			$case_id = I('get.id',0,'int');
-
-			if(!$case_id){
-				$this->error('未指明要编辑的案号');
+			$result = D('Patent')->update($patent_id,$data);
+			if(false !== $result){
+				$this->success('修改成功', 'listPage');
+			}else{
+				$this->error('修改失败', 'listPage');
 			}
-			//$map['case_id']	=	$case_id;
-			$case_data = D('Case')->relation(true)->field(true)->getByCaseId($case_id);
-			$priority_count	=	count($case_data['CasePriority']);
-			$priority_limit	=	$priority_count+2;
-			$this->assign('case_data',$case_data);
-			$this->assign('priority_count',$priority_count);
-			$this->assign('priority_limit',$priority_limit);
-						
-			$p	=	'P%';
-			$case_type_data	=	D('CaseType')->listBasicLike($p);
-			$case_type_count	=	count($case_type_data);
-			$this->assign('case_type_data',$case_type_data);
-			$this->assign('case_type_count',$case_type_count);
+		} else{
+			$patent_id = I('get.patent_id',0,'int');
 
-			$member_data	=	D('Member')->listBasic();
-			$member_count	=	count($member_data);
-			$this->assign('member_data',$member_data);
+			if(!$patent_id){
+				$this->error('未指明要编辑的账户');
+			}
+
+			$patent_list = M('Patent')->getByPatentId($patent_id);			
+			$this->assign('patent_list',$patent_list);
+			
+			//取出 Account 表的内容以及数量
+			$account_list	=	D('Account')->field(true)->listAll();
+			$account_count	=	count($account_list);
+			$this->assign('account_list',$account_list);
+			$this->assign('account_count',$account_count);
+			
+			//取出 Member 表的内容以及数量
+			$member_list	=	D('Member')->field(true)->listAll();
+			$member_count	=	count($member_list);
+			$this->assign('member_list',$member_list);
 			$this->assign('member_count',$member_count);
-						
-			$client_data	=	D('Client')->listBasic();
-			$client_count	=	count($client_data);
-			$this->assign('client_data',$client_data);
-			$this->assign('client_count',$client_count);
-		
-			$country_data	=	D('Country')->listBasic();
-			$country_count	=	count($country_data);
-			$this->assign('country_count',$country_count);
-			$this->assign('country_data',$country_data);	
-			//var_dump($priority_count);
 			
-			$today	=	time();
-			$this->assign('today',$today);
-			
-			$rows_limit	=	C('ROWS_LIMIT_PER_SELECT');
-			$this->assign('rows_limit',$rows_limit);
-			
+			//取出其他变量
+			$row_limit  =   C("ROWS_PER_SELECT");
+			$this->assign('row_limit',$row_limit);
 
 			$this->display();
 		}
 	}
 	
-		public function testa(){
-		$case_data = D('Patent')->listAll();
-		print_r($case_data);
-		print_r($case_data['PatentInvoice']);
+	//删除
+	public function delete(){
+		if(IS_POST){
+			
+			//通过 I 方法获取 post 过来的 patent_id
+			$patent_id	=	trim(I('post.patent_id'));
+			$no_btn	=	I('post.no_btn');
+			$yes_btn	=	I('post.yes_btn');
+			
+			if(1==$no_btn){
+				$this->success('取消删除', 'listAll');
+			}
+			
+			if(1==$yes_btn){
+				$map['patent_id']	=	$patent_id;
+				$condition	=	M('Claim')->where($map)->find();
+				if(is_array($condition)){
+					$this->error('本收支流水已结算，不可删除，只能修改');
+				}
+				
+				$result = M('Patent')->where($map)->delete();
+				if($result){
+					$this->success('删除成功', 'listAll');
+				}
+			}
+			
+		} else{
+			$patent_id = I('get.patent_id',0,'int');
+
+			if(!$patent_id){
+				$this->error('未指明要删除的流水');
+			}
+
+			$patent_list = D('Patent')->relation(true)->field(true)->getByPatentId($patent_id);			
+			$this->assign('patent_list',$patent_list);
+
+			$this->display();
+		}
+	}
+	
+	//搜索
+	public function search(){
+		//取出 Account 表的基本内容，作为 options
+		$account_list	=	D('Account')->listBasic();
+		$this->assign('account_list',$account_list);
 		
+		//默认查询最近一个月
+		$start_time	=	strtotime("-1 month");
+		$end_time	=	time();
+		$this->assign('start_time',$start_time);
+		$this->assign('end_time',$end_time);
+		
+		//取出 Member 表的基本内容，作为 options
+		$member_list	=	D('Member')->listBasic();
+		$this->assign('member_list',$member_list);
+		
+		if(IS_POST){
+			
+			//接收搜索参数
+			$account_id	=	I('post.account_id','0','int');
+			$start_time	=	trim(I('post.start_time'));
+			$start_time	=	strtotime($start_time);
+			$end_time	=	trim(I('post.end_time'));
+			$end_time	=	strtotime($end_time);
+			$follower_id	=	I('post.follower_id','0','int');
+			
+			//构造 maping
+			$map['deal_date']	=	array('EGT',$start_time);
+			$map['deal_date']	=	array('ELT',$end_time);			
+			if($account_id){
+				$map['account_id']	=	$account_id;
+			}
+			if($member_id){
+				$map['follower_id']	=	$follower_id;
+			}	
+			
+			$p	= I("p",1,"int");
+			$page_limit  =   C("RECORDS_PER_PAGE");
+			$patent_list = D('Patent')->where($map)->listPage($p,$page_limit);
+			$this->assign('patent_list',$patent_list['list']);
+			$this->assign('patent_page',$patent_list['page']);
+		
+		} 
+	
+	$this->display();
 	}
 }

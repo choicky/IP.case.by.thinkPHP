@@ -23,42 +23,49 @@ class PatentViewModel extends ViewModel {
 			'publication_date',
 			'issue_date',			
 			'_table'=>"__CASE__",	//定义数据表
-			'_type'=>'LEFT'
+			'_type'=>'LEFT'	//左连接 必须
 		),
 		
 		'CaseExtend'	=>	array(
 			'expired_date',
 			'related_our_ref',
 			'remarks',
-			'_on'	=>	'Patent.case_id=CaseExtend.case_id'
+			'_on'	=>	'Patent.case_id=CaseExtend.case_id',
+			'_type'=>'LEFT'	//左连接 必须
 		),
 		
 		'CaseType'	=>	array(
 			'case_type_name',
 			'case_group_id',
-			'_on'	=>	'Patent.case_type_id=CaseType.case_type_id'
+			'_on'	=>	'Patent.case_type_id=CaseType.case_type_id',
+			'_type'=>'LEFT'	//左连接 必须,
 		),
 		
 		'CaseGroup'	=>	array(
 			'case_group_name',
-			'_on'	=>	'CaseType.case_group_id=CaseGroup.case_group_id'
+			'_on'	=>	'CaseType.case_group_id=CaseGroup.case_group_id',
+			'_type'=>'LEFT'	//左连接 必须
 		),
+
 		
 		'Follower'	=>	array(
 			'member_name'	=>	'follower_name',	//重新定义名称
 			'_table'=>"__MEMBER__",	//定义数据表
-			'_on'	=>	'Patent.follower_id=Follower.member_id'
+			'_on'	=>	'Patent.follower_id=Follower.member_id',
+			'_type'=>'LEFT'	//左连接 必须
 		),	
 		
 		'Client'	=>	array(
 			'client_name',
-			'_on'	=>	'Patent.client_id=Client.client_id'
+			'_on'	=>	'Patent.client_id=Client.client_id',
+			'_type'=>'LEFT'	//左连接 必须
 		),
 		
 		'Applicant'	=>	array(
 			'client_name'	=>	'applicant_name',	//重新定义名称
 			'_table'=>"__CLIENT__",	//定义数据表
-			'_on'	=>	'Patent.applicant_id=Applicant.client_id'
+			'_on'	=>	'Patent.applicant_id=Applicant.client_id',
+			'_type'=>'LEFT'	//左连接 必须
 		),
 		
 		'Handler'	=>	array(
@@ -71,8 +78,12 @@ class PatentViewModel extends ViewModel {
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
-		$order['our_ref']	=	'desc';
-		$list	=	$this->field(true)->order($order)->select();
+		$case_type_list	=	D('CaseTypeView')->listPatentCaseTypeId();
+		$map['case_type_id']  = array('in',$case_type_list);
+		
+		$order['case_type_id']	=	'desc';
+		$list	=	$this->where($map)->order($order)->select();
+
 		return $list;
 	}
 		

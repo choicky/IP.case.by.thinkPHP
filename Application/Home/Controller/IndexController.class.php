@@ -7,9 +7,9 @@ class IndexController extends Controller {
 	public function index(){
 		$this->show('还没有做好，先到 <a href="./Home/Group/listAll">这里</a> 看看吧 或 <a href="./Home/Account/">这里</a>看看吧。。');
 		
-		$Model	=	D('CaseTypeView');
-		$data	=	$Model->listAllTrademark();
-		print_r($data);
+		
+		$list	=	D('Case')->field(true)->listAllPatent();
+		print_r($list);
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
