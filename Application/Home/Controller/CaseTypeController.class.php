@@ -107,7 +107,7 @@ class CaseTypeController extends Controller {
 				
 				$map['case_type_id']	=	$case_type_id;
 
-				$result = M('CaseTypeView')->where($map)->delete();
+				$result = M('CaseType')->where($map)->delete();
 				if($result){
 					$this->success('删除成功', 'view/case_group_id/'.$case_group_id);
 				}
@@ -120,7 +120,7 @@ class CaseTypeController extends Controller {
 				$this->error('未指明要删除的流水');
 			}
 			
-			$case_type_list = D('CaseTypeView')->field(true)->getByCaseTypeViewId($case_type_id);			
+			$case_type_list = D('CaseTypeView')->field(true)->getByCaseTypeId($case_type_id);			
 			$this->assign('case_type_list',$case_type_list);
 			
 			//取出 CaseGroup 表的内容以及数量
