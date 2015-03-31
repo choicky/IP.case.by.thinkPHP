@@ -6,116 +6,163 @@ class CaseTypeController extends Controller {
     
 	//默认跳转到listPage，分页显示
 	public function index(){
-        //header("Location: listPage");
-        $data   =   D('CaseType')->getCaseTypeId(1);
-        var_dump($data);
+        header("Location: listPage");
+    }
+	
+	//默认跳转到listPage，分页显示
+	public function listAll(){
+        header("Location: listPage");
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
-		$p  =   I("p",1,"int");
-		$limit  =   C('RECORDS_PER_PAGE');
-		$case_type_data = D('CaseType')->relation(true)->field(true)->listPage($p,$limit);
-		$this->assign('case_type_data',$case_type_data['data']);
-		$this->assign('case_type_page',$case_type_data['page']);
-        
-        $case_group_data =   D('CaseGroup')->select();
-        $case_group_count    =   count($case_group_data);
-        $this->assign('case_group_data',$case_group_data);
-        $this->assign('case_group_count',$case_group_count);
-       
+		$p	= I("p",1,"int");
+		$page_limit  =   C("RECORDS_PER_PAGE");
+		$case_type_list = D('CaseTypeView')->listPage($p,$limit);
+		$this->assign('case_type_list',$case_type_list['list']);
+		$this->assign('case_type_page',$case_type_list['page']);
+		
+		//取出 CaseGroup 表的内容以及数量
+		$case_group_list	=	D('CaseGroup')->listBasic();
+		$case_group_count	=	count($case_group_list);
+		$this->assign('case_group_list',$case_group_list);
+		$this->assign('case_group_count',$case_group_count);
+		
+		//取出其他变量
+		$row_limit  =   C("ROWS_PER_SELECT");
+		$this->assign('row_limit',$row_limit);
+        	
 		$this->display();
 	}
-	
+
 	//新增
 	public function add(){
 		$data	=	array();
 		$data['case_type_name']	=	trim(I('post.case_type_name'));
-        $data['case_group_id']	=	trim(I('post.case_group_id'));
-		
-		if(!$data['case_type_name']){
-			$this->error('未填写费用名称');
-		} 
+		$data['case_group_id']	=	trim(I('post.case_group_id'));		
 
 		$result = M('CaseType')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'listPage');
+			$this->success('新增成功', 'view/case_group_id/'.$data['case_group_id']);
 		}else{
 			$this->error('增加失败');
 		}
 	}
 	
-	//编辑
+	//更新	
 	public function update(){
 		if(IS_POST){
-			$case_type_id	=	I('post.case_type_id',0,'int');
+			$case_type_id	=	trim(I('post.case_type_id'));
 			
 			$data=array();
 			$data['case_type_name']	=	trim(I('post.case_type_name'));
-            $data['case_group_id']	=	trim(I('post.case_group_id'));
-
-			$result = D('CaseType')->update($case_type_id,$data);
+			$data['case_group_id']	=	trim(I('post.case_group_id'));	
+						
+			$result = D('CaseTypeView')->update($case_type_id,$data);
 			if(false !== $result){
-				$this->success('修改成功', 'listPage');
+				$this->success('修改成功','view/case_group_id/'.$data['case_group_id']);
 			}else{
-				$this->error('修改失败', 'listPage');
+				$this->error('修改失败');
 			}
 		} else{
-			$case_type_id = I('get.id',0,'int');
+			$case_type_id = I('get.case_type_id',0,'int');
 
 			if(!$case_type_id){
-				$this->error('未指明要编辑的客户');
+				$this->error('未指明要编辑的案件类型编号');
 			}
 
-			$case_type_data = D('CaseType')->field(true)->relation(true)->getByCaseTypeId($case_type_id);
-                        
-            $case_group_data =   D('CaseGroup')->select();
-            $case_group_count    =   count($case_group_data);
-            $this->assign('case_type_data',$case_type_data);
-            $this->assign('case_group_data',$case_group_data);
-            $this->assign('case_group_count',$case_group_count);
-
+			$case_type_list = D('CaseTypeView')->getByCaseTypeId($case_type_id);
+			$this->assign('case_type_list',$case_type_list);
+			
+			//取出 CaseGroup 表的内容以及数量
+			$case_group_list	=	D('CaseGroup')->listBasic();
+			$case_group_count	=	count($case_group_list);
+			$this->assign('case_group_list',$case_group_list);
+			$this->assign('case_group_count',$case_group_count);
+			
+			//取出其他变量
+			$row_limit  =   C("ROWS_PER_SELECT");
+			$this->assign('row_limit',$row_limit);
+			
 			$this->display();
 		}
 	}
-    
-    	//删除
+	
+	//删除
 	public function delete(){
-		
-		//检测是否 post
 		if(IS_POST){
-			$case_type_id	=	I('post.case_type_id',0,'int');
+			
+			//通过 I 方法获取 post 过来的 case_type_id 和 case_group_id
+			$case_type_id	=	trim(I('post.case_type_id'));
+			$case_group_id	=	trim(I('post.case_group_id'));
 			$no_btn	=	I('post.no_btn');
 			$yes_btn	=	I('post.yes_btn');
-			
+
 			if(1==$no_btn){
-				$this->success('取消删除', 'listPage');
+				$this->success('取消删除', 'view/case_group_id/'.$case_group_id);
 			}
 			
 			if(1==$yes_btn){
-				$map['case_type_id']   =   $case_type_id;
-                $case_type_data =   M('Case')->field('case_type_id')->where($map)->find();
-                if(is_array($case_type_data)){
-                    $this->error('删除失败，本类型下面有案件');
-                }
-                
-                $result = M('CaseType')->where($map)->delete();
+				
+				$map['case_type_id']	=	$case_type_id;
+
+				$result = M('CaseTypeView')->where($map)->delete();
 				if($result){
-					$this->success('删除成功', 'listPage');
-				}			
+					$this->success('删除成功', 'view/case_group_id/'.$case_group_id);
+				}
 			}
 			
-		} else{							//这是针对 get 方式的
-			$case_type_id	=	I('get.id',0,'int');
-			if(!$case_type_id){
-				$this->error('未指明要删除的主键');
-			}
+		} else{
+			$case_type_id = I('get.case_type_id',0,'int');
 
-			$case_type_data = D('CaseType')->field(true)->relation(true)->getByCaseTypeId($case_type_id);
-			$this->assign('case_type_data',$case_type_data);
+			if(!$case_type_id){
+				$this->error('未指明要删除的流水');
+			}
+			
+			$case_type_list = D('CaseTypeView')->field(true)->getByCaseTypeViewId($case_type_id);			
+			$this->assign('case_type_list',$case_type_list);
+			
+			//取出 CaseGroup 表的内容以及数量
+			$case_group_list	=	D('CaseGroup')->listBasic();
+			$case_group_count	=	count($case_group_list);
+			$this->assign('case_group_list',$case_group_list);
+			$this->assign('case_group_count',$case_group_count);
+			
+			//取出其他变量
+			$row_limit  =   C("ROWS_PER_SELECT");
+			$this->assign('row_limit',$row_limit);
+
 			$this->display();
 		}
 	}
 
+	
+	//查看主键为 $case_group_id 的收支流水的所有 case_type
+	public function view(){
+		$case_group_id = I('get.case_group_id',0,'int');
+
+		if(!$case_group_id){
+			$this->error('未指明要查看的案件大类');
+		}
+
+		$case_group_data = D('CaseGroup')->field(true)->getByCaseGroupId($case_group_id);			
+		$this->assign('case_group_data',$case_group_data);
+		
+		$map['case_group_id']	=	$case_group_id;
+		$case_type_list	=	M('CaseType')->where($map)->select();
+		$this->assign('case_type_list',$case_type_list);
+		
+		//取出 CaseGroup 表的内容以及数量
+		$case_group_list	=	D('CaseGroup')->listBasic();
+		$case_group_count	=	count($case_group_list);
+		$this->assign('case_group_list',$case_group_list);
+		$this->assign('case_group_count',$case_group_count);
+		
+		//取出其他变量
+		$row_limit  =   C("ROWS_PER_SELECT");
+		$this->assign('row_limit',$row_limit);
+			
+		$this->display();
+	}
 }

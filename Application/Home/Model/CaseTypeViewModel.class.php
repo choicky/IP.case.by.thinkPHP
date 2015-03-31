@@ -80,7 +80,7 @@ class CaseTypeViewModel extends ViewModel {
 	public function listAll() {
 		$order['case_type_name']	=	'desc';
 		$order['convert(case_type_name using gb2312)']	=	'asc';
-		$list	=	$this->order($order)->select();
+		$list	=	$this->field(true)->order($order)->select();
 		return $list;
 	}
 
@@ -96,5 +96,21 @@ class CaseTypeViewModel extends ViewModel {
 		$show	= $Page->show();
 		
 		return array("list"=>$list,"page"=>$show);
+	}
+	
+	//更新本数据表中主键为$case_type_id的记录，$data是数组
+	public function update($case_type_id,$data){
+		$map['case_type_id']	=	$case_type_id;
+		$Model	=	M('CaseType');
+		$result	=	$Model->where($map)->save($data);
+		return $result;
+	}
+	
+	//删除本数据表中主键为$account_id的记录
+	public function delete($case_type_id){
+		$map['case_type_id']	=	$case_type_id;	//自定义 where() 语句的参数
+		$Model	=	M('CaseType');
+		$result	=	$Model->where($map)->delete();	//基于 where() 删除对应的数据，
+		return $result;	//返回值为删除的记录数量
 	}
 }

@@ -152,7 +152,7 @@ class ClaimController extends Controller {
 			$yes_btn	=	I('post.yes_btn');
 
 			if(1==$no_btn){
-				$this->success('取消删除', 'listAll');
+				$this->success('取消删除', 'view/balance_id/'.$balance_id);
 			}
 			
 			if(1==$yes_btn){
