@@ -20,6 +20,23 @@ class CaseTypeModel extends RelationModel {
 		),
     );
     
+	//返回本数据表中与专利有关的数据
+	public function listAllPatent() {
+		$case_group_list	=	D('CaseGroup')->listAllPatent();
+		var_dump(count($case_group_list));
+		
+		for($i=0;$i<count($case_group_list);$i++){
+			$map['case_group_id']	=	$case_group_list[$i]['case_group_id'];
+			$case_type_list[]	=	$this->field('case_type_id')->where($map)->select();
+			var_dump($case_type_list);
+		}
+		var_dump(count($case_type_list));
+		var_dump($case_type_list);
+		/*$order['convert(case_group_name using gb2312)']	=	'asc';
+		$data	=	$this->field(true)->where($map)->order($order)->select();
+		return $case_type_list;*/
+	}
+	
     //返回本数据表的基本数据，可作为选项用
 	public function listBasic() {
 		$order['convert(case_type_name using gb2312)']	=	'asc';

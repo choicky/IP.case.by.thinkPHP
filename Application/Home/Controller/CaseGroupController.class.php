@@ -13,9 +13,9 @@ class CaseGroupController extends Controller {
 	public function listPage(){
 		$p  =   I("p",1,"int");
 		$limit  =   C("RECORDS_PER_PAGE");
-		$case_group_data    =   D('CaseGroup')->listPage($p,$limit);
-		$this->assign('case_group_data',$case_group_data['data']);
-		$this->assign('case_group_page',$case_group_data['page']);
+		$case_group_list    =   D('CaseGroup')->listPage($p,$limit);
+		$this->assign('case_group_list',$case_group_list['data']);
+		$this->assign('case_group_page',$case_group_list['page']);
         
 		$this->display();
 	}
@@ -53,15 +53,15 @@ class CaseGroupController extends Controller {
 				$this->error('修改失败', 'listPage');
 			}
 		} else{
-			$case_group_id = I('get.id',0,'int');
+			$case_group_id = I('get.case_group_id',0,'int');
 
 			if(!$case_group_id){
 				$this->error('未指明要编辑的客户');
 			}
 
-			$case_group_data = M('CaseGroup')->getByCaseGroupId($case_group_id);
+			$case_group_list = M('CaseGroup')->getByCaseGroupId($case_group_id);
 			
-			$this->assign('case_group_data',$case_group_data);
+			$this->assign('case_group_list',$case_group_list);
 
 			$this->display();
 		}
@@ -82,8 +82,8 @@ class CaseGroupController extends Controller {
 			
 			if(1==$yes_btn){
 				$map['case_group_id']   =   $case_group_id;
-                $case_type_data =   M('CaseType')->field('case_group_id')->where($map)->find();
-                if(is_array($case_type_data)){
+                $case_type_list =   M('CaseType')->field('case_group_id')->where($map)->find();
+                if(is_array($case_type_list)){
                     $this->error('删除失败，本大类下面还有其他小类');
                 }
                 
@@ -95,13 +95,13 @@ class CaseGroupController extends Controller {
 			}
 			
 		} else{							//这是针对 get 方式的
-			$case_group_id	=	I('get.id',0,'int');
+			$case_group_id	=	I('get.case_group_id',0,'int');
 			if(!$case_group_id){
 				$this->error('未指明要删除的主键');
 			}
 
-			$case_group_data = M('CaseGroup')->getByCaseGroupId($case_group_id);
-			$this->assign('case_group_data',$case_group_data);
+			$case_group_list = M('CaseGroup')->getByCaseGroupId($case_group_id);
+			$this->assign('case_group_list',$case_group_list);
 			$this->display();
 		}
 	}
