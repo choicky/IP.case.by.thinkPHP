@@ -13,7 +13,7 @@ class CaseModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'case_type_id',		//外键，
 			'mapping_fields'	=>	'case_type_name',	//关联字段
-			'as_fields'			=>	'case_type_name'	//字段别名
+			//'as_fields'			=>	'case_type_name'	//字段别名
 		),
 		
 		'Follower'	=>	array(							//本数据关联的名称
@@ -22,7 +22,7 @@ class CaseModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'follower_id',		//外键，
 			'mapping_fields'	=>	'member_name',	//关联字段
-			'as_fields'			=>	'member_name'	//字段别名
+			//'as_fields'			=>	'member_name'	//字段别名
 		),
 		
 		'Client'	=>	array(							//本数据关联的名称
@@ -31,7 +31,7 @@ class CaseModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'client_id',		//外键，
 			'mapping_fields'	=>	'client_name',	//关联字段
-			'as_fields'			=>	'client_name'	//字段别名
+			//'as_fields'			=>	'client_name'	//字段别名
 		),
 		
 		'Applicant'	=>	array(							//本数据关联的名称
@@ -40,7 +40,7 @@ class CaseModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'applicant_id',		//外键，
 			'mapping_fields'	=>	'client_name',	//关联字段
-			'as_fields'			=>	'applicant_name'	//字段别名
+			//'as_fields'			=>	'applicant_name'	//字段别名
 		),
 		
 		'Handler'	=>	array(							//本数据关联的名称
@@ -49,7 +49,7 @@ class CaseModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'handler_id',		//外键，
 			'mapping_fields'	=>	'member_name',	//关联字段
-			'as_fields'			=>	'handler_name'	//字段别名
+			//'as_fields'			=>	'handler_name'	//字段别名
 		),
 		
 		'TmCategory'	=>	array(							//本数据关联的名称
@@ -58,7 +58,7 @@ class CaseModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'tm_category_id',		//外键，
 			'mapping_fields'	=>	'tm_category_number',	//关联字段
-			'as_fields'			=>	'tm_category_number'	//字段别名
+			//'as_fields'			=>	'tm_category_number'	//字段别名
 		),
 		
 		'CaseExtend'	=>	array(						//本数据关联的名称
@@ -78,6 +78,25 @@ class CaseModel extends RelationModel {
 			'mapping_fields'	=>	'priority_number,priority_date,priority_country_id',		//关联字段
 			'mapping_order' => 'priority_date asc',		//排序
 		),
+		/*
+		'CaseFee'	=>	array(						//本数据关联的名称
+			'mapping_name'		=>	'CaseFee',		//重新定义本数据关联的名称
+			'class_name'		=>	'CaseFeeView',		//被关联的数据表
+			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
+			'foreign_key'		=>	'case_id',			//外键
+			'mapping_fields'	=>	'due_date',		//关联字段
+			'mapping_order' => 'due_date asc',		//排序
+		),
+		
+		'CaseFile'	=>	array(						//本数据关联的名称
+			'mapping_name'		=>	'CaseFile',		//重新定义本数据关联的名称
+			'class_name'		=>	'CaseFileView',		//被关联的数据表
+			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
+			'foreign_key'		=>	'case_id',			//外键
+			'mapping_fields'	=>	'due_date',		//关联字段
+			'mapping_order' => 'due_date asc',		//排序
+		),
+		*/
 
 	
 	);
@@ -132,7 +151,7 @@ class CaseModel extends RelationModel {
 		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("list"=>$list,"page"=>$show);
+		return array("list"=>$list,"page"=>$show,"count"=>$count);
 	}
 	
 	//返回本数据视图的所有商标数据

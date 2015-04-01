@@ -19,8 +19,11 @@ class PatentController extends Controller {
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
 		$patent_list = D('Case')->listPagePatent($p,$page_limit);
+		$patent_count	=	count($patent_list);
 		$this->assign('patent_list',$patent_list['list']);
 		$this->assign('patent_page',$patent_list['page']);
+		$this->assign('patent_count',$patent_list['count']);
+
 		/*
 		//取出 Account 表的内容以及数量
 		$account_list	=	D('Account')->field(true)->listAll();
@@ -209,5 +212,42 @@ class PatentController extends Controller {
 		} 
 	
 	$this->display();
+	}
+	
+	//查看 $case_id 的详情	
+	public function view($case_id){
+
+		$case_id = I('get.case_id',0,'int');
+
+		if(!$case_id){
+			$this->error('未指明要编辑的账户');
+		}
+		
+		//取出案件的基本信息
+		$patent_list = D('Case')->relation(true)->getByCaseId($case_id);			
+		$this->assign('patent_list',$patent_list);
+		
+		//取出案件的优先权信息		
+		$map['case_id']	=	$case_id;
+		$case_priority_list	=	D('CasePriority')->where($map)->listAll();
+		$case_priority_count	=	count($case_priority_list);
+		$this->assign('case_priority_list',$case_priority_list);
+		$this->assign('case_priority_count',$case_priority_count);
+		
+		//取出 Country 表的内容以及数量
+		$country_list	=	D('Country')->listAll();
+		$country_count	=	count($country_list);
+		$this->assign('country_list',$country_list);
+		$this->assign('country_count',$country_count);
+		
+		//取出其他变量
+		$row_limit  =   C("ROWS_PER_SELECT");
+		$today	=	time();
+		$this->assign('row_limit',$row_limit);
+        $this->assign('today',$today);
+
+
+		$this->display();
+
 	}
 }

@@ -37,7 +37,7 @@ class CasePriorityViewModel extends ViewModel {
 	//返回本数据视图的所有数据
 	public function listAll() {
 		$order['priority_date']	=	'asc';
-		$list	=	$this->field(true)->order($order)->select();
+		$list	=	$this->order($order)->select();
 		return $list;
 	}
 
@@ -45,7 +45,7 @@ class CasePriorityViewModel extends ViewModel {
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
 		$order['priority_date']	=	'asc';	
-		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
+		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		

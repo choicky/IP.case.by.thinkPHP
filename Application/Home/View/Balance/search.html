@@ -114,7 +114,7 @@
 										{$claim_vo.cost_center_name}；
 										<?php $total_amount	+=	$claim_vo['total_amount'];?>
 									</volist>
-									<a href="__APP__/Claim/update/balance_id/{$balance_vo.balance_id}">更新</a>
+									<a href="__APP__/Home/Claim/view/balance_id/{$balance_vo.balance_id}">详情</a>
 								</td>
 								<td align="right">
 									{$balance_vo['income_amount']+$balance_vo['outcome_amount']==$total_amount ? '' :'未全部结算' }

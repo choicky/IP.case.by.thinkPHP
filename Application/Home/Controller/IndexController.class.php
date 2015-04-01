@@ -8,8 +8,9 @@ class IndexController extends Controller {
 		$this->show('还没有做好，先到 <a href="./Home/Group/listAll">这里</a> 看看吧 或 <a href="./Home/Account/">这里</a>看看吧。。');
 		
 		
-		$list	=	D('Case')->field(true)->listAllPatent();
-		print_r($list);
+		$case_priority_list	=	D('CasePriority')->listAll();
+		
+		print_r($case_priority_list);
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
