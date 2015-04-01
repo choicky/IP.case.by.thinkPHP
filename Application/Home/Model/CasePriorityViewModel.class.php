@@ -23,8 +23,9 @@ class CasePriorityViewModel extends ViewModel {
 		//定义本表与 Country 表的视图关系
 		'Country'	=>	array(
 			'country_name',
-			'_on'	=>	'Country.priority_country_id=CasePriority.priority_country_id'
-		),	
+			'_on'	=>	'Country.country_id=CasePriority.priority_country_id'
+		),
+
 	);
 	
 			
@@ -52,6 +53,6 @@ class CasePriorityViewModel extends ViewModel {
 		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("list"=>$list,"page"=>$show);
+		return array("list"=>$list,"page"=>$show, "count"=>$count);
 	}
 }

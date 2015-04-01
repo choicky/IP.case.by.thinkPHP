@@ -66,54 +66,54 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 将controller assign过来的 patent_list 赋给  patent_list--> 
+							<!-- 将controller assign过来的 case_list 赋给  case_list--> 
 							
 							<tr>
 								<!-- 暂时关闭
-								<td>{$patent_list.case_id}</td>
+								<td>{$case_list.case_id}</td>
 								-->
-								<td>{$patent_list.our_ref}</td>
+								<td>{$case_list.our_ref}</td>
 								
-								<td>{$patent_list['CaseType']['case_type_name']}</td>
+								<td>{$case_list['CaseType']['case_type_name']}</td>
 								
-								<td>{$patent_list['Follower']['member_name']}</td>
+								<td>{$case_list['Follower']['member_name']}</td>
 								
-								<td>{$patent_list.create_date|date="Y-m-d",###}</td>
+								<td>{$case_list.create_date|date="Y-m-d",###}</td>
 								
-								<td>{$patent_list.form_date|date="Y-m-d",###}</td>
-								<td>{$patent_list['Client']['client_name']}</td>
-								<td>{$patent_list.client_ref}</td>
-								<td>{$patent_list['Applicant']['client_name']}</td>
+								<td>{$case_list.form_date|date="Y-m-d",###}</td>
+								<td>{$case_list['Client']['client_name']}</td>
+								<td>{$case_list.client_ref}</td>
+								<td>{$case_list['Applicant']['client_name']}</td>
 								
-								<td>{$patent_list.tentative_title}</td>
+								<td>{$case_list.tentative_title}</td>
 								
 								
-								<td>{$patent_list['Handler']['member_name']}</td>
+								<td>{$case_list['Handler']['member_name']}</td>
 								
-								<td>{$patent_list.application_date|date="Y-m-d",###}</td>
-								<td>{$patent_list.application_number}</td>
+								<td>{$case_list.application_date|date="Y-m-d",###}</td>
+								<td>{$case_list.application_number}</td>
 								
-								<td>{$patent_list.formal_title}</td>
+								<td>{$case_list.formal_title}</td>
 								<!-- 暂时关闭
 								<td>
 
 								<td>
-									<a href="__APP__/Home/CaseFile/view/case_id/{$patent_list.case_id}">交文管理</a>
-									<a href="__APP__/Home/CaseFee/view/case_id/{$patent_list.case_id}"><br>交费管理</a>
+									<a href="__APP__/Home/CaseFile/view/case_id/{$case_list.case_id}">交文管理</a>
+									<a href="__APP__/Home/CaseFee/view/case_id/{$case_list.case_id}"><br>交费管理</a>
 									
 								</td>
 								-->
-								<td>{$patent_list.publication_date|date="Y-m-d",###}</td>
-								<td>{$patent_list.issue_date|date="Y-m-d",###}</td>
+								<td>{$case_list.publication_date|date="Y-m-d",###}</td>
+								<td>{$case_list.issue_date|date="Y-m-d",###}</td>
 							</tr>
 							                 
 						</tbody>
 					</table> 
 					
 				</div>
-				查看和修改“本案的”<a href="__CONTROLLER__/update/case_id/{$patent_list.case_id}" target="_blank">基本信息</a>、 
-				<a href="__APP__/Home/CaseFee/view/case_id/{$patent_list.case_id}" target="_blank">费用信息</a>、 
-				<a href="__APP__/Home/CaseFile/view/case_id/{$patent_list.case_id}" target="_blank">交文信息</a>。
+				查看和修改“本案的”<a href="__CONTROLLER__/update/case_id/{$case_list.case_id}" target="_blank">基本信息</a>、 
+				<a href="__APP__/Home/CaseFee/view/case_id/{$case_list.case_id}" target="_blank">费用信息</a>、 
+				<a href="__APP__/Home/CaseFile/view/case_id/{$case_list.case_id}" target="_blank">交文信息</a>。
 			</div>
         </div>
 		
@@ -155,7 +155,7 @@
 								
 								<td>{$i}</td>								
 								<td>{$case_priority_vo.priority_date|date="Y-m-d",###}</td>								
-								<td>{$case_priority_vo['Country']['country_name']}</td>
+								<td>{$case_priority_vo.country_name}</td>
 								<td>{$case_priority_vo.priority_number}</td>
 								<td>
 									<a href="__APP__/Home/CasePriority/update/case_priority_id/{$case_priority_vo.case_priority_id}">更新</a>
@@ -194,7 +194,7 @@
 							<div class="form-group">
 								<label for="priority_date" class="col-lg-3 control-label">优先权日期</label>
 								<div class="col-lg-4">
-									<input type="hidden" class="form-control" id="case_id" name="case_id" value="{$patent_list.case_id}">
+									<input type="hidden" class="form-control" id="case_id" name="case_id" value="{$case_list.case_id}">
 									<input type="date" class="form-control" id="priority_date" name="priority_date" placeholder="deal_date" value="{$today|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">

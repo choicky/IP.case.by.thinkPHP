@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1>列表：（共{$patent_count}项）</h1>
+					<h3>所有专利案件列表（共{$patent_count}项）：</h3>
 				</div>
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
-					点击“盈方案号”能查看、修改案子的所有信息；表格底部有换页按钮；页面底部可以新增
+					点击“盈方案号”能查看、修改案子的所有信息；表格底部有换页按钮；表格右侧可查看/修改优先权信息、交文信息、缴费信息
 				</div>
 
 				<!-- Table -->
@@ -118,117 +118,7 @@
 				</div>
 			</div>
         </div>
-	  
-	  
-		<a name="addNew"></a>
-		<!-- Forms
-			================================================== -->
-	    <div class="row">
-			<div class="col-lg-12">
-				<div class="page-header">
-					<h1 id="forms">新增</h1>
-				</div>
-			</div>
-        </div>
 
-        <div class="row">
-			<div class="col-lg-9">
-				<div class="well bs-component">
-					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
-						<fieldset>
-							<legend>尽量填写完整每一项</legend>
-							<div class="form-group">
-								<label for="account_id" class="col-lg-3 control-label">账户名称</label>
-								<div class="col-lg-4">
-									<select class="form-control" name="account_id" size="{$account_count<$row_limit ? $account_count : $row_limit}">
-										<volist name="account_list" id="account_vo">
-										<option value="{$account_vo.account_id}"  >{$account_vo.account_name}</option>
-										</volist>
-									</select>
-								</div>
-								<div class="col-lg-5">
-									<p>用鼠标选择</p>
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="deal_date" class="col-lg-3 control-label">交易日期</label>
-								<div class="col-lg-4">
-									<input type="date" class="form-control" id="deal_date" name="deal_date" placeholder="deal_date" value="{$today|date="Y-m-d",###}">
-								</div>
-								<div class="col-lg-5">
-									日期格式为 yyyy-mm-dd，可用鼠标选择
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="income_amount" class="col-lg-3 control-label">收入金额</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="income_amount" name="income_amount" placeholder="收入金额">
-								</div>
-								<div class="col-lg-5">
-									小数点必须使用英文的“.”
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="outcome_amount" class="col-lg-3 control-label">支出金额</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="outcome_amount" name="outcome_amount" placeholder="支出金额">
-								</div>
-								<div class="col-lg-5">
-									小数点必须使用英文的“.”
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="summary" class="col-lg-3 control-label">交易摘要</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="summary" name="summary" placeholder="交易摘要">
-								</div>
-								<div class="col-lg-5">
-									用于备注本笔流水
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="other_party" class="col-lg-3 control-label">对方当事人</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="other_party" name="other_party" placeholder="对方当事人">
-								</div>
-								<div class="col-lg-5">
-									“收入”则填付款人名称，“支出”则填收款人名称			
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="follower_id" class="col-lg-3 control-label">跟进人员</label>
-								<div class="col-lg-4">
-									<select class="form-control" name="follower_id" size="{$member_count<$row_limit ? $member_count : $row_limit}">
-										<volist name="member_list" id="member_vo">
-										<option value="{$member_vo.member_id}">{$member_vo.member_name}</option>
-										</volist>
-									</select>
-								</div>
-								<div class="col-lg-5">
-									“跟进人员”主要是方便财务知道找谁咨询款项的信息			
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="bill_id" class="col-lg-3 control-label">账单编号</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="bill_id" name="bill_id" placeholder="账单编号">
-								</div>
-								<div class="col-lg-5">
-									可从<a href="__APP__/Home/Bill/searchBill" target="_blank">这里</a>找到可用的账单编号			
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="col-lg-9 col-lg-offset-3">
-									<button class="btn btn-default"> 取消 </button>
-									<button type="submit" class="btn btn-primary"> 确认 </button>
-								</div>
-							</div>
-						</fieldset>
-					</form>
-				</div>
-			</div>
-        </div>
 
 	</block>
 <!-- 区块 page 替换结束 --> 

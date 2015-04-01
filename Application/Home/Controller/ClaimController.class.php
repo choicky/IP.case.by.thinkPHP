@@ -175,15 +175,6 @@ class ClaimController extends Controller {
 			$claim_list = D('Claim')->relation(true)->field(true)->getByClaimId($claim_id);			
 			$this->assign('claim_list',$claim_list);
 			
-			//取出 Account 表的内容以及数量
-			$account_list	=	D('Account')->field(true)->listAll();
-			$account_count	=	count($account_list);
-			$this->assign('account_list',$account_list);
-			$this->assign('account_count',$account_count);
-			
-			//取出其他变量
-			$row_limit  =   C("ROWS_PER_SELECT");
-			$this->assign('row_limit',$row_limit);
 
 			$this->display();
 		}

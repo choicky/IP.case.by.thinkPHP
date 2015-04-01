@@ -11,7 +11,7 @@ class CountryModel extends Model {
 	public function listAll() {
 		$Model	=	M('Country');
 		$order['convert(country_name using gb2312)']	=	'asc';
-		$list	=	$Model->field(true)->order($order)->select();
+		$list	=	$Model->order($order)->select();
 		return $list;
 	}
 		
