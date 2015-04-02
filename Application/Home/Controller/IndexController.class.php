@@ -7,10 +7,10 @@ class IndexController extends Controller {
 	public function index(){
 		$this->show('还没有做好，先到 <a href="./Home/Group/listAll">这里</a> 看看吧 或 <a href="./Home/Account/">这里</a>看看吧。。');
 		
-		$map['case_id']	=	7;
-		$case_priority_list	=	D('Case')->relation(true)->where($map)->select();
+		$case_group_id	=	20;
+		$case_type_list	=	D('CaseTypeView')->listCaseTypeId($case_group_id);
 		
-		print_r($case_priority_list);
+		print_r($case_type_list);
 		/*
 		if(strpos('专利(非套餐)','专利') ){
 			echo '这是专利';

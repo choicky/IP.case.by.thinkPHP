@@ -28,24 +28,25 @@ class CasePriorityController extends Controller {
 
 	//新增
 	public function add(){
-		$data	=	array();
-		$data['case_id']	=	trim(I('post.case_id'));
-		$data['priority_number']	=	trim(I('post.priority_number'));
-		$data['priority_date']	=	trim(I('post.priority_date'));		
-		$data['priority_date']	=	strtotime($data['priority_date']);
-		$data['priority_country_id']	=	trim(I('post.priority_country_id'));
-		print_r($data);
-		
-		$map['case_id']	=	$data['case_id'];
+	
+		$case_id	=	trim(I('post.case_id'));
+		$map['case_id']	=	$case_id;
 		$condition	=	M('Case')->where($map)->find();
 		if(!is_array($condition)){
 			$this->error('案件编号不正确');
 		}
-
-		$result = M('CasePriority')->add($data);
 		
+		$Model	=	D('CasePriority');
+		if (!$Model->create()){ // 创建数据对象
+			 // 如果创建失败 表示验证没有通过 输出错误提示信息
+			 $this->error($Model->getError());
+			 //exit($Model->getError());
+		}else{
+			 // 验证通过 写入新增数据
+			 $result	=	$Model->add();		 
+		}
 		if(false !== $result){
-			$this->success('新增成功', 'view/case_id/'.$data['case_id']);
+			$this->success('新增成功', 'view/case_id/'.$case_id);
 		}else{
 			$this->error('增加失败');
 		}
@@ -54,21 +55,24 @@ class CasePriorityController extends Controller {
 	//更新	
 	public function update(){
 		if(IS_POST){
+			$case_id	=	trim(I('post.case_id'));
 			$case_priority_id	=	trim(I('post.case_priority_id'));
 			
-			$data=array();
-			$data['case_id']	=	trim(I('post.case_id'));
-			$data['priority_number']	=	trim(I('post.priority_number'));
-			$data['priority_date']	=	trim(I('post.priority_date'));		
-			$data['priority_date']	=	strtotime($data['priority_date']);
-			$data['priority_country_id']	=	trim(I('post.priority_country_id'));
-						
-			$result = D('CasePriority')->update($case_priority_id,$data);
+			$Model	=	D('CasePriority');
+			if (!$Model->create()){ // 创建数据对象
+				 // 如果创建失败 表示验证没有通过 输出错误提示信息
+				 $this->error($Model->getError());
+				 //exit($Model->getError());
+			}else{
+				 // 验证通过 写入新增数据
+				 $result	=	$Model->save();		 
+			}
 			if(false !== $result){
-				$this->success('修改成功','view/case_id/'.$data['case_id']);
+				$this->success('修改成功', 'view/case_id/'.$case_id);
 			}else{
 				$this->error('修改失败');
-			}
+			}			
+			
 		} else{
 			$case_priority_id = I('get.case_priority_id',0,'int');
 

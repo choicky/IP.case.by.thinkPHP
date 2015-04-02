@@ -11,7 +11,7 @@ class CaseGroupModel extends Model {
 	public function listAllPatent() {
 		$map['case_group_name']	=	array('like','%专利%');
 		$order['convert(case_group_name using gb2312)']	=	'asc';
-		$data	=	$this->field(true)->where($map)->order($order)->select();
+		$data	=	$this->where($map)->order($order)->select();
 		return $data;
 	}
 		

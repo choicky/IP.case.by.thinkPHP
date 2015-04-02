@@ -1,0 +1,232 @@
+<!-- 继承模板页面 base --> 
+<!-- 该模板位于  ./Application\Home\View\Public --> 
+<extend name="Public:base" />
+	
+<!-- 区块 title 替换开始 --> 	
+	<block name="title">
+		<title>搜索</title>
+	</block>
+<!-- 区块 title 替换结束 --> 	
+	
+<!-- 区块 page 替换开始 --> 
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>搜索条件</h3>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading">
+					<form class="form-inline" id="form_for_search_new" method="post" action="__CONTROLLER__/searchPatent">
+					  <div class="form-group">
+						<label for="case_year">年份</label>
+						<select  class="form-control" name="case_year" id="case_year">
+							<option value="0"}>不限</option>
+							<volist name="year_list" id="year_vo">
+							<option value="{$year_vo}"} >{$year_vo}年 &nbsp;</option>
+							</volist>
+						</select>
+					  </div>
+
+					  <div class="form-group">
+						<label for="case_group_id"> &nbsp; 案件大类</label>
+						<select  class="form-control" name="case_group_id" id="case_group_id">
+							<option value="0"}>不限</option>
+							<volist name="case_group_list" id="case_group_vo">
+							<option value="{$case_group_vo['case_group_id']}"}>{$case_group_vo['case_group_name']}</option>
+							</volist>
+						</select>
+					  </div>
+					  
+					  <div class="form-group">
+						<label for="case_type_id"> &nbsp; 案件小类</label>
+						<select  class="form-control" name="case_type_id" id="case_type_id">
+							<option value="0"}>不限</option>
+							<volist name="case_type_list" id="case_type_vo">
+							<option value="{$case_type_vo['case_type_id']}"}>{$case_type_vo['case_type_name']}</option>
+							</volist>
+						</select>
+					  </div>
+					  
+					  <div class="form-group">
+						<label for="follower_id"> &nbsp; 跟案人</label>
+						<select  class="form-control" name="follower_id" id="follower_id">
+							<option value="0"}>不限</option>
+							<volist name="member_list" id="follower_vo">
+							<option value="{$follower_vo['member_id']}"}>{$follower_vo['member_name']}</option>
+							</volist>
+						</select>
+					  </div>
+					  
+					  <div class="form-group">
+						<label for="handler_id"> &nbsp; 处理人</label>
+						<select  class="form-control" name="handler_id" id="handler_id">
+							<option value="0"}>不限</option>
+							<volist name="member_list" id="handler_vo">
+							<option value="{$handler_vo['member_id']}"}>{$handler_vo['member_name']}</option>
+							</volist>
+						</select>
+					  </div>
+					  
+					  <div class="form-group">
+						<label for="client_id"> &nbsp; 客户</label>
+						<select  class="form-control" name="client_id" id="client_id">
+							<option value="0"}>不限</option>
+							<volist name="client_list" id="client_vo">
+							<option value="{$client_vo['client_id']}"}>{$client_vo['client_name']}</option>
+							</volist>
+						</select>
+					  </div>
+					  
+					  <div class="form-group">
+						<label for="applicant_id"> &nbsp; 申请人</label>
+						<select  class="form-control" name="applicant_id" id="applicant_id">
+							<option value="0"}>不限</option>
+							<volist name="client_list" id="applicant_vo">
+							<option value="{$applicant_vo['client_id']}"}>{$applicant_vo['client_name']}</option>
+							</volist>
+						</select>
+					  </div>
+					  
+					  
+					  <div class="form-group">
+						<label for="formal_title"> 专利名称</label>
+						<input type="text" class="form-control" id="formal_title" name="formal_title" placeholder="专利名称"> 
+						<select  class="form-control" name="formal_title" id="formal_title">
+							<option value="0"}>不限</option>
+							<volist name="member_list" id="handler_vo">
+							<option value="{$handler_vo['member_id']}"}>{$handler_vo['member_name']}</option>
+							</volist>
+						</select>
+					  </div><br>
+					  <div class="form-group">
+						<label for="start_time">最早的发证日期</label>
+							<input type="date" class="form-control" id="start_time" name="start_time" placeholder="最早的交易日期" value="{$start_time|date="Y-m-d",###}">
+					  </div>
+					  <div class="form-group">最晚的发证日期</label>
+							<input type="date" class="form-control" id="end_time" name="end_time" placeholder="最晚的交易日期" value="{$end_time|date="Y-m-d",###}">
+					  </div>
+					<button type="submit" class="btn btn-primary">搜</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>所有专利案件列表（共{$case_count}项）：</h3>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading">
+					点击“盈方案号”能查看、修改案子的所有信息；表格底部有换页按钮；表格右侧可查看/修改优先权信息、交文信息、缴费信息
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								<!-- 暂时关闭
+								<th>编号</th>
+								-->
+								<th>盈方案号</th>
+								<!-- 暂时关闭
+								<th>案件类型</th>
+								-->
+								<th>跟案人</th>
+								<!-- 暂时关闭
+								<th>开案日期</th>
+								-->
+								<th>开案单日期</th>
+								<th>客户</th>
+								<th>客户案号</th>
+								<th>申请人</th>
+								<th>暂定名称</th>
+								<!-- 暂时关闭
+								<th>处理人</th>
+								-->
+								<th>申请日</th>
+								<th>申请号</th>
+								<!-- 暂时关闭
+								<th>正式名称</th>
+								-->
+								<th>优先权日</th>
+								<th>常用操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 case_list 赋给  case_vo--> 
+							<volist name="case_list" id="case_vo">
+							<tr>
+								<!-- 暂时关闭
+								<td>{$case_vo.case_id}</td>
+								-->
+								<td><a href="__CONTROLLER__/view/case_id/{$case_vo.case_id}">{$case_vo.our_ref}</a></td>
+								<!-- 暂时关闭
+								<td>{$case_vo['CaseType']['case_type_name']}</td>
+								-->
+								<td>{$case_vo['Follower']['member_name']}</td>
+								<!-- 暂时关闭
+								<td>{$case_vo.create_date|date="Y-m-d",###}</td>
+								-->
+								<td>{$case_vo.form_date|date="Y-m-d",###}</td>
+								<td>{$case_vo['Client']['client_name']}</td>
+								<td>{$case_vo.client_ref}</td>
+								<td>{$case_vo['Applicant']['client_name']}</td>
+								
+								<td>{$case_vo.tentative_title}</td>
+								
+								<!-- 暂时关闭
+								<td>{$case_vo['Handler']['member_name']}</td>
+								-->
+								<td>{$case_vo.application_date|date="Y-m-d",###}</td>
+								<td>{$case_vo.application_number}</td>
+								<!-- 暂时关闭
+								<td>{$case_vo.formal_title}</td>
+								-->
+								<td>
+									<?php
+										$having_priority	= count($case_vo['CasePriority']) ;
+										$first_priority_date	=	date("Y-m-d",$case_vo['CasePriority'][0]['priority_date']);
+										if($having_priority){
+											echo $first_priority_date;
+										}else{
+											echo "无";
+										}
+										
+									?>
+									<a href="__APP__/Home/CasePriority/view/case_id/{$case_vo.case_id}"><br>详情</a>
+								</td>
+								<td>
+									<a href="__APP__/Home/CaseFile/view/case_id/{$case_vo.case_id}">交文管理</a>
+									<a href="__APP__/Home/CaseFee/view/case_id/{$case_vo.case_id}"><br>交费管理</a>
+									
+								</td>
+								
+							</tr>
+							</volist>                 
+						</tbody>
+					</table> 
+					{$case_page}
+				</div>
+			</div>
+        </div>	  
+
+	</block>
+<!-- 区块 page 替换结束 --> 

@@ -49,7 +49,7 @@ class ClaimController extends Controller {
 	//更新	
 	public function update(){
 		if(IS_POST){
-						$balance_id	=	trim(I('post.balance_id'));
+			$balance_id	=	trim(I('post.balance_id'));
 			$claim_id	=	trim(I('post.claim_id'));
 			
 			$Model	=	D('Claim');
@@ -62,9 +62,9 @@ class ClaimController extends Controller {
 				 $result	=	$Model->save();		 
 			}
 			if(false !== $result){
-				$this->success('新增成功', 'view/balance_id/'.$balance_id);
+				$this->success('修改成功', 'view/balance_id/'.$balance_id);
 			}else{
-				$this->error('增加失败');
+				$this->error('修改失败');
 			}
 		} else{
 			$claim_id = I('get.claim_id',0,'int');

@@ -28,7 +28,7 @@ class ClientModel extends RelationModel {
 	//返回本数据表的所有数据
 	public function listAll() {
 		$order['convert(client_name using gb2312)']	=	'asc';
-		$list	=	$this->relation(true)->field(true)->order($order)->select();
+		$list	=	$this->relation(true)->order($order)->select();
 		return $list;
 	}
 	

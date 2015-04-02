@@ -39,6 +39,17 @@ class CaseTypeViewModel extends ViewModel {
 		return $case_type_list;
 	}
 	
+	//根据 $case_group_id 返回本数据表中与专利有关的 case_type_id
+	public function listCaseTypeId($case_group_id) {
+		$map['case_group_id']	=	$case_group_id;
+		$order['case_type_id']	=	'asc';
+		$list	=	M(CaseType)->field('case_type_id')->where($map)->order($order)->select();
+		for($i=0;$i<count($list);$i++){
+			$case_type_list[$i]	=	$list[$i]['case_type_id'];
+		}
+		return $case_type_list;
+	}
+	
 	//返回本数据表中与商标有关的数据
 	public function listAllTrademark() {
 		$map['case_group_name']	=	array('like','%商标%');

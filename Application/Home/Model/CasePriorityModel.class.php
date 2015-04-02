@@ -4,7 +4,20 @@ use Think\Model\RelationModel;
 
 class CasePriorityModel extends RelationModel {
 	
-	//定义本数据表的数据关联
+	//定义本数据表的自动完成
+	protected $_auto = array(		
+		array('priority_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+	);
+	
+	//定义本数据表的自动验证
+	protected $_validate = array(
+		 array('case_id','require','必须指明案号',1), //必须验证非空
+		 array('priority_number','require','必须填写优先权号码',1), //必须验证非空
+		 array('priority_date','require','必须填写优先权日期',1), //必须验证非空
+		 array('priority_country_id','require','必须选择优先权国家/地区',1), //必须验证非空   
+   );
+   
+   //定义本数据表的数据关联
 	protected $_link = array(
 		/*
 		'Case'	=>	array(							//本数据关联的名称

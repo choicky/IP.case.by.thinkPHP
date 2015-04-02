@@ -4,6 +4,22 @@ use Think\Model\RelationModel;
 
 class CaseModel extends RelationModel {
 	
+	//定义本数据表的自动完成
+	protected $_auto = array(		
+		array('create_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+		array('form_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+		array('application_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+		array('publication_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+		array('issue_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+	);
+	
+	//定义本数据表的自动验证
+	protected $_validate = array(
+		 array('case_type_id','require','必须指明案件类型',1), //必须验证非空
+		 array('follower_id','require','必须指明跟案人/开案人',1), //必须验证非空
+
+   );
+	
 	//定义本数据表的数据关联
 	protected $_link = array(
 		

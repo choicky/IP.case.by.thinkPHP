@@ -16,7 +16,7 @@ function patentCaseGroupOption(){
 	return $patent_type_data;
 }
 
-function multiply_Hundred($number){
+function multiplyByHundred($number){
 	$number	=	$number	*	100;	
 	return $number;
 }

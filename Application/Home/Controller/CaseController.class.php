@@ -107,7 +107,23 @@ class CaseController extends Controller {
 	//更新	
 	public function update(){
 		if(IS_POST){
+			$case_id	=	trim(I('post.case_id'));
 			
+			$Model	=	D('Case');
+			if (!$Model->relation(true)->create()){ // 创建数据对象
+				 // 如果创建失败 表示验证没有通过 输出错误提示信息
+				 $this->error($Model->getError());
+				 //exit($Model->getError());
+			}else{
+				 // 验证通过 写入新增数据
+				 $result	=	$Model->save();		 
+			}
+			if(false !== $result){
+				$this->success('修改成功', 'view/case_id/'.$case_id);
+			}else{
+				$this->error('修改失败');
+			}
+			/*
 			$case_id	=	trim(I('post.case_id'));
 			
 			$data=array();
@@ -149,7 +165,7 @@ class CaseController extends Controller {
 			}
 			
 			print_r($data);
-			/*
+			
 			$result = D('Case')->update($case_id,$data);
 			if(false !== $result){
 				$this->success('修改成功', 'listPage');
@@ -260,46 +276,89 @@ class CaseController extends Controller {
 	}
 	
 	//搜索
-	public function search(){
-		//取出 Account 表的基本内容，作为 options
-		$account_list	=	D('Account')->listBasic();
-		$this->assign('account_list',$account_list);
+	public function searchPatent(){
+		//取出年份列表，作为 options
+		$year_list	=	yearOption();
+		$this->assign('year_list',$year_list);
 		
-		//默认查询最近一个月
-		$start_time	=	strtotime("-1 month");
-		$end_time	=	time();
-		$this->assign('start_time',$start_time);
-		$this->assign('end_time',$end_time);
+		//取出 CaseGroup 表的专利数据，作为 options
+		$case_group_list	=	D('CaseGroup')->field(true)->listAllPatent();
+		$this->assign('case_group_list',$case_group_list);
+		
+		//取出 CaseType 表的专利数据，作为 options
+		$case_type_list	=	D('CaseTypeView')->field('case_type_id,case_type_name')->listAllPatent();
+		$this->assign('case_type_list',$case_type_list);
 		
 		//取出 Member 表的基本内容，作为 options
 		$member_list	=	D('Member')->listBasic();
 		$this->assign('member_list',$member_list);
 		
+		//取出Client 表的基本内容，作为 options
+		$client_list	=	D('Client')->listBasic();
+		$this->assign('client_list',$client_list);
+		
+		//默认查询最近一年
+		$start_time	=	strtotime("-1 year");
+		$end_time	=	time();
+		$this->assign('start_time',$start_time);
+		$this->assign('end_time',$end_time);
+				
 		if(IS_POST){
 			
 			//接收搜索参数
-			$account_id	=	I('post.account_id','0','int');
+			$case_year	=	I('post.case_year','0','int');
+			$case_group_id	=	I('post.case_group_id','0','int');
+			$case_type_id	=	I('post.case_type_id','0','int');
+			$follower_id	=	I('post.follower_id','0','int');
+			$applicant_id	=	I('post.applicant_id','0','int');
+			$handler_id	=	I('post.handler_id','0','int');
+			$client_id	=	I('post.client_id','0','int');
+			
 			$start_time	=	trim(I('post.start_time'));
 			$start_time	=	strtotime($start_time);
 			$end_time	=	trim(I('post.end_time'));
 			$end_time	=	strtotime($end_time);
-			$follower_id	=	I('post.follower_id','0','int');
+			
+			$formal_title	=	trim(I('post.formal_title'));			
 			
 			//构造 maping
-			$map['deal_date']	=	array('EGT',$start_time);
-			$map['deal_date']	=	array('ELT',$end_time);			
-			if($account_id){
-				$map['account_id']	=	$account_id;
+			$map['issue_date']	=	array('EGT',$start_time);
+			$map['issue_date']	=	array('ELT',$end_time);
+			if($case_year){
+				
+				$map['our_ref']	=	array('like',"%".$case_year."%");
 			}
-			if($member_id){
+			if($case_group_id){
+				$case_type_list	=	D('CaseTypeView')->listCaseTypeId($case_group_id);
+				$map['case_type_id']  = array('in',$case_type_list);
+			}
+			if($case_type_id){
+				$map['case_type_id']	=	$case_type_id;
+			}
+			if($follower_id){
 				$map['follower_id']	=	$follower_id;
+			}
+			if($applicant_id){
+				$map['applicant_id']	=	$applicant_id;
+			}
+			if($handler_id){
+				$map['handler_id']	=	$handler_id;
+			}
+			if($client_id){
+				$map['client_id']	=	$client_id;
+			}
+			if($formal_title){
+				$map['formal_title']	=	array('like','%'.$formal_title.'%');
 			}	
 			
+			//取出其他参数
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_list = D('Patent')->where($map)->listPage($p,$page_limit);
+			$case_list = D('Case')->where($map)->listPage($p,$page_limit);
+			$case_count = D('Case')->where($map)->count();
 			$this->assign('case_list',$case_list['list']);
 			$this->assign('case_page',$case_list['page']);
+			$this->assign('case_count',$case_count);
 		
 		} 
 	

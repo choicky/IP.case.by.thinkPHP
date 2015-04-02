@@ -17,7 +17,7 @@ class MemberModel extends Model {
 	//返回本数据表的所有数据
 	public function listAll() {
 		$order['convert(member_name using gb2312)']	=	'asc';
-		$list	=	$this->field(true)->order($order)->select();
+		$list	=	$this->order($order)->select();
 		return $list;
 	}
 		
