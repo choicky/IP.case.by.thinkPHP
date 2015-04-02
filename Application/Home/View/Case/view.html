@@ -104,7 +104,7 @@
 							</tr>
 							                 
 						</tbody>
-					</table>  
+					</table> 
 					
 				</div>
 				查看和修改“本案的”<a href="__CONTROLLER__/update/case_id/{$case_list.case_id}" target="_blank">基本信息</a>、 
@@ -151,7 +151,7 @@
 								
 								<td>{$i}</td>								
 								<td>{$case_priority_vo.priority_date|date="Y-m-d",###}</td>								
-								<td>{$case_priority_vo.country_name}</td>
+								<td>{$case_priority_vo['Country']['country_name']}</td>
 								<td>{$case_priority_vo.priority_number}</td>
 								<td>
 									<a href="__APP__/Home/CasePriority/update/case_priority_id/{$case_priority_vo.case_priority_id}">更新</a>

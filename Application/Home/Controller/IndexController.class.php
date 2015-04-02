@@ -7,10 +7,16 @@ class IndexController extends Controller {
 	public function index(){
 		$this->show('还没有做好，先到 <a href="./Home/Group/listAll">这里</a> 看看吧 或 <a href="./Home/Account/">这里</a>看看吧。。');
 		
-		
-		$case_priority_list	=	D('CasePriority')->listAll();
+		$map['case_id']	=	7;
+		$case_priority_list	=	D('Case')->relation(true)->where($map)->select();
 		
 		print_r($case_priority_list);
+		/*
+		if(strpos('专利(非套餐)','专利') ){
+			echo '这是专利';
+		}else{
+			echo '这不包含';
+		}*/
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数

@@ -176,7 +176,9 @@ class CasePriorityController extends Controller {
 		
 		$map['case_id']	=	$case_id;
 		$case_priority_list	=	D('CasePriorityView')->where($map)->field(true)->listAll();
+		$case_priority_count	=	D('CasePriorityView')->where($map)->count();
 		$this->assign('case_priority_list',$case_priority_list);
+		$this->assign('case_priority_count',$case_priority_count);
 		
 		//取出 Country 表的内容以及数量
 		$country_list	=	D('Country')->field(true)->listAll();

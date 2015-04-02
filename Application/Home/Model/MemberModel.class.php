@@ -36,7 +36,7 @@ class MemberModel extends Model {
 	}
 	
 	//更新member表中主键为$member_id的记录，$data是数组
-	public function updateMember($member_id,$data){
+	public function update($member_id,$data){
 		$Model	=	M('Member');
 		$map['member_id']	=	$member_id;
 		$result	=	$Model->where($map)->save($data);

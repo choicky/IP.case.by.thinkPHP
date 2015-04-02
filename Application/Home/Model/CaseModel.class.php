@@ -75,7 +75,7 @@ class CaseModel extends RelationModel {
 			'class_name'		=>	'CasePriority',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'priority_number,priority_date,priority_country_id',		//关联字段
+			'mapping_fields'	=>	'case_priority_id,priority_number,priority_date,priority_country_id',		//关联字段
 			'mapping_order' => 'priority_date asc',		//排序
 		),
 		/*
@@ -124,7 +124,7 @@ class CaseModel extends RelationModel {
 	//更新本数据表中主键为$case_id的记录，$data是数组
 	public function update($case_id,$data){
 		$map['case_id']	=	$case_id;
-		$result	=	$this->where($map)->save($data);
+		$result	=	$this->relation(true)->where($map)->save($data);
 		return $result;
 	}
 	
@@ -205,5 +205,6 @@ class CaseModel extends RelationModel {
 		
 		return array("list"=>$list,"page"=>$show);
 	}
+
 
 }
