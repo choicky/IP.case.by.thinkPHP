@@ -13,7 +13,7 @@ class BalanceModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'account_id',		//外键，
 			'mapping_fields'	=>	'account_name',	//关联字段
-			'as_fields'			=>	'account_name'	//字段别名
+			//'as_fields'			=>	'account_name'	//字段别名
 		),
 		
 		'Follower'	=>	array(							//本数据关联的名称
@@ -22,7 +22,7 @@ class BalanceModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'follower_id',		//外键，
 			'mapping_fields'	=>	'member_name',	//关联字段
-			'as_fields'			=>	'member_name'	//字段别名
+			//'as_fields'			=>	'member_name'	//字段别名
 		),
 		
 		'Claim'	=>	array(						//本数据关联的名称
@@ -30,7 +30,7 @@ class BalanceModel extends RelationModel {
 			'class_name'		=>	'ClaimView',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'balance_id',			//外键
-			'mapping_fields'	=>	'claim_id,claimer_id,cost_center_name,claim_date,total_amount,client_id,client_name',		//关联字段
+			'mapping_fields'	=>	'claim_id,claimer_id,cost_center_name,claim_date,income_amount,outcome_amount,client_id,client_name',		//关联字段
 		),
 	
 	);
@@ -52,7 +52,7 @@ class BalanceModel extends RelationModel {
 		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("list"=>$list,"page"=>$show);
+		return array("list"=>$list,"page"=>$show,"count"=>$count);
 	}
 	
 	//更新本数据表中主键为$balance_id的记录，$data是数组

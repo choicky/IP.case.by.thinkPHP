@@ -21,6 +21,7 @@ class BalanceController extends Controller {
 		$balance_list = D('Balance')->listPage($p,$page_limit);
 		$this->assign('balance_list',$balance_list['list']);
 		$this->assign('balance_page',$balance_list['page']);
+		$this->assign('balance_count',$balance_list['count']);
 		
 		//取出 Account 表的内容以及数量
 		$account_list	=	D('Account')->field(true)->listAll();

@@ -60,9 +60,18 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
+								<label for="income_amount" class="col-lg-3 control-label">收入金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="total_amount" name="total_amount" value="{$claim_list['total_amount']/100}">
+									<input type="text" class="form-control" id="income_amount" name="income_amount" value="{$claim_list['income_amount']/100}">
+								</div>
+								<div class="col-lg-5">
+									小数点必须使用英文的“.”
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="outcome_amount" class="col-lg-3 control-label">支出金额</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="outcome_amount" name="outcome_amount" value="{$claim_list['outcome_amount']/100}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”

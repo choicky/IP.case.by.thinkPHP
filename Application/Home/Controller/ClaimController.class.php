@@ -21,6 +21,7 @@ class ClaimController extends Controller {
 		$claim_list = D('Claim')->listPage($p,$limit);
 		$this->assign('claim_list',$claim_list['list']);
 		$this->assign('claim_page',$claim_list['page']);
+		$this->assign('claim_count',$claim_list['count']);
 		
 		//取出 Member 表的内容以及数量
 		$member_list	=	D('Member')->listBasic();
@@ -57,8 +58,10 @@ class ClaimController extends Controller {
 		$data['claim_date']	=	trim(I('post.claim_date'));		
 		$data['claim_date']	=	strtotime($data['claim_date']);
 		$data['balance_id']	=	trim(I('post.balance_id'));
-		$data['total_amount']	=	trim(I('post.total_amount'));
-		$data['total_amount']	=	$data['total_amount']*100;
+		$data['income_amount']	=	trim(I('post.income_amount'));
+		$data['income_amount']	=	$data['income_amount']*100;
+		$data['outcome_amount']	=	trim(I('post.outcome_amount'));
+		$data['outcome_amount']	=	$data['outcome_amount']*100;
 		$data['official_fee']	=	trim(I('post.official_fee'));
 		$data['official_fee']	=	$data['official_fee']*100;
 		$data['service_fee']	=	trim(I('post.service_fee'));
@@ -91,8 +94,10 @@ class ClaimController extends Controller {
 			$data['claim_date']	=	trim(I('post.claim_date'));		
 			$data['claim_date']	=	strtotime($data['claim_date']);
 			$data['balance_id']	=	trim(I('post.balance_id'));
-			$data['total_amount']	=	trim(I('post.total_amount'));
-			$data['total_amount']	=	$data['total_amount']*100;
+			$data['income_amount']	=	trim(I('post.income_amount'));
+			$data['income_amount']	=	$data['income_amount']*100;
+			$data['outcome_amount']	=	trim(I('post.outcome_amount'));
+			$data['outcome_amount']	=	$data['outcome_amount']*100;
 			$data['official_fee']	=	trim(I('post.official_fee'));
 			$data['official_fee']	=	$data['official_fee']*100;
 			$data['service_fee']	=	trim(I('post.service_fee'));
@@ -204,14 +209,13 @@ class ClaimController extends Controller {
 			
 			//接收搜索参数
 			$claimer_id	=	I('post.claimer_id','0','int');
-			$cost_center_id	=	I('post.cost_center_id','0','int');
-			$start_amount	=	trim(I('post.start_amount'))*100;			
-			$end_amount	=	trim(I('post.end_amount'))*100;			
+			$cost_center_id	=	I('post.cost_center_id','0','int');				
 			$client_id	=	I('post.client_id','0','int');
+			$start_amount	=	trim(I('post.start_amount'))*100;
+			$end_amount	=	trim(I('post.end_amount'))*100;			
+			
 			
 			//构造 maping
-			$map['total_amount']	=	array('EGT',$start_amount);
-			$map['deal_date']	=	array('ELT',$end_amount);			
 			if($claimer_id){
 				$map['claimer_id']	=	$claimer_id;
 			}
@@ -222,9 +226,16 @@ class ClaimController extends Controller {
 				$map['client_id']	=	$client_id;
 			}	
 			
+			
+			$map_amount['income_amount']	=	array('between',array($start_amount,$end_amount));
+
+			$map_amount['outcome_amount']	=	array('between',array($start_amount,$end_amount));
+			$map_amount['_logic'] = 'OR';
+			
+			
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
-			$claim_list = D('Claim')->where($map)->listPage($p,$page_limit);
+			$claim_list = D('Claim')->where($map)->where($map_amount)->listPage($p,$page_limit);
 			$this->assign('claim_list',$claim_list['list']);
 			$this->assign('claim_page',$claim_list['page']);
 		

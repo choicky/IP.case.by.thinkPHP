@@ -38,11 +38,11 @@
 						<tbody>
 							<tr>
 								<td>{$claim_list.claim_id} </td>
-								<td>{$claim_list.member_name}</td>
-								<td>{$claim_list.cost_center_name}</td>
+								<td>{$claim_list['Member'].member_name}</td>
+								<td>{$claim_list['CostCenter'].cost_center_name}</td>
 								<td>{$claim_list.claim_date|date="Y-m-d",###}</td>
-								<td align="right">{$claim_list['income_amount']>$claim_list['outcome_amount'] ? $claim_list['total_amount']/100 : ''}</td>
-								<td align="right">{$claim_list['income_amount']<$claim_list['outcome_amount'] ? $claim_list['total_amount']/100 : ''}</td>
+								<td align="right">{$claim_list['income_amount']/100}</td>
+								<td align="right">{$claim_list['outcome_amount']/100}</td>
 								<td>{$claim_list['official_fee']/100}</td>
 								<td>{$claim_list['service_fee']/100}</td>
 								<td>{$claim_list.client_name}</td>

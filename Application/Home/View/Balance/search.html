@@ -107,18 +107,28 @@
 								<td>{$balance_vo.member_name}</td>
 								<td>{$balance_vo.bill_id}</td>
 								<td><a href="__CONTROLLER__/update/balance_id/{$balance_vo.balance_id}">更新</a> <a href="__CONTROLLER__/delete/balance_id/{$balance_vo.balance_id}">删除</td>
-								<th>&nbsp;|&nbsp;</th>
+								<td>&nbsp;|&nbsp;</td>
 								<td>
-									<?php $total_amount	=	0;?>
+									<?php
+										$claim_income	=	0;
+										$claim_outcome	=	0;
+									?>
 									<volist name="balance_vo['Claim']" id="claim_vo">
 										{$claim_vo.cost_center_name}；
-										<?php $total_amount	+=	$claim_vo['total_amount'];?>
+										<?php
+											$claim_income	+=	$claim_vo['income_amount'];
+											$claim_outcome	+=	$claim_vo['outcome_amount'];
+										?>
 									</volist>
 									<a href="__APP__/Home/Claim/view/balance_id/{$balance_vo.balance_id}">详情</a>
 								</td>
 								<td align="right">
-									{$balance_vo['income_amount']+$balance_vo['outcome_amount']==$total_amount ? '' :'未全部结算' }
-									{$total_amount/100}
+									<?php
+										$income_bool	=	$balance_vo['income_amount']	==	$claim_income	?	1	:	0;
+										$outcome_bool	=	$balance_vo['outcome_amount']	==	$claim_outcome	?	1	:	0;										
+									?>
+									{$income_bool && outcome_bool 	?	''	:	'未全部结算' }
+									{$claim_income/100	+	$claim_outcome/100}
 								</td>
 							</tr>
 							</volist>                 

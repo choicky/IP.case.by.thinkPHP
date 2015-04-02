@@ -13,7 +13,7 @@ class ClaimModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'claimer_id',		//外键
 			'mapping_fields'	=>	'member_name',	//关联字段
-			'as_fields'			=>	'member_name'	//字段别名
+			//'as_fields'			=>	'member_name'	//字段别名
 		),
 		
 		'Client'	=>	array(							//本数据关联的名称
@@ -22,7 +22,7 @@ class ClaimModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'client_id',		//外键
 			'mapping_fields'	=>	'client_name',	//关联字段
-			'as_fields'			=>	'client_name'	//字段别名
+			//'as_fields'			=>	'client_name'	//字段别名
 		),
 		
 		'CostCenter'	=>	array(							//本数据关联的名称
@@ -31,7 +31,7 @@ class ClaimModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'cost_center_id',		//外键
 			'mapping_fields'	=>	'cost_center_name',	//关联字段
-			'as_fields'			=>	'cost_center_name'	//字段别名
+			//'as_fields'			=>	'cost_center_name'	//字段别名
 		),
 		
 		'Balance'	=>	array(						//本数据关联的名称
@@ -40,7 +40,7 @@ class ClaimModel extends RelationModel {
 			'mapping_type'		=>	self::BELONGS_TO,		//主从关系的一对多关联
 			'foreign_key'		=>	'balance_id',			//外键
 			'mapping_fields'	=>	'deal_date,income_amount,outcome_amount',		//关联字段
-			'as_fields'			=>	'deal_date,income_amount,outcome_amount'	//字段别名
+			//'as_fields'			=>	'deal_date,income_amount,outcome_amount'	//字段别名
 		),
 	
 	);
@@ -62,7 +62,7 @@ class ClaimModel extends RelationModel {
 		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("list"=>$list,"page"=>$show);
+		return array("list"=>$list,"page"=>$show,"count"=>$count);
 	}
 	
 	//更新本数据表中主键为$claim_id 的记录，$data是数组

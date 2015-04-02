@@ -108,8 +108,8 @@
 								<td>{$claim_vo.member_name}</td>
 								<td>{$claim_vo.cost_center_name}</td>
 								<td>{$claim_vo.claim_date|date="Y-m-d",###}</td>
-								<td align="right">{$claim_vo['income_amount']>$claim_vo['outcome_amount'] ? $claim_vo['total_amount']/100 : ''}</td>
-								<td align="right">{$claim_vo['income_amount']<$claim_vo['outcome_amount'] ? $claim_vo['total_amount']/100 : ''}</td>
+								<td align="right">{$claim_vo['income_amount']/100}</td>
+								<td align="right">{$claim_vo['outcome_amount']/100}</td>
 								<td>{$claim_vo.official_fee}</td>
 								<td>{$claim_vo.service_fee}</td>
 								<td>{$claim_vo.client_name}</td>
