@@ -15,3 +15,8 @@ function patentCaseGroupOption(){
 	$patent_type_data	=	M('CaseGroup')->field(true)->where($map)->order($order)->select();
 	return $patent_type_data;
 }
+
+function multiply_Hundred($number){
+	$number	=	$number	*	100;	
+	return $number;
+}

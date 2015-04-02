@@ -23,61 +23,24 @@ class ClaimController extends Controller {
 		$this->assign('claim_page',$claim_list['page']);
 		$this->assign('claim_count',$claim_list['count']);
 		
-		//取出 Member 表的内容以及数量
-		$member_list	=	D('Member')->listBasic();
-		$member_count	=	count($member_list);
-		$this->assign('member_list',$member_list);
-		$this->assign('member_count',$member_count);
-		
-		//取出 Client 表的内容以及数量
-		$client_list	=	D('Client')->listBasic();
-		$client_count	=	count($client_list);
-		$this->assign('client_list',$client_list);
-		$this->assign('client_count',$client_count);
-		
-		//取出 CostCenter 表的内容以及数量
-		$cost_center_list	=	D('CostCenter')->listBasic();
-		$cost_center_count	=	count($cost_center_list);
-		$this->assign('cost_center_list',$cost_center_list);
-		$this->assign('cost_center_count',$cost_center_count);
-		
-		//取出其他变量
-		$row_limit  =   C("ROWS_PER_SELECT");
-		$today	=	time();
-		$this->assign('row_limit',$row_limit);
-        $this->assign('today',$today);
-	
 		$this->display();
 	}
 
-	//新增
+	//新增	
 	public function add(){
-		$data	=	array();
-		$data['claimer_id']	=	trim(I('post.claimer_id'));
-		$data['cost_center_id']	=	trim(I('post.cost_center_id'));
-		$data['claim_date']	=	trim(I('post.claim_date'));		
-		$data['claim_date']	=	strtotime($data['claim_date']);
-		$data['balance_id']	=	trim(I('post.balance_id'));
-		$data['income_amount']	=	trim(I('post.income_amount'));
-		$data['income_amount']	=	$data['income_amount']*100;
-		$data['outcome_amount']	=	trim(I('post.outcome_amount'));
-		$data['outcome_amount']	=	$data['outcome_amount']*100;
-		$data['official_fee']	=	trim(I('post.official_fee'));
-		$data['official_fee']	=	$data['official_fee']*100;
-		$data['service_fee']	=	trim(I('post.service_fee'));
-		$data['service_fee']	=	$data['service_fee']*100;
-		$data['client_id']	=	trim(I('post.client_id'));
-
-		$map['balance_id']	=	$data['balance_id'];
-		$condition	=	M('Balance')->where($map)->find();
-		if(!is_array($condition)){
-			$this->error('收支流水编号不正确');
-		}
-
-		$result = M('Claim')->add($data);
+		$balance_id	=	trim(I('post.balance_id'));
 		
+		$Model	=	D('Claim');
+		if (!$Model->create()){ // 创建数据对象
+			 // 如果创建失败 表示验证没有通过 输出错误提示信息
+			 $this->error($Model->getError());
+			 //exit($Model->getError());
+		}else{
+			 // 验证通过 写入新增数据
+			 $result	=	$Model->add();		 
+		}
 		if(false !== $result){
-			$this->success('新增成功', 'view/balance_id/'.$data['balance_id']);
+			$this->success('新增成功', 'view/balance_id/'.$balance_id);
 		}else{
 			$this->error('增加失败');
 		}
@@ -86,29 +49,22 @@ class ClaimController extends Controller {
 	//更新	
 	public function update(){
 		if(IS_POST){
+						$balance_id	=	trim(I('post.balance_id'));
 			$claim_id	=	trim(I('post.claim_id'));
 			
-			$data=array();
-			$data['claimer_id']	=	trim(I('post.claimer_id'));
-			$data['cost_center_id']	=	trim(I('post.cost_center_id'));
-			$data['claim_date']	=	trim(I('post.claim_date'));		
-			$data['claim_date']	=	strtotime($data['claim_date']);
-			$data['balance_id']	=	trim(I('post.balance_id'));
-			$data['income_amount']	=	trim(I('post.income_amount'));
-			$data['income_amount']	=	$data['income_amount']*100;
-			$data['outcome_amount']	=	trim(I('post.outcome_amount'));
-			$data['outcome_amount']	=	$data['outcome_amount']*100;
-			$data['official_fee']	=	trim(I('post.official_fee'));
-			$data['official_fee']	=	$data['official_fee']*100;
-			$data['service_fee']	=	trim(I('post.service_fee'));
-			$data['service_fee']	=	$data['service_fee']*100;
-			$data['client_id']	=	trim(I('post.client_id'));
-						
-			$result = D('Claim')->update($claim_id,$data);
-			if(false !== $result){
-				$this->success('修改成功','view/balance_id/'.$data['balance_id']);
+			$Model	=	D('Claim');
+			if (!$Model->create()){ // 创建数据对象
+				 // 如果创建失败 表示验证没有通过 输出错误提示信息
+				 $this->error($Model->getError());
+				 //exit($Model->getError());
 			}else{
-				$this->error('修改失败');
+				 // 验证通过 写入新增数据
+				 $result	=	$Model->save();		 
+			}
+			if(false !== $result){
+				$this->success('新增成功', 'view/balance_id/'.$balance_id);
+			}else{
+				$this->error('增加失败');
 			}
 		} else{
 			$claim_id = I('get.claim_id',0,'int');
@@ -236,8 +192,10 @@ class ClaimController extends Controller {
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
 			$claim_list = D('Claim')->where($map)->where($map_amount)->listPage($p,$page_limit);
+			$claim_count = D('Claim')->where($map)->where($map_amount)->count();
 			$this->assign('claim_list',$claim_list['list']);
 			$this->assign('claim_page',$claim_list['page']);
+			$this->assign('claim_count',$claim_count);
 		
 		} 
 	

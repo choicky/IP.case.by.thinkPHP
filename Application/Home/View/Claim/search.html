@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1>搜索条件</h1>
+					<h3>搜索条件</h3>
 				</div>
 			</div>
 		</div>
@@ -69,7 +69,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1>搜索结果</h1>
+					<h3>搜索结果（共{$claim_count}项）</h3>
 				</div>
 			</div>
 		</div>
@@ -95,7 +95,7 @@
 								<th>官费</th>
 								<th>服务费</th>
 								<th>客户</th>
-								<th>其他操作</th>
+								<th>常用操作</th>
 								<th>&nbsp;|&nbsp;</th>
 								<th>收支流水编号</th>
 							</tr>
@@ -105,19 +105,22 @@
 							<volist name="claim_list" id="claim_vo">
 							<tr>
 								<td>{$claim_vo.claim_id}</td>
-								<td>{$claim_vo.member_name}</td>
-								<td>{$claim_vo.cost_center_name}</td>
+								<td>{$claim_vo['Member'].member_name}</td>
+								<td>{$claim_vo['CostCenter'].cost_center_name}</td>
 								<td>{$claim_vo.claim_date|date="Y-m-d",###}</td>
 								<td align="right">{$claim_vo['income_amount']/100}</td>
 								<td align="right">{$claim_vo['outcome_amount']/100}</td>
 								<td>{$claim_vo.official_fee}</td>
 								<td>{$claim_vo.service_fee}</td>
 								<td>{$claim_vo.client_name}</td>
-								<td><a href="__CONTROLLER__/update/claim_id/{$claim_vo.claim_id}">更新</a> <a href="__CONTROLLER__/delete/claim_id/{$claim_vo.claim_id}">删除</td>
+								<td>
+									<a href="__CONTROLLER__/update/claim_id/{$claim_vo.claim_id}">更新</a> 
+									<a href="__CONTROLLER__/delete/claim_id/{$claim_vo.claim_id}">删除</a>
+								</td>
 								<th>&nbsp;|&nbsp;</th>
 								<td>
 									{$claim_vo.balance_id}；
-									<a href="__APP__/Claim/view/balance_id/{$claim_vo.balance_id}">更新该笔流水的认领信息</a>
+									<a href="__APP__/Home/Claim/view/balance_id/{$claim_vo.balance_id}">详情</a>
 								</td>
 							</tr>
 							</volist>                 

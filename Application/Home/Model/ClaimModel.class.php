@@ -45,6 +45,30 @@ class ClaimModel extends RelationModel {
 	
 	);
 	
+	//定义本数据表的自动完成
+	protected $_auto = array(
+		
+		array('claim_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+		array('income_amount','multiply_Hundred',3,'function') , // 将金额乘以100
+		array('outcome_amount','multiply_Hundred',3,'function') , // 将金额乘以100
+		array('official_fee','multiply_Hundred',3,'function') , // 将金额乘以100
+		array('service_fee','multiply_Hundred',3,'function') , // 将金额乘以100
+	
+	);
+	
+	protected $_validate = array(
+		 array('claimer_id','require','必须指明认领人',1), //必须验证非空
+		 array('cost_center_id','require','必须指明结算账户',1), //必须验证非空
+		 array('claim_date','require','必须指明认领日期',1), //必须验证非空
+		 array('balance_id','require','必须指明收支流水编号',1), //必须验证非空
+		 array('income_amount','require','未填写收入金额',0), //有字段时验证非空
+		 array('outcome_amount','require','未填写支出金额',0), //必须验证非空
+		 array('client_id','require','必须指明客户',1), //必须验证非空
+	
+     
+   );
+
+	
 	//返回本数据表的所有数据
 	public function listAll() {			
 		$order['claim_date']	=	'desc';
