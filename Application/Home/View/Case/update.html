@@ -62,7 +62,7 @@
 							</div>
 							
 							<div class="form-group">
-								<label for="create_date" class="col-lg-3 control-label">开案日期{$case_list.create_date}和{$case_list.create_date|date="Y-m-d",###}</label>
+								<label for="create_date" class="col-lg-3 control-label">开案日期</label>
 								<div class="col-lg-4">
 									<input type="date" class="form-control" id="create_date" name="create_date" value="{$case_list.create_date|date="Y-m-d",###}">
 								</div>
@@ -72,7 +72,7 @@
 							</div>
 							
 							<div class="form-group">
-								<label for="form_date" class="col-lg-3 control-label">提供开案单日期 {$case_list.form_date} 和 {$case_list.form_date|date="Y-m-d",###}</label>
+								<label for="form_date" class="col-lg-3 control-label">提供开案单日期</label>
 								<div class="col-lg-4">
 									<input type="date" class="form-control" id="form_date" name="form_date" value="{$case_list.form_date|date="Y-m-d",###}">
 								</div>
@@ -80,7 +80,8 @@
 									开案单日期，是指收到了开案单的日期，如果日期为空，表示尚未收到开案单。
 								</div>
 							</div>
-							
+						</fieldset>
+						<fieldset>
 							<div class="form-group">
 								<label for="client_id" class="col-lg-3 control-label">客源/客户</label>
 								<div class="col-lg-4">
@@ -128,7 +129,8 @@
 									如果不是商标业务，本项为空，不需填写
 								</div>
 							</div>
-							
+						</fieldset>
+						<fieldset>
 							<div class="form-group">
 								<label for="handler_id" class="col-lg-3 control-label">处理人</label>
 								<div class="col-lg-4">
@@ -224,36 +226,7 @@
 								</div>
 							</div>
 							
-							<volist name="case_list['CasePriority']" id="case_priority_vo" key="p">
-							<div class="form-group">
-								<label for="priority_number" class="col-lg-3 control-label">
-									<p>第 {$p} 个优先权的信息</p>
-									<p>点击<a href="__CONTROLLER__/view/case_id/{$case_list.case_id}" target="_blank">这里</a>增、删优先权，</p>
-									<p>点击<a href="__APP__/Home/Country/listPage#addNew" target="_blank">这里</a>增加可选的国家</p>
-									<input type="hidden" class="form-control" name="case_priority_id[]" value="{$case_priority_vo.case_priority_id}">
-								</label>
-								
-								<div class="col-lg-3">
-									<p>优先权国家</p>
-									<select multiple class="form-control" name="priority_country_id[]" size="{$country_count<$rows_limit? $country_count: $rows_limit}">
-										<volist name="country_list" id="country_vo">
-										<option value="{$country_vo.country_id}" {$country_vo['country_id']==$case_priority_vo['priority_country_id']? 'selected="selected"' :''}>{$country_vo.country_name}</option>
-										</volist>
-									</select>
-								</div>
-								
-								<div class="col-lg-3">
-									<p>优先权号码</p>
-									<input type='hidden' class="form-control" id="case_priority_id[]" name="case_priority_id[]" value="{$case_priority_vo.case_priority_id}">
-									<input type="text" class="form-control" id="priority_number[]" name="priority_number[]" placeholder="优先权号码" value="{$case_priority_vo.priority_number}">
-								</div>
-								
-								<div class="col-lg-3">
-								<p>优先权日期</p>
-									<input type="date" class="form-control" id="priority_date[]" name="priority_date[]" placeholder="优先权日期" value="{$case_priority_vo.priority_date|date="Y-m-d",###}">
-								</div>
-							</div>
-							</volist>
+							
 							
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">

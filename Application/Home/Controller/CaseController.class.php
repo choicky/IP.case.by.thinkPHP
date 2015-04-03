@@ -78,27 +78,29 @@ class CaseController extends Controller {
 		$this->display();
 	}
 	
+
 	//新增
 	public function add(){
-		$data	=	array();
-		$data['account_id']	=	trim(I('post.account_id'));
-		$data['deal_date']	=	trim(I('post.deal_date'));
-		$data['deal_date']	=	strtotime($data['deal_date']);
-		$data['income_amount']	=	trim(I('post.income_amount'));
-		$data['income_amount']	=	$data['income_amount']*100;
-		$data['outcome_amount']	=	trim(I('post.outcome_amount'));
-		$data['outcome_amount']	=	$data['outcome_amount']*100;
-		$data['summary']	=	trim(I('post.summary'));
-		$data['other_party']	=	trim(I('post.other_party'));
-
-		if(!$data['account_id']){
-			$this->error('未填写账户名称');
-		} 
-
-		$result = M('Patent')->add($data);
+	
+		$our_ref	=	trim(I('post.our_ref'));
+		$map['our_ref']	=	$our_ref;
+		$condition	=	M('Case')->where($map)->find();
+		if(is_array($condition)){
+			$this->error('重复案号，请返回修改');
+		}
 		
+		$Model	=	D('Case');
+		if (!$Model->create()){ // 创建数据对象
+			 // 如果创建失败 表示验证没有通过 输出错误提示信息
+			 $this->error($Model->getError());
+			 //exit($Model->getError());
+		}else{
+			 // 验证通过 写入新增数据
+			 $result	=	$Model->add();		 
+		}
 		if(false !== $result){
-			$this->success('新增成功', 'listAll');
+			$case_id	=	D('Case')->returnCaseId($our_ref);
+			$this->success('新增成功', 'view/case_id/'.$case_id);
 		}else{
 			$this->error('增加失败');
 		}
@@ -123,55 +125,7 @@ class CaseController extends Controller {
 			}else{
 				$this->error('修改失败');
 			}
-			/*
-			$case_id	=	trim(I('post.case_id'));
 			
-			$data=array();
-			$data['our_ref']	=	trim(I('post.our_ref'));
-			$data['case_type_id']	=	trim(I('post.case_type_id'));
-			$data['follower_id']	=	trim(I('post.follower_id'));
-			$data['create_date']	=	trim(I('post.create_date'));
-			$data['create_date']	=	strtotime($data['create_date']);
-			$data['form_date']	=	trim(I('post.form_date'));
-			$data['form_date']	=	strtotime($data['form_date']);
-			$data['client_id']	=	trim(I('post.client_id'));
-			$data['client_ref']	=	trim(I('post.client_ref'));
-			$data['applicant_id']	=	trim(I('post.applicant_id'));
-			$data['tentative_title']	=	trim(I('post.tentative_title'));
-			$data['handler_id']	=	trim(I('post.handler_id'));
-			$data['application_date']	=	trim(I('post.application_date'));
-			$data['application_date']	=	strtotime($data['application_date']);
-			$data['application_number']	=	trim(I('post.application_number'));
-			
-			$data['formal_title']	=	trim(I('post.formal_title'));
-			$data['tm_category_id']	=	trim(I('post.tm_category_id'));
-			$data['publication_date']	=	trim(I('post.publication_date'));
-			$data['publication_date']	=	strtotime($data['publication_date']);
-			$data['issue_date']	=	trim(I('post.issue_date'));
-			$data['issue_date']	=	strtotime($data['issue_date']);
-			
-			for($i=0;	$i<count(I('post.case_priority_id'));	$i++){
-				$case_priority_id	=	I('post.case_priority_id')[$i];
-				$priority_country_id	=	I('post.priority_country_id')[$i];
-				$priority_number	=	I('post.priority_number')[$i];
-				$priority_date	=	I('post.priority_date')[$i];
-				$priority_date	=	strtotime($priority_date);
-				$data['CasePriority'][$i]	=	array(
-					'case_priority_id'	=>	$priority_country_id,
-					'priority_country_id'	=>	$priority_country_id,
-					'priority_number'	=>	$priority_number,
-					'priority_date'	=>	$priority_date
-				);
-			}
-			
-			print_r($data);
-			
-			$result = D('Case')->update($case_id,$data);
-			if(false !== $result){
-				$this->success('修改成功', 'listPage');
-			}else{
-				$this->error('修改失败', 'listPage');
-			}*/
 		} else{
 			$case_id = I('get.case_id',0,'int');
 
@@ -315,15 +269,18 @@ class CaseController extends Controller {
 			$client_id	=	I('post.client_id','0','int');
 			
 			$start_time	=	trim(I('post.start_time'));
-			$start_time	=	strtotime($start_time);
+			$start_time	=	$start_time ? strtotime($start_time) : strtotime('2005-01-01');
+			
 			$end_time	=	trim(I('post.end_time'));
-			$end_time	=	strtotime($end_time);
+			$end_time	=	$end_time ? strtotime($end_time) : time();
+			
 			
 			$formal_title	=	trim(I('post.formal_title'));			
 			
 			//构造 maping
-			$map['issue_date']	=	array('EGT',$start_time);
-			$map['issue_date']	=	array('ELT',$end_time);
+			$map['issue_date']  = array('between',array($start_time,$end_time));
+			//$map['issue_date']	=	array('EGT',$start_time);
+			//$map['issue_date']	=	array('ELT',$end_time);
 			if($case_year){
 				
 				$map['our_ref']	=	array('like',"%".$case_year."%");
@@ -349,17 +306,87 @@ class CaseController extends Controller {
 			}
 			if($formal_title){
 				$map['formal_title']	=	array('like','%'.$formal_title.'%');
-			}	
-			
+			}
+
 			//取出其他参数
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_list = D('Case')->where($map)->listPage($p,$page_limit);
-			$case_count = D('Case')->where($map)->count();
+			$case_list = D('Case')->listPageSearch($p,$page_limit,$map);			
 			$this->assign('case_list',$case_list['list']);
 			$this->assign('case_page',$case_list['page']);
-			$this->assign('case_count',$case_count);
+			$this->assign('case_count',$case_list['count']);
 		
+		} 
+	
+	$this->display();
+	}
+	
+	//搜索
+	public function searchForNewPatent(){
+		//取出年份列表，作为 options
+		$year_list	=	yearOption();
+		$this->assign('year_list',$year_list);
+		
+		//取出 CaseGroup 表的专利数据，作为 options
+		$case_group_list	=	D('CaseGroup')->field(true)->listAllPatent();
+		$this->assign('case_group_list',$case_group_list);
+		
+		//取出数量，作为 options
+		$number_list	=	numberOption(5);
+		$this->assign('number_list',$number_list);		
+				
+		if(IS_POST){
+			
+			//接收搜索参数
+			$case_year	=	I('post.case_year','0','int');
+			$case_group_id	=	I('post.case_group_id','0','int');
+			$limit_number	=	I('post.limit_number','0','int');
+
+					
+			//构造 maping			
+			if($case_year){
+				$map['our_ref']	=	array('like',"%".$case_year."%");
+			}
+			if($case_group_id){
+				
+				$case_type_list_temp	=	D('CaseTypeView')->listCaseTypeId($case_group_id);
+				
+				$map['case_type_id']  = array('in',$case_type_list_temp);
+			}
+						
+			//取出搜索结果
+			$order['our_ref']	=	'asc';
+			$case_list	=	D('Case')->relation(true)->where($map)->limit($limit_number)->order($order)->select();	
+			$case_count	=	D('Case')->relation(true)->where($map)->count();
+			$case_count	=	($case_count>$limit_number) ? $limit_number : $case_count;
+			$this->assign('case_list',$case_list);			
+			$this->assign('case_count',$case_count);
+			
+			
+			//取出专利类型列表
+			$map_case_type['case_type_name']	=	array('like','%专利%');
+			$case_type_list	=	D('CaseTypeView')->where($map_case_type)->listBasic();
+			$case_type_count	=	count($case_type_list);
+			$this->assign('case_type_list',$case_type_list);
+			$this->assign('case_type_count',$case_type_count);
+			
+			//取出 Member 表的内容以及数量
+			$member_list	=	D('Member')->field(true)->listBasic();
+			$member_count	=	count($member_list);
+			$this->assign('member_list',$member_list);
+			$this->assign('member_count',$member_count);
+			
+			//取出 Client 表的内容以及数量
+			$client_list	=	D('Client')->field(true)->listBasic();
+			$client_count	=	count($client_list);
+			$this->assign('client_list',$client_list);
+			$this->assign('client_count',$client_count);
+
+			//取出其他变量
+			$row_limit  =   C("ROWS_PER_SELECT");
+			$today	=	time();
+			$this->assign('row_limit',$row_limit);
+			$this->assign('today',$today);
 		} 
 	
 	$this->display();

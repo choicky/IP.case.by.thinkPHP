@@ -43,7 +43,7 @@ class CaseTypeViewModel extends ViewModel {
 	public function listCaseTypeId($case_group_id) {
 		$map['case_group_id']	=	$case_group_id;
 		$order['case_type_id']	=	'asc';
-		$list	=	M(CaseType)->field('case_type_id')->where($map)->order($order)->select();
+		$list	=	$this->field('case_type_id,case_group_id')->where($map)->order($order)->select();
 		for($i=0;$i<count($list);$i++){
 			$case_type_list[$i]	=	$list[$i]['case_type_id'];
 		}

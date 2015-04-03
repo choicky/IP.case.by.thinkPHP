@@ -137,6 +137,28 @@ class CaseModel extends RelationModel {
 		return array("list"=>$list,"page"=>$show);
 	}
 	
+	//分页返回本数据表的搜索数据，$p为当前页数，$limit为每页显示的记录条数,$map为搜索参数
+	public function listPageSearch($p,$limit,$map) {
+		$order['our_ref']	=	'desc';
+		$list	=	$this->relation(true)->where($map)->order($order)->page($p.','.$limit)->select();
+		
+		$count	= $this->where($map)->count();
+		
+		$Page	= new \Think\Page($count,$limit);
+		$show	= $Page->show();
+		
+		return array("list"=>$list,"page"=>$show,"count"=>$count);
+	}
+	
+		//基于案号 $our_ref 返回对应的 $case_id 
+	public function returnCaseId($our_ref){
+		$map['our_ref']	=	$our_ref;
+		$order['case_id']	=	'desc';
+		$case_id_list	=	M('Case')->field('case_id')->where($map)->order($order)->limit(1)->select();
+		$case_id	=	$case_id_list[0]['case_id'];
+		return $case_id;
+	}
+	
 	//更新本数据表中主键为$case_id的记录，$data是数组
 	public function update($case_id,$data){
 		$map['case_id']	=	$case_id;

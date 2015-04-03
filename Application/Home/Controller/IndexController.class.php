@@ -7,10 +7,10 @@ class IndexController extends Controller {
 	public function index(){
 		$this->show('还没有做好，先到 <a href="./Home/Group/listAll">这里</a> 看看吧 或 <a href="./Home/Account/">这里</a>看看吧。。');
 		
-		$case_group_id	=	20;
-		$case_type_list	=	D('CaseTypeView')->listCaseTypeId($case_group_id);
-		
-		print_r($case_type_list);
+		$our_ref	=	P20150403V1;
+		$case_id	=	D('Case')->returnCaseId($our_ref);
+			var_dump($case_id);
+			print_r($case_id);
 		/*
 		if(strpos('专利(非套餐)','专利') ){
 			echo '这是专利';

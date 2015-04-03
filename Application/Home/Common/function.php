@@ -20,3 +20,10 @@ function multiplyByHundred($number){
 	$number	=	$number	*	100;	
 	return $number;
 }
+
+function numberOption($j){
+	for($i=1;$i<=$j;$i++){
+		$number_list[$i]=$i;
+	}
+	return $number_list;
+}
