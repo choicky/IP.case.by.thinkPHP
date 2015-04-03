@@ -83,6 +83,10 @@ class CaseController extends Controller {
 	public function add(){
 	
 		$our_ref	=	trim(I('post.our_ref'));
+		$extend_info['expired_date']	=	trim(I('post.expired_date'));
+		$extend_info['related_our_ref']	=	trim(I('post.related_our_ref'));
+		$extend_info['remarks']	=	trim(I('post.remarks'));
+		
 		$map['our_ref']	=	$our_ref;
 		$condition	=	M('Case')->where($map)->find();
 		if(is_array($condition)){
@@ -90,7 +94,7 @@ class CaseController extends Controller {
 		}
 		
 		$Model	=	D('Case');
-		if (!$Model->create()){ // 创建数据对象
+		if (!$Model->relation(true)->create()){ // 创建数据对象
 			 // 如果创建失败 表示验证没有通过 输出错误提示信息
 			 $this->error($Model->getError());
 			 //exit($Model->getError());
@@ -100,6 +104,11 @@ class CaseController extends Controller {
 		}
 		if(false !== $result){
 			$case_id	=	D('Case')->returnCaseId($our_ref);
+			
+			//一对一关联数据表不会更新，这个很麻烦
+			$extend_info['case_id']	=	$case_id;
+			
+			M('CaseExtend')->add($extend_info);	
 			$this->success('新增成功', 'view/case_id/'.$case_id);
 		}else{
 			$this->error('增加失败');
@@ -111,6 +120,15 @@ class CaseController extends Controller {
 		if(IS_POST){
 			$case_id	=	trim(I('post.case_id'));
 			
+			$extend_info['case_extend_id']	=	trim(I('post.case_extend_id'));
+			$extend_info['expired_date']	=	trim(I('post.expired_date'));
+			$extend_info['expired_date']	=	strtotime($extend_info['expired_date']);
+			$extend_info['related_our_ref']	=	trim(I('post.related_our_ref'));
+			$extend_info['remarks']	=	trim(I('post.remarks'));
+			
+			print_r($extend_info);
+			
+			
 			$Model	=	D('Case');
 			if (!$Model->relation(true)->create()){ // 创建数据对象
 				 // 如果创建失败 表示验证没有通过 输出错误提示信息
@@ -118,9 +136,11 @@ class CaseController extends Controller {
 				 //exit($Model->getError());
 			}else{
 				 // 验证通过 写入新增数据
-				 $result	=	$Model->save();		 
+				 $result_case	=	$Model->save();	
+				  $result_extend	=	M('CaseExtend')->save($extend_info);	
+				 
 			}
-			if(false !== $result){
+			if((false !== $result_case)&&(false !== $result_extend)){
 				$this->success('修改成功', 'view/case_id/'.$case_id);
 			}else{
 				$this->error('修改失败');
@@ -134,6 +154,8 @@ class CaseController extends Controller {
 			}
 
 			$case_list = D('Case')->relation(true)->getByCaseId($case_id);			
+			
+			print_r($case_list);
 			$this->assign('case_list',$case_list);
 			
 			
@@ -333,7 +355,31 @@ class CaseController extends Controller {
 		
 		//取出数量，作为 options
 		$number_list	=	numberOption(5);
-		$this->assign('number_list',$number_list);		
+		$this->assign('number_list',$number_list);
+
+		//取出 CaseType 表的专利数据，作为 options
+		$case_type_list	=	D('CaseTypeView')->field('case_type_id,case_type_name')->listAllPatent();
+		$case_type_count	=	count($case_type_list);
+		$this->assign('case_type_list',$case_type_list);
+		
+		
+		//取出 Member 表的内容以及数量
+		$member_list	=	D('Member')->field(true)->listBasic();
+		$member_count	=	count($member_list);
+		$this->assign('member_list',$member_list);
+		$this->assign('member_count',$member_count);
+		
+		//取出 Client 表的内容以及数量
+		$client_list	=	D('Client')->field(true)->listBasic();
+		$client_count	=	count($client_list);
+		$this->assign('client_list',$client_list);
+		$this->assign('client_count',$client_count);
+
+		//取出其他变量
+		$row_limit  =   C("ROWS_PER_SELECT");
+		$today	=	time();
+		$this->assign('row_limit',$row_limit);
+		$this->assign('today',$today);		
 				
 		if(IS_POST){
 			
@@ -355,7 +401,7 @@ class CaseController extends Controller {
 			}
 						
 			//取出搜索结果
-			$order['our_ref']	=	'asc';
+			$order['our_ref']	=	'desc';
 			$case_list	=	D('Case')->relation(true)->where($map)->limit($limit_number)->order($order)->select();	
 			$case_count	=	D('Case')->relation(true)->where($map)->count();
 			$case_count	=	($case_count>$limit_number) ? $limit_number : $case_count;
@@ -363,32 +409,34 @@ class CaseController extends Controller {
 			$this->assign('case_count',$case_count);
 			
 			
-			//取出专利类型列表
-			$map_case_type['case_type_name']	=	array('like','%专利%');
-			$case_type_list	=	D('CaseTypeView')->where($map_case_type)->listBasic();
-			$case_type_count	=	count($case_type_list);
-			$this->assign('case_type_list',$case_type_list);
-			$this->assign('case_type_count',$case_type_count);
-			
-			//取出 Member 表的内容以及数量
-			$member_list	=	D('Member')->field(true)->listBasic();
-			$member_count	=	count($member_list);
-			$this->assign('member_list',$member_list);
-			$this->assign('member_count',$member_count);
-			
-			//取出 Client 表的内容以及数量
-			$client_list	=	D('Client')->field(true)->listBasic();
-			$client_count	=	count($client_list);
-			$this->assign('client_list',$client_list);
-			$this->assign('client_count',$client_count);
 
-			//取出其他变量
-			$row_limit  =   C("ROWS_PER_SELECT");
-			$today	=	time();
-			$this->assign('row_limit',$row_limit);
-			$this->assign('today',$today);
+			
 		} 
 	
+	$this->display();
+	}
+	
+	//搜索
+	public function searchAll(){
+
+		//接收搜索参数
+		$key_word	=	trim(I('post.key_word'));
+		
+		if(!$key_word){
+			$this->error('要填写申请号、我方案号、或对方案号');
+		}else{
+			$case_list	=	D('Case')->searchAll($key_word);
+		}
+		
+		
+		$this->assign('case_our_ref_list',$case_list['case_our_ref_list']);
+		$this->assign('case_our_ref_count',$case_list['case_our_ref_count']);
+		$this->assign('case_client_ref_list',$case_list['case_client_ref_list']);
+		$this->assign('case_client_ref_count',$case_list['case_client_ref_count']);
+		$this->assign('case_application_number_list',$case_list['case_application_number_list']);
+		$this->assign('case_application_number_count',$case_list['case_application_number_count']);
+		
+
 	$this->display();
 	}
 	

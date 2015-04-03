@@ -142,9 +142,9 @@
 		  
 		  <!-- 定义区块 navbar-form -->
 		  <block name="navbar-form">
-		  <form class="navbar-form navbar-left" role="search">
+		  <form class="navbar-form navbar-left" role="search" method="post" action="__APP__/Home/Case/searchAll">
 			<div class="form-group">
-               <input type="text" class="form-control" placeholder="Search">
+               <input type="text" class="form-control" name="key_word" placeholder="盈方案号、申请号、客户案号">
             </div>
             <button type="submit" class="btn btn-warning">搜</button>
           </form>

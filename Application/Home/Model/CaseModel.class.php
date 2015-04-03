@@ -82,8 +82,8 @@ class CaseModel extends RelationModel {
 			'class_name'		=>	'CaseExtend',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_ONE,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'expired_date,related_our_ref,remarks',		//关联字段
-			'as_fields'	=>	'expired_date,related_our_ref,remarks',		//字段别名
+			'mapping_fields'	=>	'case_extend_id,expired_date,related_our_ref,remarks',		//关联字段
+			'as_fields'	=>	'case_extend_id,expired_date,related_our_ref,remarks',		//字段别名
 		),
 		
 		'CasePriority'	=>	array(						//本数据关联的名称
@@ -244,5 +244,31 @@ class CaseModel extends RelationModel {
 		return array("list"=>$list,"page"=>$show);
 	}
 
-
+	//以 $key_word	为关键词，模糊查询 our_ref、 client_ref、 application_number
+	public function searchAll($key_word) {
+		$order['our_ref']	=	'asc';
+		//在 our_ref 中查询		
+		$map_our_ref['our_ref']  = array('like',"%".$key_word."%");
+		$case_our_ref_list	=	$this->relation(true)->field(true)->where($map_our_ref)->order($order)->select();
+		$case_our_ref_count	=	count($case_our_ref_list);
+		
+		//在 client_ref 中查询
+		$map_client_ref['client_ref']  = array('like',"%".$key_word."%");
+		$case_client_ref_list	=	$this->relation(true)->field(true)->where($map_client_ref)->order($order)->select();
+		$case_client_ref_count	=	count($case_client_ref_list);
+		
+		//在 application_number 中查询
+		$map_application_number['application_number']  = array('like',"%".$key_word."%");
+		$case_application_number_list	=	$this->relation(true)->field(true)->where($map_application_number)->order($order)->select();
+		$case_application_number_count	=	count($case_application_number_list);
+				
+		return array(
+			"case_our_ref_list"=>$case_our_ref_list,
+			"case_our_ref_count"=>$case_our_ref_count,
+			"case_client_ref_list"=>$case_client_ref_list,
+			"case_client_ref_count"=>$case_client_ref_count,
+			"case_application_number_list"=>$case_application_number_list,
+			"case_application_number_count"=>$case_application_number_count,
+		);
+	}
 }
