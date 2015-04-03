@@ -7,10 +7,10 @@ class IndexController extends Controller {
 	public function index(){
 		$this->show('还没有做好，先到 <a href="./Home/Group/listAll">这里</a> 看看吧 或 <a href="./Home/Account/">这里</a>看看吧。。');
 		
-		$key_word	=	P20150403V;
-		$case_id	=	D('Case')->searchAll($key_word);
-			var_dump($case_id);
-			print_r($case_id);
+		//$key_word	=	P20150403V;
+		$case_list = D('Case')->relation(true)->field(true)->getByCaseId(7);
+			var_dump($case_list);
+			print_r($case_list);
 		/*
 		if(strpos('专利(非套餐)','专利') ){
 			echo '这是专利';
