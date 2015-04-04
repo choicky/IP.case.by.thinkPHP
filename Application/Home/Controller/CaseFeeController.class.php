@@ -124,7 +124,7 @@ class CaseFeeController extends Controller {
 			}else{
 				$map_fee_type['fee_type_name']	=	array('notlike','%专利%');
 			}
-			$fee_type_list	=	D('FeeType')->listBasic();
+			$fee_type_list	=	D('FeeType')->where($map_fee_type)->listBasic();
 			$fee_type_count	=	count($fee_type_list);
 			$this->assign('fee_type_list',$fee_type_list);
 			$this->assign('fee_type_count',$fee_type_count);
@@ -188,49 +188,80 @@ class CaseFeeController extends Controller {
 		}
 	}
 	//搜索
-	public function search(){
+	public function searchPatentFee(){
 		
-		//取出 Member 表的基本内容，作为 options
-		$member_list	=	D('Member')->listBasic();
-		$this->assign('member_list',$member_list);
+		//取出 CasePhase 表的内容以及数量
+		$case_phase_list	=	D('CasePhase')->listBasic();
+		$this->assign('case_phase_list',$case_phase_list);
 		
-		//取出 CostCenter 表的基本内容，作为 options
+		//取出 FeeType 表中与“专利”有关的内容及数量
+		$map_fee_type['fee_type_name']	=	array('like','%专利%');
+		$fee_type_list	=	D('FeeType')->where($map_fee_type)->listBasic();
+		$this->assign('fee_type_list',$fee_type_list);
+		
+		//取出 Payer 表的内容以及数量
+		$payer_list	=	D('Payer')->listBasic();
+		$this->assign('payer_list',$payer_list);
+		
+		//取出 CostCenter 表的内容以及数量
 		$cost_center_list	=	D('CostCenter')->listBasic();
 		$this->assign('cost_center_list',$cost_center_list);
-				
+		
 		//默认查询 0 元 至 20000 元
 		$start_amount	=	0;
 		$end_amount	=	20000;
 		$this->assign('start_amount',$start_amount);
 		$this->assign('end_amount',$end_amount);
-				
-		//取出 Client 表的基本内容，作为 options
-		$client_list	=	D('Client')->listBasic();
-		$this->assign('client_list',$client_list);
+		
+		//默认查询最近3个月
+		$start_time	=	strtotime('-3 month');
+		var_dump($start_time);
+		$this->assign('start_time',$start_time);
+		$this->assign('end_time',$end_time);
 		
 		if(IS_POST){
 			
 			//接收搜索参数
-			$case_feeer_id	=	I('post.case_feeer_id','0','int');
+			$case_phase_id	=	I('post.case_phase_id','0','int');
+			$case_type_id	=	I('post.case_type_id','0','int');
 			$cost_center_id	=	I('post.cost_center_id','0','int');				
-			$client_id	=	I('post.client_id','0','int');
-			$start_amount	=	trim(I('post.start_amount'))*100;
-			$end_amount	=	trim(I('post.end_amount'))*100;			
+			
+			$start_official_amount	=	trim(I('post.start_official_amount'))*100;
+			$start_official_amount	=	$start_official_amount ? $start_official_amount : 0;
+			$end_official_amount	=	trim(I('post.end_official_amount'))*100;
+						
+			$start_due_time	=	trim(I('post.start_due_time'));
+			$start_due_time	=	$start_due_time ? strtotime($start_due_time) : strtotime('-3 month');			
+			$end_due_time	=	trim(I('post.end_due_time'));
+			$end_due_time	=	$end_due_time ? strtotime($end_due_time) : time();
+			
+			$start_due_time	=	trim(I('post.start_due_time'));
+			$start_due_time	=	$start_due_time ? strtotime($start_due_time) : strtotime('-3 month');			
+			$end_due_time	=	trim(I('post.end_due_time'));
+			$end_due_time	=	$end_due_time ? strtotime($end_due_time) : time();
+			
+			$start_payment_time	=	trim(I('post.start_payment_time'));
+			$start_payment_time	=	$start_payment_time ? strtotime($start_payment_time) : strtotime('2005-01-01');			
+			$end_payment_time	=	trim(I('post.end_payment_time'));
+			$end_payment_time	=	$end_payment_time ? strtotime($end_payment_time) : time();
 			
 			
 			//构造 maping
-			if($case_feeer_id){
-				$map['case_feeer_id']	=	$case_feeer_id;
+			if($case_phase_id){
+				$map['case_phase_id']	=	$case_phase_id;
 			}
+			if($case_type_id){
+				$map['case_type_id']	=	$case_type_id;
+			}	
 			if($cost_center_id){
 				$map['cost_center_id']	=	$cost_center_id;
 			}
-			if($client_id){
-				$map['client_id']	=	$client_id;
-			}	
+			if($end_official_amount){
+				$map_amount['income_amount']	=	array('between',array($start_amount,$end_amount));
+			}
 			
 			
-			$map_amount['income_amount']	=	array('between',array($start_amount,$end_amount));
+			
 
 			$map_amount['outcome_amount']	=	array('between',array($start_amount,$end_amount));
 			$map_amount['_logic'] = 'OR';
