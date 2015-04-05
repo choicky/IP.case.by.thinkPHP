@@ -224,53 +224,49 @@ class CaseFeeController extends Controller {
 			//接收搜索参数
 			$case_phase_id	=	I('post.case_phase_id','0','int');
 			$case_type_id	=	I('post.case_type_id','0','int');
+			$payer_id	=	I('post.payer_id','0','int');
 			$cost_center_id	=	I('post.cost_center_id','0','int');				
 			
 			$start_official_amount	=	trim(I('post.start_official_amount'))*100;
 			$start_official_amount	=	$start_official_amount ? $start_official_amount : 0;
 			$end_official_amount	=	trim(I('post.end_official_amount'))*100;
+			$end_official_amount	=	$end_official_amount ? $end_official_amount : 20000;
 						
 			$start_due_time	=	trim(I('post.start_due_time'));
-			$start_due_time	=	$start_due_time ? strtotime($start_due_time) : strtotime('-3 month');			
+			$start_due_time	=	$start_due_time ? strtotime($start_due_time) : time();			
 			$end_due_time	=	trim(I('post.end_due_time'));
-			$end_due_time	=	$end_due_time ? strtotime($end_due_time) : time();
-			
-			$start_due_time	=	trim(I('post.start_due_time'));
-			$start_due_time	=	$start_due_time ? strtotime($start_due_time) : strtotime('-3 month');			
-			$end_due_time	=	trim(I('post.end_due_time'));
-			$end_due_time	=	$end_due_time ? strtotime($end_due_time) : time();
+			$end_due_time	=	$end_due_time ? strtotime($end_due_time) : strtotime('+3 month');
 			
 			$start_payment_time	=	trim(I('post.start_payment_time'));
 			$start_payment_time	=	$start_payment_time ? strtotime($start_payment_time) : strtotime('2005-01-01');			
 			$end_payment_time	=	trim(I('post.end_payment_time'));
 			$end_payment_time	=	$end_payment_time ? strtotime($end_payment_time) : time();
 			
-			
 			//构造 maping
 			if($case_phase_id){
-				$map['case_phase_id']	=	$case_phase_id;
+				$map_case_fee['case_phase_id']	=	$case_phase_id;
 			}
 			if($case_type_id){
-				$map['case_type_id']	=	$case_type_id;
+				$map_case_fee['case_type_id']	=	$case_type_id;
 			}	
+			if($payer_id){
+				$map_case_fee['payer_id']	=	$payer_id;
+			}
 			if($cost_center_id){
-				$map['cost_center_id']	=	$cost_center_id;
-			}
-			if($end_official_amount){
-				$map_amount['income_amount']	=	array('between',array($start_amount,$end_amount));
+				$map_case_fee['cost_center_id']	=	$cost_center_id;
 			}
 			
+			$map_case_fee['official_amount']	=	array('between',array($start_official_amount,$end_official_amount));
+			$map_case_fee['due_time']	=	array('between',array($start_due_time,$end_due_time));
 			
+			$case_payment_list	=	D('CaseFee')->listCasePaymentId($start_payment_time, $end_payment_time);
+			$map_case_fee['case_payment_id']	=	array('in',$case_payment_list);
 			
-
-			$map_amount['outcome_amount']	=	array('between',array($start_amount,$end_amount));
-			$map_amount['_logic'] = 'OR';
-			
-			
+			//分页显示搜索结果
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_fee_list = D('CaseFee')->where($map)->where($map_amount)->listPage($p,$page_limit);
-			$case_fee_count = D('CaseFee')->where($map)->where($map_amount)->count();
+			$case_fee_list = D('CaseFee')->where($map_case_fee)->listPage($p,$page_limit);
+			$case_fee_count = D('CaseFee')->where($map_case_fee)->count();
 			$this->assign('case_fee_list',$case_fee_list['list']);
 			$this->assign('case_fee_page',$case_fee_list['page']);
 			$this->assign('case_fee_count',$case_fee_count);

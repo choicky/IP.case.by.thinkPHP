@@ -151,4 +151,15 @@ class CaseFeeModel extends RelationModel {
 		
 		return $case_type_name;
 	}
+	
+	//根据 $start_payment_time, $end_payment_time 返回对应的 $case_payment_id
+	public function listCasePaymentId($start_payment_time, $end_payment_time) {
+		$map_case_payment['payment_time']	=	array('between',array($start_payment_time,$end_payment_time));
+		$order_case_payment['payment_time']	=	'asc';
+		$list	=	M('CasePayment')->field('case_payment_id')->where($map_case_payment)->order($order_case_payment)->select();
+		for($i=0;$i<count($list);$i++){
+			$case_payment_list[$i]	=	$list[$i]['case_payment_id'];
+		}
+		return $case_payment_list;
+	}
 }
