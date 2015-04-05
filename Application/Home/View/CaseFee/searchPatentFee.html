@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3>搜索结果（共{$case_priority_count}项）</h>
+					<h3>搜索结果（共{$case_fee_count}项）</h>
 				</div>
 			</div>
 		</div>
@@ -33,35 +33,82 @@
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
-								
-								<th>优先权国家</th>								
-								<th>优先权号码</th>
-								
-								
-								<th>&nbsp;</th>
-								
+								<th>费用阶段</th>								
+								<th>费用名称</th>
+								<th>缴费人</th>
+								<th>结算账户</th>
+								<th>官费最小值</th>
+								<th>官费最大值</th>
 							</tr>
+							
 						</thead>
-						<tbody>
+						<tbody><form class="form-inline" method="post" action="__CONTROLLER__/searchPatentFee">
 							<tr>
-								<form class="form-inline" method="post" action="__CONTROLLER__/searchPatentFee">
+								
 								<td>
-									
-										
-										<select class="form-control" name="priority_country_id">
-											<option value="0"> 不限 </option>
-											<volist name="country_list" id="country_vo">
-											<option value="{$country_vo.country_id}"}>{$country_vo.country_name}</option>
-											</volist>
-										</select>
-									
+									<select class="form-control" name="case_phase_id">
+										<option value="0"}>不限</option>
+										<volist name="case_phase_list" id="case_phase_vo">
+										<option value="{$case_phase_vo.case_phase_id}"}>{$case_phase_vo.case_phase_name}</option>
+										</volist>
+									</select>
 								</td>								
 								<td>
-									
-										
-										<input type="text" class="form-control" id="priority_number" name="priority_number" placeholder="优先权号码">
-									
-								</td>								
+									<select class="form-control" name="fee_type_id">
+										<option value="0"}>不限</option>
+										<volist name="fee_type_list" id="fee_type_vo">
+										<option value="{$fee_type_vo.fee_type_id}"}>{$fee_type_vo.fee_type_name}</option>
+										</volist>
+									</select>
+								</td>	
+								<td>
+									<select class="form-control" name="payer_id">
+										<option value="0"}>不限</option>
+										<volist name="payer_list" id="payer_vo">
+										<option value="{$payer_vo.payer_id}"}>{$payer_vo.payer_name}</option>
+										</volist>
+									</select>
+								</td>
+								<td>
+									<select class="form-control" name="cost_center_id">
+										<option value="0"}>不限</option>
+										<volist name="cost_center_list" id="cost_center_vo">
+										<option value="{$cost_center_vo.cost_center_id}"}>{$cost_center_vo.cost_center_name}</option>
+										</volist>
+									</select>
+								</td>
+								<td>
+									<input type="text" class="form-control" id="start_official_amount" name="start_official_amount" value="{$start_amount}">
+								</td>
+								<td>
+									<input type="text" class="form-control" id="start_official_amount" name="end_official_amount" value="{$end_amount}">
+								</td>
+							</tr>
+							
+							<tr class="info">
+								<th>最早期限日</th>
+								<th>最晚期限日</th>
+								<th>最早付款日</th>
+								<th>最晚付款日</th>
+								<th>&nbsp;</th>
+								<th>&nbsp;</th>
+							</tr>
+							
+							<tr>
+								<td>
+									<input type="date" class="form-control" id="start_due_date" name="start_due_date" value="{$start_due_date|date="Y-m-d",###}">
+								</td>
+								<td>
+									<input type="date" class="form-control" id="end_due_date" name="end_due_date" value="{$end_due_date|date="Y-m-d",###}">
+								</td>
+								<td>
+									<input type="date" class="form-control" id="start_payment_date" name="start_payment_date" value="{$start_payment_date|date="Y-m-d",###}">
+								</td>
+								<td>
+									<input type="date" class="form-control" id="end_payment_date" name="end_payment_date" value="{$end_payment_date|date="Y-m-d",###}">
+								</td>
+								<td> &nbsp;</td>
+								
 								<td><button type="submit" class="btn btn-primary">搜</button></td>
 								</form>
 								
@@ -69,7 +116,6 @@
 							</volist>
 						</tbody>
 					</table>
-					{$case_priority_page}
 				</div>
 			</div>
         </div>
@@ -78,7 +124,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3>搜索结果（共{$case_priority_count}项）</h>
+					<h3>搜索结果（共{$case_fee_count}项）</h>
 				</div>
 			</div>
 		</div>
@@ -87,7 +133,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
-					本表格右侧能够编辑当前行的优先权信息、下方能新增优先权信息
+					说明
 				</div>
 
 				<!-- Table -->
@@ -97,33 +143,56 @@
 							<tr class="info">
 								
 								<th>序号</th>								
-								<th>优先权日</th>								
-								<th>优先权国家/地区</th>								
-								<th>优先权号码</th>
-								<th>要求此优先权的案件编号</th>
+								<th>我方案号</th>								
+								<th>对方案号</th>								
+								<th>专利名称</th>
+								<th>费用阶段</th>
+								<th>官费</th>
+								<th>服务费</th>
+								<th>官文日期</th>
+								<th>期限日</th>
+								<th>指示日期</th>
+								<th>缴费人</th>
+								<th>缴费单号及缴费日</th>
+								<th>账单编号</th>
+								<th>发票编号<th>
+								<th>到款认领单编号</th>
+								<th>结算账户</th>
+								<th>结算金额</th>
 								
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 将controller assign过来的 case_priority_list 赋给  case_priority_vo--> 
-							<volist name="case_priority_list" id="case_priority_vo">
+							<!-- 将controller assign过来的 case_fee_list 赋给  case_fee_vo--> 
+							<volist name="case_fee_list" id="case_fee_vo">
 							<tr>
 								
 								<td>{$i}</td>								
-								<td>{$case_priority_vo.priority_date|date="Y-m-d",###}</td>								
-								<td>{$case_priority_vo.country_name}</td>
-								<td>{$case_priority_vo.priority_number}</td>
+								<td>{$case_fee_vo['Case']['our_ref']}</td>								
+								<td>{$case_fee_vo['Case']['client_ref']}</td>
+								<td>{$case_fee_vo['Case']['formal_title']}</td>
+								<td>{$case_fee_vo['fee_phase_name']}</td>
+								<td>{$case_fee_vo['fee_type_name']}</td>
+								<td>{$case_fee_vo['official_fee']}</td>
+								<td>{$case_fee_vo['service_fee']}</td>
+								<td>{$case_fee_vo['oa_date']}</td>
+								<td>{$case_fee_vo['due_date']}</td>
+								<td>{$case_fee_vo['allow_date']}</td>
+								<td>{$case_fee_vo['payor_name']}</td>
 								<td>
-									{$case_priority_vo.case_id}
-									<a href="__APP__/Home/Case/view/case_id/{$case_priority_vo.case_id}">详情</a>								
-									
+									{$case_fee_vo['case_payment_id']}<br>
+									{$case_fee_vo['CasePayment']['payment_date']|date="Y-m-d",###}
 								</td>
-								
-							</tr>
+								<td>{$case_fee_vo['bill_id']}</td>
+								<td>{$case_fee_vo['invoice_id']}</td>
+								<td>{$case_fee_vo['claim_id']}</td>
+								<td>{$case_fee_vo['cose_center_name']}</td>
+								<td>{$case_fee_vo['cose_amount']}</td>
+								</tr>
 							</volist>
 						</tbody>
 					</table> 
-					{$case_priority_page}
+					{$case_fee_page}
 				</div>
 			</div>
         </div>

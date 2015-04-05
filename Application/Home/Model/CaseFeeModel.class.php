@@ -46,7 +46,7 @@ class CaseFeeModel extends RelationModel {
 			'class_name'		=>	'Case',			//被关联的数据表
 			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
 			'foreign_key'		=>	'case_id',		//外键
-			'mapping_fields'	=>	'our_ref,client_ref',	//关联字段
+			'mapping_fields'	=>	'our_ref,client_ref,formal_title',	//关联字段
 			//'as_fields'			=>	'member_name'	//字段别名，仅适用于 self::HAS_ONE
 		),
 		
@@ -98,15 +98,15 @@ class CaseFeeModel extends RelationModel {
 	
 	//返回本数据表的所有数据
 	public function listAll() {			
-		//$order['CasePayment']['payment_date']	=	'desc';
+		$order['due_date']	=	'desc';
 		$list	=	$this->relation(true)->order($order)->select();
 		return $list;
 	}
 
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['completion_date']	=	'asc';
-		$list	=	$this->relation(true)->order($order)->page($p.','.$limit)->select();
+		//$order['case_payment_id']	=	'desc';
+		$list	=	$this->relation(true)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		
@@ -118,7 +118,7 @@ class CaseFeeModel extends RelationModel {
 	
 	//分页返回本数据表的搜索数据，$p为当前页数，$limit为每页显示的记录条数，$map为检索参数
 	public function listPageSearch($p,$limit,$map) {
-		$order['completion_date']	=	'asc';
+		//$order['case_payment_id']	=	'asc';
 		$list	=	$this->relation(true)->order($order)->where($map)->page($p.','.$limit)->select();
 		
 		$count	= $this->where($map)->count();
@@ -152,10 +152,10 @@ class CaseFeeModel extends RelationModel {
 		return $case_type_name;
 	}
 	
-	//根据 $start_payment_time, $end_payment_time 返回对应的 $case_payment_id
-	public function listCasePaymentId($start_payment_time, $end_payment_time) {
-		$map_case_payment['payment_time']	=	array('between',array($start_payment_time,$end_payment_time));
-		$order_case_payment['payment_time']	=	'asc';
+	//根据 $start_payment_date, $end_payment_date 返回对应的 $case_payment_id
+	public function listCasePaymentId($start_payment_date, $end_payment_date) {
+		$map_case_payment['payment_date']	=	array('between',array($start_payment_date,$end_payment_date));
+		$order_case_payment['payment_date']	=	'asc';
 		$list	=	M('CasePayment')->field('case_payment_id')->where($map_case_payment)->order($order_case_payment)->select();
 		for($i=0;$i<count($list);$i++){
 			$case_payment_list[$i]	=	$list[$i]['case_payment_id'];

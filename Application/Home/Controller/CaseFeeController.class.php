@@ -213,11 +213,17 @@ class CaseFeeController extends Controller {
 		$this->assign('start_amount',$start_amount);
 		$this->assign('end_amount',$end_amount);
 		
-		//默认查询最近3个月
-		$start_time	=	strtotime('-3 month');
-		var_dump($start_time);
-		$this->assign('start_time',$start_time);
-		$this->assign('end_time',$end_time);
+		//默认查询未来3个月期限
+		$start_due_date	=	time();
+		$end_due_date	=	strtotime('+3 month');
+		$this->assign('start_due_date',$start_due_date);
+		$this->assign('end_due_date',$end_due_date);
+		
+		//默认查询最近个月缴费记录
+		$start_payment_date	=	strtotime('-3 month');
+		$end_payment_date	=	time();
+		$this->assign('start_payment_date',$start_payment_date);
+		$this->assign('end_payment_date',$end_payment_date);
 		
 		if(IS_POST){
 			
@@ -232,15 +238,15 @@ class CaseFeeController extends Controller {
 			$end_official_amount	=	trim(I('post.end_official_amount'))*100;
 			$end_official_amount	=	$end_official_amount ? $end_official_amount : 20000;
 						
-			$start_due_time	=	trim(I('post.start_due_time'));
-			$start_due_time	=	$start_due_time ? strtotime($start_due_time) : time();			
-			$end_due_time	=	trim(I('post.end_due_time'));
-			$end_due_time	=	$end_due_time ? strtotime($end_due_time) : strtotime('+3 month');
+			$start_due_date	=	trim(I('post.start_due_date'));
+			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : time();			
+			$end_due_date	=	trim(I('post.end_due_date'));
+			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+3 month');
 			
-			$start_payment_time	=	trim(I('post.start_payment_time'));
-			$start_payment_time	=	$start_payment_time ? strtotime($start_payment_time) : strtotime('2005-01-01');			
-			$end_payment_time	=	trim(I('post.end_payment_time'));
-			$end_payment_time	=	$end_payment_time ? strtotime($end_payment_time) : time();
+			$start_payment_date	=	trim(I('post.start_payment_date'));
+			$start_payment_date	=	$start_payment_date ? strtotime($start_payment_date) : strtotime('2005-01-01');			
+			$end_payment_date	=	trim(I('post.end_payment_date'));
+			$end_payment_date	=	$end_payment_date ? strtotime($end_payment_date) : time();
 			
 			//构造 maping
 			if($case_phase_id){
@@ -257,15 +263,18 @@ class CaseFeeController extends Controller {
 			}
 			
 			$map_case_fee['official_amount']	=	array('between',array($start_official_amount,$end_official_amount));
-			$map_case_fee['due_time']	=	array('between',array($start_due_time,$end_due_time));
+			$map_case_fee['due_date']	=	array('between',array($start_due_date,$end_due_date));
 			
-			$case_payment_list	=	D('CaseFee')->listCasePaymentId($start_payment_time, $end_payment_time);
-			$map_case_fee['case_payment_id']	=	array('in',$case_payment_list);
+			$case_payment_list	=	D('CaseFee')->listCasePaymentId($start_payment_date, $end_payment_date);
+			if(is_array($case_payment_list)){
+				$map_case_fee['case_payment_id']	=	array('in',$case_payment_list);
+			}
+			
 			
 			//分页显示搜索结果
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_fee_list = D('CaseFee')->where($map_case_fee)->listPage($p,$page_limit);
+			$case_fee_list = D('CaseFee')->where($map_case_fee)->listPage($p,$case_fee_list);;
 			$case_fee_count = D('CaseFee')->where($map_case_fee)->count();
 			$this->assign('case_fee_list',$case_fee_list['list']);
 			$this->assign('case_fee_page',$case_fee_list['page']);
