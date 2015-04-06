@@ -16,6 +16,7 @@ class CaseGroupController extends Controller {
 		$case_group_list    =   D('CaseGroup')->listPage($p,$limit);
 		$this->assign('case_group_list',$case_group_list['data']);
 		$this->assign('case_group_page',$case_group_list['page']);
+		$this->assign('case_group_count',$case_group_list['count']);
         
 		$this->display();
 	}
@@ -26,7 +27,7 @@ class CaseGroupController extends Controller {
 		$data['case_group_name']    =   trim(I('post.case_group_name'));
 		
 		if(!$data['case_group_name']){
-			$this->error('未填写费用名称');
+			$this->error('未填写案件类型名称');
 		} 
 
 		$result = M('CaseGroup')->add($data);

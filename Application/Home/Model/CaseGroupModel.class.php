@@ -64,7 +64,7 @@ class CaseGroupModel extends Model {
 		$Page	= new \Think\Page($count,$recodes_per_page);
 		$show	= $Page->show();
 		
-		return array("data"=>$data,"page"=>$show);
+		return array("data"=>$data,"page"=>$show,"count"=>$count);
 	}
 	
 	//更新本数据表中主键为$case_group_id的记录，$data是数组

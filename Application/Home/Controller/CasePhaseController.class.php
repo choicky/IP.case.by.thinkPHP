@@ -21,6 +21,7 @@ class CasePhaseController extends Controller {
 		$case_phase_list = D('CasePhase')->listPage($p,$limit);
 		$this->assign('case_phase_list',$case_phase_list['list']);
 		$this->assign('case_phase_page',$case_phase_list['page']);
+		$this->assign('case_phase_page',$case_phase_list['page']);
 
 		$this->display();
 	}

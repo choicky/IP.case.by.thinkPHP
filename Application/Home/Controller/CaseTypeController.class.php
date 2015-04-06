@@ -21,6 +21,7 @@ class CaseTypeController extends Controller {
 		$case_type_list = D('CaseTypeView')->listPage($p,$limit);
 		$this->assign('case_type_list',$case_type_list['list']);
 		$this->assign('case_type_page',$case_type_list['page']);
+		$this->assign('case_type_count',$case_type_list['count']);
 		
 		//取出 CaseGroup 表的内容以及数量
 		$case_group_list	=	D('CaseGroup')->listBasic();
@@ -39,12 +40,22 @@ class CaseTypeController extends Controller {
 	public function add(){
 		$data	=	array();
 		$data['case_type_name']	=	trim(I('post.case_type_name'));
-		$data['case_group_id']	=	trim(I('post.case_group_id'));		
+		$data['case_group_id']	=	trim(I('post.case_group_id'));
+		
+		//检测 $data['case_type_name'] 是否空值
+		if(!$data['case_type_name']){
+			$this->error('未填写案件小类名称');
+		}
+		
+		//检测 $data['case_group_id'] 是否空值
+		if(!$data['case_group_id']){
+			$this->error('未选择案件类型');
+		}
 
 		$result = M('CaseType')->add($data);
 		
 		if(false !== $result){
-			$this->success('新增成功', 'view/case_group_id/'.$data['case_group_id']);
+			$this->success('新增成功', U('CaseType/view','case_group_id='.$data['case_group_id']));
 		}else{
 			$this->error('增加失败');
 		}
@@ -146,23 +157,15 @@ class CaseTypeController extends Controller {
 			$this->error('未指明要查看的案件大类');
 		}
 
-		$case_group_data = D('CaseGroup')->field(true)->getByCaseGroupId($case_group_id);			
-		$this->assign('case_group_data',$case_group_data);
+		$case_group_list = D('CaseGroup')->field(true)->getByCaseGroupId($case_group_id);			
+		$this->assign('case_group_list',$case_group_list);
 		
 		$map['case_group_id']	=	$case_group_id;
 		$case_type_list	=	M('CaseType')->where($map)->select();
+		$case_type_count	=	count($case_type_list);
 		$this->assign('case_type_list',$case_type_list);
+		$this->assign('case_type_count',$case_type_count);
 		
-		//取出 CaseGroup 表的内容以及数量
-		$case_group_list	=	D('CaseGroup')->listBasic();
-		$case_group_count	=	count($case_group_list);
-		$this->assign('case_group_list',$case_group_list);
-		$this->assign('case_group_count',$case_group_count);
-		
-		//取出其他变量
-		$row_limit  =   C("ROWS_PER_SELECT");
-		$this->assign('row_limit',$row_limit);
-			
 		$this->display();
 	}
 }
