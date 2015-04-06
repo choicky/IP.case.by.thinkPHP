@@ -11,7 +11,7 @@
         <div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1 id="forms">更新</h1>
+					<h3 id="forms">更新案件类型</h3>
 				</div>
 			</div>
         </div>
@@ -23,13 +23,15 @@
 						<fieldset>
 							<legend>“账户名称”是必须的</legend>
 							<div class="form-group">
-								<label for="case_group_name" class="col-lg-3 control-label">案件大类名称</label>
+								<label for="case_group_name" class="col-lg-3 control-label">案件类型名称</label>
 								<div class="col-lg-4">
 									<input type="hidden" class="form-control" id="case_group_id" name="case_group_id" value="{$case_group_list.case_group_id}">
 									<input type="text" class="form-control" id="case_group_name" name="case_group_name" value="{$case_group_list.case_group_name}">
 								</div>
 								<div class="col-lg-5">
-									<p>注意事项</p>
+									“专利”的案件类型名称必须含有“专利”二字；<br>
+									“商标”的案件类型名称必须含有“商标”二字；<br>
+									“版权”的案件类型名称必须含有“版权”二字。
 								</div>
 							</div>
 							
