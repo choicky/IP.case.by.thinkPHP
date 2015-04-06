@@ -5,7 +5,13 @@ use Think\Controller;
 class IndexController extends Controller {
 
 	public function index(){
-		$this->show('还没有做好，先到 <a href="./Home/Group/listAll">这里</a> 看看吧 或 <a href="./Home/Account/">这里</a>看看吧。。');
+		if(!cookie('name')){
+			$this->error('尚未登陆',U('User/login'));
+		}
+		
+		$this->show('还没有做好，先到 <a href="'.U('Group/listAll').'">这里</a> 看看吧 或 <a href="'.U('Account/listAll').'">这里</a>看看吧。。');
+		
+		
 		
 		//$key_word	=	P20150403V;
 		$case_list = D('Case')->relation(true)->field(true)->getByCaseId(7);

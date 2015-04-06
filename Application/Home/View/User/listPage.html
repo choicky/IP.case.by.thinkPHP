@@ -1,0 +1,83 @@
+<!-- 继承模板页面 base --> 
+<!-- 该模板位于  ./Application\Home\View\Public --> 
+<extend name="Public:base" />
+	
+<!-- 区块 title 替换开始 --> 	
+	<block name="title">
+		<title>收支结算列表</title>
+	</block>
+<!-- 区块 title 替换结束 --> 	
+	
+<!-- 区块 page 替换开始 --> 
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>收支结算列表（共{$claim_count}项）</h3>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading">
+					“编号”是唯一的；表格底部有换页按钮；只能到对应的<a href="__APP__/Home/Balance/listPage" target="_blank">收支流水详情页</a>增加收支认领
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								<th>编号</th>
+								<th>认领人</th>
+								<th>结算账户</th>
+								<th>认领日期</th>
+								<th>收入金额</th>
+								<th>支出金额</th>
+								<th>官费</th>
+								<th>服务费</th>
+								<th>客户</th>
+								<th>常用操作</th>
+								<th>&nbsp;|&nbsp;</th>
+								<th>收支流水编号</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 claim_list 赋给  claim_vo--> 
+							<volist name="claim_list" id="claim_vo">
+							<tr>
+								<td>{$claim_vo.claim_id}</td>
+								<td>{$claim_vo['Member'].member_name}</td>
+								<td>{$claim_vo['CostCenter'].cost_center_name}</td>
+								<td>{$claim_vo.claim_date|date="Y-m-d",###}</td>
+								<td align="right">{$claim_vo['income_amount']/100}</td>
+								<td align="right">{$claim_vo['outcome_amount']/100}</td>
+								<td>{$claim_vo.official_fee}</td>
+								<td>{$claim_vo.service_fee}</td>
+								<td>{$claim_vo.client_name}</td>
+								<td>
+									<a href="__CONTROLLER__/update/claim_id/{$claim_vo.claim_id}">更新</a> 
+									<a href="__CONTROLLER__/delete/claim_id/{$claim_vo.claim_id}">删除</a>
+								</td>
+								<th>&nbsp;|&nbsp;</th>
+								<td>
+									{$claim_vo.balance_id}；
+									<a href="__APP__/Home/Claim/view/balance_id/{$claim_vo.balance_id}">详情</a>
+								</td>
+							</tr>
+							</volist>                 
+						</tbody>
+					</table> 
+					{$claim_page}
+				</div>
+			</div>
+        </div>
+	  
+
+	</block>
+<!-- 区块 page 替换结束 --> 
