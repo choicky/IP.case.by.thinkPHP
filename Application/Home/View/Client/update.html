@@ -1,0 +1,88 @@
+<extend name="Public:base" />
+	
+	<block name="title">
+		<title>更新客户/申请人基本信息</title>
+	</block>
+	
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3 id="forms">更新客户/申请人基本信息</h3>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="col-lg-9">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/update">
+						<fieldset>
+							<legend>尽量填写完整每一项</legend>
+								<!-- 隐藏域开始 -->
+								<input type="hidden" class="form-control" id="client_id" name="client_id" value="{$client_list.client_id}">
+								<!-- 隐藏域结束 -->
+								
+							<div class="form-group">
+								<label for="account_id" class="col-lg-3 control-label">中文全称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="client_name" name="client_name" value="{$client_list.client_name}">
+								</div>
+								<div class="col-lg-5">
+									要写全称
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="account_id" class="col-lg-3 control-label">英文名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="client_name_en" name="client_name_en" value="{$client_list.client_name_en}">
+								</div>
+								<div class="col-lg-5">
+									如没有英文名称，留空即可
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="client_id_number" class="col-lg-3 control-label">身份证号/组织机构代码</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="client_id_number" name="client_id_number" value="{$client_list.client_id_number}">
+								</div>
+								<div class="col-lg-5">
+									自然人填写身份证号码；<br>
+									公司填写组织机构代码。
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="client_business_number" class="col-lg-3 control-label">商业登记证号/营业执照号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="client_business_number" name="client_business_number" value="{$client_list.client_business_number}">
+								</div>
+								<div class="col-lg-5">
+									自然人填写身份证号码；<br>
+									公司填写组织机构代码。
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="client_tax_number" class="col-lg-3 control-label">税务登记证号号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="client_tax_number" name="client_tax_number" value="{$client_list.client_tax_number}">
+								</div>
+								<div class="col-lg-5">
+									税务登记证号号
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button class="btn btn-default"> 取消 </button>
+									<button type="submit" class="btn btn-primary"> 确认 </button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+        </div>
+	</block>

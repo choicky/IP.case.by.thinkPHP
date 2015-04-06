@@ -118,8 +118,9 @@ if(!cookie('name')){
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">基础信息配置 <span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="download">
-                <li><a href="__MODULE__/Client/listPage">客户/申请人列表、编辑</a></li>
-				<li><a href="__MODULE__/Client/listPage#addNew">录入新客户/申请人</a></li>
+                <li><h4>客户与申请人</h4></li>
+				<li><a href="{:U('Client/listPage')}">列表、编辑</a></li>
+				<li><a href="{:U('Client/listPage#addNew')}">录入新客户/申请人</a></li>
                 <li class="divider"></li>				
 				<li><a href="__MODULE__/Member/listPage">跟案人员/处理人员列表、编辑</a></li>
 				<li><a href="__MODULE__/Member/listPage#addNew">录入新跟案人员/处理人员</a></li>

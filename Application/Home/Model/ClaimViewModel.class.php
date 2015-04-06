@@ -22,12 +22,14 @@ class ClaimViewModel extends ViewModel {
 		
 		'Member'	=>	array(
 			'member_name',
-			'_on'	=>	'Claim.claimer_id=Member.member_id'
+			'_on'	=>	'Claim.claimer_id=Member.member_id',
+			'_type'=>'LEFT'
 		),	
 		
 		'Client'	=>	array(
 			'client_name',
-			'_on'	=>	'Claim.client_id=Client.client_id'
+			'_on'	=>	'Claim.client_id=Client.client_id',
+			'_type'=>'LEFT'
 		),
 		
 		'CostCenter'	=>	array(

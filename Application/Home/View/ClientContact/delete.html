@@ -1,0 +1,70 @@
+<extend name="Public:base" />
+	
+	<block name="title">
+		<title>删除客户/申请人的联系信息</title>
+	</block>
+	
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3 id="forms">删除客户/申请人的联系信息</h3>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="panel panel-warning">
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								<th>编号</th>
+								<th>中文地址</th>
+								<th>英文地址</th>
+								<th>联系人</th>
+								<th>更新日期</th>								
+								<th>其他操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 client_contact_list 赋给  client_contact_list--> 
+							
+							<tr>
+								<td>{$client_contact_list['client_contact_id']}</td>
+								<td>{$client_contact_list['contact_address']}</td>
+								<td>{$client_contact_list['contact_address_en']}</td>
+								<td>{$client_contact_list['contact_person']}</td>
+								
+								<td>{$client_contact_list['update_date']|date="Y-m-d",###}</td>
+								
+								<td>
+									<a href="{:U('ClientContact/update','client_contact_id='.$client_contact_list['client_contact_id'])}">更新</a>
+									<a href="{:U('ClientContact/delete','client_contact_id='.$client_contact_list['client_contact_id'])}">删除</a>
+								</td>
+							</tr>
+							               
+						</tbody>
+					</table> 
+				</div>
+				<form class="form-horizontal" method="post" action="__CONTROLLER__/delete">
+					<fieldset>
+						<legend>真的要删除？</legend>
+						<div class="form-group">
+							<div class="col-lg-9 col-lg-offset-3">
+								<input	type="hidden" name="client_contact_id" value="{$client_contact_list.client_contact_id}"></input>
+								<input	type="hidden" name="client_id" value="{$client_contact_list.client_id}"></input>
+								<button class="btn btn-primary" name="no_btn"value="1">No</button>
+								<button type="submit" class="btn btn-default" name="yes_btn" value="1">Yes</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+        </div>
+
+	</block>
