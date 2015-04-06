@@ -1,6 +1,8 @@
 <?php
 if(!cookie('name')){
-	header('Location: '.U('User/login'));
+	//header('Location: '.U('User/login'));
+	header('Location: __APP__/Home/User/login');
+	exit;
 }
 ?>
 <!DOCTYPE html>
