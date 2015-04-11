@@ -46,7 +46,7 @@ class CasePriorityController extends Controller {
 			 $result	=	$Model->add();		 
 		}
 		if(false !== $result){
-			$this->success('新增成功', 'view/case_id/'.$case_id);
+			$this->success('新增成功', U('CasePriority/view','case_id='.$case_id));
 		}else{
 			$this->error('增加失败');
 		}
@@ -175,13 +175,9 @@ class CasePriorityController extends Controller {
 			$this->error('未指明要查看的案件');
 		}
 
-		$case_list = D('Case')->relation(true)->field(true)->getByCaseId($case_id);			
+		$case_list = D('Case')->relation(true)->field(true)->getByCaseId($case_id);
+		$case_priority_count	=	count($case_list['CasePriority']);
 		$this->assign('case_list',$case_list);
-		
-		$map['case_id']	=	$case_id;
-		$case_priority_list	=	D('CasePriorityView')->where($map)->field(true)->listAll();
-		$case_priority_count	=	D('CasePriorityView')->where($map)->count();
-		$this->assign('case_priority_list',$case_priority_list);
 		$this->assign('case_priority_count',$case_priority_count);
 		
 		//取出 Country 表的内容以及数量

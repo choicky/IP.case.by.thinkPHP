@@ -13,16 +13,9 @@ class IndexController extends Controller {
 		
 		
 		
-		//$key_word	=	P20150403V;
-		$case_list = D('Case')->relation(true)->field(true)->getByCaseId(7);
-			var_dump($case_list);
-			print_r($case_list);
-		/*
-		if(strpos('专利(非套餐)','专利') ){
-			echo '这是专利';
-		}else{
-			echo '这不包含';
-		}*/
+		$test	=	'';
+		$time	=	strtotime($test);
+		var_dump($time);
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数

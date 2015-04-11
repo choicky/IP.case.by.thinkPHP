@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | This project is based on ThinkPHP 3.2, created by Choicky ZHOU (zhoucaiqi@gmail.com).
+// +----------------------------------------------------------------------
+// | Choicky ZHOU is a lawyer in China, specialized in IP matters such as patent, trademark and copyright.
+// +----------------------------------------------------------------------
+// | "Think\Controller" is for normal Controller.
+// +----------------------------------------------------------------------
+// | This file is required by:
+// +----------------------------------------------------------------------
+
 namespace Home\Controller;
 use Think\Controller;
 
@@ -29,11 +39,6 @@ class CaseFeeController extends Controller {
 	//新增	
 	public function add(){
 		$case_id	=	trim(I('post.case_id'));
-		$map_case['case_id']	=	$case_id;
-		$condition_case	=	M('Case')->where($map_case)->find();
-		if(!is_array($condition_case)){
-			$this->error('案件编号不正确');
-		}
 		
 		$Model	=	D('CaseFee');
 		if (!$Model->create()){ 
@@ -49,7 +54,7 @@ class CaseFeeController extends Controller {
 		if(false !== $result){
 			
 			// 写入新增数据成功，返回案件信息页面
-			$this->success('新增成功', U('CaseFee/view','case_id='.$case_id));
+			$this->success('新增成功', 'view/case_id/'.$case_id);
 			
 		}else{
 			$this->error('增加失败');
@@ -61,27 +66,25 @@ class CaseFeeController extends Controller {
 		
 		//针对 POST 的处理方式
 		if(IS_POST){
-			$case_fee_data['case_fee_id']	=	trim(I('post.case_fee_id'));
-			$case_fee_data['case_id']	=	trim(I('post.case_id'));
-			$case_fee_data['case_phase_id']	=	trim(I('post.case_phase_id'));
-			$case_fee_data['fee_type_id']	=	trim(I('post.fee_type_id'));
-			$case_fee_data['official_fee']	=	100*trim(I('post.official_fee'));
-			$case_fee_data['service_fee']	=	100*trim(I('post.service_fee'));			
-			$case_fee_data['oa_date']	=	strtotime(trim(I('post.oa_date')));			
-			$case_fee_data['due_date']	=	strtotime(trim(I('post.due_date')));
-			$case_fee_data['allow_date']	=	strtotime(trim(I('post.allow_date')));
-			$case_fee_data['payer_id']	=	trim(I('post.payer_id'));
-			$case_fee_data['case_payment_id']	=	trim(I('post.case_payment_id'));
-			$case_fee_data['bill_id']	=	trim(I('post.bill_id'));
-			$case_fee_data['invoice_id']	=	trim(I('post.invoice_id'));
-			$case_fee_data['claim_id']	=	trim(I('post.claim_id'));
-			$case_fee_data['cost_center_id']	=	trim(I('post.cost_center_id'));
-			$case_fee_data['cost_amount']	=	100*trim(I('post.cost_amount'));
+			$case_id	=	trim(I('post.case_id'));
+			$case_fee_id	=	trim(I('post.case_fee_id'));
 			
-			$result	=	M('CaseFee')->save($case_fee_data);
-			
+			$Model	=	D('CaseFee');
+			if (!$Model->create()){ 
+				 
+				 // 如果创建数据对象失败 表示验证没有通过 输出错误提示信息
+				 $this->error($Model->getError());
+				 
+			}else{
+				 
+				 // 验证通过 修改数据
+				 $result	=	$Model->save();		 
+			}
 			if(false !== $result){
-				$this->success('修改成功', U('Case/view','case_id='.$case_fee_data['case_id']));
+				
+				// 修改数据成功，返回案件信息页面
+				$this->success('修改成功', 'view/case_id/'.$case_id);
+				
 			}else{
 				$this->error('修改失败');
 			}
@@ -91,7 +94,6 @@ class CaseFeeController extends Controller {
 			
 			//接收要编辑的 $case_fee_id
 			$case_fee_id = I('get.case_fee_id',0,'int');
-			
 			if(!$case_fee_id){
 				$this->error('未指明要编辑的费用编号');
 			}
@@ -108,9 +110,16 @@ class CaseFeeController extends Controller {
 			
 			//获取本条费用的案子的 $case_type_name
 			$case_type_name	=	D('CaseFee')->returnCaseTypeName($case_fee_id);
-
-			//根据 $case_type_name 是否包含“专利”来构造对应的检索条件
+			
+			//根据 $case_type_name 判断本案是专利、还是非专利
 			if(false	!==	strpos($case_type_name,'专利')){
+				$is_patent	=	1;
+			}else{
+				$is_patent	=	0;
+			}
+						
+			//取出 FeeType 表中 与 $case_type_name 对应的内容以及数量
+			if($is_patent){
 				$map_fee_type['fee_type_name']	=	array('like','%专利%');
 			}else{
 				$map_fee_type['fee_type_name']	=	array('notlike','%专利%');
@@ -151,7 +160,7 @@ class CaseFeeController extends Controller {
 			$yes_btn	=	I('post.yes_btn');
 
 			if(1==$no_btn){
-				$this->success('取消删除', U('Case/view','case_id='.$case_id));
+				$this->success('取消删除', 'view/case_id/'.$case_id);
 			}
 			
 			if(1==$yes_btn){
@@ -160,7 +169,7 @@ class CaseFeeController extends Controller {
 
 				$result = M('CaseFee')->where($map)->delete();
 				if($result){
-					$this->success('删除成功', U('Case/view','case_id='.$case_id));
+					$this->success('删除成功', 'view/case_id/'.$case_id);
 				}
 			}
 			
@@ -168,12 +177,13 @@ class CaseFeeController extends Controller {
 			$case_fee_id = I('get.case_fee_id',0,'int');
 
 			if(!$case_fee_id){
-				$this->error('未指明要删除的费用记录');
+				$this->error('未指明要删除的流水');
 			}
 			
-			$case_fee_list = D('CaseFeeView')->field(true)->getByCaseFeeId($case_fee_id);			
+			$case_fee_list = D('CaseFee')->relation(true)->field(true)->getByCaseFeeId($case_fee_id);			
 			$this->assign('case_fee_list',$case_fee_list);
 			
+
 			$this->display();
 		}
 	}
@@ -286,8 +296,13 @@ class CaseFeeController extends Controller {
 		
 		//从 Case 表取出与 $case_id 对应的信息
 		$case_list = D('Case')->relation(true)->field(true)->getByCaseId($case_id);			
-		$case_file_count	=	count($case_list['CaseFee']);
 		$this->assign('case_list',$case_list);
+		
+		//从 CaseFee 表取出与 $case_id 对应的信息
+		$map_case_fee['case_id']	=	$case_id;
+		$case_fee_list	=	D('CaseFee')->where($map_case_fee)->listAll();
+		$case_fee_count	=	count($case_fee_list);
+		$this->assign('case_fee_list',$case_fee_list);
 		$this->assign('case_fee_count',$case_fee_count);
 		
 		//取出 CasePhase 表的内容以及数量
@@ -299,8 +314,15 @@ class CaseFeeController extends Controller {
 		//获取本案子的 $case_type_name
 		$case_type_name	=	$case_list['CaseType']['case_type_name'];
 		
-		//根据 $case_type_name 是否包含“专利”来构造对应的检索条件
+		//根据 $case_type_name 判断本案是专利、还是非专利
 		if(false	!==	strpos($case_type_name,'专利')){
+			$is_patent	=	1;
+		}else{
+			$is_patent	=	0;
+		}
+		
+		//取出 FeeType 表中 与 $case_type_name 对应的内容以及数量
+		if($is_patent){
 			$map_fee_type['fee_type_name']	=	array('like','%专利%');
 		}else{
 			$map_fee_type['fee_type_name']	=	array('notlike','%专利%');

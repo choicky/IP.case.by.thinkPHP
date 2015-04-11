@@ -22,40 +22,51 @@
 					<form class="form-horizontal" method="post" action="__CONTROLLER__/update">
 						<fieldset>
 							<legend>每一项都要填写</legend>
+								<!-- 隐藏域开始 -->
+								<input type="hidden" class="form-control" id="case_file_id" name="case_file_id" value="{$case_file_list.case_file_id}">
+								<input type="hidden" class="form-control" id="case_id" name="case_id" value="{$case_file_list.case_id}">
+								<!-- 隐藏域结束 -->
 							<div class="form-group">
-								<label for="priority_date" class="col-lg-3 control-label">优先权日期</label>
+								<label for="file_type_id" class="col-lg-3 control-label">文件名称</label>
 								<div class="col-lg-4">
-									<input type="hidden" class="form-control" id="case_priority_id" name="case_priority_id" value="{$case_priority_list.case_priority_id}">
-									<input type="hidden" class="form-control" id="case_id" name="case_id" value="{$case_priority_list.case_id}">
-									<input type="date" class="form-control" id="priority_date" name="priority_date" value="{$case_priority_list.priority_date|date="Y-m-d",###}">
-								</div>
-								<div class="col-lg-5">
-									日期格式为 yyyy-mm-dd，可用鼠标选择
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="case_id" class="col-lg-3 control-label">优先权国家</label>
-								<div class="col-lg-4">
-									<select class="form-control" name="priority_country_id" size="{$country_count<$row_limit ? $country_count : $row_limit}">
-										<volist name="country_list" id="country_vo">
-										<option value="{$country_vo.country_id}" {$case_priority_list['priority_country_id']==$country_vo['country_id']? 'selected="selected"' :'' }>{$country_vo.country_name}</option>
+									<select class="form-control" name="file_type_id" size="{$file_type_count<$row_limit ? $file_type_count : $row_limit}">
+										<volist name="file_type_list" id="file_type_vo">
+										<option value="{$file_type_vo.file_type_id}" selected="{$file_type_vo['file_type_id']==$case_file_list['file_type_id']	?	'selected'	:	''}">{$file_type_vo.file_type_name}</option>
 										</volist>
 									</select>
 								</div>
 								<div class="col-lg-5">
-									可通过<a href="__APP__/Home/Country/listPage#addNew" target="_blank">这里</a>添加更多的国家/地区
+									可通过<a href="{:U('FileType/listPage#addNew')}" target="_blank">这里</a>添加更多的文件类型		
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="priority_number" class="col-lg-3 control-label">优先权号码</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="priority_number" name="priority_number" value="{$case_priority_list.priority_number}">
+								<label for="oa_date" class="col-lg-3 control-label">官文发文日</label>
+								<div class="col-lg-4">									
+									<input type="date" class="form-control" id="oa_date" name="oa_date" value="{$case_file_list.oa_date|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
-									要输入半角的字符，例如CN12，<br>
-									不要输入全角的字符，如ＣＮ１２
+									日期格式 yyyy-mm-dd 
 								</div>
 							</div>
+							<div class="form-group">
+								<label for="due_date" class="col-lg-3 control-label">期限日</label>
+								<div class="col-lg-4">									
+									<input type="date" class="form-control" id="due_date" name="due_date" value="{$case_file_list.due_date|date="Y-m-d",###}">
+								</div>
+								<div class="col-lg-5">
+									“期限日”是必填的
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="completion_date" class="col-lg-3 control-label">完成日</label>
+								<div class="col-lg-4">									
+									<input type="date" class="form-control" id="completion_date" name="completion_date" value="{$case_file_list.completion_date|date="Y-m-d",###}">
+								</div>
+								<div class="col-lg-5">
+									日期格式 yyyy-mm-dd 
+								</div>
+							</div>
+							
 							
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">

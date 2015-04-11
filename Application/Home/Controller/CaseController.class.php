@@ -442,7 +442,7 @@ class CaseController extends Controller {
 	}
 	
 	//查看 $case_id 的详情	
-	public function view($case_id){
+	public function view(){
 
 		$case_id = I('get.case_id',0,'int');
 
@@ -459,27 +459,7 @@ class CaseController extends Controller {
 		$this->assign('case_priority_count',$case_priority_count);
 		$this->assign('case_file_count',$case_file_count);
 		$this->assign('case_fee_count',$case_fee_count);
-		
-		/*
-		//取出案件的优先权信息		
-		$map['case_id']	=	$case_id;
-		$case_priority_list	=	D('CasePriority')->where($map)->listAll();
-		$case_priority_count	=	count($case_priority_list);
-		$this->assign('case_priority_list',$case_priority_list);
-		$this->assign('case_priority_count',$case_priority_count);
-		
-		//取出 Country 表的内容以及数量
-		$country_list	=	D('Country')->listAll();
-		$country_count	=	count($country_list);
-		$this->assign('country_list',$country_list);
-		$this->assign('country_count',$country_count);
-		
-		//取出其他变量
-		$row_limit  =   C("ROWS_PER_SELECT");
-		$today	=	time();
-		$this->assign('row_limit',$row_limit);
-        $this->assign('today',$today);
-		*/
+
 		$this->display();
 
 	}

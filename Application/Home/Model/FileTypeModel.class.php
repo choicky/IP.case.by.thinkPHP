@@ -6,7 +6,7 @@
 // +----------------------------------------------------------------------
 // | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
 // +----------------------------------------------------------------------
-// | This file is required by: FileTypeController
+// | This file is required by: FileTypeController,	CaseFileController
 // +----------------------------------------------------------------------
 
 namespace Home\Model;
@@ -19,9 +19,8 @@ class FileTypeModel extends Model {
 	
 	//返回本数据表的所有数据
 	public function listAll() {
-		$Model	=	M('FileType');
 		$order['convert(file_type_name using gb2312)']	=	'asc';
-		$list	=	$Model->field(true)->order($order)->select();
+		$list	=	$this->field(true)->order($order)->select();
 		return $list;
 	}
 		
@@ -33,9 +32,8 @@ class FileTypeModel extends Model {
 	
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$Model	=	M('FileType');
 		$order['convert(file_type_name using gb2312)']	=	'asc';
-		$list	= $Model->field(true)->order($order)->page($p.','.$limit)->select();
+		$list	= $this->field(true)->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		

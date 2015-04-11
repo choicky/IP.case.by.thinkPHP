@@ -34,7 +34,7 @@ class FeeTypeModel extends Model {
    //返回本数据表的基本数据，可作为选单
 	public function listBasic() {			
 		$order['convert(fee_type_name using gb2312)']	=	'asc';
-		$list	=	$this->field('fee_type_id,fee_type_name')->order($order)->select();
+		$list	=	$this->field('fee_type_id,fee_type_name,fee_default_amount')->order($order)->select();
 		return $list;
 	}
 	

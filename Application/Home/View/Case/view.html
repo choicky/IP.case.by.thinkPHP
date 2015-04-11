@@ -22,7 +22,7 @@
 		</div>
 		
 		<div class="row">
-			<div class="panel  panel-success">
+			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
 					基本信息，点击<a href="{:U('Case/update','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>修改基本信息
@@ -57,21 +57,21 @@
 							<tr>
 								<td>{$case_list['CaseType']['case_type_name']}</td>
 								<td>{$case_list['Follower']['member_name']}</td>
-								<td>{$case_list.create_date|date="Y-m-d",###}</td>
-								<td>{$case_list.form_date|date="Y-m-d",###}</td>
+								<td>{$create_date	=	$case_list['create_date']	?	date("Y-m-d",$case_list['create_date'])		:	''}</td>
+								<td>{$form_date	=	$case_list['form_date']	?	date("Y-m-d",$case_list['form_date'])		:	''}</td>
 								<td>{$case_list['Client']['client_name']}</td>
 								<td>{$case_list.client_ref}</td>
 								<td>{$case_list['Applicant']['client_name']}</td>
 								<td>{$case_list.tentative_title}</td>
 								<td>{$case_list['Handler']['member_name']}</td>
-								<td>{$case_list.application_date|date="Y-m-d",###}</td>
+								<td>{$application_date	=	$case_list['application_date']	?	date("Y-m-d",$case_list['application_date'])		:	''}	</td>
 								<td>{$case_list.application_number}</td>
 								<td>
 									{$case_list['formal_title'] ? $case_list['formal_title'] : $case_list['TmCategory']['tm_category_number']}
 								</td>
-								<td>{$case_list.publication_date|date="Y-m-d",###}</td>
-								<td>{$case_list.issue_date|date="Y-m-d",###}</td>
-								<td>{$case_list.expired_date|date="Y-m-d",###}</td>
+								<td>{$publication_date	=	$case_list['publication_date']	?	date("Y-m-d",$case_list['publication_date'])		:	''}</td>
+								<td>{$issue_date	=	$case_list['issue_date']	?	date("Y-m-d",$case_list['issue_date'])		:	''}</td>
+								<td>{$expired_date	=	$case_list['expired_date']	?	date("Y-m-d",$case_list['expired_date'])		:	''}</td>
 								<td><a href="{:U('Case/searchAll','key_world='.$case_list['related_our_ref'])}" target="_blank">{$case_list.related_our_ref}</td>
 								<td>{$case_list.remarks}</td>
 							</tr>
@@ -86,7 +86,7 @@
 		<!-- Page Header
 		================================================== -->
 		<div class="row">
-			<div class="panel  panel-success">
+			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
 					优先权信息，共{$case_priority_count}项。点击<a href="{:U('CasePriority/view','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加优先权信息
@@ -113,7 +113,7 @@
 							<tr>
 								
 								<td>{$i}</td>								
-								<td>{$case_priority_vo.priority_date|date="Y-m-d",###}</td>								
+								<td>{$priority_date	=	$case_priority_vo['priority_date']	?	date("Y-m-d",$case_priority_vo['priority_date'])		:	''}</td>
 								<td>{$case_priority_vo['country_name']}</td>
 								<td>{$case_priority_vo.priority_number}</td>
 								<td>
@@ -133,7 +133,7 @@
 		<!-- Page Header
 		================================================== -->
 		<div class="row">
-			<div class="panel  panel-success">
+			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
 					交文记录信息，共{$case_file_count}项。点击<a href="{:U('CaseFile/view','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加文件记录
@@ -161,9 +161,9 @@
 								
 								<td>{$i}</td>
 								<td>{$case_file_vo.file_type_name}</td>
-								<td>{$case_file_vo.oa_date|date="Y-m-d",###}</td>
-								<td>{$case_file_vo.due_date|date="Y-m-d",###}</td>	
-								<td>{$case_file_vo.completion_date|date="Y-m-d",###}</td>	
+								<td>{$oa_date	=	$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])		:	''}</td>
+								<td>{$due_date	=	$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])		:	''}</td>
+								<td>{$completion_date	=	$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])		:	''}</td>
 								<td>
 									<a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}">更新</a>
 									<a href="{:U('CaseFile/delete','case_file_id='.$case_file_vo['case_file_id'])}">删除</a>
@@ -181,11 +181,10 @@
 		<!-- Page Header
 		================================================== -->
 		<div class="row">
-			<div class="row">
-			<div class="panel  panel-success">
+			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					费用信息，共{$case_fee_count}项。点击”<a href="{:U('CaseFile/view','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加费用记录
+					费用信息，共{$case_fee_count}项。点击”<a href="{:U('CaseFee/view','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加费用记录
 				</div>
 			
 				<!-- Table -->
@@ -205,7 +204,7 @@
 								<th>缴费人</th>
 								<th>缴费单号</th>
 								<th>账单号</th>
-								<th>发票编号<th>
+								<th>发票编号</th>
 								<th>到账编号</th>
 								<th>结算账户</th>
 								<th>结算金额</th>
@@ -215,17 +214,35 @@
 						</thead>
 						<tbody>
 							<!-- 将controller assign过来的 case_priority_list 赋给  case_priority_vo--> 
-							<volist name="case_list['CaseFile']" id="case_file_vo">
+							<volist name="case_list['CaseFee']" id="case_fee_vo">
 							<tr>
 								
 								<td>{$i}</td>
-								<td>{$case_file_vo.file_type_name}</td>
-								<td>{$case_file_vo.oa_date|date="Y-m-d",###}</td>
-								<td>{$case_file_vo.due_date|date="Y-m-d",###}</td>	
-								<td>{$case_file_vo.completion_date|date="Y-m-d",###}</td>	
+								<td>{$case_fee_vo.case_phase_name}</td>
+								<td>{$case_fee_vo.fee_type_name}</td>
+								<td>{$case_fee_vo['official_fee']	?	$case_fee_vo['official_fee']/100		:	''}</td>
+								<td>{$service_fee	=	$case_fee_vo['service_fee']	?	$case_fee_vo['service_fee']/100		:	''}</td>
+								<td>{$oa_date	=	$case_fee_vo['oa_date']	?	date("Y-m-d",$case_fee_vo['oa_date'])		:	''}</td>
+								<td>{$due_date	=	$case_fee_vo['due_date']	?	date("Y-m-d",$case_fee_vo['due_date'])		:	''}</td>
+								<td>{$allow_date	=	$case_fee_vo['allow_date']	?	date("Y-m-d",$case_fee_vo['allow_date'])		:	''}</td>
+								<td>{$case_fee_vo.payer_name}</td>
 								<td>
-									<a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}">更新</a>
-									<a href="{:U('CaseFile/delete','case_file_id='.$case_file_vo['case_file_id'])}">删除</a>
+									{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	'无'},
+									<a href="{:U('CasePayment/view','case_payment_id='.$case_fee_vo['case_payment_id'])}" target="_blank">查看</a></td>
+								<td>
+									{$case_fee_vo['bill_id']	?	$case_fee_vo['bill_id']	:	'无'},
+									<a href="{:U('Bill/view','bill_id='.$case_fee_vo['bill_id'])}" target="_blank">查看</a></td>
+								<td>
+									{$case_fee_vo['invoice_id']	?	$case_fee_vo['invoice_id']	:	'无'},
+									<a href="{:U('Invoice/view','invoice_id='.$case_fee_vo['invoice_id'])}" target="_blank">查看</a></td>
+								<td>
+									{$case_fee_vo['claim_id']	?	$case_fee_vo['claim_id']	:	'无'},
+									<a href="{:U('Claim/view','claim_id='.$case_fee_vo['claim_id'])}" target="_blank">查看</a></td>
+								<td>{$case_fee_vo.cost_center_name}</td>
+								<td>{$case_fee_vo['cost_amount']	?	$case_fee_vo['cost_amount']/100		:	''}</td>
+								<td>
+									<a href="{:U('CaseFee/update','case_fee_id='.$case_fee_vo['case_fee_id'])}">更新</a>
+									<a href="{:U('CaseFee/delete','case_fee_id='.$case_fee_vo['case_fee_id'])}">删除</a>
 									
 								</td>
 								

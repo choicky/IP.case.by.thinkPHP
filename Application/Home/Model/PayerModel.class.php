@@ -6,7 +6,7 @@
 // +----------------------------------------------------------------------
 // | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
 // +----------------------------------------------------------------------
-// | This file is required by: CaseFeeController,
+// | This file is required by: CaseFeeController, PayerController
 // +----------------------------------------------------------------------
 
 namespace Home\Model;
@@ -28,7 +28,8 @@ class PayerModel extends Model {
 	public function listAll() {			
 		$order['convert(payer_name using gb2312)']	=	'asc';
 		$list	=	$this->field(true)->order($order)->select();
-		return $list;
+		$count	=	count($list);
+		return array("list"=>$list,"count"=>$count);
 	}
 
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数

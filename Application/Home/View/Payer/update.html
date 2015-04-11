@@ -1,0 +1,49 @@
+<extend name="Public:base" />
+	
+	<block name="title">
+		<title>编辑缴费人</title>
+	</block>
+	
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h1 id="forms">编辑缴费人信息</h1>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="col-lg-10">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/update">
+						<fieldset>
+							<legend>“缴费人编号”是必须的</legend>
+								<!-- 隐藏域开始 -->
+								<input type="hidden" class="form-control" id="payer_id" name="payer_id" value="{$payer_list.payer_id}">
+								<!-- 隐藏域开始 -->
+							<div class="form-group">
+								<label for="payer_name" class="col-lg-3 control-label">缴费人名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="payer_name" name="payer_name" value="{$payer_list.payer_name}">
+								</div>
+								<div class="col-lg-5">
+									
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button class="btn btn-default">Cancel</button>
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+        </div>
+	</block>

@@ -30,20 +30,21 @@
 									<input type="text" class="form-control" id="our_ref" name="our_ref" value="{$case_list.our_ref}">
 								</div>
 								<div class="col-lg-5">
-									注意
+									必填项；
 								</div>
 							</div>
 							
 							<div class="form-group">
 								<label for="case_type_id" class="col-lg-3 control-label">案件类型</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="case_type_id" size="{$case_type_count<$rows_limit ? $case_type_count : $rows_limit}">
+									<select multiple class="form-control" name="case_type_id" size="{$case_type_count<$row_limit ? $case_type_count : $row_limit}">
 										<volist name="case_type_list" id="case_type_vo">
 										<option value="{$case_type_vo.case_type_id}" {$case_type_vo['case_type_id']==$case_list['case_type_id']? 'selected="selected"' :''}>{$case_type_vo.case_type_name}</option>
 										</volist>
 									</select>
 								</div>
 								<div class="col-lg-5">
+									必填项；<br>
 									可通过<a href="__APP__/Home/CaseType/listPage#addNew" target="_blank">这里</a>添加更多案件类型
 								</div>
 							</div>
@@ -51,13 +52,15 @@
 							<div class="form-group">
 								<label for="follower_id" class="col-lg-3 control-label">跟案人</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="follower_id" size="{$member_count<$rows_limit ? $member_count : $rows_limit}">
+									<select multiple class="form-control" name="follower_id" size="{$member_count<$row_limit ? $member_count : $row_limit}">
 										<volist name="member_list" id="follower_vo">
 										<option value="{$follower_vo.member_id}" {$follower_vo['member_id']==$case_list['follower_id']? 'selected="selected"' :''}>{$follower_vo.member_name}</option>
 										</volist>
 									</select>
 								</div>
 								<div class="col-lg-5">
+									必填项；<br>
+									负责跟客户对接业务的人；<br>
 									可通过<a href="__APP__/Home/Account/listPage#addNew" target="_blank">这里</a>添加更多的跟案人
 								</div>
 							</div>
@@ -68,7 +71,7 @@
 									<input type="date" class="form-control" id="create_date" name="create_date" value="{$case_list.create_date|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
-									开案日期，是指“索取案号”的日期，案号被索取之后， 应当马上在系统登记，避免案号重复使用
+									“索取案号”的日期；案号被索取后应当马上在系统开案登记，避免案号重复使用
 								</div>
 							</div>
 							
@@ -78,7 +81,8 @@
 									<input type="date" class="form-control" id="form_date" name="form_date" value="{$case_list.form_date|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
-									开案单日期，是指收到了开案单的日期，如果日期为空，表示尚未收到开案单。
+									收到了“开案单”的正式日期；<br>
+									如此日期为空，表示尚未收到开案单。
 								</div>
 							</div>
 						</fieldset>
@@ -86,13 +90,15 @@
 							<div class="form-group">
 								<label for="client_id" class="col-lg-3 control-label">客源/客户</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="client_id" size="{$client_count<$rows_limit ? $client_count : $rows_limit}">
+									<select multiple class="form-control" name="client_id" size="{$client_count<$row_limit ? $client_count : $row_limit}">
 										<volist name="client_list" id="client_vo">
 										<option value="{$client_vo.client_id}" {$client_vo['client_id']==$case_list['client_id']? 'selected="selected"' :''}>{$client_vo.client_name}</option>
 										</volist>
 									</select>
 								</div>
 								<div class="col-lg-5">
+									必填项；<br>
+									应盈方付款的就是盈方的客户；<br>
 									可通过<a href="__APP__/Home/Client/listPage#addNew" target="_blank">这里</a>添加更多的客源
 								</div>
 							</div>
@@ -103,31 +109,33 @@
 									<input type="text" class="form-control" id="client_ref" name="client_ref" value="{$case_list.client_ref}">
 								</div>
 								<div class="col-lg-5">
-									注意
+									如客户有自己的案号，必须填写
 								</div>
 							</div>
 							
 							<div class="form-group">
 								<label for="applicant_id" class="col-lg-3 control-label">申请人</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="applicant_id" size="{$client_count<$rows_limit ? $client_count : $rows_limit }">
+									<select multiple class="form-control" name="applicant_id" size="{$client_count<$row_limit ? $client_count : $row_limit }">
 										<volist name="client_list" id="applicant_vo">
 										<option value="{$applicant_vo.client_id}" {$applicant_vo['client_id']==$case_list['applicant_id']? 'selected="selected"' :''}>{$applicant_vo.client_name}</option>
 										</volist>
 									</select>
 								</div>
 								<div class="col-lg-5">
+									必填项；<br>
+									指权利人；如申请人不与盈方直接对接，则该申请人不属于“客户”；<br>
 									可通过<a href="__APP__/Home/Client/listPage#addNew" target="_blank">这里</a>添加更多的申请人
 								</div>
 							</div>
 							
 							<div class="form-group">
-								<label for="tentative_title" class="col-lg-3 control-label">暂定专利名称</label>
+								<label for="tentative_title" class="col-lg-3 control-label">暂定名称</label>
 								<div class="col-lg-4">
 									<input type="text" class="form-control" id="tentative_title" name="tentative_title" value="{$case_list.tentative_title}">
 								</div>
 								<div class="col-lg-5">
-									如果不是商标业务，本项为空，不需填写
+									暂定专利名称；或商标名称
 								</div>
 							</div>
 						</fieldset>
@@ -135,13 +143,14 @@
 							<div class="form-group">
 								<label for="handler_id" class="col-lg-3 control-label">处理人</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="handler_id" size="{$member_count<$rows_limit ? $member_count : $rows_limit}">
+									<select multiple class="form-control" name="handler_id" size="{$member_count<$row_limit ? $member_count : $row_limit}">
 										<volist name="member_list" id="handler_vo">
 										<option value="{$handler_vo.member_id}" {$handler_vo['member_id']==$case_list['handler_id']? 'selected="selected"' :''}>{$handler_vo.member_name}</option>
 										</volist>
 									</select>
 								</div>
 								<div class="col-lg-5">
+									负责处理此项工作的人；<br>
 									可通过<a href="__APP__/Home/Account/listPage#addNew" target="_blank">这里</a>添加更多的处理人
 								</div>
 							</div>						
@@ -153,7 +162,7 @@
 									<input type="text" class="form-control" id="remarks" name="remarks" value="{$case_list.remarks}">
 								</div>
 								<div class="col-lg-5">
-									注意
+									填写本案的其他注意事项；
 								</div>
 							</div>
 							
@@ -163,7 +172,7 @@
 									<input type="text" class="form-control" id="related_our_ref" name="related_our_ref" placeholder="关联的盈方案号" value="{$case_list.related_our_ref}">
 								</div>
 								<div class="col-lg-5">
-									注意
+									如专利套餐、系列商标申请，请填写关联的案号，方便查看
 								</div>
 							</div>
 							
@@ -173,7 +182,7 @@
 									<input type="date" class="form-control" id="application_date" name="application_date" value="{$case_list.application_date|date="Y-m-d",###}">
 								</div>
 								<div class="col-lg-5">
-									注意
+									正式的申请日
 								</div>
 							</div>
 							
@@ -183,17 +192,18 @@
 									<input type="text" class="form-control" id="application_number" name="application_number" value="{$case_list.application_number}">
 								</div>
 								<div class="col-lg-5">
-									注意
+									正式的申请号
 								</div>
 							</div>
 							
 							<div class="form-group">
-								<label for="formal_title" class="col-lg-3 control-label">专利名称</label>
+								<label for="formal_title" class="col-lg-3 control-label">专利名称、商标类别</label>
 								<div class="col-lg-4">
 									<input type="text" class="form-control" id="formal_title" name="formal_title" value="{$case_list.formal_title}">
 								</div>
 								<div class="col-lg-5">
-									这里填写正式的专利名称
+									专利/版权案子，这里填写正式的名称；<br>
+									商标案子，这里填写指定的商标类别
 								</div>
 							</div>
 							

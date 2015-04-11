@@ -54,7 +54,9 @@
 							<tr>
 								<td>{$balance_vo.balance_id}</td>
 								<td>{$balance_vo['Account'].account_name}</td>
-								<td>{$balance_vo.deal_date|date="Y-m-d",###}</td>
+								<td>
+									{$balance_vo.deal_date|date="Y-m-d",###}
+								</td>
 								<td align="right">{$balance_vo['income_amount']/100}</td>
 								<td align="right">{$balance_vo['outcome_amount']/100}</td>
 								<td>{$balance_vo.summary}</td>

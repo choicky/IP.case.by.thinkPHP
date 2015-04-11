@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | This project is based on ThinkPHP 3.2, created by Choicky ZHOU (zhoucaiqi@gmail.com).
+// +----------------------------------------------------------------------
+// | Choicky ZHOU is a lawyer in China, specialized in IP matters such as patent, trademark and copyright.
+// +----------------------------------------------------------------------
+// | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
+// +----------------------------------------------------------------------
+// | This file is required by: CaseModel, CasePriorityController
+// +----------------------------------------------------------------------
+
 namespace Home\Model;
 
 //因为启动数据表视图模型，必须继承ViewModel，注释Model
