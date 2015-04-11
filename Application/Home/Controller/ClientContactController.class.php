@@ -135,7 +135,9 @@ class ClientContactController extends Controller {
 		
 		$map['client_id']	=	$client_id;
 		$client_contact_list	=	D('ClientContact')->where($map)->listAll();
+		$client_contact_count	=	count($client_contact_list);
 		$this->assign('client_contact_list',$client_contact_list);
+		$this->assign('client_contact_count',$client_contact_count);
 		
 		//取出其他变量
 		$today	=	time();
