@@ -1,0 +1,56 @@
+<extend name="Public:base" />
+	
+	<block name="title">
+		<title>编辑商标类型</title>
+	</block>
+	
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h1 id="forms">编辑商标类型信息</h1>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="col-lg-10">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/update">
+						<fieldset>
+							<legend>“商标类型编号”是必须的</legend>
+							<div class="form-group">
+								<label for="tm_category_number" class="col-lg-3 control-label">商标类型编号</label>
+								<div class="col-lg-4">
+									<input type="hidden" class="form-control" id="tm_category_id" name="tm_category_id" value="{$tm_category_list.tm_category_id}">
+									<input type="text" class="form-control" id="tm_category_number" name="tm_category_number" value="{$tm_category_list.tm_category_number}">
+								</div>
+								<div class="col-lg-5">
+									
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="tm_category_name" class="col-lg-3 control-label">商标类型名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="tm_category_name" name="tm_category_name" value="{$tm_category_list.tm_category_name}">
+								</div>
+								<div class="col-lg-5">
+									
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button class="btn btn-default">Cancel</button>
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+        </div>
+	</block>

@@ -54,6 +54,7 @@ class MemberController extends Controller {
 			$data['member_name']	=	trim(I('post.member_name'));
 			$data['member_email']	=	trim(I('post.member_email'));
 			$data['member_phone']	=	trim(I('post.member_phone'));
+			$data['member_qq']	=	trim(I('post.member_qq'));
 
 			$result = M('Member')->save($data);
 			if(false !== $result){

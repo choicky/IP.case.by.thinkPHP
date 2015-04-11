@@ -24,26 +24,44 @@
 							<legend>“人员名称”是必须的</legend>
 							<div class="form-group">
 								<label for="member_name" class="col-lg-3 control-label">人员名称</label>
-								<div class="col-lg-9">
+								<div class="col-lg-4">
 									<input type="hidden" class="form-control" id="member_id" name="member_id" value="{$member_list.member_id}">
 									<input type="text" class="form-control" id="member_name" name="member_name" value="{$member_list.member_name}">
+								</div>
+								<div class="col-lg-5">
+									名称是必须的
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="member_email" class="col-lg-3 control-label">email</label>
-								<div class="col-lg-9">
+								<div class="col-lg-4">
 									<input type="text" class="form-control" id="member_email" name="member_email" value="{$member_list.member_email}">
+								</div>
+								<div class="col-lg-5">
+									可留空
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="member_phone" class="col-lg-3 control-label">电话号码</label>
-								<div class="col-lg-9">
+								<div class="col-lg-4">
 									<input type="text" class="form-control" id="member_phone" name="member_phone" value="{$member_list.member_phone}">
+								</div>
+								<div class="col-lg-5">
+									可留空
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="member_qq" class="col-lg-3 control-label">QQ号码</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="member_qq" name="member_qq" value="{$member_list.member_qq}">
+								</div>
+								<div class="col-lg-5">
+									可留空
 								</div>
 							</div>
 
 							<div class="form-group">
-								<div class="col-lg-9 col-lg-offset-3">
+								<div class="col-lg-4 col-lg-offset-3">
 									<button class="btn btn-default">Cancel</button>
 									<button type="submit" class="btn btn-primary">Submit</button>
 								</div>
