@@ -19,14 +19,17 @@
         <div class="row">
 			<div class="col-lg-10">
 				<div class="well bs-component">
-					<form class="form-horizontal" method="post" action="__CONTROLLER__/edit">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/update">
 						<fieldset>
 							<legend>“文件类型名称”是必须的</legend>
 							<div class="form-group">
-								<label for="file_name" class="col-lg-3 control-label">文件类型名称</label>
-								<div class="col-lg-9">
+								<label for="file_type_name" class="col-lg-3 control-label">文件类型名称</label>
+								<div class="col-lg-4">
 									<input type="hidden" class="form-control" id="file_type_id" name="file_type_id" value="{$file_type_list.file_type_id}">
-									<input type="text" class="form-control" id="file_name" name="file_name" value="{$file_type_list.file_name}">
+									<input type="text" class="form-control" id="file_type_name" name="file_type_name" value="{$file_type_list.file_type_name}">
+								</div>
+								<div class="col-lg-5">
+									
 								</div>
 							</div>
 

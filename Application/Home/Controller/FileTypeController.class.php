@@ -12,10 +12,11 @@ class FileTypeController extends Controller {
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
 		$p	= I("p",1,"int");
-		$limit	= 10;
+		$limit	= C('RECORDS_PER_PAGE');
 		$file_type_list = D('FileType')->listPage($p,$limit);
 		$this->assign('file_type_list',$file_type_list['list']);
 		$this->assign('file_type_page',$file_type_list['page']);
+		$this->assign('file_type_count',$file_type_list['count']);
 
 		$this->display();
 	}
@@ -23,9 +24,9 @@ class FileTypeController extends Controller {
 	//新增
 	public function add(){
 		$data	=	array();
-		$data['file_name']	=	trim(I('post.file_name'));
+		$data['file_type_name']	=	trim(I('post.file_type_name'));
 		
-		if(!$data['file_name']){
+		if(!$data['file_type_name']){
 			$this->error('未填写费用名称');
 		} 
 
@@ -40,19 +41,19 @@ class FileTypeController extends Controller {
 		
 	public function update(){
 		if(IS_POST){
-			$file_type_id	=	trim(I('post.file_type_id'));
-			
+					
 			$data=array();
-			$data['file_name']	=	trim(I('post.file_name'));
+			$data['file_type_id']	=	trim(I('post.file_type_id'));
+			$data['file_type_name']	=	trim(I('post.file_type_name'));
 
-			$result = D('FileType')->update($file_type_id,$data);
+			$result = M('FileType')->save($data);
 			if(false !== $result){
 				$this->success('修改成功', 'listPage');
 			}else{
 				$this->error('修改失败', 'listPage');
 			}
 		} else{
-			$file_type_id = I('get.id',0,'int');
+			$file_type_id = I('get.file_type_id',0,'int');
 
 			if(!$file_type_id){
 				$this->error('未指明要编辑的客户');

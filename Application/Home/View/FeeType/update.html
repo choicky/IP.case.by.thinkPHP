@@ -19,40 +19,43 @@
         <div class="row">
 			<div class="col-lg-10">
 				<div class="well bs-component">
-					<form class="form-horizontal" method="post" action="__CONTROLLER__/edit">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/update">
 						<fieldset>
 							<legend>“费用名称”是必须的</legend>
 							<div class="form-group">
-								<label for="fee_name" class="col-lg-3 control-label">费用名称</label>
-								<div class="col-lg-9">
+								<label for="fee_type_name" class="col-lg-3 control-label">费用名称</label>
+								<div class="col-lg-4">
 									<input type="hidden" class="form-control" id="fee_type_id" name="fee_type_id" value="{$fee_type_list.fee_type_id}">
-									<input type="text" class="form-control" id="fee_name" name="fee_name" value="{$fee_type_list.fee_name}">
+									<input type="text" class="form-control" id="fee_type_name" name="fee_type_name" value="{$fee_type_list.fee_type_name}">
+								</div>
+								<div class="col-lg-5">
+									“发明”的费用，名称要包含“发明专利”；<br>
+									“实用新型”的费用，名称要包含“实用新型专利”；<br>
+									“外观设计”的费用，名称要包含“外观设计专利”；<br>
+									“商标”的费用，名称要包含“商标”。
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="fee_name_cpc" class="col-lg-3 control-label">对应的CPC费用名称</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control" id="fee_name_cpc" name="fee_name_cpc" value="{$fee_type_list.fee_name_cpc}">
+								<label for="fee_type_name_cpc" class="col-lg-3 control-label">对应的CPC费用名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="fee_type_name_cpc" name="fee_type_name_cpc" value="{$fee_type_list.fee_type_name_cpc}">
+								</div>
+								<div class="col-lg-5">
+									要跟 www.cponline.gov.cn 的在线缴费模板里面的费用名称相同
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="fee_default_amount" class="col-lg-3 control-label">默认金额</label>
-								<div class="col-lg-9">
+								<div class="col-lg-4">
 									<input type="text" class="form-control" id="fee_default_amount" name="fee_default_amount" value="{$fee_type_list.fee_default_amount}">
 								</div>
-							</div>
-							<div class="form-group">
-								<label for="fee_phase_id" class="col-lg-3 control-label">费用所在阶段</label>
-								<div class="col-lg-9">
-									<select multiple class="form-control" name="fee_phase_id">
-										<volist name="fee_phase_list" id="fee_phase_list">
-										<option value="{$fee_phase_list.fee_phase_id}" {$fee_phase_list['fee_phase_id']==$fee_type_list['fee_phase_id']? 'selected="selected"' :''}>{$fee_phase_list.fee_phase_name}</option>
-										</volist>
-									</select>
+								<div class="col-lg-5">
+									填写默认金额
 								</div>
 							</div>
+							
 							<div class="form-group">
-								<div class="col-lg-9 col-lg-offset-3">
+								<div class="col-lg-4 col-lg-offset-3">
 									<button class="btn btn-default">Cancel</button>
 									<button type="submit" class="btn btn-primary">Submit</button>
 								</div>

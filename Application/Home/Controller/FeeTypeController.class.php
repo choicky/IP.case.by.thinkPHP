@@ -12,14 +12,12 @@ class FeeTypeController extends Controller {
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
 		$p	= I("p",1,"int");
-		$limit	= 10;
-		$fee_type_list = D('FeeTypeView')->listPage($p,$limit);
+		$limit	= C('RECORDS_PER_PAGE');
+		$fee_type_list = D('FeeType')->listPage($p,$limit);
 
 		$this->assign('fee_type_list',$fee_type_list['list']);
 		$this->assign('fee_type_page',$fee_type_list['page']);
-		
-		$fee_phase_list	=	D('FeePhase')->listBasic();
-		$this->assign('fee_phase_list',$fee_phase_list);
+		$this->assign('fee_type_count',$fee_type_list['count']);		
 		
 		$this->display();
 	}
@@ -27,12 +25,11 @@ class FeeTypeController extends Controller {
 	//新增
 	public function add(){
 		$data	=	array();
-		$data['fee_name']	=	trim(I('post.fee_name'));
-		$data['fee_name_cpc']	=	trim(I('post.fee_name_cpc'));
+		$data['fee_type_name']	=	trim(I('post.fee_type_name'));
+		$data['fee_type_name_cpc']	=	trim(I('post.fee_type_name_cpc'));
 		$data['fee_default_amount']	=	trim(I('post.fee_default_amount'));
-		$data['fee_phase_id']	=	trim(I('post.fee_phase_id'));
 		
-		if(!$data['fee_name']){
+		if(!$data['fee_type_name']){
 			$this->error('未填写费用名称');
 		} 
 				
@@ -49,32 +46,28 @@ class FeeTypeController extends Controller {
 	public function update(){
 		if(IS_POST){
 			
-			$fee_type_id	=	trim(I('post.fee_type_id'));
-			
 			$data=array();
-			$data['fee_name']	=	trim(I('post.fee_name'));
-			$data['fee_name_cpc']	=	trim(I('post.fee_name_cpc'));
+			$data['fee_type_id']	=	trim(I('post.fee_type_id'));
+			$data['fee_type_name']	=	trim(I('post.fee_type_name'));
+			$data['fee_type_name_cpc']	=	trim(I('post.fee_type_name_cpc'));
 			$data['fee_default_amount']	=	trim(I('post.fee_default_amount'));
-			$data['fee_phase_id']	=	trim(I('post.fee_phase_id'));
 						
-			$result = D('FeeType')->update($fee_type_id,$data);
+			$result = D('FeeType')->save($data);
 			if(false !== $result){
 				$this->success('修改成功', 'listPage');
 			}else{
 				$this->error('修改失败', 'listPage');
 			}
 		} else{
-			$fee_type_id = I('get.id',0,'int');
+			$fee_type_id = I('get.fee_type_id',0,'int');
 
 			if(!$fee_type_id){
 				$this->error('未指明要编辑的客户');
 			}
 
 			$fee_type_list = M('FeeType')->getByFeeTypeId($fee_type_id);
-			$fee_phase_list	=	D('FeePhase')->listBasic();
 			
 			$this->assign('fee_type_list',$fee_type_list);
-			$this->assign('fee_phase_list',$fee_phase_list);
 			$this->display();
 		}
 	}
