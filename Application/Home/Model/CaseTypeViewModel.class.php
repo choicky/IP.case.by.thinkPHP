@@ -6,7 +6,7 @@
 // +----------------------------------------------------------------------
 // | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
 // +----------------------------------------------------------------------
-// | This file is required by: CaseTypeController,
+// | This file is required by: CaseTypeController, CaseController
 // +----------------------------------------------------------------------
 
 namespace Home\Model;

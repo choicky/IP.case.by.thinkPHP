@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | This project is based on ThinkPHP 3.2, created by Choicky ZHOU (zhoucaiqi@gmail.com).
+// +----------------------------------------------------------------------
+// | Choicky ZHOU is a lawyer in China, specialized in IP matters such as patent, trademark and copyright.
+// +----------------------------------------------------------------------
+// | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
+// +----------------------------------------------------------------------
+// | This file is required by: CaseController
+// +----------------------------------------------------------------------
+
 namespace Home\Model;
 use Think\Model\RelationModel;
 
@@ -15,8 +25,10 @@ class CaseModel extends RelationModel {
 	
 	//定义本数据表的自动验证
 	protected $_validate = array(
+		 array('our_ref','require','必须指明我方案号',1), //必须验证非空
 		 array('case_type_id','require','必须指明案件类型',1), //必须验证非空
 		 array('follower_id','require','必须指明跟案人/开案人',1), //必须验证非空
+		 array('client_id','require','必须指明客户',1), //必须验证非空
 
    );
 	
@@ -88,20 +100,11 @@ class CaseModel extends RelationModel {
 		
 		'CasePriority'	=>	array(						//本数据关联的名称
 			'mapping_name'		=>	'CasePriority',		//重新定义本数据关联的名称
-			'class_name'		=>	'CasePriority',		//被关联的数据表
+			'class_name'		=>	'CasePriorityView',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'case_priority_id,priority_number,priority_date,priority_country_id',		//关联字段
+			'mapping_fields'	=>	'case_priority_id,priority_number,priority_date,priority_country_id,country_name',		//关联字段
 			'mapping_order' => 'priority_date asc',		//排序
-		),
-		/*
-		'CaseFee'	=>	array(						//本数据关联的名称
-			'mapping_name'		=>	'CaseFee',		//重新定义本数据关联的名称
-			'class_name'		=>	'CaseFeeView',		//被关联的数据表
-			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
-			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'due_date',		//关联字段
-			'mapping_order' => 'due_date asc',		//排序
 		),
 		
 		'CaseFile'	=>	array(						//本数据关联的名称
@@ -109,10 +112,20 @@ class CaseModel extends RelationModel {
 			'class_name'		=>	'CaseFileView',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'due_date',		//关联字段
-			'mapping_order' => 'due_date asc',		//排序
+			'mapping_fields'	=>	'case_file_id,file_type_name,oa_date,due_date,completion_date',		//关联字段
+			'mapping_order' => 'completion_date asc',		//排序
 		),
-		*/
+		
+		'CaseFee'	=>	array(						//本数据关联的名称
+			'mapping_name'		=>	'CaseFee',		//重新定义本数据关联的名称
+			'class_name'		=>	'CaseFeeView',		//被关联的数据表
+			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
+			'foreign_key'		=>	'case_id',			//外键
+			'mapping_fields'	=>	'case_fee_id,case_phase_name,fee_type_name,official_fee,service_fee,oa_date,due_date,allow_date,payer_name,case_payment_id,payment_date,bill_id,invoice_id,claim_id,cost_center_name,cost_amount',		//关联字段
+			'mapping_order' => 'payment_date asc',		//排序
+		),
+
+		
 
 	
 	);

@@ -1,0 +1,71 @@
+<extend name="Public:base" />
+	
+	<block name="title">
+		<title>更新优先权信息</title>
+	</block>
+	
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3 id="forms">更新</h3>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="col-lg-9">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/update">
+						<fieldset>
+							<legend>每一项都要填写</legend>
+							<div class="form-group">
+								<label for="priority_date" class="col-lg-3 control-label">优先权日期</label>
+								<div class="col-lg-4">
+									<input type="hidden" class="form-control" id="case_priority_id" name="case_priority_id" value="{$case_priority_list.case_priority_id}">
+									<input type="hidden" class="form-control" id="case_id" name="case_id" value="{$case_priority_list.case_id}">
+									<input type="date" class="form-control" id="priority_date" name="priority_date" value="{$case_priority_list.priority_date|date="Y-m-d",###}">
+								</div>
+								<div class="col-lg-5">
+									日期格式为 yyyy-mm-dd，可用鼠标选择
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="case_id" class="col-lg-3 control-label">优先权国家</label>
+								<div class="col-lg-4">
+									<select class="form-control" name="priority_country_id" size="{$country_count<$row_limit ? $country_count : $row_limit}">
+										<volist name="country_list" id="country_vo">
+										<option value="{$country_vo.country_id}" {$case_priority_list['priority_country_id']==$country_vo['country_id']? 'selected="selected"' :'' }>{$country_vo.country_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									可通过<a href="__APP__/Home/Country/listPage#addNew" target="_blank">这里</a>添加更多的国家/地区
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="priority_number" class="col-lg-3 control-label">优先权号码</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="priority_number" name="priority_number" value="{$case_priority_list.priority_number}">
+								</div>
+								<div class="col-lg-5">
+									要输入半角的字符，例如CN12，<br>
+									不要输入全角的字符，如ＣＮ１２
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button class="btn btn-default"> 取消 </button>
+									<button type="submit" class="btn btn-primary"> 确认 </button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+        </div>
+	</block>

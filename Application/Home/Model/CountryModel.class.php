@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | This project is based on ThinkPHP 3.2, created by Choicky ZHOU (zhoucaiqi@gmail.com).
+// +----------------------------------------------------------------------
+// | Choicky ZHOU is a lawyer in China, specialized in IP matters such as patent, trademark and copyright.
+// +----------------------------------------------------------------------
+// | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
+// +----------------------------------------------------------------------
+// | This file is required by: CountryController
+// +----------------------------------------------------------------------
+
 namespace Home\Model;
 
 // Model 是常规的基类， RelationModel 用于数据关联
@@ -24,22 +34,15 @@ class CountryModel extends Model {
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
 		$Model	=	M('Country');
-		$order['convert(country_id_name using gb2312)']	=	'asc';
-		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
+		$order['convert(country_name using gb2312)']	=	'asc';
+		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		
 		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("list"=>$list,"page"=>$show);
+		return array("list"=>$list,"page"=>$show,"count"=>$count);
 	}
-	
-	//更新本数据表中主键为$country_id_id的记录，$data是数组
-	public function update($country_id_id,$data){
-		$Model	=	M('Country');
-		$map['country_id_id']	=	$country_id_id;
-		$result	=	$Model->where($map)->save($data);
-		return $result;
-	}
+
 }

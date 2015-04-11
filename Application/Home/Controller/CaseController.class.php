@@ -361,7 +361,7 @@ class CaseController extends Controller {
 		$case_type_list	=	D('CaseTypeView')->field('case_type_id,case_type_name')->listAllPatent();
 		$case_type_count	=	count($case_type_list);
 		$this->assign('case_type_list',$case_type_list);
-		
+		$this->assign('case_type_count',$case_type_count);
 		
 		//取出 Member 表的内容以及数量
 		$member_list	=	D('Member')->field(true)->listBasic();
@@ -379,7 +379,7 @@ class CaseController extends Controller {
 		$row_limit  =   C("ROWS_PER_SELECT");
 		$today	=	time();
 		$this->assign('row_limit',$row_limit);
-		$this->assign('today',$today);		
+		$this->assign('today',$today);
 				
 		if(IS_POST){
 			
@@ -395,16 +395,17 @@ class CaseController extends Controller {
 			}
 			if($case_group_id){
 				
-				$case_type_list_temp	=	D('CaseTypeView')->listCaseTypeId($case_group_id);
+				$case_type_id_list	=	D('CaseTypeView')->listCaseTypeId($case_group_id);
 				
-				$map['case_type_id']  = array('in',$case_type_list_temp);
+				$map['case_type_id']  = array('in',$case_type_id_list);
 			}
 						
 			//取出搜索结果
 			$order['our_ref']	=	'desc';
-			$case_list	=	D('Case')->relation(true)->where($map)->limit($limit_number)->order($order)->select();	
-			$case_count	=	D('Case')->relation(true)->where($map)->count();
-			$case_count	=	($case_count>$limit_number) ? $limit_number : $case_count;
+			$case_list_temp	=	D('Case')->relation(true)->where($map)->limit($limit_number)->order($order)->select();
+			$case_list	=	array_reverse($case_list_temp);
+			$case_count	=	count($case_list);
+			$case_count	=	($case_count<$limit_number) ? $case_count : $limit_number;
 			$this->assign('case_list',$case_list);			
 			$this->assign('case_count',$case_count);
 			
@@ -450,9 +451,16 @@ class CaseController extends Controller {
 		}
 		
 		//取出案件的基本信息
-		$case_list = D('Case')->relation(true)->getByCaseId($case_id);			
+		$case_list = D('Case')->relation(true)->field(true)->getByCaseId($case_id);
+		$case_priority_count	=	count($case_list['CasePriority']);
+		$case_file_count	=	count($case_list['CaseFile']);
+		$case_fee_count	=	count($case_list['CaseFee']);
 		$this->assign('case_list',$case_list);
+		$this->assign('case_priority_count',$case_priority_count);
+		$this->assign('case_file_count',$case_file_count);
+		$this->assign('case_fee_count',$case_fee_count);
 		
+		/*
 		//取出案件的优先权信息		
 		$map['case_id']	=	$case_id;
 		$case_priority_list	=	D('CasePriority')->where($map)->listAll();
@@ -471,8 +479,7 @@ class CaseController extends Controller {
 		$today	=	time();
 		$this->assign('row_limit',$row_limit);
         $this->assign('today',$today);
-
-
+		*/
 		$this->display();
 
 	}

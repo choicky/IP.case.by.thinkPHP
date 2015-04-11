@@ -36,10 +36,9 @@
 								<th>身份证号/组织机构代码</th>
 								<th>商业登记证号/营业执照号</th>
 								<th>税务登记证号</th>
-								
-								<th>常用操作</th>
-								<th>&nbsp;|&nbsp;</th>
 								<th>联系方式</th>
+								<th>常用操作</th>
+							
 							</tr>
 						</thead>
 						<tbody>
@@ -52,18 +51,16 @@
 								<td>{$client_vo.client_business_number}</td>
 								<td>{$client_vo.client_tax_number}</td>
 								<td>
-									<a href="{:U('Client/update','client_id='.$client_vo['client_id'])}">更新</a>
-									<a href="{:U('Client/delete','client_id='.$client_vo['client_id'])}">删除</a>
-								</td>
-								<th>&nbsp;|&nbsp;</th>
-								<td>
 									<?php
 										$contact_count	=	count($client_vo['ClientContact']);
 										echo($contact_count ? $contact_count.'项' : '暂无');
 									?>
 									<a href="{:U('ClientContact/view','client_id='.$client_vo['client_id'])}" target="_blank">查看与修改</a>
 								</td>
-								
+								<td>
+									<a href="{:U('Client/update','client_id='.$client_vo['client_id'])}">更新</a>
+									<a href="{:U('Client/delete','client_id='.$client_vo['client_id'])}">删除</a>
+								</td>
 							</tr>
 							</volist>                 
 						</tbody>
