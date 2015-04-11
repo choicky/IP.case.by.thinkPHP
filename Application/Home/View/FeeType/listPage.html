@@ -34,7 +34,7 @@
 								<th>费用名称</th>
 								<th>对应的CPC费用名称</th>
 								<th>默认金额</th>
-								<th>费用阶段</th>
+								<th>常用操作</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -43,7 +43,7 @@
 								<td>{$i}</td>
 								<td>{$fee_type_vo.fee_type_name}</td>
 								<td>{$fee_type_vo.fee_type_name_cpc}</td>
-								<td>{$fee_type_vo.fee_default_amount}</td>
+								<td>{$fee_type_vo['fee_default_amount']/100}</td>
 								<td><a href="__CONTROLLER__/update/fee_type_id/{$fee_type_vo.fee_type_id}">更新</a></td>
 							</tr>
 							</volist>                 

@@ -30,8 +30,7 @@
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
-								<th>序号</th>
-								<th>商标类别号</th>
+								<th>类别</th>
 								<th>商标类型名称</th>
 								<th>常用操作</th>
 							</tr>
@@ -39,7 +38,6 @@
 						<tbody>
 							<volist name="tm_category_list" id="tm_category_vo">
 							<tr>
-								<td>{$i}</td>
 								<td>{$tm_category_vo.tm_category_number}</td>
 								<td>{$tm_category_vo.tm_category_name}</td>
 								<td><a href="__CONTROLLER__/update/tm_category_id/{$tm_category_vo.tm_category_id}">更新</a></td>

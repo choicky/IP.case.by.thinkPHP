@@ -35,6 +35,7 @@
 							<tr class="info">
 								<th>序号</th>
 								<th>案件类型名称</th>
+								<th>包含的小类数量</th>
 								<th>常用操作</th>
 							</tr>
 						</thead>
@@ -45,9 +46,16 @@
 								<td>{$i}</td>
 								<td>{$case_group_vo.case_group_name}</td>
 								<td>
+									<?php
+										$case_type_count	=	count($case_group_vo['CaseType']);
+									?>
+									{$case_type_count	?	$case_type_count	:	'无'}
+									<a href="{:U('CaseType/view','case_group_id='.$case_group_vo['case_group_id'])}">查看与修改</a>
+								</td>
+								<td>
 									<a href="{:U('CaseGroup/update','case_group_id='.$case_group_vo['case_group_id'])}">更新</a>									
 									<a href="{:U('CaseGroup/delete','case_group_id='.$case_group_vo['case_group_id'])}">删除</a>
-									<a href="{:U('CaseType/view','case_group_id='.$case_group_vo['case_group_id'])}">查看其下面的小类</a>
+									
 								</td>
 							</tr>
 							</volist>               

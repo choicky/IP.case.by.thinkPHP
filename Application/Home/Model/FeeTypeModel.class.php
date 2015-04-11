@@ -17,7 +17,21 @@ use Think\Model;
 
 class FeeTypeModel extends Model {
 	
-	//返回本数据表的基本数据，可作为选单
+	//定义本数据表的自动完成
+	protected $_auto = array(		
+		// 将金额乘以100，multiplyByHundred 自定义于 common 文件夹的 function.php
+		array('fee_default_amount','multiplyByHundred',3,'function') , 		
+	);
+	
+	//定义本数据表的自动验证，0为存在字段就验证，1为必须验证，2是值不为空时才验证
+	protected $_validate = array(
+		 
+		 //定义必须的字段
+		 array('fee_type_name','require','必须填写费用类型',1), 
+
+   );
+	
+   //返回本数据表的基本数据，可作为选单
 	public function listBasic() {			
 		$order['convert(fee_type_name using gb2312)']	=	'asc';
 		$list	=	$this->field('fee_type_id,fee_type_name')->order($order)->select();

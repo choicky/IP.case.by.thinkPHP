@@ -22,43 +22,57 @@ class FeeTypeController extends Controller {
 		$this->display();
 	}
 	
-	//新增
+	//新增	
 	public function add(){
-		$data	=	array();
-		$data['fee_type_name']	=	trim(I('post.fee_type_name'));
-		$data['fee_type_name_cpc']	=	trim(I('post.fee_type_name_cpc'));
-		$data['fee_default_amount']	=	trim(I('post.fee_default_amount'));
-		
-		if(!$data['fee_type_name']){
-			$this->error('未填写费用名称');
-		} 
-				
-		$result = M('FeeType')->add($data);
-		
-		if(false !== $result){
-			$this->success('新增成功', 'listPage');
+		$Model	=	D('FeeType');
+		if (!$Model->create()){ 
+			
+			 // 如果创建数据对象失败 表示验证没有通过 输出错误提示信息
+			 $this->error($Model->getError());
+
 		}else{
-			$this->error('增加失败', 'listPage');
+			 
+			 // 验证通过 写入新增数据
+			 $result	=	$Model->add();		 
+		}
+		if(false !== $result){
+			
+			// 写入新增数据成功，返回案件信息页面
+			$this->success('新增成功', 'listPage#addNew');
+			
+		}else{
+			$this->error('增加失败');
 		}
 	}
 	
 	//新增
 	public function update(){
+		//针对 POST 的处理方式
 		if(IS_POST){
+			$fee_type_id	=	trim(I('post.fee_type_id'));
 			
-			$data=array();
-			$data['fee_type_id']	=	trim(I('post.fee_type_id'));
-			$data['fee_type_name']	=	trim(I('post.fee_type_name'));
-			$data['fee_type_name_cpc']	=	trim(I('post.fee_type_name_cpc'));
-			$data['fee_default_amount']	=	trim(I('post.fee_default_amount'));
-						
-			$result = D('FeeType')->save($data);
-			if(false !== $result){
-				$this->success('修改成功', 'listPage');
+			$Model	=	D('FeeType');
+			if (!$Model->create()){ 
+				 
+				 // 如果创建数据对象失败 表示验证没有通过 输出错误提示信息
+				 $this->error($Model->getError());
+				 
 			}else{
-				$this->error('修改失败', 'listPage');
+				 
+				 // 验证通过 修改数据
+				 $result	=	$Model->save();		 
 			}
-		} else{
+			if(false !== $result){
+				
+				// 修改数据成功，返回案件信息页面
+				$this->success('修改成功', 'listPage#addNew');
+				
+			}else{
+				$this->error('修改失败');
+			}
+			
+		//针对 GET 的处理方式
+		}else{
 			$fee_type_id = I('get.fee_type_id',0,'int');
 
 			if(!$fee_type_id){
