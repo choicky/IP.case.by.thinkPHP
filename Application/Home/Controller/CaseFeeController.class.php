@@ -25,6 +25,23 @@ class CaseFeeController extends Controller {
 		
 		$this->display();
 	}
+	
+	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
+	public function listPagePatentFee(){
+		$p	= I("p",1,"int");
+		$page_limit  =   C("RECORDS_PER_PAGE");
+		
+		//获取专利的 case_type_id 集合
+		$case_type_list	=	D('CaseTypeView')->listPatentCaseTypeId();
+		$map_case_fee['case_type_id']  = array('in',$case_type_list);
+		
+		$case_fee_list = D('CaseFeeTaskView')->listPage($p,$limit,$map_case_fee);
+		$this->assign('case_fee_list',$case_fee_list['list']);
+		$this->assign('case_fee_page',$case_fee_list['page']);
+		$this->assign('case_fee_count',$case_fee_list['count']);
+		
+		$this->display();
+	}
 
 	//新增	
 	public function add(){
@@ -180,95 +197,95 @@ class CaseFeeController extends Controller {
 	//搜索
 	public function searchPatentFee(){
 		
+		//取出 Client 表的内容以及数量
+		$client_list	=	D('Client')->listBasic();
+		$this->assign('client_list',$client_list);
+		
+		//取出 Member 表的内容以及数量
+		$member_list	=	D('Member')->listBasic();
+		$this->assign('member_list',$member_list);
+		
 		//取出 CasePhase 表的内容以及数量
 		$case_phase_list	=	D('CasePhase')->listBasic();
 		$this->assign('case_phase_list',$case_phase_list);
-		
-		//取出 FeeType 表中与“专利”有关的内容及数量
-		$map_fee_type['fee_type_name']	=	array('like','%专利%');
-		$fee_type_list	=	D('FeeType')->where($map_fee_type)->listBasic();
-		$this->assign('fee_type_list',$fee_type_list);
-		
-		//取出 Payer 表的内容以及数量
-		$payer_list	=	D('Payer')->listBasic();
-		$this->assign('payer_list',$payer_list);
 		
 		//取出 CostCenter 表的内容以及数量
 		$cost_center_list	=	D('CostCenter')->listBasic();
 		$this->assign('cost_center_list',$cost_center_list);
 		
-		//默认查询 0 元 至 20000 元
-		$start_amount	=	0;
-		$end_amount	=	20000;
-		$this->assign('start_amount',$start_amount);
-		$this->assign('end_amount',$end_amount);
-		
 		//默认查询未来3个月期限
 		$start_due_date	=	time();
-		$end_due_date	=	strtotime('+3 month');
+		$end_due_date	=	strtotime('+1 month');
 		$this->assign('start_due_date',$start_due_date);
 		$this->assign('end_due_date',$end_due_date);
 		
-		//默认查询最近个月缴费记录
-		$start_payment_date	=	strtotime('-3 month');
-		$end_payment_date	=	time();
-		$this->assign('start_payment_date',$start_payment_date);
-		$this->assign('end_payment_date',$end_payment_date);
-		
 		if(IS_POST){
 			
-			//接收搜索参数
+			//接收搜索参数			
+			$client_id	=	I('post.client_id','0','int');
+			$applicant_id	=	I('post.applicant_id','0','int');
+			$follower_id	=	I('post.follower_id','0','int');
+			$cost_center_id	=	I('post.cost_center_id','0','int');	
+			$allow_to_pay	=	I('post.allow_to_pay','0','int');
+			$is_paid	=	I('post.is_paid','0','int');
 			$case_phase_id	=	I('post.case_phase_id','0','int');
-			$case_type_id	=	I('post.case_type_id','0','int');
-			$payer_id	=	I('post.payer_id','0','int');
-			$cost_center_id	=	I('post.cost_center_id','0','int');				
 			
-			$start_official_amount	=	trim(I('post.start_official_amount'))*100;
-			$start_official_amount	=	$start_official_amount ? $start_official_amount : 0;
-			$end_official_amount	=	trim(I('post.end_official_amount'))*100;
-			$end_official_amount	=	$end_official_amount ? $end_official_amount : 20000;
-						
 			$start_due_date	=	trim(I('post.start_due_date'));
 			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : time();			
 			$end_due_date	=	trim(I('post.end_due_date'));
-			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+3 month');
-			
-			$start_payment_date	=	trim(I('post.start_payment_date'));
-			$start_payment_date	=	$start_payment_date ? strtotime($start_payment_date) : strtotime('2005-01-01');			
-			$end_payment_date	=	trim(I('post.end_payment_date'));
-			$end_payment_date	=	$end_payment_date ? strtotime($end_payment_date) : time();
+			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+1 month');
 			
 			//构造 maping
-			if($case_phase_id){
-				$map_case_fee['case_phase_id']	=	$case_phase_id;
+			if($client_id){
+				$map_case_fee['client_id']	=	$client_id;
 			}
-			if($case_type_id){
-				$map_case_fee['case_type_id']	=	$case_type_id;
+			if($applicant_id){
+				$map_case_fee['applicant_id']	=	$applicant_id;
+			}
+			if($follower_id){
+				$map_case_fee['follower_id']	=	$follower_id;
 			}	
-			if($payer_id){
-				$map_case_fee['payer_id']	=	$payer_id;
-			}
+			
 			if($cost_center_id){
 				$map_case_fee['cost_center_id']	=	$cost_center_id;
 			}
-			
-			$map_case_fee['official_amount']	=	array('between',array($start_official_amount,$end_official_amount));
-			$map_case_fee['due_date']	=	array('between',array($start_due_date,$end_due_date));
-			
-			$case_payment_list	=	D('CaseFee')->listCasePaymentId($start_payment_date, $end_payment_date);
-			if(is_array($case_payment_list)){
-				$map_case_fee['case_payment_id']	=	array('in',$case_payment_list);
+			if($allow_to_pay){
+				$map_case_fee['allow_date']	=	array('GT',1);
 			}
+			if(1==$is_paid){
+				$map_case_fee['case_payment_id']	=	array('LT',1);
+			}
+			if(2==$is_paid){
+				$map_case_fee['case_payment_id']	=	array('GT',1);
+			}
+			if($case_phase_id){
+				$map_case_fee['case_phase_id']	=	$case_phase_id;
+			}
+			$map_case_fee['due_date']	=	array('between',$start_due_date.','.$end_due_date);
+			
+			//获取专利的 case_type_id 集合
+			$case_type_list	=	D('CaseTypeView')->listPatentCaseTypeId();
+			$map_case_fee['case_type_id']  = array('in',$case_type_list);
 			
 			
 			//分页显示搜索结果
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_fee_list = D('CaseFee')->where($map_case_fee)->listPage($p,$case_fee_list);;
-			$case_fee_count = D('CaseFee')->where($map_case_fee)->count();
+			$case_fee_list = D('CaseFeeTaskView')->listPageSearch($p,$page_limit,$map_case_fee);
 			$this->assign('case_fee_list',$case_fee_list['list']);
 			$this->assign('case_fee_page',$case_fee_list['page']);
-			$this->assign('case_fee_count',$case_fee_count);
+			$this->assign('case_fee_count',$case_fee_list['count']);
+			
+			//返回所接受的检索条件
+			$this->assign('client_id',$client_id);
+			$this->assign('applicant_id',$applicant_id);
+			$this->assign('follower_id',$follower_id);
+			$this->assign('cost_center_id',$cost_center_id);
+			$this->assign('allow_to_pay',$allow_to_pay);
+			$this->assign('is_paid',$is_paid);
+			$this->assign('case_phase_id',$case_phase_id);
+			$this->assign('start_due_date',$start_due_date);
+			$this->assign('end_due_date',$end_due_date);
 		
 		} 
 	

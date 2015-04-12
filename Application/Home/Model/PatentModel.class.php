@@ -158,7 +158,7 @@ class PatentModel extends RelationModel {
         $end_time =   mktime(0,0,0,1,1,$year+1)-1;
         $map['create_time'] =   array('between','$begin_time,$end_time');
         
-        $case_type_id   =   D('CaseType')->getCaseTypeId($case_group_id)
+        $case_type_id   =   D('CaseType')->getCaseTypeId($case_group_id);
         $map['case_type_id']    =   array('in',$case_type_id);
         
         $order['convert(our_ref using gb2312)']	=	'desc';

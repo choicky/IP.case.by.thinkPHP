@@ -138,4 +138,97 @@ class CaseFileController extends Controller {
 		$this->display();
 	}
 	
+	//搜索
+	public function searchPatentFile(){
+		
+		//取出 Client 表的内容以及数量
+		$client_list	=	D('Client')->listBasic();
+		$this->assign('client_list',$client_list);
+		
+		//取出 Member 表的内容以及数量
+		$member_list	=	D('Member')->listBasic();
+		$this->assign('member_list',$member_list);
+		
+		//默认查询未来3个月期限
+		$start_due_date	=	time();
+		$end_due_date	=	strtotime('+1 month');
+		$this->assign('start_due_date',$start_due_date);
+		$this->assign('end_due_date',$end_due_date);
+		
+		if(IS_POST){
+			
+			//接收搜索参数			
+			$client_id	=	I('post.client_id','0','int');
+			$applicant_id	=	I('post.applicant_id','0','int');
+			$follower_id	=	I('post.follower_id','0','int');
+			$is_filed	=	I('post.is_filed','0','int');
+			
+			$start_due_date	=	trim(I('post.start_due_date'));
+			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : time();			
+			$end_due_date	=	trim(I('post.end_due_date'));
+			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+1 month');
+			
+			//构造 maping
+			if($client_id){
+				$map_case_file['client_id']	=	$client_id;
+			}
+			if($applicant_id){
+				$map_case_file['applicant_id']	=	$applicant_id;
+			}
+			if($follower_id){
+				$map_case_file['follower_id']	=	$follower_id;
+			}	
+			
+			if(1==$is_filed){
+				$map_case_file['case_payment_id']	=	array('LT',1);
+			}
+			if(2==$is_filed){
+				$map_case_file['case_payment_id']	=	array('GT',1);
+			}
+			
+			$map_case_file['due_date']	=	array('between',$start_due_date.','.$end_due_date);
+			
+			//获取专利的 case_type_id 集合
+			$case_type_list	=	D('CaseTypeView')->listPatentCaseTypeId();
+			$map_case_file['case_type_id']  = array('in',$case_type_list);
+			
+			
+			//分页显示搜索结果
+			$p	= I("p",1,"int");
+			$page_limit  =   C("RECORDS_PER_PAGE");
+			$case_file_list = D('CaseFileTaskView')->listPageSearch($p,$page_limit,$map_case_file);
+			$this->assign('case_file_list',$case_file_list['list']);
+			$this->assign('case_file_page',$case_file_list['page']);
+			$this->assign('case_file_count',$case_file_list['count']);
+			
+			//返回所接受的检索条件
+			$this->assign('client_id',$client_id);
+			$this->assign('applicant_id',$applicant_id);
+			$this->assign('follower_id',$follower_id);
+			$this->assign('is_filed',$is_filed);
+			$this->assign('start_due_date',$start_due_date);
+			$this->assign('end_due_date',$end_due_date);
+		
+		} 
+	
+	$this->display();
+	}
+	
+	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
+	public function listPagePatentFile(){
+		$p	= I("p",1,"int");
+		$page_limit  =   C("RECORDS_PER_PAGE");
+		
+		//获取专利的 case_type_id 集合
+		$case_type_list	=	D('CaseTypeView')->listPatentCaseTypeId();
+		$map_case_file['case_type_id']  = array('in',$case_type_list);
+		
+		$case_file_list = D('CaseFileTaskView')->listPage($p,$limit,$map_case_file);
+		$this->assign('case_file_list',$case_file_list['list']);
+		$this->assign('case_file_page',$case_file_list['page']);
+		$this->assign('case_file_count',$case_file_list['count']);
+		
+		$this->display();
+	}
+	
 }

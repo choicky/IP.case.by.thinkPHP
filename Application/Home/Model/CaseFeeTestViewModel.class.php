@@ -5,7 +5,7 @@ namespace Home\Model;
 //use Think\Model;
 use Think\Model\ViewModel;
 
-class CaseFeeViewModel extends ViewModel {
+class CaseFeeTestViewModel extends ViewModel {
 	
 	//定义 CaseFee 表与 Case 表的视图关系
 	protected $viewFields = array(
@@ -28,13 +28,13 @@ class CaseFeeViewModel extends ViewModel {
 			'cost_amount',
 			'_type'=>'LEFT'
 		),
-		/*
+		
 		'CaseInfo'	=>	array(
 			'our_ref',
 			'_type'=>'LEFT',
 			'_table'=>"__CASE__",	//定义数据表
 			'_on'	=>	'CaseInfo.case_id=CaseFee.case_id'
-		),*/
+		),
 		
 		'CasePhase'	=>	array(
 			'case_phase_name',
@@ -70,7 +70,7 @@ class CaseFeeViewModel extends ViewModel {
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
-		$order['bill_date']	=	'desc';
+		$order['due_date']	=	'desc';
 		$list	=	$this->field(true)->order($order)->select();
 		return $list;
 	}
@@ -83,7 +83,7 @@ class CaseFeeViewModel extends ViewModel {
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['bill_date']	=	'desc';	
+		$order['due_date']	=	'desc';	
 		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();

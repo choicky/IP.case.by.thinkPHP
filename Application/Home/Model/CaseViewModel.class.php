@@ -6,7 +6,7 @@ class CaseViewModel extends ViewModel {
 	
 	//定义本数据表的视图关系
 	protected $viewFields = array(
-		'Patent'	=>	array(	//定义别名，这个别名不能与 PHP 内置关键词冲突
+		'CaseInfo'	=>	array(	//定义别名，这个别名不能与 PHP 内置关键词冲突
 			'case_id',
 			'our_ref',
 			'case_type_id',
@@ -23,7 +23,6 @@ class CaseViewModel extends ViewModel {
 			'tm_category_id',
 			'publication_date',
 			'issue_date',
-			'registration_date',
 			'_table'=>"__CASE__",	//定义数据表
 			'_type'=>'LEFT'			//定义join类型
 		),
@@ -32,47 +31,47 @@ class CaseViewModel extends ViewModel {
 			'expired_date',
 			'related_our_ref',
 			'remarks',
-			'_on'	=>	'Patent.case_id=CaseExtend.case_id',
+			'_on'	=>	'CaseExtend.case_id=CaseInfo.case_id',
 			'_type'=>'LEFT'			//定义join类型
 		),
 		
 		'CaseType'	=>	array(
 			'case_type_name',
 			'case_group_id',
-			'_on'	=>	'Patent.case_type_id=CaseType.case_type_id',
+			'_on'	=>	'CaseType.case_type_id=CaseInfo.case_type_id',
 			'_type'=>'LEFT'			//定义join类型
 		),
 		
 		'CaseGroup'	=>	array(
 			'case_group_name',
-			'_on'	=>	'CaseType.case_group_id=CaseGroup.case_group_id',
+			'_on'	=>	'CaseGroup.case_group_id=CaseType.case_group_id',
 			'_type'=>'LEFT'			//定义join类型
 		),
 		
 		'Follower'	=>	array(
 			'member_name'	=>	'follower_name',	//重新定义名称
 			'_table'=>"__MEMBER__",	//定义数据表
-			'_on'	=>	'Patent.follower_id=Follower.member_id',
+			'_on'	=>	'Follower.member_id=CaseInfo.follower_id',
 			'_type'=>'LEFT'			//定义join类型
 		),	
 		
 		'Client'	=>	array(
 			'client_name',
-			'_on'	=>	'Patent.client_id=Client.client_id',
+			'_on'	=>	'Client.client_id=CaseInfo.client_id',
 			'_type'=>'LEFT'			//定义join类型
 		),
 		
 		'Applicant'	=>	array(
 			'client_name'	=>	'applicant_name',	//重新定义名称
 			'_table'=>"__CLIENT__",	//定义数据表
-			'_on'	=>	'Patent.applicant_id=Applicant.client_id',
+			'_on'	=>	'Applicant.client_id=CaseInfo.applicant_id',
 			'_type'=>'LEFT'			//定义join类型
 		),
 		
 		'Handler'	=>	array(
 			'member_name'	=>	'handler_name',	//重新定义名称
 			'_table'=>"__MEMBER__",	//定义数据表
-			'_on'	=>	'Patent.follower_id=Handler.member_id',
+			'_on'	=>	'Handler.member_id=CaseInfo.follower_id',
 			'_type'=>'LEFT'			//定义join类型
 		),
 		
@@ -80,7 +79,7 @@ class CaseViewModel extends ViewModel {
 			'tm_category_number',
 			'tm_category_name',
 			'_table'=>"__TM_CATEGORY__",	//定义数据表
-			'_on'	=>	'Patent.tm_category_id=TmCategory.tm_category_id',
+			'_on'	=>	'TmCategory.tm_category_id=CaseInfo.tm_category_id',
 			'_type'=>'LEFT'			//定义join类型
 		),
 

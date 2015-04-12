@@ -6,35 +6,37 @@
 // +----------------------------------------------------------------------
 // | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
 // +----------------------------------------------------------------------
-// | This file is required by: CaseModel, CaseController
+// | This file is required by: CaseFeeController,
 // +----------------------------------------------------------------------
 
 namespace Home\Model;
 
-//因为启动数据表视图模型，必须继承ViewModel，注释Model
+//因为启动数据表视图模型，必须继承 ViewModel ，注释 Model
 //use Think\Model;
 use Think\Model\ViewModel;
 
-class CaseFileTaskViewModel extends ViewModel {
+class CaseFeeTaskViewModel extends ViewModel {
 	
-	//定义本表与其他数据表的视图关系
+	//定义 CaseFee 表与 Case 表的视图关系
 	protected $viewFields = array(
-		
-		//定义本表与 CaseFile 表的视图关系
-		'CaseFile'	=>	array(
-			'case_file_id',
+		'CaseFee'	=>	array(
+			'case_fee_id',
 			'case_id',
-			'file_type_id',
+			'case_phase_id',
+			'fee_type_id',
+			'official_fee',
+			'service_fee',
 			'oa_date',
 			'due_date',
-			'completion_date',
+			'allow_date',
+			'payer_id',
+			'case_payment_id',
+			'bill_id',
+			'invoice_id',
+			'claim_id',
+			'cost_center_id',
+			'cost_amount',
 			'_type'=>'LEFT'
-		),
-		
-		//定义本表与 Country 表的视图关系
-		'FileType'	=>	array(
-			'file_type_name',
-			'_on'	=>	'FileType.file_type_id=CaseFile.file_type_id'
 		),
 		
 		'CaseInfo'	=>	array(
@@ -54,7 +56,38 @@ class CaseFileTaskViewModel extends ViewModel {
 			'issue_date',
 			'_type'=>'LEFT',
 			'_table'=>"__CASE__",	//定义数据表
-			'_on'	=>	'CaseInfo.case_id=CaseFile.case_id'
+			'_on'	=>	'CaseInfo.case_id=CaseFee.case_id'
+		),
+		
+		'CasePhase'	=>	array(
+			'case_phase_name',
+			'_type'=>'LEFT',
+			'_on'	=>	'CasePhase.case_phase_id=CaseFee.case_phase_id'
+		),
+				
+		'FeeType'	=>	array(
+			'fee_type_name',
+			'fee_type_name_cpc',
+			'_type'=>'LEFT',
+			'_on'	=>	'FeeType.fee_type_id=CaseFee.fee_type_id'
+		),	
+		
+		'Payer'	=>	array(
+			'payer_name',
+			'_type'=>'LEFT',
+			'_on'	=>	'Payer.payer_id=CaseFee.payer_id'
+		),
+		
+		'CasePayment'	=>	array(
+			'payment_date',
+			'_type'=>'LEFT',
+			'_on'	=>	'CasePayment.case_payment_id=CaseFee.case_payment_id'
+		),
+		
+		'CostCenter'	=>	array(
+			'cost_center_name',
+			'_type'=>'LEFT',
+			'_on'	=>	'CostCenter.cost_center_id=CaseFee.cost_center_id'
 		),
 		
 		'Client'	=>	array(
@@ -89,8 +122,7 @@ class CaseFileTaskViewModel extends ViewModel {
 			'_type'=>'LEFT',
 			'_on'	=>	'CaseType.case_type_id=CaseInfo.case_type_id'
 		),
-
-	);	
+	);
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
@@ -133,5 +165,4 @@ class CaseFileTaskViewModel extends ViewModel {
 		
 		return array("list"=>$list,"page"=>$show,"count"=>$count);
 	}
-	
 }

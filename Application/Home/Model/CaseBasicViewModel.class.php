@@ -24,19 +24,11 @@ class CaseBasicViewModel extends ViewModel {
 			'create_date',
 			'form_date',
 			'client_id',
-			'client_ref',
-			'applicant_id',
-			'tentative_title',
-			'handler_id',
-			'application_number',
-			'formal_title',
-			'tm_category_id',
-			'publication_date',
-			'issue_date',
+			
 			'_table'=>"__CASE__",	//定义数据表
 			'_type'=>'LEFT'			//定义join类型
 		),
-		
+		/*
 		'CaseExtend'	=>	array(
 			'expired_date',
 			'related_our_ref',
@@ -83,7 +75,7 @@ class CaseBasicViewModel extends ViewModel {
 			'_table'=>"__TM_CATEGORY__",	//定义数据表
 			'_on'	=>	'TmCategory.tm_category_id=Case.tm_category_id',
 			'_type'=>'LEFT'			//定义join类型
-		),
+		),*/
 
 
 	);

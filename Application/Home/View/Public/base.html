@@ -53,28 +53,40 @@ if(!cookie('name')){
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">专利 <span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="patent">专利 <span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
-                <li><a href="__MODULE__/Patent/listPage">账单列表</a></li>
-                <li><a href="__MODULE__/Patent/listPage#addNew">录入新账单</a></li> 
-				<li><h4>专利</h4></li>
+                <li><h5>案件</h5></li>
 				<li><a href="__MODULE__/Case/searchForNewPatent">初步开案登记</a></li>
 				<li><a href="__MODULE__/Case/listPagePatent">案件列表、管理</a></li>
 				<li><a href="__MODULE__/Case/searchPatent">查询、管理</a></li>
-				<li><h4>优先权</h4></li>
+				<li><h5>优先权</h5></li>
 				<li><a href="__MODULE__/CasePriority/listPage">总表、管理</a></li>
 				<li><a href="__MODULE__/CasePriority/search">搜索优先权</a></li>
-				<li><h4>费用</h4></li>
-				<li><a href="__MODULE__/CaseFee/searchPatentFee">搜索专利费用</a></li>
-				<li><a href="__MODULE__/CasePriority/search">搜索优先权</a></li>
+				<li><h5>费用</h5></li>
+				<li><a href="__MODULE__/CaseFee/searchPatentFee">搜索（监控）</a></li>
+				<li><a href="__MODULE__/CaseFee/listPagePatentFee">总览</a></li>
+				<li><h5>文件</h5></li>
+				<li><a href="__MODULE__/CaseFile/searchPatentFile">搜索（监控）</a></li>
+				<li><a href="__MODULE__/CaseFile/listPagePatentFile">总览</a></li>
               </ul>
             </li>
 			<li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">商标<span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="trademark">商标<span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
-                <li><a href="../default/">Default</a></li>
+                <li><h5>商标分类管理</h5></li>
+				<li><a href="__MODULE__/TmCategory/listAll">商标分类列表、编辑</a></li>
+                <li><a href="__MODULE__/TmCategory/listAll#addNew">录入新商标分类</a></li>
                 <li class="divider"></li>
-                <li><a href="../cerulean/">Cerulean</a></li>
+               
+              </ul>
+            </li>
+			<li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="payment">缴费<span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+                <li><h5>缴费</h5></li>
+				<li><a href="__MODULE__/CasePayment/listPage">列表、管理</a></li>
+                <li><a href="__MODULE__/CasePayment/listPage#addNew">新增缴费单</a></li>
+                <li class="divider"></li>
                
               </ul>
             </li>
@@ -82,19 +94,19 @@ if(!cookie('name')){
 			<li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">财务 <span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
-				<li><h4>收支流水类</h4></li>
+				<li><h5>收支流水类</h5></li>
 				<li><a href="__MODULE__/Balance/listPage">新加、管理</a></li>
 				<li><a href="__MODULE__/Balance/search">查询、管理</a></li>
 
-				<li><h4>收支内部结算类</h4></li>
+				<li><h5>收支内部结算类</h5></li>
                 <li><a href="__MODULE__/Claim/listPage">新加、管理</a></li>
                 <li><a href="__MODULE__/Claim/search">查询、管理</a></li>
 
-				<li><h4>发票类</h4></li>
+				<li><h5>发票类</h5></li>
                 <li><a href="__MODULE__/Invoice/listPage">新加、管理</a></li>
                 <li><a href="__MODULE__/Invoice/search">查询、管理</a></li>
 
-				<li><h4>账户</h4></li>
+				<li><h5>账户</h5></li>
                 <li><a href="__MODULE__/CostCenter/listPage">管理内部结算账户</a></li>
                 <li><a href="__MODULE__/Account/listPage">管理实际账户</a></li>
 				<li class="divider"></li>
@@ -118,30 +130,28 @@ if(!cookie('name')){
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">基础信息配置 <span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="download">
-                <li><h4>客户与申请人管理</h4></li>
+                <li><h5>客户与申请人管理</h5></li>
 				<li><a href="{:U('Client/listPage')}">列表、编辑</a></li>
 				<li><a href="{:U('Client/listPage#addNew')}">录入新客户/申请人</a></li>
-                <li><h4>人员管理</h4></li>				
+                <li><h5>人员管理</h5></li>				
 				<li><a href="__MODULE__/Member/listPage">列表、编辑</a></li>
 				<li><a href="__MODULE__/Member/listPage#addNew">录入新跟案人员/处理人员</a></li>
-				<li><h4>案件阶段管理</h4></li>
+				<li><h5>案件阶段管理</h5></li>
                 <li><a href="__MODULE__/CasePhase/listPage">列表、管理</a></li>
-				<li><h4>案件类型管理</h4></li>
+				<li><h5>案件类型管理</h5></li>
                 <li><a href="{:U('CaseGroup/listPage')}">案件类型列表、管理</a></li>
                 <li><a href="{:U('CaseType/listPage')}">案件小类列表、管理</a></li>
-				<li><h4>文件类型管理</h4></li>
+				<li><h5>文件类型管理</h5></li>
 				<li><a href="__MODULE__/FileType/listPage">交文类型列表、编辑</a></li>
                 <li><a href="__MODULE__/FileType/listPage#addNew">录入新交文类型</a></li>
-				<li><h4>费用类型管理</h4></li>
+				<li><h5>费用类型管理</h5></li>
 				<li><a href="__MODULE__/FeeType/listPage">费用类型列表、编辑</a></li>
                 <li><a href="__MODULE__/FeeType/listPage#addNew">录入新费用类型</a></li>
-				<li><h4>优先权国家管理</h4></li>
+				<li><h5>优先权国家管理</h5></li>
 				<li><a href="__MODULE__/Country/listPage">费用类型列表、编辑</a></li>
                 <li><a href="__MODULE__/Country/listPage#addNew">录入新费用类型</a></li>
-				<li><h4>商标分类管理</h4></li>
-				<li><a href="__MODULE__/TmCategory/listAll">商标分类列表、编辑</a></li>
-                <li><a href="__MODULE__/TmCategory/listAll#addNew">录入新商标分类</a></li>
-				<li><h4>缴费人管理</h4></li>
+				
+				<li><h5>缴费人管理</h5></li>
 				<li><a href="__MODULE__/Payer/listAll">缴费人列表、编辑</a></li>
                 <li><a href="__MODULE__/Payer/listAll#addNew">录入新缴费人</a></li>
 				<li class="divider"></li>

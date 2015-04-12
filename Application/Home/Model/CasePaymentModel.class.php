@@ -1,67 +1,60 @@
 <?php
+// +----------------------------------------------------------------------
+// | This project is based on ThinkPHP 3.2, created by Choicky ZHOU (zhoucaiqi@gmail.com).
+// +----------------------------------------------------------------------
+// | Choicky ZHOU is a lawyer in China, specialized in IP matters such as patent, trademark and copyright.
+// +----------------------------------------------------------------------
+// | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
+// +----------------------------------------------------------------------
+// | This file is required by: CasePaymentController
+// +----------------------------------------------------------------------
+
 namespace Home\Model;
+use Think\Model\RelationModel;
 
-use Think\Model;
-//因为不需要数据表关联，注释RelationModel
-//use Think\Model\RelationModel;
-
-class CasePaymentModel extends Model {
+class CasePaymentModel extends RelationModel {
 	
-	//返回本数据表中与专利有关的数据
-	public function listAllPatent() {
-		$map['case_group_name']	=	array('like','%专利%');
-		$order['convert(case_group_name using gb2312)']	=	'asc';
-		$data	=	$this->where($map)->order($order)->select();
-		return $data;
-	}
+	//定义本数据表的数据关联
+	protected $_link = array(
 		
-	//返回本数据表中与商标有关的数据
-	public function listAllTrademark() {
-		$map['case_group_name']	=	array('like','%商标%');
-		$order['convert(case_group_name using gb2312)']	=	'asc';
-		$data	=	$this->field(true)->where($map)->order($order)->select();
-		return $data;
-	}
-    
-    //返回本数据表中与版权有关的数据
-	public function listAllCopyright() {
-		$map['case_group_name']	=	array('like','%版权%');
-		$order['convert(case_group_name using gb2312)']	=	'asc';
-		$data	=	$this->field(true)->where($map)->order($order)->select();
-		return $data;
-	}
+		'CaseFee'	=>	array(							//本数据关联的名称
+			'mapping_name'		=>	'CaseFee',			//重新定义本数据关联的名称
+			'class_name'		=>	'CaseFeePaymentView',			//被关联的数据表
+			'mapping_type'		=>	self::HAS_MANY,	//属于关系一对一关联			
+			'foreign_key'		=>	'case_payment_id',		//外键，
+			'mapping_fields'	=>	'case_fee_id,case_id,official_fee,service_fee,oa_date,due_date,allow_date,payer_id,case_payment_id,bill_id,invoice_id,claim_id,cost_amount,our_ref,client_ref,tentative_title,application_date,application_number,formal_title,tm_category_id,publication_date,issue_date,case_phase_name,fee_type_name,fee_type_name_cpc,payer_name,cost_center_name,client_name,applicant_name,follower_name,handler_name,case_type_name,',	//关联字段
+			//'as_fields'			=>	'account_name'	//字段别名
+		),
+		
+		'Payer'	=>	array(							//本数据关联的名称
+			'mapping_name'		=>	'Payer',			//重新定义本数据关联的名称
+			'class_name'		=>	'Payer',			//被关联的数据表
+			'mapping_type'		=>	self::BELONGS_TO ,	//属于关系一对一关联			
+			'foreign_key'		=>	'payer_id',		//外键，
+			'mapping_fields'	=>	'payer_name',	//关联字段
+			//'as_fields'			=>	'account_name'	//字段别名
+		),
+		
+	);
 	
-			
-	//返回本数据表的基本数据
-	public function listBasic() {
-		$list	=	$this->listAll();
+	//返回本数据表的所有数据
+	public function listAll() {			
+		$order['payment_date']	=	'desc';
+		$list	=	$this->relation(true)->order($order)->select();
 		return $list;
 	}
 
-	//返回本数据表的所有数据
-	public function listAll() {
-		$order['convert(case_group_name using gb2312)']	=	'asc';
-		$list	=	$this->order($order)->select();
-		return $list;
-	}
-	
-	//分页返回本数据表的所有数据，$current_page 为当前页数，$recodes_per_page 为每页显示的记录条数
-	public function listPage($current_page,$recodes_per_page) {
-		$order['convert(case_group_name using gb2312)']	=	'asc';
-		$data	= $this->field(true)->order($order)->page($current_page.','.$recodes_per_page)->select();
+	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
+	public function listPage($p,$limit) {
+		$order['payment_date']	=	'desc';
+		$list	=	$this->relation(true)->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
-		$Page	= new \Think\Page($count,$recodes_per_page);
+		
+		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("data"=>$data,"page"=>$show);
+		return array("list"=>$list,"page"=>$show,"count"=>$count);
 	}
 	
-	//更新本数据表中主键为$case_group_id的记录，$data是数组
-	public function update($case_group_id,$data){
-		$map['case_group_id']	=	$case_group_id;
-		$result	=	$this->where($map)->save($data);
-		return $result;
-	}
-
 }
