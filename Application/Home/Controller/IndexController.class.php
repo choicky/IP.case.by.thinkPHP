@@ -13,9 +13,8 @@ class IndexController extends Controller {
 		
 		
 		
-		$test	=	'';
-		$time	=	strtotime($test);
-		var_dump($time);
+		$list	=	D('CaseFileTaskView')->select();
+		print_r($list);
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数

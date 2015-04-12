@@ -274,9 +274,7 @@ class CaseController extends Controller {
 		$this->assign('client_list',$client_list);
 		
 		//默认查询最近一年
-		$start_time	=	strtotime("-1 year");
 		$end_time	=	time();
-		$this->assign('start_time',$start_time);
 		$this->assign('end_time',$end_time);
 				
 		if(IS_POST){
@@ -291,20 +289,16 @@ class CaseController extends Controller {
 			$client_id	=	I('post.client_id','0','int');
 			
 			$start_time	=	trim(I('post.start_time'));
-			$start_time	=	$start_time ? strtotime($start_time) : strtotime('2005-01-01');
+			$start_time	=	$start_time ? strtotime($start_time) : 0;
 			
 			$end_time	=	trim(I('post.end_time'));
 			$end_time	=	$end_time ? strtotime($end_time) : time();
-			
 			
 			$formal_title	=	trim(I('post.formal_title'));			
 			
 			//构造 maping
 			$map['issue_date']  = array('between',array($start_time,$end_time));
-			//$map['issue_date']	=	array('EGT',$start_time);
-			//$map['issue_date']	=	array('ELT',$end_time);
 			if($case_year){
-				
 				$map['our_ref']	=	array('like',"%".$case_year."%");
 			}
 			if($case_group_id){
@@ -329,6 +323,7 @@ class CaseController extends Controller {
 			if($formal_title){
 				$map['formal_title']	=	array('like','%'.$formal_title.'%');
 			}
+			
 
 			//取出其他参数
 			$p	= I("p",1,"int");
