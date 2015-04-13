@@ -84,7 +84,7 @@ class CaseModel extends RelationModel {
 		
 		'CaseFee'	=>	array(							//本数据关联的名称
 			'mapping_name'		=>	'CaseFee',			//重新定义本数据关联的名称
-			'class_name'		=>	'CaseFee',			//被关联的数据表
+			'class_name'		=>	'CaseFeeView',			//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
 			'mapping_fields'	=>	'case_fee_id,fee_type_id,official_fee,service_fee,oa_date,due_date,allow_date,completion_date,payer_id,bill_id,invoice_id,claim_id',		//关联字段

@@ -188,7 +188,7 @@ class CaseFeeController extends Controller {
 				$this->error('未指明要删除的费用记录');
 			}
 			
-			$case_fee_list = D('CaseFeeView')->field(true)->getByCaseFeeId($case_fee_id);			
+			$case_fee_list = D('CaseFeeTaskView')->field(true)->getByCaseFeeId($case_fee_id);		
 			$this->assign('case_fee_list',$case_fee_list);
 			
 			$this->display();

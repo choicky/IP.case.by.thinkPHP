@@ -126,7 +126,6 @@ class CaseController extends Controller {
 			$extend_info['related_our_ref']	=	trim(I('post.related_our_ref'));
 			$extend_info['remarks']	=	trim(I('post.remarks'));
 			
-			print_r($extend_info);
 			
 			
 			$Model	=	D('Case');
@@ -141,7 +140,7 @@ class CaseController extends Controller {
 				 
 			}
 			if((false !== $result_case)&&(false !== $result_extend)){
-				$this->success('修改成功', 'view/case_id/'.$case_id);
+				$this->success('修改成功', U('Case/view','case_id='.$case_id));
 			}else{
 				$this->error('修改失败');
 			}
@@ -155,7 +154,6 @@ class CaseController extends Controller {
 
 			$case_list = D('Case')->relation(true)->getByCaseId($case_id);			
 			
-			print_r($case_list);
 			$this->assign('case_list',$case_list);
 			
 			

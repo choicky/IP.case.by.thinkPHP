@@ -202,7 +202,7 @@
 								<th>期限日</th>
 								<th>指示日</th>
 								<th>缴费人</th>
-								<th>缴费单号</th>
+								<th>缴费单号及日期</th>
 								<th>账单号</th>
 								<th>发票编号</th>
 								<th>到账编号</th>
@@ -227,17 +227,14 @@
 								<td>{$allow_date	=	$case_fee_vo['allow_date']	?	date("Y-m-d",$case_fee_vo['allow_date'])		:	''}</td>
 								<td>{$case_fee_vo.payer_name}</td>
 								<td>
-									{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	'无'},
-									<a href="{:U('CasePayment/view','case_payment_id='.$case_fee_vo['case_payment_id'])}" target="_blank">查看</a></td>
+									<a href="{:U('CasePayment/view','case_payment_id='.$case_fee_vo['case_payment_id'])}" target="_blank">{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	''} &nbsp;</a>
+									{$case_fee_vo['payment_date']	?	date("Y-m-d",$case_fee_vo['payment_date'])	:	''}</td>
 								<td>
-									{$case_fee_vo['bill_id']	?	$case_fee_vo['bill_id']	:	'无'},
-									<a href="{:U('Bill/view','bill_id='.$case_fee_vo['bill_id'])}" target="_blank">查看</a></td>
+									<a href="{:U('Bill/view','bill_id='.$case_fee_vo['bill_id'])}" target="_blank">{$case_fee_vo['bill_id']	?	$case_fee_vo['bill_id']	:	''}</a></td>
 								<td>
-									{$case_fee_vo['invoice_id']	?	$case_fee_vo['invoice_id']	:	'无'},
-									<a href="{:U('Invoice/view','invoice_id='.$case_fee_vo['invoice_id'])}" target="_blank">查看</a></td>
+									<a href="{:U('Invoice/view','invoice_id='.$case_fee_vo['invoice_id'])}" target="_blank">{$case_fee_vo['invoice_id']	?	$case_fee_vo['invoice_id']	:	''}</a></td>
 								<td>
-									{$case_fee_vo['claim_id']	?	$case_fee_vo['claim_id']	:	'无'},
-									<a href="{:U('Claim/view','claim_id='.$case_fee_vo['claim_id'])}" target="_blank">查看</a></td>
+									<a href="{:U('Claim/view','claim_id='.$case_fee_vo['claim_id'])}" target="_blank">{$case_fee_vo['claim_id']	?	$case_fee_vo['claim_id']	:	''}</a></td>
 								<td>{$case_fee_vo.cost_center_name}</td>
 								<td>{$case_fee_vo['cost_amount']	?	$case_fee_vo['cost_amount']/100		:	''}</td>
 								<td>

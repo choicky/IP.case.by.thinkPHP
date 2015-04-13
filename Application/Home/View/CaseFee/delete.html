@@ -11,7 +11,7 @@
         <div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1 id="forms">删除费用</h1>
+					<h3 id="forms">删除费用</h3>
 				</div>
 			</div>
         </div>
@@ -49,9 +49,9 @@
 							
 							<tr>
 								
-								<td>{$i}</td>
-								<td>{$case_fee_list['CasePhase'].case_phase_name}</td>
-								<td>{$case_fee_list['FeeType'].fee_type_name}</td>
+								<td>{$case_fee_list.case_fee_id}</td>
+								<td>{$case_fee_list.case_phase_name}</td>
+								<td>{$case_fee_list.fee_type_name}</td>
 								<td>{$case_fee_list['official_fee']/100}</td>
 								<td>{$case_fee_list['service_fee']/100}</td>
 								<td>{$case_fee_list['oa_date'] ? $case_fee_list['oa_date']|date="Y-m-d",### : ''}</td>
@@ -59,18 +59,18 @@
 								<td>{$case_fee_list['allow_date'] ? $case_fee_list['allow_date']|date="Y-m-d",### : ''}</td>
 								
 								<td>
-									<a href="__APP__/Home/Payment/view/case_payment_id/{$case_fee_list['case_payment_id']}" target="">{$case_fee_list['case_payment_id'] ? $case_fee_list['case_payment_id'] : ''}<a><br>
-									{$case_fee_list['CasePayment']['payment_date'] ? $case_fee_list['CasePayment']['payment_date']|date="Y-m-d",### : ''}
+									<a href="{:U('CasePayment/view','case_payment_id='.$case_fee_list['case_payment_id'])}" target="">{$case_fee_list['case_payment_id'] ? $case_fee_list['case_payment_id'] : ''}<a><br>
+									{$case_fee_list['payment_date'] ? $case_fee_list['payment_date']|date="Y-m-d",### : ''}
 								</td>
-								<td>{$case_fee_list['Payer'].payer_name}</td>
-								<td><a href="__APP__/Home/Bill/view/bill_id/{$case_fee_list.$case_fee_list.bill_id}" target="_blank">{$case_fee_list['bill_id'] ? $case_fee_list['bill_id'] : ''}<a></td>
-								<td><a href="__APP__/Home/Invoice/view/invoice_id/{$case_fee_list.$case_fee_list.invoice_id}" target="_blank">{$case_fee_list['invoice_id'] ? $case_fee_list['invoice_id'] : ''}<a></td>
-								<td><a href="__APP__/Home/Claim/view/claim_id/{$case_fee_list.$case_fee_list.claim_id}" target="_blank">{$case_fee_list['claim_id'] ? $case_fee_list['claim_id'] : ''}<a></td>
-								<td>{$case_fee_list['CostCenter']['cost_center_name']}</td>
-								<td>{$case_fee_list['cost_amount'] ? $case_fee_list['cost_amount'] : ''}</td>
+								<td>{$case_fee_list.payer_name}</td>
+								<td><a href="{:U('Bill/view','bill_id='.$case_fee_list['bill_id'])}" target="_blank">{$case_fee_list['bill_id'] ? $case_fee_list['bill_id'] : ''}<a></td>
+								<td><a href="{:U('Invoice/view','invoice_id='.$case_fee_list['invoice_id'])}" target="_blank">{$case_fee_list['invoice_id'] ? $case_fee_list['invoice_id'] : ''}<a></td>
+								<td><a href="{:U('Claim/view','claim_id='.$case_fee_list['claim_id'])}" target="_blank">{$case_fee_list['claim_id'] ? $case_fee_list['claim_id'] : ''}<a></td>
+								<td>{$case_fee_list['cost_center_name']}</td>
+								<td>{$case_fee_list['cost_amount'] ? $case_fee_list['cost_amount']/100 : ''}</td>
 								<td>
-									<a href="__APP__/Home/CaseFee/update/case_fee_id/{$case_fee_list.case_fee_id}">更新</a><br>
-									<a href="__APP__/Home/CaseFee/delete/case_fee_id/{$case_fee_list.case_fee_id}">删除</a>
+									<a href="{:U('CaseFee/update','case_fee_id='.$case_fee_list['case_fee_id'])}">更新</a><br>
+									<a href="{:U('CaseFee/delete','case_fee_id='.$case_fee_list['case_fee_id'])}">删除</a>
 									
 								</td>
 								

@@ -85,12 +85,12 @@ class CaseGroupController extends Controller {
 				$map['case_group_id']   =   $case_group_id;
                 $case_type_list =   M('CaseType')->field('case_group_id')->where($map)->find();
                 if(is_array($case_type_list)){
-                    $this->error('删除失败，本大类下面还有其他小类');
+                    $this->error('删除失败，本大类下面还有其他小类',U('CaseType/view','case_group_id='.$case_group_id));
                 }
                 
                 $result = M('CaseGroup')->where($map)->delete();
 				if($result){
-					$this->success('删除成功', 'listPage');
+					$this->success('删除成功', U('CaseType/view','case_group_id='.$case_group_id));
 				}
 			
 			}

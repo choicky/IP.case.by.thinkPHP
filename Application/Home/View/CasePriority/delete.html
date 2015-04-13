@@ -11,7 +11,7 @@
         <div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1 id="forms">删除优先权</h1>
+					<h3 id="forms">删除优先权</h3>
 				</div>
 			</div>
         </div>
@@ -37,8 +37,8 @@
 								<td>{$case_priority_list.country_name}</td>
 								<td>{$case_priority_list.priority_number}</td>
 								<td>
-									<a href="__APP__/Home/CasePriority/update/case_priority_id/{$case_priority_list.case_priority_id}">更新</a>
-									<a href="__APP__/Home/CasePriority/delete/case_priority_id/{$case_priority_list.case_priority_id}">删除</a>
+									<a href="{:U('CasePriority/update','case_priority_id='.$case_priority_list['case_priority_id'])}">更新</a>
+									<a href="{:U('CasePriority/delete','case_priority_id='.$case_priority_list['case_priority_id'])}">删除</a>
 									
 								</td>
 							</tr>

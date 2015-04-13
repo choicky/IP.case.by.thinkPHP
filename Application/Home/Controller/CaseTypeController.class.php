@@ -111,7 +111,7 @@ class CaseTypeController extends Controller {
 			$yes_btn	=	I('post.yes_btn');
 
 			if(1==$no_btn){
-				$this->success('取消删除', 'view/case_group_id/'.$case_group_id);
+				$this->success('取消删除', U('CaseType/view','case_group_id='.$case_group_id));
 			}
 			
 			if(1==$yes_btn){
@@ -120,7 +120,7 @@ class CaseTypeController extends Controller {
 
 				$result = M('CaseType')->where($map)->delete();
 				if($result){
-					$this->success('删除成功', 'view/case_group_id/'.$case_group_id);
+					$this->success('删除成功', U('CaseType/view','case_group_id='.$case_group_id));
 				}
 			}
 			

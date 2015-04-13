@@ -27,7 +27,7 @@
 				<div class="panel-heading">
 					<form class="form-inline" id="form_for_search_new" method="post" action="__CONTROLLER__/searchForNewPatent">
 					  <div class="form-group">
-						<label for="case_year">年份</label>
+						<label for="case_year">案号对应的年份</label>
 						<select  class="form-control" name="case_year" id="case_year">
 							<volist name="year_list" id="year_vo">
 							<option value="{$year_vo}"} >{$year_vo}年 &nbsp;</option>
@@ -149,7 +149,7 @@
 									<input type="text" class="form-control" id="our_ref" name="our_ref" placeholder="根据上面的搜索结果填写可用案号">
 								</div>
 								<div class="col-lg-5">
-									注意
+									必填项
 								</div>
 							</div>
 							
@@ -163,7 +163,8 @@
 									</select>
 								</div>
 								<div class="col-lg-5">
-									可通过<a href="__APP__/Home/CaseType/listPage#addNew" target="_blank">这里</a>添加更多案件类型
+									必填项；<br>
+									可通过<a href="{:U('CaseType/listPage#addNew')}" target="_blank">这里</a>添加更多案件类型
 								</div>
 							</div>
 							
@@ -177,7 +178,9 @@
 									</select>
 								</div>
 								<div class="col-lg-5">
-									可通过<a href="__APP__/Home/Account/listPage#addNew" target="_blank">这里</a>添加更多的跟案人
+									必填项；<br>
+									负责跟客户对接业务的人；<br>
+									可通过<a href="{:U('Account/listPage#addNew')}" target="_blank">这里</a>添加更多的跟案人
 								</div>
 							</div>
 							
@@ -212,7 +215,9 @@
 									</select>
 								</div>
 								<div class="col-lg-5">
-									可通过<a href="__APP__/Home/Client/listPage#addNew" target="_blank">这里</a>添加更多的客源
+									必填项；<br>
+									应盈方付款的就是盈方的客户；<br>
+									可通过<a href="{:U('Client/listPage#addNew')}" target="_blank">这里</a>添加更多的客源
 								</div>
 							</div>
 							
@@ -222,7 +227,7 @@
 									<input type="text" class="form-control" id="client_ref" name="client_ref" placeholder="客户的案号">
 								</div>
 								<div class="col-lg-5">
-									注意
+									如客户有自己的案号，必须填写
 								</div>
 							</div>
 							
@@ -236,7 +241,9 @@
 									</select>
 								</div>
 								<div class="col-lg-5">
-									可通过<a href="__APP__/Home/Client/listPage#addNew" target="_blank">这里</a>添加更多的申请人
+									必填项；<br>
+									指权利人；如申请人不与盈方直接对接，则该申请人不属于“客户”；<br>
+									可通过<a href="{:U('Client/listPage#addNew')}" target="_blank">这里</a>添加更多的申请人
 								</div>
 							</div>
 							
@@ -246,7 +253,7 @@
 									<input type="text" class="form-control" id="tentative_title" name="tentative_title" placeholder="暂定专利名称">
 								</div>
 								<div class="col-lg-5">
-									如果不是商标业务，本项为空，不需填写
+									暂定专利名称；或商标名称
 								</div>
 							</div>
 						</fieldset>

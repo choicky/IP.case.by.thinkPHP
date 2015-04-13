@@ -45,7 +45,7 @@
 								</div>
 								<div class="col-lg-5">
 									必填项；<br>
-									可通过<a href="__APP__/Home/CaseType/listPage#addNew" target="_blank">这里</a>添加更多案件类型
+									可通过<a href="{:U('CaseType/listPage#addNew')}" target="_blank">这里</a>添加更多案件类型
 								</div>
 							</div>
 							
@@ -61,14 +61,14 @@
 								<div class="col-lg-5">
 									必填项；<br>
 									负责跟客户对接业务的人；<br>
-									可通过<a href="__APP__/Home/Account/listPage#addNew" target="_blank">这里</a>添加更多的跟案人
+									可通过<a href="{:U('Account/listPage#addNew')}" target="_blank">这里</a>添加更多的跟案人
 								</div>
 							</div>
 							
 							<div class="form-group">
 								<label for="create_date" class="col-lg-3 control-label">开案日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="create_date" name="create_date" value="{$case_list.create_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="create_date" name="create_date" value="{$case_list['create_date']	?	date("Y-m-d",$case_list['create_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									“索取案号”的日期；案号被索取后应当马上在系统开案登记，避免案号重复使用
@@ -78,7 +78,7 @@
 							<div class="form-group">
 								<label for="form_date" class="col-lg-3 control-label">提供开案单日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="form_date" name="form_date" value="{$case_list.form_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="form_date" name="form_date" value="{$case_list['form_date']	?	date("Y-m-d",$case_list['form_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									收到了“开案单”的正式日期；<br>
@@ -99,7 +99,7 @@
 								<div class="col-lg-5">
 									必填项；<br>
 									应盈方付款的就是盈方的客户；<br>
-									可通过<a href="__APP__/Home/Client/listPage#addNew" target="_blank">这里</a>添加更多的客源
+									可通过<a href="{:U('Client/listPage#addNew')}" target="_blank">这里</a>添加更多的客源
 								</div>
 							</div>
 							
@@ -125,7 +125,7 @@
 								<div class="col-lg-5">
 									必填项；<br>
 									指权利人；如申请人不与盈方直接对接，则该申请人不属于“客户”；<br>
-									可通过<a href="__APP__/Home/Client/listPage#addNew" target="_blank">这里</a>添加更多的申请人
+									可通过<a href="{:U('Client/listPage#addNew')}" target="_blank">这里</a>添加更多的申请人
 								</div>
 							</div>
 							
@@ -151,7 +151,7 @@
 								</div>
 								<div class="col-lg-5">
 									负责处理此项工作的人；<br>
-									可通过<a href="__APP__/Home/Account/listPage#addNew" target="_blank">这里</a>添加更多的处理人
+									可通过<a href="{:U('Member/listPage#addNew')}" target="_blank">这里</a>添加更多的处理人
 								</div>
 							</div>						
 							
@@ -179,7 +179,7 @@
 							<div class="form-group">
 								<label for="application_date" class="col-lg-3 control-label">申请日</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="application_date" name="application_date" value="{$case_list.application_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="application_date" name="application_date" value="{$case_list['application_date']	?	date("Y-m-d",$case_list['application_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									正式的申请日
@@ -210,7 +210,7 @@
 							<div class="form-group">
 								<label for="publication_date" class="col-lg-3 control-label">发明专利公布日期、商标公告日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="publication_date" name="publication_date" value="{$case_list.publication_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="publication_date" name="publication_date" value="{$case_list['publication_date']	?	date("Y-m-d",$case_list['publication_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									注意
@@ -220,7 +220,7 @@
 							<div class="form-group">
 								<label for="issue_date" class="col-lg-3 control-label">专利/商标发证日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="issue_date" name="issue_date" value="{$case_list.issue_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="issue_date" name="issue_date" value="{$case_list['issue_date']	?	date("Y-m-d",$case_list['issue_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									注意
@@ -230,7 +230,7 @@
 							<div class="form-group">
 								<label for="expired_date" class="col-lg-3 control-label">专利/商标失效日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="expired_date" name="expired_date" value="{$case_list.expired_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="expired_date" name="expired_date" value="{$case_list['expired_date']	?	date("Y-m-d",$case_list['expired_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									注意
