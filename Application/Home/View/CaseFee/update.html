@@ -49,7 +49,7 @@
 									
 									<select class="form-control" name="fee_type_id" size="{$fee_type_count<$row_limit ? $fee_type_count : $row_limit}">
 										<volist name="fee_type_list" id="fee_type_vo">
-										<option value="{$fee_type_vo.fee_type_id}" {$fee_type_vo['fee_type_id']==$case_fee_list['fee_type_id'] ? 'selected="selected"' : ''}>{$fee_type_vo.fee_type_name}</option>
+										<option value="{$fee_type_vo.fee_type_id}" {$fee_type_vo['fee_type_id']==$case_fee_list['fee_type_id'] ? 'selected="selected"' : ''}>{$fee_type_vo.fee_type_name}，{$fee_type_vo['fee_default_amount']/100}</option>
 										</volist>
 									</select>
 								</div>
@@ -123,7 +123,7 @@
 									<input type="text" class="form-control" id="case_payment_id" name="case_payment_id" value="{$case_fee_list['case_payment_id'] ? $case_fee_list['case_payment_id'] : ''}">
 								</div>
 								<div class="col-lg-5">
-									可通过<a href="__APP__/Home/CasePayment/listPage" target="_blank">这里</a>查看所有的缴费单号。
+									可通过<a href="{:U('CasePayment/listPage')}" target="_blank">这里</a>查看所有的缴费单号。
 								</div>
 							</div>
 							<div class="form-group">
@@ -132,7 +132,7 @@
 									<input type="text" class="form-control" id="bill_id" name="bill_id" value="{$case_fee_list['bill_id'] ? $case_fee_list['bill_id'] : ''}">
 								</div>
 								<div class="col-lg-5">
-									可通过<a href="__APP__/Home/Bill/listPage" target="_blank">这里</a>查看所有的账单编号。
+									可通过<a href="{:U('Bill/listPage')}" target="_blank">这里</a>查看所有的账单编号。
 								</div>
 							</div>
 							<div class="form-group">
@@ -141,29 +141,25 @@
 									<input type="text" class="form-control" id="invoice_id" name="invoice_id" value="{$case_fee_list['invoice_id'] ? $case_fee_list['invoice_id'] : ''}">
 								</div>
 								<div class="col-lg-5">
-									可通过<a href="__APP__/Home/Invoice/listPage" target="_blank">这里</a>查看所有的账单编号。
+									可通过<a href="{:U('Invoice/listPage')}" target="_blank">这里</a>查看所有的账单编号。
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="claim_id" class="col-lg-3 control-label">结算单编号/到款认领单编号</label>
+								<label for="claim_id" class="col-lg-3 control-label">实际收支认领单编号</label>
 								<div class="col-lg-4">
 									<input type="text" class="form-control" id="claim_id" name="claim_id" value="{$case_fee_list['claim_id'] ? $case_fee_list['claim_id'] : ''}">
 								</div>
 								<div class="col-lg-5">
-									可通过<a href="__APP__/Home/Invoice/listPage" target="_blank">这里</a>查看所有的账单编号。
+									可通过<a href="{:U('Claim/listPage')}" target="_blank">这里</a>查看所有的账单编号。
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="cost_center_id" class="col-lg-3 control-label">内部结算账户</label>
+								<label for="cost_id" class="col-lg-3 control-label">内部结算单编号</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="cost_center_id" size="{$cost_center_count<$row_limit ? $cost_center_count : $row_limit}">
-										<volist name="cost_center_list" id="cost_center_vo">
-										<option value="{$cost_center_vo.cost_center_id}" {$cost_center_vo['cost_center_id']==$case_fee_list['cost_center_id'] ? 'selected="selected"' : ''}>{$cost_center_vo.cost_center_name}</option>
-										</volist>
-									</select>
+									<input type="text" class="form-control" id="cost_id" name="cost_id" value="{$case_fee_list['cost_id'] ? $case_fee_list['cost_id'] : ''}">									
 								</div>
 								<div class="col-lg-5">
-									本笔费用实际缴纳之后，相应的官费/服务费应当结算到哪个账户？
+									可通过<a href="{:U('Cost/listPage')}" target="_blank">这里</a>查看所有的账单编号。
 								</div>
 							</div>
 							<div class="form-group">

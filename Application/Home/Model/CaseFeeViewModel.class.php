@@ -24,7 +24,7 @@ class CaseFeeViewModel extends ViewModel {
 			'bill_id',
 			'invoice_id',
 			'claim_id',
-			'cost_center_id',
+			'cost_id',
 			'cost_amount',
 			'_type'=>'LEFT'
 		),
@@ -61,10 +61,10 @@ class CaseFeeViewModel extends ViewModel {
 			'_on'	=>	'CasePayment.case_payment_id=CaseFee.case_payment_id'
 		),
 		
-		'CostCenter'	=>	array(
-			'cost_center_name',
+		'Cost'	=>	array(
+			'Cost_name',
 			'_type'=>'LEFT',
-			'_on'	=>	'CostCenter.cost_center_id=CaseFee.cost_center_id'
+			'_on'	=>	'Cost.cost_id=CaseFee.cost_id'
 		),
 	);
 	

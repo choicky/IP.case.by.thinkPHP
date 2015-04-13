@@ -80,15 +80,6 @@ class CaseModel extends RelationModel {
 			//'as_fields'			=>	'handler_name'	//字段别名
 		),
 		
-		'TmCategory'	=>	array(							//本数据关联的名称
-			'mapping_name'		=>	'TmCategory',			//重新定义本数据关联的名称
-			'class_name'		=>	'TmCategory',			//被关联的数据表
-			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
-			'foreign_key'		=>	'tm_category_id',		//外键，
-			'mapping_fields'	=>	'tm_category_number',	//关联字段
-			//'as_fields'			=>	'tm_category_number'	//字段别名
-		),
-		
 		'CaseExtend'	=>	array(						//本数据关联的名称
 			'mapping_name'		=>	'CaseExtend',		//重新定义本数据关联的名称
 			'class_name'		=>	'CaseExtend',		//被关联的数据表
@@ -121,8 +112,8 @@ class CaseModel extends RelationModel {
 			'class_name'		=>	'CaseFeeView',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'case_id',			//外键
-			'mapping_fields'	=>	'case_fee_id,case_phase_name,fee_type_name,official_fee,service_fee,oa_date,due_date,allow_date,payer_name,case_payment_id,payment_date,bill_id,invoice_id,claim_id,cost_center_name,cost_amount',		//关联字段
-			'mapping_order' => 'payment_date asc',		//排序
+			'mapping_fields'	=>	'case_fee_id,case_phase_name,fee_type_name,official_fee,service_fee,oa_date,due_date,allow_date,payer_name,case_payment_id,payment_date,bill_id,invoice_id,claim_id,Cost_name,cost_amount',		//关联字段
+			'mapping_order' => 'due_date asc',		//排序
 		),
 
 		

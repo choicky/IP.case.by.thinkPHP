@@ -89,7 +89,7 @@
 			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					优先权信息，共{$case_priority_count}项。点击<a href="{:U('CasePriority/view','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加优先权信息
+					优先权信息，共{$case_priority_count}项。点击<a href="{:U('CasePriority/view/#addNew','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加优先权信息
 				</div>
 				
 
@@ -136,7 +136,7 @@
 			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					交文记录信息，共{$case_file_count}项。点击<a href="{:U('CaseFile/view','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加文件记录
+					交文记录信息，共{$case_file_count}项。点击<a href="{:U('CaseFile/view/#addNew','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加文件记录
 				</div>
 			
 				<!-- Table -->
@@ -184,7 +184,7 @@
 			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					费用信息，共{$case_fee_count}项。点击”<a href="{:U('CaseFee/view','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加费用记录
+					费用信息，共{$case_fee_count}项。点击”<a href="{:U('CaseFee/view/#addNew','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加费用记录
 				</div>
 			
 				<!-- Table -->
@@ -204,9 +204,9 @@
 								<th>缴费人</th>
 								<th>缴费单号及日期</th>
 								<th>账单号</th>
-								<th>发票编号</th>
-								<th>到账编号</th>
-								<th>结算账户</th>
+								<th>发票单号</th>
+								<th>到账认领单号</th>
+								<th>内部结算单号</th>
 								<th>结算金额</th>
 								<th>常用操作</th>
 								

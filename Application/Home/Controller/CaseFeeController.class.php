@@ -98,7 +98,7 @@ class CaseFeeController extends Controller {
 			$result	=	M('CaseFee')->save($case_fee_data);
 			
 			if(false !== $result){
-				$this->success('修改成功', U('Case/view','case_id='.$case_fee_data['case_id']));
+				$this->success('修改成功', U('CaseFee/view','case_id='.$case_fee_data['case_id']));
 			}else{
 				$this->error('修改失败');
 			}
@@ -142,12 +142,6 @@ class CaseFeeController extends Controller {
 			$payer_count	=	count($payer_list);
 			$this->assign('payer_list',$payer_list);
 			$this->assign('payer_count',$payer_count);
-			
-			//取出 CostCenter 表的内容以及数量
-			$cost_center_list	=	D('CostCenter')->listBasic();
-			$cost_center_count	=	count($cost_center_list);
-			$this->assign('cost_center_list',$cost_center_list);
-			$this->assign('cost_center_count',$cost_center_count);
 			
 			//取出其他变量
 			$row_limit  =   C("ROWS_PER_SELECT");
