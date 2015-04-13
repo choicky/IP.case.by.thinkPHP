@@ -8,13 +8,14 @@
 // +----------------------------------------------------------------------
 // | This file is required by: CasePaymentModel
 // +----------------------------------------------------------------------
+
 namespace Home\Model;
 
 //因为启动数据表视图模型，必须继承 ViewModel ，注释 Model
 //use Think\Model;
 use Think\Model\ViewModel;
 
-class CaseFeePaymentViewModel extends ViewModel {
+class CaseFeeInfoViewModel extends ViewModel {
 	
 	//定义 CaseFee 表与 Case 表的视图关系
 	protected $viewFields = array(
@@ -33,7 +34,7 @@ class CaseFeePaymentViewModel extends ViewModel {
 			'bill_id',
 			'invoice_id',
 			'claim_id',
-			'cost_center_id',
+			'cost_id',
 			'cost_amount',
 			'_type'=>'LEFT'
 		),
@@ -50,7 +51,6 @@ class CaseFeePaymentViewModel extends ViewModel {
 			'application_date',
 			'application_number',
 			'formal_title',
-			'tm_category_id',
 			'publication_date',
 			'issue_date',
 			'_type'=>'LEFT',
@@ -75,13 +75,12 @@ class CaseFeePaymentViewModel extends ViewModel {
 			'payer_name',
 			'_type'=>'LEFT',
 			'_on'	=>	'Payer.payer_id=CaseFee.payer_id'
-		),
+		),		
 		
-		
-		'CostCenter'	=>	array(
-			'cost_center_name',
+		'Cost'	=>	array(
+			'cost_name',
 			'_type'=>'LEFT',
-			'_on'	=>	'CostCenter.cost_center_id=CaseFee.cost_center_id'
+			'_on'	=>	'Cost.cost_id=CaseFee.cost_id'
 		),
 		
 		'Client'	=>	array(
