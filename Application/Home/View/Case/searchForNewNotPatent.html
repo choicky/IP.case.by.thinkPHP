@@ -1,0 +1,288 @@
+<!-- 继承模板页面 base --> 
+<!-- 该模板位于  ./Application\Home\View\Public --> 
+<extend name="Public:base" />
+	
+<!-- 区块 title 替换开始 --> 	
+	<block name="title">
+		<title>搜索</title>
+	</block>
+<!-- 区块 title 替换结束 --> 	
+	
+<!-- 区块 page 替换开始 --> 
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>搜索条件</h3>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading">
+					<form class="form-inline" id="form_for_search_new" method="post" action="__CONTROLLER__/searchForNewNotPatent">
+					  <div class="form-group">
+						<label for="case_year">案号对应的年份</label>
+						<select  class="form-control" name="case_year" id="case_year">
+							<volist name="year_list" id="year_vo">
+							<option value="{$year_vo}"} {$year_vo==$case_year	?	'selected="selected"'	:	''}>{$year_vo}</option>
+							</volist>
+							<option value="0"} >不限</option>
+						</select>
+					  </div>
+
+					  <div class="form-group">
+						<label for="case_group_id"> &nbsp; 案件大类</label>
+						<select  class="form-control" name="case_group_id" id="case_group_id">
+							<option value="0"}>不限</option>
+							<volist name="case_group_list" id="case_group_vo">
+							<option value="{$case_group_vo['case_group_id']}"} {$case_group_vo['case_group_id']==$case_group_id	?	'selected="selected"'	:	''}>{$case_group_vo['case_group_name']}</option>
+							</volist>
+						</select>
+					  </div>
+
+					  
+					  <div class="form-group">
+						<label for="limit_number"> &nbsp; 查看最新的案件数量</label>
+						<select  class="form-control" name="limit_number" id="limit_number">
+							<volist name="number_list" id="follower_vo">
+							<option value="{$follower_vo}" {$follower_vo==3? 'selected="selected"' :''}}>{$follower_vo}</option>
+							</volist>
+						</select>
+					  </div>
+
+					<button type="submit" class="btn btn-primary">搜</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>最新开案的{$case_count}个案子：</h3>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					点击“盈方案号”能查看、修改案子的所有信息
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								<th>盈方案号</th>
+								<th>案件类型</th>								
+								<th>跟案人</th>								
+								<th>开案日</th>								
+								<th>客户</th>
+								<th>客户案号</th>
+								<th>申请人</th>
+								<th>暂定名称</th>								
+								<th>申请日</th>
+								<th>申请号</th>								
+								<th>专利名称/商标类别</th>
+								<th>常用操作</th>								
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 case_vo 赋给  case_vo--> 
+							<volist name="case_list" id="case_vo">
+							<tr>
+								<td><a href="{:U('Case/view','case_id='.$case_vo['case_id'])}" target="_blank">{$case_vo.our_ref}<a></td>
+								<td>{$case_vo['case_type_name']}</td>
+								<td>{$case_vo['follower_name']}</td>
+								<td>{$create_date	=	$case_vo['create_date']	?	date("Y-m-d",$case_vo['create_date'])		:	''}</td>
+								<td>{$case_vo['client_name']}</td>
+								<td>{$case_vo.client_ref}</td>
+								<td>{$case_vo['applicant_name']}</td>
+								<td>{$case_vo.tentative_title}</td>
+								<td>{$application_date	=	$case_vo['application_date']	?	date("Y-m-d",$case_vo['application_date'])		:	''}</td>
+								<td>{$case_vo.application_number}</td>
+								<td>
+									{$case_vo['formal_title'] ? $case_vo['formal_title'] : $case_vo['TmCategory']['tm_category_number']}
+								</td>
+								<td>
+									<a href="{:U('CasePriority/view','case_id='.$case_vo['case_id'])}" target="_blank">优先权记录</a><br>
+									<a href="{:U('CaseFile/view','case_id='.$case_vo['case_id'])}" target="_blank">文件记录</a><br>
+									<a href="{:U('CaseFee/view','case_id='.$case_vo['case_id'])}" target="_blank">费用记录</a></td>
+							</tr>
+							</volist>                 
+						</tbody>
+					</table>
+					{$case_page}
+				</div>
+			</div>
+        </div>	  
+		
+		<a name="addNew"></a>
+		<!-- Page Header
+		================================================== -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3 id="forms">开案初步登记</h3>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="col-lg-9">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
+						<fieldset>
+							<legend>“盈方案号”是必须的</legend>
+							<div class="form-group">
+								<label for="our_ref" class="col-lg-3 control-label">盈方案号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="our_ref" name="our_ref" placeholder="根据上面的搜索结果填写可用案号">
+								</div>
+								<div class="col-lg-5">
+									必填项
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="case_type_id" class="col-lg-3 control-label">案件类型</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="case_type_id" size="{$case_type_count<$row_limit ? $case_type_count : $row_limit}">
+										<volist name="case_type_list" id="case_type_vo">
+										<option value="{$case_type_vo.case_type_id}"}>{$case_type_vo.case_type_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									必填项；<br>
+									可通过<a href="{:U('CaseType/listPage#addNew')}" target="_blank">这里</a>添加更多案件类型
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="follower_id" class="col-lg-3 control-label">跟案人</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="follower_id" size="{$member_count<$row_limit ? $member_count : $row_limit}">
+										<volist name="member_list" id="follower_vo">
+										<option value="{$follower_vo.member_id}" >{$follower_vo.member_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									必填项；<br>
+									负责跟客户对接业务的人；<br>
+									可通过<a href="{:U('Account/listPage#addNew')}" target="_blank">这里</a>添加更多的跟案人
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="create_date" class="col-lg-3 control-label">开案日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="create_date" name="create_date" value="{$today|date="Y-m-d",###}">
+								</div>
+								<div class="col-lg-5">
+									开案日期，是指“索取案号”的日期，案号被索取之后， 应当马上在系统登记，避免案号重复使用
+								</div>
+							</div>
+							
+						</fieldset>
+						<fieldset>
+							<div class="form-group">
+								<label for="client_id" class="col-lg-3 control-label">客源/客户</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="client_id" size="{$client_count<$row_limit ? $client_count : $row_limit}">
+										<volist name="client_list" id="client_vo">
+										<option value="{$client_vo.client_id}">{$client_vo.client_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									必填项；<br>
+									应盈方付款的就是盈方的客户；<br>
+									可通过<a href="{:U('Client/listPage#addNew')}" target="_blank">这里</a>添加更多的客源
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="client_ref" class="col-lg-3 control-label">对方案号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="client_ref" name="client_ref" placeholder="客户的案号">
+								</div>
+								<div class="col-lg-5">
+									如客户有自己的案号，必须填写
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="applicant_id" class="col-lg-3 control-label">申请人</label>
+								<div class="col-lg-4">
+									<select multiple class="form-control" name="applicant_id" size="{$client_count<$row_limit ? $client_count : $row_limit }">
+										<volist name="client_list" id="applicant_vo">
+										<option value="{$applicant_vo.client_id}" >{$applicant_vo.client_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									必填项；<br>
+									指权利人；如申请人不与盈方直接对接，则该申请人不属于“客户”；<br>
+									可通过<a href="{:U('Client/listPage#addNew')}" target="_blank">这里</a>添加更多的申请人
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="tentative_title" class="col-lg-3 control-label">暂定专利名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="tentative_title" name="tentative_title" placeholder="暂定专利名称">
+								</div>
+								<div class="col-lg-5">
+									暂定专利名称；或商标名称
+								</div>
+							</div>
+						</fieldset>
+						<fieldset>
+							<div class="form-group">
+								<label for="remarks" class="col-lg-3 control-label">备注</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="remarks" name="remarks" placeholder="{$case_vo.remarks}">
+								</div>
+								<div class="col-lg-5">
+									注意
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="related_our_ref" class="col-lg-3 control-label">关联的盈方案号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="related_our_ref" name="related_our_ref" placeholder="关联的盈方案号" placeholder="{$case_vo.related_our_ref}">
+								</div>
+								<div class="col-lg-5">
+									注意
+								</div>
+							</div>			
+							
+							
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button class="btn btn-default"> 取消 </button>
+									<button type="submit" class="btn btn-primary"> 确认 </button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+        </div>
+
+	</block>
+<!-- 区块 page 替换结束 --> 

@@ -21,7 +21,7 @@ class CaseFeeViewModel extends ViewModel {
 	protected $viewFields = array(
 		'CaseFee'	=>	array(
 			'case_fee_id',
-			'case_id',
+			'case_id',			
 			'case_phase_id',
 			'fee_type_id',
 			'official_fee',

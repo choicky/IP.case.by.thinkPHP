@@ -155,9 +155,9 @@ class CaseViewModel extends ViewModel {
 		return array("list"=>$list,"page"=>$show,"count"=>$count);
 	}
 	
-	//分页返回本数据视图的所有专利数据
+	//分页返回本数据视图的所有非专利数据
 	public function listPageNotPatent($p,$limit) {
-		$case_type_list	=	D('CaseTypeView')->listNotPatentCaseTypeId();
+		$case_type_list	=	D('CaseType')->listNotPatentCaseTypeId();
 		$map['case_type_id']  = array('in',$case_type_list);
 		
 		$order['create_date']	=	'desc';

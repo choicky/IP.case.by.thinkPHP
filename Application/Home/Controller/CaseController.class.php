@@ -40,6 +40,19 @@ class CaseController extends Controller {
 		$this->display();
 	}
 	
+	//分页显示所有非专利案件，其中，$p为当前分页数，$limit为每页显示的记录数
+	public function listPageNotPatent(){
+		$p	= I("p",1,"int");
+		$page_limit  =   C("RECORDS_PER_PAGE");
+		$case_list = D('CaseView')->listPageNotPatent($p,$page_limit);
+		$case_count	=	count($case_list);
+		$this->assign('case_list',$case_list['list']);
+		$this->assign('case_page',$case_list['page']);
+		$this->assign('case_count',$case_list['count']);
+		
+		$this->display();
+	}
+	
 
 	//新增
 	public function add(){
@@ -129,7 +142,7 @@ class CaseController extends Controller {
 			}else{
 				$map['case_type_name']	=	array('notlike','%专利%');
 			}
-			$case_type_list	=	D('CaseTypeView')->where($map)->listBasic();
+			$case_type_list	=	D('CaseType')->where($map)->listBasic();
 			$case_type_count	=	count($case_type_list);
 			$this->assign('case_type_list',$case_type_list);
 			$this->assign('case_type_count',$case_type_count);
@@ -156,7 +169,7 @@ class CaseController extends Controller {
 		}
 	}
 		
-	//搜索
+	//搜索专利案件
 	public function searchPatent(){
 		//取出年份列表，作为 options
 		$year_list	=	yearOption();
@@ -255,7 +268,106 @@ class CaseController extends Controller {
 	$this->display();
 	}
 	
-	//搜索
+	//搜索非专利案件
+	public function searchNotPatent(){
+		//取出年份列表，作为 options
+		$year_list	=	yearOption();
+		$this->assign('year_list',$year_list);
+		
+		//取出 CaseGroup 表的专利数据，作为 options
+		$case_group_list	=	D('CaseGroup')->field(true)->listAllNotPatent();
+		$this->assign('case_group_list',$case_group_list);
+		
+		//取出 CaseType 表的专利数据，作为 options
+		$case_type_list	=	D('CaseType')->field('case_type_id,case_type_name')->listAllNotPatent();
+		$this->assign('case_type_list',$case_type_list);
+		
+		//取出 Member 表的基本内容，作为 options
+		$member_list	=	D('Member')->listBasic();
+		$this->assign('member_list',$member_list);
+		
+		//取出Client 表的基本内容，作为 options
+		$client_list	=	D('Client')->listBasic();
+		$this->assign('client_list',$client_list);
+		
+		//默认查询最近一年
+		$end_time	=	time();
+		$this->assign('end_time',$end_time);
+				
+		if(IS_POST){
+			
+			//接收搜索参数
+			$case_year	=	I('post.case_year','0','int');
+			$case_group_id	=	I('post.case_group_id','0','int');
+			$case_type_id	=	I('post.case_type_id','0','int');
+			$follower_id	=	I('post.follower_id','0','int');
+			$applicant_id	=	I('post.applicant_id','0','int');
+			$handler_id	=	I('post.handler_id','0','int');
+			$client_id	=	I('post.client_id','0','int');
+			
+			$start_time	=	trim(I('post.start_time'));
+			$start_time	=	$start_time ? strtotime($start_time) : 0;
+			
+			$end_time	=	trim(I('post.end_time'));
+			$end_time	=	$end_time ? strtotime($end_time) : time();
+			
+			$formal_title	=	trim(I('post.formal_title'));			
+			
+			//构造 maping
+			$map['issue_date']  = array('between',array($start_time,$end_time));
+			if($case_year){
+				$map['our_ref']	=	array('like',"%".$case_year."%");
+			}
+			if($case_group_id){
+				$case_type_list	=	D('CaseType')->listCaseTypeId($case_group_id);
+				$map['case_type_id']  = array('in',$case_type_list);
+			}
+			if($case_type_id){
+				$map['case_type_id']	=	$case_type_id;
+			}
+			if($follower_id){
+				$map['follower_id']	=	$follower_id;
+			}
+			if($applicant_id){
+				$map['applicant_id']	=	$applicant_id;
+			}
+			if($handler_id){
+				$map['handler_id']	=	$handler_id;
+			}
+			if($client_id){
+				$map['client_id']	=	$client_id;
+			}
+			if($formal_title){
+				$map['formal_title']	=	array('like','%'.$formal_title.'%');
+			}			
+
+			//取出其他参数
+			$p	= I("p",1,"int");
+			$page_limit  =   C("RECORDS_PER_PAGE");
+			$case_list = D('CaseView')->listPageSearch($p,$page_limit,$map);
+			
+			$this->assign('case_list',$case_list['list']);
+			$this->assign('case_page',$case_list['page']);
+			$this->assign('case_count',$case_list['count']);
+			
+			//返回搜索参数
+			$this->assign('case_year',$case_year);
+			$this->assign('case_group_id',$case_group_id);
+			$this->assign('case_type_id',$case_type_id);
+			$this->assign('follower_id',$follower_id);
+			$this->assign('applicant_id',$applicant_id);
+			$this->assign('handler_id',$handler_id);
+			$this->assign('client_id',$client_id);
+			$this->assign('start_time',$start_time);
+			$this->assign('end_time',$end_time);
+			$this->assign('formal_title',$formal_title);		
+		
+		} 
+	
+	$this->display();
+	}
+	
+	//搜索专利
 	public function searchForNewPatent(){
 		//取出年份列表，作为 options
 		$year_list	=	yearOption();
@@ -271,6 +383,80 @@ class CaseController extends Controller {
 
 		//取出 CaseType 表的专利数据，作为 options
 		$case_type_list	=	D('CaseType')->field('case_type_id,case_type_name')->listAllPatent();
+		$case_type_count	=	count($case_type_list);
+		$this->assign('case_type_list',$case_type_list);
+		$this->assign('case_type_count',$case_type_count);
+		
+		//取出 Member 表的内容以及数量
+		$member_list	=	D('Member')->field(true)->listBasic();
+		$member_count	=	count($member_list);
+		$this->assign('member_list',$member_list);
+		$this->assign('member_count',$member_count);
+		
+		//取出 Client 表的内容以及数量
+		$client_list	=	D('Client')->field(true)->listBasic();
+		$client_count	=	count($client_list);
+		$this->assign('client_list',$client_list);
+		$this->assign('client_count',$client_count);
+
+		//取出其他变量
+		$row_limit  =   C("ROWS_PER_SELECT");
+		$today	=	time();
+		$this->assign('row_limit',$row_limit);
+		$this->assign('today',$today);
+				
+		if(IS_POST){
+			
+			//接收搜索参数
+			$case_year	=	I('post.case_year','0','int');
+			$case_group_id	=	I('post.case_group_id','0','int');
+			$limit_number	=	I('post.limit_number','0','int');
+
+					
+			//构造 maping			
+			if($case_year){
+				$map['our_ref']	=	array('like',"%".$case_year."%");
+			}
+			if($case_group_id){
+				
+				$case_type_id_list	=	D('CaseType')->listCaseTypeId($case_group_id);
+				
+				$map['case_type_id']  = array('in',$case_type_id_list);
+			}
+						
+			//取出搜索结果
+			$order['our_ref']	=	'desc';
+			$case_list_temp	=	D('CaseView')->where($map)->limit($limit_number)->order($order)->select();
+			$case_list	=	array_reverse($case_list_temp);
+			$case_count	=	count($case_list);
+			$case_count	=	($case_count<$limit_number) ? $case_count : $limit_number;
+			$this->assign('case_list',$case_list);			
+			$this->assign('case_count',$case_count);
+
+			//返回检索参数
+			$this->assign('case_year',$case_year);
+			$this->assign('case_group_id',$case_group_id);			
+		} 
+	
+	$this->display();
+	}
+	
+	//搜索非专利
+	public function searchForNewNotPatent(){
+		//取出年份列表，作为 options
+		$year_list	=	yearOption();
+		$this->assign('year_list',$year_list);
+		
+		//取出 CaseGroup 表的非专利数据，作为 options
+		$case_group_list	=	D('CaseGroup')->field(true)->listAllNotPatent();
+		$this->assign('case_group_list',$case_group_list);
+		
+		//取出数量，作为 options
+		$number_list	=	numberOption(5);
+		$this->assign('number_list',$number_list);
+
+		//取出 CaseType 表的非专利数据，作为 options
+		$case_type_list	=	D('CaseType')->field('case_type_id,case_type_name')->listAllNotPatent();
 		$case_type_count	=	count($case_type_list);
 		$this->assign('case_type_list',$case_type_list);
 		$this->assign('case_type_count',$case_type_count);

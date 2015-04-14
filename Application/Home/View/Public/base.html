@@ -62,11 +62,11 @@ if(!cookie('name')){
 				<li><h5>费用</h5></li>
 				<li><a href="__MODULE__/CaseFee/searchPatentFee">监控</a></li>
 				<li><a href="__MODULE__/CaseFee/listPagePatentFee">费用记录总览</a></li>
-				<li><a href="__MODULE__/CaseFee/searchPatentFeeList">按交文日期查询</a></li>				
+				<li><a href="__MODULE__/CaseFee/searchPatentFeeList">按缴费日查询</a></li>				
 				<li><h5>文件</h5></li>
 				<li><a href="__MODULE__/CaseFile/searchPatentFile">监控</a></li>
 				<li><a href="__MODULE__/CaseFile/listPagePatentFile">文件记录总览</a></li>
-				<li><a href="__MODULE__/CaseFile/searchPatentFileList">按交文日期查询</a></li>
+				<li><a href="__MODULE__/CaseFile/searchPatentFileList">按交文日查询</a></li>
 				<li><h5>优先权</h5></li>
 				<li><a href="__MODULE__/CasePriority/search">搜索</a></li>
 				<li><a href="__MODULE__/CasePriority/listPage">优先权记录总览</a></li>			
@@ -76,7 +76,22 @@ if(!cookie('name')){
 			<li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="trademark">商标<span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
-                <li><h5>商标分类管理</h5></li>
+                <li><h5>案件</h5></li>
+				<li><a href="__MODULE__/Case/searchForNewNotPatent">开案登记</a></li>
+				<li><a href="__MODULE__/Case/searchNotPatent">查询</a></li>
+				<li><a href="__MODULE__/Case/listPageNotPatent">总览</a></li>
+				<li><h5>费用</h5></li>
+				<li><a href="__MODULE__/CaseFee/searchNotPatentFee">监控</a></li>
+				<li><a href="__MODULE__/CaseFee/listPageNotPatentFee">费用记录总览</a></li>
+				<li><a href="__MODULE__/CaseFee/searchNotPatentFeeList">按缴费日查询</a></li>				
+				<li><h5>文件</h5></li>
+				<li><a href="__MODULE__/CaseFile/searchNotPatentFile">监控</a></li>
+				<li><a href="__MODULE__/CaseFile/listPageNotPatentFile">文件记录总览</a></li>
+				<li><a href="__MODULE__/CaseFile/searchNotPatentFileList">按交文日查询</a></li>
+				<li><h5>优先权</h5></li>
+				<li><a href="__MODULE__/CasePriority/search">搜索</a></li>
+				<li><a href="__MODULE__/CasePriority/listPage">优先权记录总览</a></li>	
+				<li><h5>商标分类管理</h5></li>
 				<li><a href="__MODULE__/TmCategory/listAll">商标分类列表、编辑</a></li>
                 <li><a href="__MODULE__/TmCategory/listAll#addNew">录入新商标分类</a></li>
                 <li class="divider"></li>
