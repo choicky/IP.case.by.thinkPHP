@@ -182,7 +182,7 @@ class InvoiceController extends Controller {
 		
 		//默认查询 0 元 至 20000 元
 		$start_amount	=	0;
-		$end_amount	=	20000;
+		$end_amount	=	2000000;
 		$this->assign('start_amount',$start_amount);
 		$this->assign('end_amount',$end_amount);
 		
@@ -195,9 +195,9 @@ class InvoiceController extends Controller {
 			//接收搜索参数
 			$client_id	=	I('post.client_id','0','int');
 			$start_time	=	trim(I('post.start_time'));
-			$start_time	=	strtotime($start_time);
+			$start_time	=	$start_time	?	strtotime($start_time)	:	strtotime('-1 month');
 			$end_time	=	trim(I('post.end_time'));
-			$end_time	=	strtotime($end_time);
+			$end_time	=	$end_time	?	strtotime($end_time)	:	time();
 			$start_amount	=	trim(I('post.start_amount'))*100;			
 			$end_amount	=	trim(I('post.end_amount'))*100;	
 			$follower_id	=	I('post.follower_id','0','int');
@@ -219,7 +219,14 @@ class InvoiceController extends Controller {
 			$invoice_list = D('Invoice')->where($map)->listPage($p,$page_limit);
 			$this->assign('invoice_list',$invoice_list['list']);
 			$this->assign('invoice_page',$invoice_list['page']);
-		
+			
+			//返回搜索参数
+			$this->assign('client_id',$client_id);
+			$this->assign('start_time',$start_time);
+			$this->assign('end_time',$end_time);
+			$this->assign('start_amount',$start_amount);
+			$this->assign('end_amount',$end_amount);
+			$this->assign('follower_id',$follower_id);			
 		} 
 	
 	$this->display();

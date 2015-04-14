@@ -35,7 +35,7 @@ class CaseFeeController extends Controller {
 		$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
 		$map_case_fee['case_type_id']  = array('in',$case_type_list);
 		
-		$case_fee_list = D('CaseFeeView')->listPage($p,$limit,$map_case_fee);
+		$case_fee_list = D('CaseFeeView')->listPageSearch($p,$page_limit,$map_case_fee);
 		$this->assign('case_fee_list',$case_fee_list['list']);
 		$this->assign('case_fee_page',$case_fee_list['page']);
 		$this->assign('case_fee_count',$case_fee_list['count']);
@@ -53,12 +53,13 @@ class CaseFeeController extends Controller {
 		$map_case_fee['case_type_id']  = array('in',$case_type_list);
 		
 		$case_list	=	M('Case')->where($map_case_fee)->select();
+		print_r($case_type_list);
 		
-		$case_fee_list = D('CaseFeeView')->listPage($p,$limit,$map_case_fee);
+		$case_fee_list = D('CaseFeeView')->listPageSearch($p,$page_limit,$map_case_fee);
 		$this->assign('case_fee_list',$case_fee_list['list']);
 		$this->assign('case_fee_page',$case_fee_list['page']);
 		$this->assign('case_fee_count',$case_fee_list['count']);
-		print_r($case_fee_list['list']);
+		
 		$this->display();
 	}
 
@@ -404,7 +405,7 @@ class CaseFeeController extends Controller {
 	$this->display();
 	}
 	
-	//搜索
+	//搜索专利费用
 	public function searchPatentFeeList(){
 		
 		//取出 Client 表的内容以及数量
@@ -464,6 +465,91 @@ class CaseFeeController extends Controller {
 			
 			//获取专利的 case_type_id 集合
 			$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
+			$map_case_fee['case_type_id']  = array('in',$case_type_list);
+			
+			
+			//分页显示搜索结果
+			$p	= I("p",1,"int");
+			$page_limit  =   C("RECORDS_PER_PAGE");
+			$case_fee_list = D('CaseFeeView')->listPageSearch($p,$page_limit,$map_case_fee);
+			$this->assign('case_fee_list',$case_fee_list['list']);
+			$this->assign('case_fee_page',$case_fee_list['page']);
+			$this->assign('case_fee_count',$case_fee_list['count']);
+			
+			//返回所接受的检索条件
+			$this->assign('client_id',$client_id);
+			$this->assign('applicant_id',$applicant_id);
+			$this->assign('follower_id',$follower_id);
+			$this->assign('cost_center_id',$cost_center_id);
+			$this->assign('case_phase_id',$case_phase_id);
+			$this->assign('start_payment_date',$start_payment_date);
+			$this->assign('end_payment_date',$end_payment_date);
+		
+		} 
+	
+	$this->display();
+	}
+	
+	//搜索非专利费用
+	public function searchNotPatentFeeList(){
+		
+		//取出 Client 表的内容以及数量
+		$client_list	=	D('Client')->listBasic();
+		$this->assign('client_list',$client_list);
+		
+		//取出 Member 表的内容以及数量
+		$member_list	=	D('Member')->listBasic();
+		$this->assign('member_list',$member_list);
+		
+		//取出 CasePhase 表的内容以及数量
+		$case_phase_list	=	D('CasePhase')->listBasic();
+		$this->assign('case_phase_list',$case_phase_list);
+		
+		//取出 CostCenter 表的内容以及数量
+		$cost_center_list	=	D('CostCenter')->listBasic();
+		$this->assign('cost_center_list',$cost_center_list);
+		
+		//默认查询未来3个月期限
+		$start_payment_date	=	time();
+		$end_payment_date	=	strtotime('+1 month');
+		$this->assign('start_payment_date',$start_payment_date);
+		$this->assign('end_payment_date',$end_payment_date);
+		
+		if(IS_POST){
+			
+			//接收搜索参数			
+			$client_id	=	I('post.client_id','0','int');
+			$applicant_id	=	I('post.applicant_id','0','int');
+			$follower_id	=	I('post.follower_id','0','int');
+			$cost_center_id	=	I('post.cost_center_id','0','int');	
+			$case_phase_id	=	I('post.case_phase_id','0','int');
+			
+			$start_payment_date	=	trim(I('post.start_payment_date'));
+			$start_payment_date	=	$start_payment_date ? strtotime($start_payment_date) : time();			
+			$end_payment_date	=	trim(I('post.end_payment_date'));
+			$end_payment_date	=	$end_payment_date ? strtotime($end_payment_date) : strtotime('+1 month');
+			
+			//构造 maping
+			if($client_id){
+				$map_case_fee['client_id']	=	$client_id;
+			}
+			if($applicant_id){
+				$map_case_fee['applicant_id']	=	$applicant_id;
+			}
+			if($follower_id){
+				$map_case_fee['follower_id']	=	$follower_id;
+			}	
+			
+			if($cost_center_id){
+				$map_case_fee['cost_center_id']	=	$cost_center_id;
+			}			
+			if($case_phase_id){
+				$map_case_fee['case_phase_id']	=	$case_phase_id;
+			}
+			$map_case_fee['payment_date']	=	array('between',$start_payment_date.','.$end_payment_date);
+			
+			//获取专利的 case_type_id 集合
+			$case_type_list	=	D('CaseType')->listNotPatentCaseTypeId();
 			$map_case_fee['case_type_id']  = array('in',$case_type_list);
 			
 			

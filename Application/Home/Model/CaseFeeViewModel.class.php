@@ -155,13 +155,15 @@ class CaseFeeViewModel extends ViewModel {
 	public function listPageSearch($p,$limit,$map) {
 		$order['due_date']	=	'asc';
 		$order['our_ref']	=	'asc';		
-		$list	=	$this->field(true)->order($order)->where($map)->page($p.','.$limit)->select();
+		$list	=	$this->field(true)->where($map)->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->where($map)->count();
 		
-		$Page	= new \Think\Page($count,$limit);
+		$Page	= new \Think\Page($count,$limit);	
 		$show	= $Page->show();
+
 		
+	
 		return array("list"=>$list,"page"=>$show,"count"=>$count);
 	}
 }

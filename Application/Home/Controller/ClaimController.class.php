@@ -153,7 +153,7 @@ class ClaimController extends Controller {
 				
 		//默认查询 0 元 至 20000 元
 		$start_amount	=	0;
-		$end_amount	=	20000;
+		$end_amount	=	2000000;
 		$this->assign('start_amount',$start_amount);
 		$this->assign('end_amount',$end_amount);
 				
@@ -180,14 +180,11 @@ class ClaimController extends Controller {
 			}
 			if($client_id){
 				$map['client_id']	=	$client_id;
-			}	
-			
+			}			
 			
 			$map_amount['income_amount']	=	array('between',array($start_amount,$end_amount));
-
 			$map_amount['outcome_amount']	=	array('between',array($start_amount,$end_amount));
-			$map_amount['_logic'] = 'OR';
-			
+			$map_amount['_logic'] = 'OR';			
 			
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
@@ -196,6 +193,13 @@ class ClaimController extends Controller {
 			$this->assign('claim_list',$claim_list['list']);
 			$this->assign('claim_page',$claim_list['page']);
 			$this->assign('claim_count',$claim_count);
+			
+			//返回搜索参数
+			$this->assign('claimer_id',$claimer_id);
+			$this->assign('cost_center_id',$cost_center_id);
+			$this->assign('client_id',$client_id);
+			$this->assign('start_amount',$start_amount);
+			$this->assign('end_amount',$end_amount);
 		
 		} 
 	

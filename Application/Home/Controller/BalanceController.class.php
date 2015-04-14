@@ -186,9 +186,9 @@ class BalanceController extends Controller {
 			//接收搜索参数
 			$account_id	=	I('post.account_id','0','int');
 			$start_time	=	trim(I('post.start_time'));
-			$start_time	=	strtotime($start_time);
+			$start_time	=	$start_time	?	strtotime($start_time)	:	strtotime('-1 month');
 			$end_time	=	trim(I('post.end_time'));
-			$end_time	=	strtotime($end_time);
+			$end_time	=	$end_time	?	strtotime($end_time)	:	time();
 			$follower_id	=	I('post.follower_id','0','int');
 			
 			//构造 maping
@@ -206,6 +206,12 @@ class BalanceController extends Controller {
 			$balance_list = D('Balance')->where($map)->listPage($p,$page_limit);
 			$this->assign('balance_list',$balance_list['list']);
 			$this->assign('balance_page',$balance_list['page']);
+			
+			//返回搜索参数
+			$this->assign('account_id',$account_id);
+			$this->assign('start_time',$start_time);
+			$this->assign('end_time',$end_time);
+			$this->assign('follower_id',$follower_id);
 		
 		} 
 	

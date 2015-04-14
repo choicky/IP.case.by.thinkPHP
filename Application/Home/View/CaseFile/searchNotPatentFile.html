@@ -1,0 +1,161 @@
+<!-- 继承模板页面 base --> 
+<!-- 该模板位于  ./Application\Home\View\Public --> 
+<extend name="Public:base" />
+	
+<!-- 区块 title 替换开始 --> 	
+	<block name="title">
+		<title>搜索文件信息</title>
+	</block>
+<!-- 区块 title 替换结束 --> 	
+	
+<!-- 区块 page 替换开始 --> 
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>搜索条件</h3>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					默认查找最近一个月到期的文件，可手动修改查询条件
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								<th>期限日开始时间</th>	
+								<th>期限日截止时间</th>								
+								<th>客户</th>
+								<th>申请人</th>
+								<th>跟案人</th>
+								<th>已提交？</th>
+								<th>&nbsp;</th>
+							</tr>
+							
+						</thead>
+						<tbody>
+						<form class="form-inline" method="post" action="__CONTROLLER__/searchNotPatentFile">
+							<tr>
+								<td>
+									<input type="date" class="form-control" id="start_due_date" name="start_due_date" value="{$start_due_date|date="Y-m-d",###}">
+								</td>
+								<td>
+									<input type="date" class="form-control" id="end_due_date" name="end_due_date" value="{$end_due_date|date="Y-m-d",###}">
+								</td>
+								<td>
+									<select class="form-control" name="client_id">
+										<option value="0"}>不限</option>
+										<volist name="client_list" id="client_vo">
+										<option value="{$client_vo.client_id}" {$client_vo['client_id']==$client_id	?	'selected="selected"'	:	''}>{$client_vo.client_name}</option>
+										</volist>
+									</select>
+								</td>
+								<td>
+									<select class="form-control" name="applicant_id">
+										<option value="0"}>不限</option>
+										<volist name="client_list" id="applicant_vo">
+										<option value="{$applicant_vo.client_id}" {$applicant_vo['client_id']==$applicant_id	?	'selected="selected"'	:	''}>{$applicant_vo.client_name}</option>
+										</volist>
+									</select>
+								</td>
+								<td>
+									<select class="form-control" name="follower_id">
+										<option value="0"}>不限</option>
+										<volist name="member_list" id="member_vo">
+										<option value="{$member_vo.member_id}" {$member_vo['member_id']==$follower_id	?	'selected="selected"'	:	''}>{$member_vo.member_name}</option>
+										</volist>
+									</select>
+								</td>
+								<td>
+									<select class="form-control" name="is_filed">
+										<option value="0" }>不限</option>
+										<option value="1" {$is_filed==1	?	'selected="selected"'	:	''}>未交</option>										
+										<option value="2" {$is_filed==2	?	'selected="selected"'	:	''}>已交</option>
+									</select>
+								</td>								
+								<td><button type="submit" class="btn btn-primary">搜</button></td>						
+							</tr>
+						</form>
+						</tbody>
+					</table>
+				</div>
+			</div>
+        </div>
+
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>搜索结果（共{$case_file_count}项）</h>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					说明
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								
+								<th>序号</th>								
+								<th>我方案号</th>								
+								<th>对方案号</th>								
+								<th>专利名称</th>
+								<th>申请日</th>
+								<th>申请号</th>
+								<th>文件名称</th>
+								<th>官文日期</th>
+								<th>期限日</th>
+								<th>完成日期</th>
+								<th>服务费</th>
+								<th>内部结算金额</th>
+								<th>常用操作</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 case_file_list 赋给  case_file_vo--> 
+							<volist name="case_file_list" id="case_file_vo">
+							<tr>
+								
+								<td>{$i}</td>								
+								<td>{$case_file_vo['our_ref']}</td>								
+								<td>{$case_file_vo['client_ref']}</td>
+								<td>{$case_file_vo['formal_title']}</td>
+								<td>{$case_file_vo['application_date']	?	date("Y-m-d",$case_file_vo['application_date'])	:	''}</td>
+								<td>{$case_file_vo['application_number']}</td>
+								<td>{$case_file_vo['file_type_name']}</td>
+								<td>{$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])	:	''}</td>
+								<td>{$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])	:	''}</td>
+								<td>{$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])	:	''}</td>
+								<td>{$case_file_vo['service_fee']/100}</td>
+								<td>{$case_file_vo['cost_amount']/100}</td>
+								<td><a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}" target="_blank">更新</a></td>
+								</tr>
+							</volist>
+						</tbody>
+					</table>  
+					{$case_file_page}
+				</div>
+			</div>
+        </div>
+
+	</block>
+<!-- 区块 page 替换结束 --> 

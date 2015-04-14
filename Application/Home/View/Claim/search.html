@@ -31,7 +31,7 @@
 						<select class="form-control" name="claimer_id">
 							<option value="0"> 不限 </option>
 							<volist name="member_list" id="member_vo">
-							<option value="{$member_vo.member_id}"}>{$member_vo.member_name}</option>
+							<option value="{$member_vo.member_id}"} {$member_vo['member_id']==$claimer_id	?	'selected="selected"'	:	''}>{$member_vo.member_name}</option>
 							</volist>
 						</select>
 					  </div>
@@ -40,23 +40,23 @@
 						<select class="form-control" name="cost_center_id">
 							<option value="0"> 不限 </option>
 							<volist name="cost_center_list" id="cost_center_vo">
-							<option value="{$cost_center_vo.cost_center_id}"}>{$cost_center_vo.cost_center_name}</option>
+							<option value="{$cost_center_vo.cost_center_id}"} {$cost_center_vo['cost_center_id']==$cost_center_id	?	'selected="selected"'	:	''}>{$cost_center_vo.cost_center_name}</option>
 							</volist>
 						</select>
 					  </div>
 					  <div class="form-group">
 						<label for="start_amount">&nbsp;最小金额：</label>
-							<input type="text" class="form-control" id="start_amount" name="start_amount" size="8" value="{$start_amount}">
+							<input type="text" class="form-control" id="start_amount" name="start_amount" size="8" value="{$start_amount/100}">
 					  </div>
 					  <div class="form-group">&nbsp;最大金额：</label>
-							<input type="text" class="form-control" id="end_amount" name="end_amount" size="8" value="{$end_amount}">
+							<input type="text" class="form-control" id="end_amount" name="end_amount" size="8" value="{$end_amount/100}">
 					  </div>
 					  <div class="form-group">
 						<label for="client_id">&nbsp;客户：</label>
 						<select class="form-control" name="client_id">
 							<option value="0"> 不限 </option>
 							<volist name="client_list" id="client_vo">
-							<option value="{$client_vo.client_id}"}>{$client_vo.client_name}</option>
+							<option value="{$client_vo.client_id}"} {$client_vo['client_id']==$client_id	?	'selected="selected"'	:	''}>{$client_vo.client_name}</option>
 							</volist>
 						</select>
 					  </div>

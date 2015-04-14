@@ -1,0 +1,78 @@
+<!-- 继承模板页面 base --> 
+<!-- 该模板位于  ./Application\Home\View\Public --> 
+<extend name="Public:base" />
+	
+<!-- 区块 title 替换开始 --> 	
+	<block name="title">
+		<title>专利文件信息</title>
+	</block>
+<!-- 区块 title 替换结束 --> 	
+	
+<!-- 区块 page 替换开始 --> 
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>专利文件记录（共{$case_file_count}项）</h>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					点击“我方案号”能看到案子的所有信息
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								
+								<th>序号</th>								
+								<th>我方案号</th>								
+								<th>对方案号</th>								
+								<th>专利名称</th>
+								<th>申请日</th>
+								<th>申请号</th>
+								<th>文件名称</th>
+								<th>官文日期</th>
+								<th>期限日</th>
+								<th>完成日期</th>
+								<th>常用操作</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 case_file_list 赋给  case_file_vo--> 
+							<volist name="case_file_list" id="case_file_vo">
+							<tr>
+								
+								<td>{$i}</td>								
+								<td>
+									<a href="{:U('Case/view','case_id='.$case_fee_vo['case_id'])}" target="_blank">{$case_file_vo['our_ref']}<a></td>								
+								<td>{$case_file_vo['client_ref']}</td>
+								<td>{$case_file_vo['formal_title']}</td>
+								<td>{$case_file_vo['application_date']	?	date("Y-m-d",$case_file_vo['application_date'])	:	''}</td>
+								<td>{$case_file_vo['application_number']}</td>
+								<td>{$case_file_vo['file_type_name']}</td>
+								<td>{$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])	:	''}</td>
+								<td>{$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])	:	''}</td>
+								<td>{$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])	:	''}</td>
+								<td><a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}" target="_blank">更新</a></td>
+								</tr>
+							</volist>
+						</tbody>
+					</table> 
+					{$case_file_page}
+				</div>
+			</div>
+        </div>
+
+	</block>
+<!-- 区块 page 替换结束 --> 

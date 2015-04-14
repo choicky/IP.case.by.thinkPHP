@@ -12,10 +12,11 @@ class IndexController extends Controller {
 		
 		$this->show('还没有做好，先到 <a href="'.U('Group/listAll').'">这里</a> 看看吧 或 <a href="'.U('Account/listAll').'">这里</a>看看吧。。');
 		
+		$map_case_fee['case_type_id']  = array('in','21');
 		
-		$list	=	D('CaseView')->listAll();
-		//$list	=	D('CaseView')->select();
-		print_r($list);
+		
+		$case_fee_list = D('CaseFeeView')->listPage($p,$limit,$map_case_fee);
+		print_r($case_fee_list['list']);
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
