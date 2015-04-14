@@ -10,6 +10,9 @@ class IndexController extends Controller {
 			header('Location: '.U('User/login'));
 		}
 		
+		$msg	=	'首页还没有做好，先到 <a href="'.U('Case/searchForNewPatent').'">这里</a>看看吧。。';
+		
+		$this->show($msg); 
 		
     }
 	
