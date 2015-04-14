@@ -114,6 +114,11 @@ if(!cookie('name')){
                 <li><a href="__MODULE__/CostCenter/listPage">管理内部结算账户</a></li>
               </ul>
             </li>
+			
+			<?php
+				if('财务部'==cookie('name')){
+				//这部分菜单仅对符合要求的用户显示
+			?>
 
 			<li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">财务 <span class="caret"></span></a>
@@ -145,7 +150,10 @@ if(!cookie('name')){
                 <li><a href="__MODULE__/Claim/listPage#addNew">录入新收支认领</a></li>
               </ul>
             </li>
-            
+            <?php } 
+			//上面这部分菜单仅对于满足条件的用户显示
+			?>
+			
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">基础信息配置 <span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="download">
