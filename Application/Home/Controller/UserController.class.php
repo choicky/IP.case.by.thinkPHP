@@ -22,7 +22,7 @@ class UserController extends Controller {
 		if(1==$list['result']){			
 			cookie('id',$list['id']);
 			cookie('name',$list['name']);
-			$this->success('登陆成功',U('Index/index'));
+			$this->success('登陆成功',U('Case/searchForNewPatent'));
 		}else{
 			$this->error('用户名与密码不匹配');
 		}
