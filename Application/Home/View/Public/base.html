@@ -176,8 +176,7 @@ if(!cookie('name')){
                 <li><a href="__MODULE__/FeeType/listPage#addNew">录入新费用类型</a></li>
 				<li><h5>优先权国家管理</h5></li>
 				<li><a href="__MODULE__/Country/listPage">费用类型列表、编辑</a></li>
-                <li><a href="__MODULE__/Country/listPage#addNew">录入新费用类型</a></li>
-				
+                <li><a href="__MODULE__/Country/listPage#addNew">录入新费用类型</a></li>			
 				
 				<li class="divider"></li>
               </ul>
@@ -196,9 +195,38 @@ if(!cookie('name')){
           </form>
 		  </block>
 		  
+		  <!-- 定义区块 guide -->
+		  <block name="guide">
+		  <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="patent">使用帮助 <span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+                <li><h5>案件</h5></li>
+				<li><a href="{:U('Guide/caseGuide')}">如何新建、修改、查找案件</a></li>				
+				<li><h5>文件任务</h5></li>
+				<li><a href="{:U('Guide/feeGuide')}">如何新建、修改、查找文件任务</a></li>			
+				<li><h5>费用任务</h5></li>
+				<li><a href="{:U('Guide/fileGuide')}">如何新建、修改、查找费用任务</a></li>
+				<li><a href="{:U('Guide/fileGuide')}">如何新建、修改、查找缴费清单</a></li>
+				<li><h5>账单与发票</h5></li>
+				<li><a href="{:U('Guide/billGuide')}">如何新建、修改、查找账单</a></li>
+				<li><a href="{:U('Guide/invoiceGuide')}">如何记录、修改发票、建立发票与账单的关联</a></li>				
+				<li><h5>收支流水与结算</h5></li>
+				<li><a href="{:U('Guide/balanceGuide')}">如何记录收支流水、建立收支认领结算</a></li>
+				<li><a href="{:U('Guide/claimGuide')}">收支认领结算与账单的关联</a></li>
+				<li><h5>内部结算</h5></li>
+				<li><a href="{:U('Guide/costGuide')}">如何新建、修改、查找内部结算单</a></li>				
+              </ul>
+            </li>
+		  </ul>
+		  </block>
+
+
+		  
 		  <!-- 定义区块 user-form -->
 		  <block name="user-form">
-          <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav navbar-right">			
+			
 			<?php
 				if(cookie('name')){?>
 				<li class="dropdown">
