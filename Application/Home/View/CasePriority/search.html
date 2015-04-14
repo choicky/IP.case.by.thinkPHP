@@ -31,13 +31,13 @@
 						<select class="form-control" name="priority_country_id">
 							<option value="0"> 不限 </option>
 							<volist name="country_list" id="country_vo">
-							<option value="{$country_vo.country_id}"}>{$country_vo.country_name}</option>
+							<option value="{$country_vo.country_id}"} {$country_vo['country_id']==$priority_country_id	?	'selected="selected"'	:	''}>{$country_vo.country_name}</option>
 							</volist>
 						</select>
 					  </div>
 					  <div class="form-group">
 						<label for="priority_number">&nbsp;优先权号码：</label>
-						<input type="text" class="form-control" id="priority_number" name="priority_number" placeholder="优先权号码">
+						<input type="text" class="form-control" id="priority_number" name="priority_number" placeholder="优先权号码" value="{$priority_number}">
 					  </div>
 					 
 					  <button type="submit" class="btn btn-primary">搜</button>
@@ -68,11 +68,11 @@
 							<tr class="info">
 								
 								<th>序号</th>								
-								<th>优先权日</th>								
 								<th>优先权国家/地区</th>								
+								<th>优先权日</th>								
 								<th>优先权号码</th>
-								<th>要求此优先权的案件编号</th>
-								
+								<th>对应的我方案号</th>
+								<th>对应的对方案号</th>								
 							</tr>
 						</thead>
 						<tbody>
@@ -81,14 +81,11 @@
 							<tr>
 								
 								<td>{$i}</td>								
-								<td>{$case_priority_vo.priority_date|date="Y-m-d",###}</td>								
 								<td>{$case_priority_vo.country_name}</td>
+								<td>{$case_priority_vo.priority_date|date="Y-m-d",###}</td>								
 								<td>{$case_priority_vo.priority_number}</td>
-								<td>
-									{$case_priority_vo.case_id}
-									<a href="__APP__/Home/Case/view/case_id/{$case_priority_vo.case_id}">详情</a>								
-									
-								</td>
+								<td><a href="{:U('Case/view','case_id='.$case_priority_vo['case_id'])}" target="_blank">{$case_priority_vo.our_ref}</a></td>
+								<td>{$case_priority_vo.client_ref}</td>
 								
 							</tr>
 							</volist>

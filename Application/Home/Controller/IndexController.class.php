@@ -13,7 +13,7 @@ class IndexController extends Controller {
 		$this->show('还没有做好，先到 <a href="'.U('Group/listAll').'">这里</a> 看看吧 或 <a href="'.U('Account/listAll').'">这里</a>看看吧。。');
 		
 		
-		$list	=	D('CaseFileTaskView')->listAll();
+		$list	=	D('CaseView')->listAll();
 		//$list	=	D('CaseView')->select();
 		print_r($list);
     }

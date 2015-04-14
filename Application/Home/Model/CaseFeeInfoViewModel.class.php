@@ -6,7 +6,7 @@
 // +----------------------------------------------------------------------
 // | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
 // +----------------------------------------------------------------------
-// | This file is required by: CasePaymentModel
+// | This file is required by: CasePaymentModel, CaseFeeController
 // +----------------------------------------------------------------------
 
 namespace Home\Model;
@@ -119,8 +119,8 @@ class CaseFeeInfoViewModel extends ViewModel {
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
-		$order['bill_date']	=	'desc';
-		$list	=	$this->field(true)->order($order)->select();
+		$order['due_date']	=	'desc';
+		$list	=	$this->order($order)->select();
 		return $list;
 	}
 		
@@ -132,14 +132,14 @@ class CaseFeeInfoViewModel extends ViewModel {
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['bill_date']	=	'desc';	
-		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
+		$order['due_date']	=	'desc';	
+		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		
 		$Page	= new \Think\Page($count,$limit);
 		$show	= $Page->show();
 		
-		return array("list"=>$list,"page"=>$show);
+		return array("list"=>$list,"page"=>$show,"count"=>$count);
 	}
 }

@@ -98,7 +98,6 @@
 								<th>官文日期</th>
 								<th>期限日</th>
 								<th>指示日期</th>
-								<th>缴费单号及缴费日</th>
 								<th>结算账户</th>
 								<th>结算金额</th>
 								<th>常用操作</th>
@@ -107,7 +106,7 @@
 						</thead>
 						<tbody>
 							<!-- 将controller assign过来的 case_fee_list 赋给  case_fee_vo--> 
-							<volist name="case_payment_list['CaseFee']" id="case_fee_vo">
+							<volist name="case_fee_list" id="case_fee_vo">
 							<tr>
 								
 								<td>{$i}</td>								
@@ -125,10 +124,7 @@
 								<td>{$case_fee_vo['oa_date']	?	date("Y-m-d",$case_fee_vo['oa_date'])	:	''}</td>
 								<td>{$case_fee_vo['due_date']	?	date("Y-m-d",$case_fee_vo['due_date'])	:	''}</td>
 								<td>{$case_fee_vo['allow_date']	?	date("Y-m-d",$case_fee_vo['allow_date'])	:	''}</td>
-								<td>
-									{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	''}<br>
-									{$case_fee_vo['payment_date']	?	date("Y-m-d",$case_fee_vo['payment_date'])	:	''}
-								</td>
+								
 								<td>{$case_fee_vo['cost_center_name']}</td>
 								<td>{$case_fee_vo['cost_amount']/100}</td>
 								<td><a href="{:U('CaseFee/update','case_fee_id='.$case_fee_vo['case_fee_id'])}" target="_blank">更新</a></td>

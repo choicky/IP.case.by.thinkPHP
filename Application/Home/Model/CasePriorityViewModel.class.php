@@ -35,6 +35,15 @@ class CasePriorityViewModel extends ViewModel {
 			'country_name',
 			'_on'	=>	'Country.country_id=CasePriority.priority_country_id'
 		),
+		
+		//定义本表与 Case 表的视图关系
+		'CaseInfo'	=>	array(
+			'our_ref',			
+			'client_ref',
+			'_type'=>'LEFT',
+			'_table'=>"__CASE__",	//定义数据表
+			'_on'	=>	'CaseInfo.case_id=CasePriority.case_id'
+		),
 
 	);
 	

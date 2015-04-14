@@ -33,83 +33,39 @@
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
-								<!-- 暂时关闭
-								<th>编号</th>
-								-->
 								<th>盈方案号</th>
-								<!-- 暂时关闭
-								<th>案件类型</th>
-								-->
-								<th>跟案人</th>
-								<!-- 暂时关闭
-								<th>开案日期</th>
-								-->
-								<th>开案单日期</th>
+								<th>跟案人</th>								
+								<th>开案日</th>								
 								<th>客户</th>
 								<th>客户案号</th>
 								<th>申请人</th>
-								<th>暂定名称</th>
-								<!-- 暂时关闭
-								<th>处理人</th>
-								-->
+								<th>暂定名称</th>								
 								<th>申请日</th>
-								<th>申请号</th>
-								<!-- 暂时关闭
-								<th>正式名称</th>
-								-->
-								<th>优先权日</th>
-								<th>常用操作</th>
+								<th>申请号</th>								
+								<th>专利名称/商标类别</th>
+								<th>常用操作</th>								
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 将controller assign过来的 case_list 赋给  case_vo--> 
+							<!-- 将controller assign过来的 case_vo 赋给  case_vo--> 
 							<volist name="case_list" id="case_vo">
 							<tr>
-								<!-- 暂时关闭
-								<td>{$case_vo.case_id}</td>
-								-->
-								<td><a href="__CONTROLLER__/view/case_id/{$case_vo.case_id}">{$case_vo.our_ref}</a></td>
-								<!-- 暂时关闭
-								<td>{$case_vo['CaseType']['case_type_name']}</td>
-								-->
-								<td>{$case_vo['Follower']['member_name']}</td>
-								<!-- 暂时关闭
-								<td>{$case_vo.create_date|date="Y-m-d",###}</td>
-								-->
-								<td>{$case_vo.form_date|date="Y-m-d",###}</td>
-								<td>{$case_vo['Client']['client_name']}</td>
+								<td><a href="{:U('Case/view','case_id='.$case_vo['case_id'])}" target="_blank">{$case_vo.our_ref}<a></td>
+								<td>{$case_vo['follower_name']}</td>
+								<td>{$create_date	=	$case_vo['create_date']	?	date("Y-m-d",$case_vo['create_date'])		:	''}</td>
+								<td>{$case_vo['client_name']}</td>
 								<td>{$case_vo.client_ref}</td>
-								<td>{$case_vo['Applicant']['client_name']}</td>
-								
+								<td>{$case_vo['applicant_name']}</td>
 								<td>{$case_vo.tentative_title}</td>
-								
-								<!-- 暂时关闭
-								<td>{$case_vo['Handler']['member_name']}</td>
-								-->
-								<td>{$case_vo.application_date|date="Y-m-d",###}</td>
+								<td>{$application_date	=	$case_vo['application_date']	?	date("Y-m-d",$case_vo['application_date'])		:	''}</td>
 								<td>{$case_vo.application_number}</td>
-								<!-- 暂时关闭
-								<td>{$case_vo.formal_title}</td>
-								-->
 								<td>
-									<?php
-										$having_priority	= count($case_vo['CasePriority']) ;
-										$first_priority_date	=	date("Y-m-d",$case_vo['CasePriority'][0]['priority_date']);
-										if($having_priority){
-											echo $first_priority_date;
-										}else{
-											echo "无";
-										}
-										
-									?>
-									<a href="__APP__/Home/CasePriority/view/case_id/{$case_vo.case_id}"><br>详情</a>
+									{$case_vo['formal_title'] ? $case_vo['formal_title'] : $case_vo['TmCategory']['tm_category_number']}
 								</td>
 								<td>
-									<a href="__APP__/Home/CaseFile/view/case_id/{$case_vo.case_id}">交文管理</a>
-									<a href="__APP__/Home/CaseFee/view/case_id/{$case_vo.case_id}"><br>交费管理</a>
-									
-								</td>
-								
+									<a href="{:U('CasePriority/view','case_id='.$case_vo['case_id'])}" target="_blank">优先权记录</a><br>
+									<a href="{:U('CaseFile/view','case_id='.$case_vo['case_id'])}" target="_blank">文件记录</a><br>
+									<a href="{:U('CaseFee/view','case_id='.$case_vo['case_id'])}" target="_blank">费用记录</a></td>
 							</tr>
 							</volist>                 
 						</tbody>

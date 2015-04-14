@@ -18,7 +18,7 @@ class CasePaymentController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
-		$case_payment_list = D('CasePayment')->listPage($p,$page_limit);
+		$case_payment_list = D('CasePaymentView')->listPage($p,$page_limit);
 		$this->assign('case_payment_list',$case_payment_list['list']);
 		$this->assign('case_payment_page',$case_payment_list['page']);
 		$this->assign('case_payment_count',$case_payment_list['count']);
@@ -88,7 +88,7 @@ class CasePaymentController extends Controller {
 				$this->error('未指明要编辑的缴费单');
 			}
 
-			$case_payment_list = D('CasePayment')->relation(true)->getByCasePaymentId($case_payment_id);			
+			$case_payment_list = D('CasePaymentView')->getByCasePaymentId($case_payment_id);			
 			$this->assign('case_payment_list',$case_payment_list);
 			
 			//取出 Payer 表的内容以及数量
@@ -112,13 +112,19 @@ class CasePaymentController extends Controller {
 		if(!$case_payment_id){
 			$this->error('未指明要查看的缴费单');
 		}
-
-		$case_payment_list = D('CasePayment')->relation(true)->field(true)->getByCaseId($case_payment_id);	
 		
-		$case_fee_count	=	count($case_payment_list['CaseFee']);
+		//定义检索条件
+		$map['case_payment_id']	=	$case_payment_id;
 		
+		//取出 CasePayment 的信息
+		$case_payment_list = D('CasePaymentView')->field(true)->getByCasePaymentId($case_payment_id);		
 		$this->assign('case_payment_list',$case_payment_list);
-		$this->assign('case_fee_count',$case_fee_count);	
+
+		//取出 CaseFee 的信息
+		$case_fee_list = D('CaseFeeView')->field(true)->where($map)->listAll();	
+		$case_fee_count	=	count($case_fee_list);		
+		$this->assign('case_fee_list',$case_fee_list);
+		$this->assign('case_fee_count',$case_fee_count);		
 
 		$this->display();
 	}

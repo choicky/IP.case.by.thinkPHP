@@ -52,7 +52,7 @@
 								<td>
 									{$cost_vo['cost_date']	?	date("Y-m-d",$cost_vo['cost_date'])	:	''}
 								</td>
-								<td>{$cost_vo['CostCenter']['cost_center_name']}</td>
+								<td>{$cost_vo['cost_center_name']}</td>
 								<td align="right">{$cost_vo['cost_amount']/100}</td>
 								<td align="right">{$cost_vo['other_fee']/100}</td>
 								<td align="right">{$cost_vo['total_amount']/100}</td>

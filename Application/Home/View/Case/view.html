@@ -36,7 +36,6 @@
 								<th>案件类型</th>								
 								<th>跟案人</th>								
 								<th>开案日</th>								
-								<th>开案单日期</th>
 								<th>客户</th>
 								<th>客户案号</th>
 								<th>申请人</th>
@@ -45,7 +44,6 @@
 								<th>申请日</th>
 								<th>申请号</th>								
 								<th>专利名称/商标类别</th>
-								<th>公开/公告日</th>
 								<th>发证日</th>
 								<th>失效日</th>
 								<th>关联案号</th>
@@ -55,21 +53,19 @@
 						<tbody>
 							<!-- 将controller assign过来的 case_list 赋给  case_list--> 
 							<tr>
-								<td>{$case_list['CaseType']['case_type_name']}</td>
-								<td>{$case_list['Follower']['member_name']}</td>
+								<td>{$case_list['case_type_name']}</td>
+								<td>{$case_list['follower_name']}</td>
 								<td>{$create_date	=	$case_list['create_date']	?	date("Y-m-d",$case_list['create_date'])		:	''}</td>
-								<td>{$form_date	=	$case_list['form_date']	?	date("Y-m-d",$case_list['form_date'])		:	''}</td>
-								<td>{$case_list['Client']['client_name']}</td>
+								<td>{$case_list['client_name']}</td>
 								<td>{$case_list.client_ref}</td>
-								<td>{$case_list['Applicant']['client_name']}</td>
+								<td>{$case_list['applicant_name']}</td>
 								<td>{$case_list.tentative_title}</td>
-								<td>{$case_list['Handler']['member_name']}</td>
+								<td>{$case_list['handler_name']}</td>
 								<td>{$application_date	=	$case_list['application_date']	?	date("Y-m-d",$case_list['application_date'])		:	''}	</td>
 								<td>{$case_list.application_number}</td>
 								<td>
 									{$case_list['formal_title'] ? $case_list['formal_title'] : $case_list['TmCategory']['tm_category_number']}
 								</td>
-								<td>{$publication_date	=	$case_list['publication_date']	?	date("Y-m-d",$case_list['publication_date'])		:	''}</td>
 								<td>{$issue_date	=	$case_list['issue_date']	?	date("Y-m-d",$case_list['issue_date'])		:	''}</td>
 								<td>{$expired_date	=	$case_list['expired_date']	?	date("Y-m-d",$case_list['expired_date'])		:	''}</td>
 								<td><a href="{:U('Case/searchAll','key_world='.$case_list['related_our_ref'])}" target="_blank">{$case_list.related_our_ref}</td>
@@ -109,7 +105,7 @@
 						</thead>
 						<tbody>
 							<!-- 将controller assign过来的 case_priority_list 赋给  case_priority_vo--> 
-							<volist name="case_list['CasePriority']" id="case_priority_vo">
+							<volist name="case_priority_list" id="case_priority_vo">
 							<tr>
 								
 								<td>{$i}</td>								
@@ -156,7 +152,7 @@
 						</thead>
 						<tbody>
 							<!-- 将controller assign过来的 case_priority_list 赋给  case_priority_vo--> 
-							<volist name="case_list['CaseFile']" id="case_file_vo">
+							<volist name="case_file_list" id="case_file_vo">
 							<tr>
 								
 								<td>{$i}</td>
@@ -214,7 +210,7 @@
 						</thead>
 						<tbody>
 							<!-- 将controller assign过来的 case_priority_list 赋给  case_priority_vo--> 
-							<volist name="case_list['CaseFee']" id="case_fee_vo">
+							<volist name="case_fee_list" id="case_fee_vo">
 							<tr>
 								
 								<td>{$i}</td>

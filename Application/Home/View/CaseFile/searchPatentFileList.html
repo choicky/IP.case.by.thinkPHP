@@ -25,7 +25,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					默认查找最近一个月到期的文件，可手动修改查询条件
+					默认查找最近一个月提交的文件，可手动修改查询条件
 				</div>
 
 				<!-- Table -->
@@ -33,8 +33,8 @@
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
-								<th>期限日开始时间</th>	
-								<th>期限日截止时间</th>								
+								<th>交文日开始时间</th>	
+								<th>交文日截止时间</th>								
 								<th>客户</th>
 								<th>申请人</th>
 								<th>跟案人</th>
@@ -44,13 +44,13 @@
 							
 						</thead>
 						<tbody>
-						<form class="form-inline" method="post" action="__CONTROLLER__/searchPatentFile">
+						<form class="form-inline" method="post" action="__CONTROLLER__/searchPatentFileList">
 							<tr>
 								<td>
-									<input type="date" class="form-control" id="start_due_date" name="start_due_date" value="{$start_due_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="start_completion_date" name="start_completion_date" value="{$start_completion_date|date="Y-m-d",###}">
 								</td>
 								<td>
-									<input type="date" class="form-control" id="end_due_date" name="end_due_date" value="{$end_due_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="end_completion_date" name="end_completion_date" value="{$end_completion_date|date="Y-m-d",###}">
 								</td>
 								<td>
 									<select class="form-control" name="client_id">

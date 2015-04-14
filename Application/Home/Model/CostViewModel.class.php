@@ -6,26 +6,44 @@
 // +----------------------------------------------------------------------
 // | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
 // +----------------------------------------------------------------------
-// | This file is required by: 
+// | This file is required by: CostController
 // +----------------------------------------------------------------------
 
 namespace Home\Model;
-use Think\Model\RelationModel;
+use Think\Model\ViewModel;
 
-class CasePaymentModel extends RelationModel {
+class CostViewModel extends ViewModel {
 	
+	//定义 CaseFee 表与 Case 表的视图关系
+	protected $viewFields = array(
+		'Cost'	=>	array(
+			'cost_id',
+			'cost_name',
+			'cost_date',
+			'cost_center_id',
+			'cost_amount',
+			'other_fee',
+			'total_amount',		
+			'_type'=>'LEFT'
+		),
+		
+		'CostCenter'	=>	array(
+			'cost_center_name',
+			'_on'	=>	'CostCenter.cost_center_id=Cost.cost_center_id'
+		),
+	);
 	
 	//返回本数据表的所有数据
 	public function listAll() {			
-		$order['payment_date']	=	'desc';
-		$list	=	$this->relation(true)->order($order)->select();
+		$order['cost_date']	=	'desc';
+		$list	=	$this->order($order)->select();
 		return $list;
 	}
 
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['payment_date']	=	'desc';
-		$list	=	$this->relation(true)->order($order)->page($p.','.$limit)->select();
+		$order['cost_date']	=	'desc';
+		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		

@@ -30,8 +30,9 @@
 						<label for="case_year">案号对应的年份</label>
 						<select  class="form-control" name="case_year" id="case_year">
 							<volist name="year_list" id="year_vo">
-							<option value="{$year_vo}"} >{$year_vo}年 &nbsp;</option>
+							<option value="{$year_vo}"} {$year_vo==$case_year	?	'selected="selected"'	:	''}>{$year_vo}</option>
 							</volist>
+							<option value="0"} >不限</option>
 						</select>
 					  </div>
 
@@ -40,7 +41,7 @@
 						<select  class="form-control" name="case_group_id" id="case_group_id">
 							<option value="0"}>不限</option>
 							<volist name="case_group_list" id="case_group_vo">
-							<option value="{$case_group_vo['case_group_id']}"}>{$case_group_vo['case_group_name']}</option>
+							<option value="{$case_group_vo['case_group_id']}"} {$case_group_vo['case_group_id']==$case_group_id	?	'selected="selected"'	:	''}>{$case_group_vo['case_group_name']}</option>
 							</volist>
 						</select>
 					  </div>
@@ -102,12 +103,12 @@
 							<volist name="case_list" id="case_vo">
 							<tr>
 								<td><a href="{:U('Case/view','case_id='.$case_vo['case_id'])}" target="_blank">{$case_vo.our_ref}<a></td>
-								<td>{$case_vo['CaseType']['case_type_name']}</td>
-								<td>{$case_vo['Follower']['member_name']}</td>
+								<td>{$case_vo['case_type_name']}</td>
+								<td>{$case_vo['follower_name']}</td>
 								<td>{$create_date	=	$case_vo['create_date']	?	date("Y-m-d",$case_vo['create_date'])		:	''}</td>
-								<td>{$case_vo['Client']['client_name']}</td>
+								<td>{$case_vo['client_name']}</td>
 								<td>{$case_vo.client_ref}</td>
-								<td>{$case_vo['Applicant']['client_name']}</td>
+								<td>{$case_vo['applicant_name']}</td>
 								<td>{$case_vo.tentative_title}</td>
 								<td>{$application_date	=	$case_vo['application_date']	?	date("Y-m-d",$case_vo['application_date'])		:	''}</td>
 								<td>{$case_vo.application_number}</td>
@@ -115,6 +116,7 @@
 									{$case_vo['formal_title'] ? $case_vo['formal_title'] : $case_vo['TmCategory']['tm_category_number']}
 								</td>
 								<td>
+									<a href="{:U('CasePriority/view','case_id='.$case_vo['case_id'])}" target="_blank">优先权记录</a><br>
 									<a href="{:U('CaseFile/view','case_id='.$case_vo['case_id'])}" target="_blank">文件记录</a><br>
 									<a href="{:U('CaseFee/view','case_id='.$case_vo['case_id'])}" target="_blank">费用记录</a></td>
 							</tr>
@@ -194,15 +196,6 @@
 								</div>
 							</div>
 							
-							<div class="form-group">
-								<label for="form_date" class="col-lg-3 control-label">提供开案单日期</label>
-								<div class="col-lg-4">
-									<input type="date" class="form-control" id="form_date" name="form_date" value="{$today|date="Y-m-d",###}">
-								</div>
-								<div class="col-lg-5">
-									开案单日期，是指收到了开案单的日期，如果日期为空，表示尚未收到开案单。
-								</div>
-							</div>
 						</fieldset>
 						<fieldset>
 							<div class="form-group">
@@ -276,9 +269,7 @@
 								<div class="col-lg-5">
 									注意
 								</div>
-							</div>
-							
-							
+							</div>			
 							
 							
 							<div class="form-group">

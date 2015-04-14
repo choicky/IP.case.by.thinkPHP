@@ -162,6 +162,9 @@ class CasePriorityController extends Controller {
 			$this->assign('case_priority_list',$case_priority_list['list']);
 			$this->assign('case_priority_page',$case_priority_list['page']);
 			$this->assign('case_priority_count',$case_priority_count);
+			
+			$this->assign('priority_country_id',$priority_country_id);
+			$this->assign('priority_number',$priority_number);
 		} 
 	
 	$this->display();

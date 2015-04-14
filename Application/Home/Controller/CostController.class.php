@@ -18,7 +18,7 @@ class CostController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
-		$cost_list = D('Cost')->field(true)->listPage($p,$page_limit);
+		$cost_list = D('CostView')->field(true)->listPage($p,$page_limit);
 		$this->assign('cost_list',$cost_list['list']);
 		$this->assign('cost_page',$cost_list['page']);
 		$this->assign('cost_count',$cost_list['count']);
@@ -87,7 +87,7 @@ class CostController extends Controller {
 				$this->error('未指明要编辑的缴费单');
 			}
 
-			$cost_list = D('Cost')->relation(true)->field(true)->getByCostId($cost_id);			
+			$cost_list = D('CostView')->field(true)->getByCostId($cost_id);			
 			$this->assign('cost_list',$cost_list);
 			
 			//取出 CostCenter 表的内容以及数量
@@ -111,13 +111,19 @@ class CostController extends Controller {
 		if(!$cost_id){
 			$this->error('未指明要查看的缴费单');
 		}
-
-		$cost_list = D('Cost')->relation(true)->field(true)->getByCaseId($cost_id);	
 		
-		$case_fee_list	=	D('CaseFeeInfoView')->field(true)->listAll();
+		//定义查询条件
+		$map['cost_id']	=	$cost_id;
+		
+		//取出 Cost 信息
+		$cost_list = D('CostView')->field(true)->getByCostId($cost_id);	
+		
+		//取出 CaseFee 信息
+		$case_fee_list	=	D('CaseFeeView')->field(true)->where($map)->listAll();
 		$case_fee_count	=	count($case_fee_list);
 		
-		$case_file_list	=	D('CaseFileInfoView')->field(true)->listAll();
+		//取出 CaseFile 信息
+		$case_file_list	=	D('CaseFileView')->field(true)->where($map)->listAll();
 		$case_file_count	=	count($case_file_list);
 		
 		$this->assign('cost_list',$cost_list);
@@ -127,6 +133,25 @@ class CostController extends Controller {
 		$this->assign('case_file_count',$case_file_count);		
 
 		$this->display();
+	}
+	
+	//更新	
+	public function adjustCost(){
+		if(IS_POST){
+			
+			$data=array();
+			$data['cost_id']	=	trim(I('post.cost_id'));
+			$data['cost_amount']	=	100*trim(I('post.cost_amount'));
+			$data['other_fee']	=	100*trim(I('post.other_fee'));
+			$data['total_amount']	=	$data['cost_amount']	+	$data['other_fee'];
+
+			$result = M('Cost')->save($data);
+			if(false !== $result){
+				$this->success('修改成功', U('Cost/view','cost_id='.$data['cost_id']));
+			}else{
+				$this->error('修改失败');
+			}
+		} 
 	}
 	
 	

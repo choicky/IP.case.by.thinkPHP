@@ -18,31 +18,12 @@ class CaseController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
-		$case_list = D('Case')->listPage($p,$page_limit);
+		$case_list = D('CaseView')->listPage($p,$page_limit);
 		$case_count	=	count($case_list);
 		$this->assign('case_list',$case_list['list']);
 		$this->assign('case_page',$case_list['page']);
 		$this->assign('case_count',$case_list['count']);
 
-		/*
-		//取出 Account 表的内容以及数量
-		$account_list	=	D('Account')->field(true)->listAll();
-		$account_count	=	count($account_list);
-		$this->assign('account_list',$account_list);
-		$this->assign('account_count',$account_count);
-		
-		//取出 Member 表的内容以及数量
-		$member_list	=	D('Member')->field(true)->listAll();
-		$member_count	=	count($member_list);
-		$this->assign('member_list',$member_list);
-		$this->assign('member_count',$member_count);
-		
-		//取出其他变量
-		$row_limit  =   C("ROWS_PER_SELECT");
-		$today	=	time();
-		$this->assign('row_limit',$row_limit);
-        $this->assign('today',$today);*/
-	
 		$this->display();
 	}
 	
@@ -50,31 +31,12 @@ class CaseController extends Controller {
 	public function listPagePatent(){
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
-		$case_list = D('Case')->listPagePatent($p,$page_limit);
+		$case_list = D('CaseView')->listPagePatent($p,$page_limit);
 		$case_count	=	count($case_list);
 		$this->assign('case_list',$case_list['list']);
 		$this->assign('case_page',$case_list['page']);
 		$this->assign('case_count',$case_list['count']);
-
-		/*
-		//取出 Account 表的内容以及数量
-		$account_list	=	D('Account')->field(true)->listAll();
-		$account_count	=	count($account_list);
-		$this->assign('account_list',$account_list);
-		$this->assign('account_count',$account_count);
 		
-		//取出 Member 表的内容以及数量
-		$member_list	=	D('Member')->field(true)->listAll();
-		$member_count	=	count($member_list);
-		$this->assign('member_list',$member_list);
-		$this->assign('member_count',$member_count);
-		
-		//取出其他变量
-		$row_limit  =   C("ROWS_PER_SELECT");
-		$today	=	time();
-		$this->assign('row_limit',$row_limit);
-        $this->assign('today',$today);*/
-	
 		$this->display();
 	}
 	
@@ -83,7 +45,6 @@ class CaseController extends Controller {
 	public function add(){
 	
 		$our_ref	=	trim(I('post.our_ref'));
-		$extend_info['expired_date']	=	trim(I('post.expired_date'));
 		$extend_info['related_our_ref']	=	trim(I('post.related_our_ref'));
 		$extend_info['remarks']	=	trim(I('post.remarks'));
 		
@@ -94,7 +55,7 @@ class CaseController extends Controller {
 		}
 		
 		$Model	=	D('Case');
-		if (!$Model->relation(true)->create()){ // 创建数据对象
+		if (!$Model->create()){ // 创建数据对象
 			 // 如果创建失败 表示验证没有通过 输出错误提示信息
 			 $this->error($Model->getError());
 			 //exit($Model->getError());
@@ -109,7 +70,7 @@ class CaseController extends Controller {
 			$extend_info['case_id']	=	$case_id;
 			
 			M('CaseExtend')->add($extend_info);	
-			$this->success('新增成功', 'view/case_id/'.$case_id);
+			$this->success('新增成功', U('Case/view','case_id='.$case_id));
 		}else{
 			$this->error('增加失败');
 		}
@@ -120,13 +81,9 @@ class CaseController extends Controller {
 		if(IS_POST){
 			$case_id	=	trim(I('post.case_id'));
 			
-			$extend_info['case_extend_id']	=	trim(I('post.case_extend_id'));
-			$extend_info['expired_date']	=	trim(I('post.expired_date'));
-			$extend_info['expired_date']	=	strtotime($extend_info['expired_date']);
+			$extend_info['case_extend_id']	=	trim(I('post.case_extend_id'));			
 			$extend_info['related_our_ref']	=	trim(I('post.related_our_ref'));
-			$extend_info['remarks']	=	trim(I('post.remarks'));
-			
-			
+			$extend_info['remarks']	=	trim(I('post.remarks'));			
 			
 			$Model	=	D('Case');
 			if (!$Model->relation(true)->create()){ // 创建数据对象
@@ -136,7 +93,9 @@ class CaseController extends Controller {
 			}else{
 				 // 验证通过 写入新增数据
 				 $result_case	=	$Model->save();	
-				  $result_extend	=	M('CaseExtend')->save($extend_info);	
+				
+				//写入关联表数据
+				$result_extend	=	M('CaseExtend')->save($extend_info);	
 				 
 			}
 			if((false !== $result_case)&&(false !== $result_extend)){
@@ -152,13 +111,13 @@ class CaseController extends Controller {
 				$this->error('未指明要编辑的案号');
 			}
 
-			$case_list = D('Case')->relation(true)->getByCaseId($case_id);			
+			$case_list = D('CaseView')->getByCaseId($case_id);			
 			
 			$this->assign('case_list',$case_list);
 			
 			
 			//判断本案是专利、还是非专利
-			if(strpos($case_list['CaseType']['case_type_name'],'专利') !== false){
+			if(strpos($case_list['case_type_name'],'专利') !== false){
 				$is_patent	=	1;
 			}else{
 				$is_patent	=	0;
@@ -185,19 +144,7 @@ class CaseController extends Controller {
 			$client_list	=	D('Client')->field(true)->listBasic();
 			$client_count	=	count($client_list);
 			$this->assign('client_list',$client_list);
-			$this->assign('client_count',$client_count);
-			
-			//取出 TmCategory 表的内容以及数量
-			$tm_category_list	=	D('TmCategory')->field(true)->listBasic();
-			$tm_category_count	=	count($tm_category_list);
-			$this->assign('tm_category_list',$tm_category_list);
-			$this->assign('tm_category_count',$tm_category_count);
-			
-			//取出 Country 表的内容以及数量
-			$country_list	=	D('Country')->field(true)->listAll();
-			$country_count	=	count($country_list);
-			$this->assign('country_list',$country_list);
-			$this->assign('country_count',$country_count);
+			$this->assign('client_count',$client_count);			
 			
 			//取出其他变量
 			$row_limit  =   C("ROWS_PER_SELECT");
@@ -208,47 +155,7 @@ class CaseController extends Controller {
 			$this->display();
 		}
 	}
-	
-	//删除
-	public function delete(){
-		if(IS_POST){
-			
-			//通过 I 方法获取 post 过来的 case_id
-			$case_id	=	trim(I('post.case_id'));
-			$no_btn	=	I('post.no_btn');
-			$yes_btn	=	I('post.yes_btn');
-			
-			if(1==$no_btn){
-				$this->success('取消删除', 'listAll');
-			}
-			
-			if(1==$yes_btn){
-				$map['case_id']	=	$case_id;
-				$condition	=	M('Claim')->where($map)->find();
-				if(is_array($condition)){
-					$this->error('本收支流水已结算，不可删除，只能修改');
-				}
-				
-				$result = M('Patent')->where($map)->delete();
-				if($result){
-					$this->success('删除成功', 'listAll');
-				}
-			}
-			
-		} else{
-			$case_id = I('get.case_id',0,'int');
-
-			if(!$case_id){
-				$this->error('未指明要删除的流水');
-			}
-
-			$case_list = D('Patent')->relation(true)->field(true)->getByPatentId($case_id);			
-			$this->assign('case_list',$case_list);
-
-			$this->display();
-		}
-	}
-	
+		
 	//搜索
 	public function searchPatent(){
 		//取出年份列表，作为 options
@@ -260,7 +167,7 @@ class CaseController extends Controller {
 		$this->assign('case_group_list',$case_group_list);
 		
 		//取出 CaseType 表的专利数据，作为 options
-		$case_type_list	=	D('CaseTypeView')->field('case_type_id,case_type_name')->listAllPatent();
+		$case_type_list	=	D('CaseType')->field('case_type_id,case_type_name')->listAllPatent();
 		$this->assign('case_type_list',$case_type_list);
 		
 		//取出 Member 表的基本内容，作为 options
@@ -300,7 +207,7 @@ class CaseController extends Controller {
 				$map['our_ref']	=	array('like',"%".$case_year."%");
 			}
 			if($case_group_id){
-				$case_type_list	=	D('CaseTypeView')->listCaseTypeId($case_group_id);
+				$case_type_list	=	D('CaseType')->listCaseTypeId($case_group_id);
 				$map['case_type_id']  = array('in',$case_type_list);
 			}
 			if($case_type_id){
@@ -320,16 +227,28 @@ class CaseController extends Controller {
 			}
 			if($formal_title){
 				$map['formal_title']	=	array('like','%'.$formal_title.'%');
-			}
-			
+			}			
 
 			//取出其他参数
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_list = D('Case')->listPageSearch($p,$page_limit,$map);			
+			$case_list = D('CaseView')->listPageSearch($p,$page_limit,$map);
+			
 			$this->assign('case_list',$case_list['list']);
 			$this->assign('case_page',$case_list['page']);
 			$this->assign('case_count',$case_list['count']);
+			
+			//返回搜索参数
+			$this->assign('case_year',$case_year);
+			$this->assign('case_group_id',$case_group_id);
+			$this->assign('case_type_id',$case_type_id);
+			$this->assign('follower_id',$follower_id);
+			$this->assign('applicant_id',$applicant_id);
+			$this->assign('handler_id',$handler_id);
+			$this->assign('client_id',$client_id);
+			$this->assign('start_time',$start_time);
+			$this->assign('end_time',$end_time);
+			$this->assign('formal_title',$formal_title);		
 		
 		} 
 	
@@ -351,7 +270,7 @@ class CaseController extends Controller {
 		$this->assign('number_list',$number_list);
 
 		//取出 CaseType 表的专利数据，作为 options
-		$case_type_list	=	D('CaseTypeView')->field('case_type_id,case_type_name')->listAllPatent();
+		$case_type_list	=	D('CaseType')->field('case_type_id,case_type_name')->listAllPatent();
 		$case_type_count	=	count($case_type_list);
 		$this->assign('case_type_list',$case_type_list);
 		$this->assign('case_type_count',$case_type_count);
@@ -388,23 +307,23 @@ class CaseController extends Controller {
 			}
 			if($case_group_id){
 				
-				$case_type_id_list	=	D('CaseTypeView')->listCaseTypeId($case_group_id);
+				$case_type_id_list	=	D('CaseType')->listCaseTypeId($case_group_id);
 				
 				$map['case_type_id']  = array('in',$case_type_id_list);
 			}
 						
 			//取出搜索结果
 			$order['our_ref']	=	'desc';
-			$case_list_temp	=	D('Case')->relation(true)->where($map)->limit($limit_number)->order($order)->select();
+			$case_list_temp	=	D('CaseView')->where($map)->limit($limit_number)->order($order)->select();
 			$case_list	=	array_reverse($case_list_temp);
 			$case_count	=	count($case_list);
 			$case_count	=	($case_count<$limit_number) ? $case_count : $limit_number;
 			$this->assign('case_list',$case_list);			
 			$this->assign('case_count',$case_count);
-			
-			
 
-			
+			//返回检索参数
+			$this->assign('case_year',$case_year);
+			$this->assign('case_group_id',$case_group_id);			
 		} 
 	
 	$this->display();
@@ -419,10 +338,9 @@ class CaseController extends Controller {
 		if(!$key_word){
 			$this->error('要填写申请号、我方案号、或对方案号');
 		}else{
-			$case_list	=	D('Case')->searchAll($key_word);
+			$case_list	=	D('CaseView')->searchAll($key_word);
 		}
-		
-		
+				
 		$this->assign('case_our_ref_list',$case_list['case_our_ref_list']);
 		$this->assign('case_our_ref_count',$case_list['case_our_ref_count']);
 		$this->assign('case_client_ref_list',$case_list['case_client_ref_list']);
@@ -444,13 +362,29 @@ class CaseController extends Controller {
 		}
 		
 		//取出案件的基本信息
-		$case_list = D('Case')->relation(true)->field(true)->getByCaseId($case_id);
-		$case_priority_count	=	count($case_list['CasePriority']);
-		$case_file_count	=	count($case_list['CaseFile']);
-		$case_fee_count	=	count($case_list['CaseFee']);
+		$case_list = D('CaseView')->field(true)->getByCaseId($case_id);
+		
+		//定义查询
+		$map['case_id']	=	$case_id;
+		
+		//取出优先权信息
+		$case_priority_list	=	D('CasePriorityView')->where($map)->listAll();		
+		$case_priority_count	=	count($case_priority_list);
+		
+		//取出文件信息
+		$case_file_list	=	D('CaseFileView')->where($map)->listAll();
+		$case_file_count	=	count($case_file_list);
+		
+		//取出费用信息
+		$case_fee_list	=	D('CaseFeeView')->where($map)->listAll();
+		$case_fee_count	=	count($case_fee_list);
+		
 		$this->assign('case_list',$case_list);
+		$this->assign('case_priority_list',$case_priority_list);
 		$this->assign('case_priority_count',$case_priority_count);
+		$this->assign('case_file_list',$case_file_list);
 		$this->assign('case_file_count',$case_file_count);
+		$this->assign('case_fee_list',$case_fee_list);
 		$this->assign('case_fee_count',$case_fee_count);
 
 		$this->display();

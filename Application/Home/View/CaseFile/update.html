@@ -42,7 +42,7 @@
 							<div class="form-group">
 								<label for="oa_date" class="col-lg-3 control-label">官文发文日</label>
 								<div class="col-lg-4">									
-									<input type="date" class="form-control" id="oa_date" name="oa_date" value="{$case_file_list.oa_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="oa_date" name="oa_date" value="{$case_file_list['oa_date']	?	date("Y-m-d",$case_file_list['oa_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									日期格式 yyyy-mm-dd 
@@ -51,7 +51,7 @@
 							<div class="form-group">
 								<label for="due_date" class="col-lg-3 control-label">期限日</label>
 								<div class="col-lg-4">									
-									<input type="date" class="form-control" id="due_date" name="due_date" value="{$case_file_list.due_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="due_date" name="due_date" value="{$case_file_list['due_date']	?	date("Y-m-d",$case_file_list['due_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									“期限日”是必填的
@@ -60,13 +60,40 @@
 							<div class="form-group">
 								<label for="completion_date" class="col-lg-3 control-label">完成日</label>
 								<div class="col-lg-4">									
-									<input type="date" class="form-control" id="completion_date" name="completion_date" value="{$case_file_list.completion_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="completion_date" name="completion_date" value="{$case_file_list['completion_date']	?	date("Y-m-d",$case_file_list['completion_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									日期格式 yyyy-mm-dd 
 								</div>
 							</div>
-							
+							<div class="form-group">
+								<label for="service_fee" class="col-lg-3 control-label">服务费</label>
+								<div class="col-lg-4">									
+									<input type="text" class="form-control" id="service_fee" name="service_fee" value="{$case_file_list['service_fee']}">
+								</div>
+								<div class="col-lg-5">
+									如该文件产生单独的服务费，才需要填写<br>
+									缴纳官费产生的服务费（如纯年费）记录在缴费记录中就行 
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="cost_id" class="col-lg-3 control-label">内部结算单编号</label>
+								<div class="col-lg-4">									
+									<input type="text" class="form-control" id="cost_id" name="cost_id" value="{$case_file_list['cost_id']}">
+								</div>
+								<div class="col-lg-5">
+									 
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="cost_amount" class="col-lg-3 control-label">内部结算金额</label>
+								<div class="col-lg-4">									
+									<input type="text" class="form-control" id="cost_amount" name="cost_amount" value="{$case_file_list['cost_amount']/100}">
+								</div>
+								<div class="col-lg-5">
+									 
+								</div>
+							</div>
 							
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">

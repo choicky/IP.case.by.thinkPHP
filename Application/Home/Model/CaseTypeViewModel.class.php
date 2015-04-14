@@ -6,7 +6,7 @@
 // +----------------------------------------------------------------------
 // | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
 // +----------------------------------------------------------------------
-// | This file is required by: CaseTypeController, CaseController
+// | This file is required by: CaseModel, CaseTypeController, CaseController
 // +----------------------------------------------------------------------
 
 namespace Home\Model;
@@ -30,81 +30,15 @@ class CaseTypeViewModel extends ViewModel {
 	
 	);
 	
-	//返回本数据表中与专利有关的数据
-	public function listAllPatent() {
-		$map['case_group_name']	=	array('like','%专利%');
+	
+	
+	//返回本数据表中与非专利有关的数据
+	public function listAllNotPatent() {
+		$map['case_group_name']	=	array('notlike','%专利%');
 		$order['convert(case_type_name using gb2312)']	=	'asc';
 		$list	=	$this->where($map)->order($order)->select();
 		return $list;
-	}
-	
-	//返回本数据表中与专利有关的 case_type_id
-	public function listPatentCaseTypeId() {
-		$map['case_group_name']	=	array('like','%专利%');
-		$order['convert(case_type_name using gb2312)']	=	'asc';
-		$list	=	$this->field('case_type_id')->where($map)->order($order)->select();
-		for($i=0;$i<count($list);$i++){
-			$case_type_list[$i]	=	$list[$i]['case_type_id'];
-		}
-		return $case_type_list;
-	}
-	
-	//根据 $case_group_id 返回本数据表中与专利有关的 case_type_id
-	public function listCaseTypeId($case_group_id) {
-		$map['case_group_id']	=	$case_group_id;
-		$order['case_type_id']	=	'asc';
-		$list	=	$this->field('case_type_id,case_group_id')->where($map)->order($order)->select();
-		for($i=0;$i<count($list);$i++){
-			$case_type_list[$i]	=	$list[$i]['case_type_id'];
-		}
-		return $case_type_list;
-	}
-	
-	//返回本数据表中与商标有关的数据
-	public function listAllTrademark() {
-		$map['case_group_name']	=	array('like','%商标%');
-		$order['convert(case_type_name using gb2312)']	=	'asc';
-		$list	=	$this->where($map)->order($order)->select();
-		return $list;
-	}
-	
-	//返回本数据表中与商标有关的 case_type_id
-	public function listTrademarkCaseTypeId() {
-		$map['case_group_name']	=	array('like','%商标%');
-		$order['case_type_id']	=	'asc';
-		$list	=	$this->field('case_type_id')->where($map)->order($order)->select();
-		for($i=0;$i<count($list);$i++){
-			$case_type_list[$i]	=	$list[$i]['case_type_id'];
-		}
-		return $case_type_list;
-	}
-	
-	//返回本数据表中与版权有关的数据
-	public function listAllCopyright() {
-		$map['case_group_name']	=	array('like','%版权%');
-		$order['convert(case_type_name using gb2312)']	=	'asc';
-		$list	=	$this->where($map)->order($order)->select();
-		return $list;
-	}
-	
-	//返回本数据表中与版权有关的 case_type_id
-	public function listCopyrightCaseTypeId() {
-		$map['case_group_name']	=	array('like','%版权%');
-		$order['case_type_id']	=	'asc';
-		$list	=	$this->field('case_type_id')->where($map)->order($order)->select();
-		for($i=0;$i<count($list);$i++){
-			$case_type_list[$i]	=	$list[$i]['case_type_id'];
-		}
-		return $case_type_list;
-	}
-	
-	//返回本数据视图的基本数据
-	public function listBasic() {
-		$order['case_type_name']	=	'asc';
-		$order['convert(case_type_name using gb2312)']	=	'asc';
-		$list	=	$this->field('case_type_id,case_type_name')->order($order)->select();
-		return $list;
-	}
+	}	
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
@@ -126,14 +60,5 @@ class CaseTypeViewModel extends ViewModel {
 		$show	= $Page->show();
 		
 		return array("list"=>$list,"page"=>$show,"count"=>$count);
-	}
-	
-	//更新本数据表中主键为$case_type_id的记录，$data是数组
-	public function update($case_type_id,$data){
-		$map['case_type_id']	=	$case_type_id;
-		$Model	=	M('CaseType');
-		$result	=	$Model->where($map)->save($data);
-		return $result;
-	}
-
+	}	
 }

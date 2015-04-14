@@ -51,7 +51,7 @@
 								<td>
 									{$cost_list['cost_date']	?	date("Y-m-d",$cost_list['cost_date'])	:	''}
 								</td>
-								<td>{$cost_list['CostCenter']['cost_center_name']}</td>
+								<td>{$cost_list['cost_center_name']}</td>
 								<td align="right">{$cost_list['cost_amount']/100}</td>
 								<td align="right">{$cost_list['other_fee']/100}</td>
 								<td align="right">{$cost_list['total_amount']/100}</td>
@@ -76,6 +76,13 @@
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
 					缴费产生的结算信息，共{$case_fee_count}项。
+					<?php
+					$fee_cost_amount	=	0;
+					for($j=0;$j<$case_fee_count;$j++){
+						$fee_cost_amount	+=	$case_fee_list[$j]['cost_amount'];
+					}
+					?>
+					共结算金额{$fee_cost_amount/100} 元
 				</div>
 			
 				<!-- Table -->
@@ -92,13 +99,11 @@
 								<th>申请日</th>
 								<th>申请号</th>
 								<th>费用名称</th>
-								<th>CPC官费名称</th>
 								<th>官费</th>
 								<th>服务费</th>
 								<th>官文日期</th>
 								<th>期限日</th>
-								<th>指示日期</th>
-								<th>结算单号及结算日</th>
+								<th>缴费单号及缴费日</th>
 								<th>结算账户</th>
 								<th>结算金额</th>
 								<th>常用操作</th>
@@ -119,15 +124,13 @@
 								<td>{$case_fee_vo['application_date']	?	date("Y-m-d",$case_fee_vo['application_date'])	:	''}</td>
 								<td>{$case_fee_vo['application_number']}</td>
 								<td>{$case_fee_vo['fee_type_name']}</td>
-								<td>{$case_fee_vo['fee_type_name_cpc']}</td>
 								<td>{$case_fee_vo['cost_amount']/100}</td>
 								<td>{$case_fee_vo['service_fee']/100}</td>
 								<td>{$case_fee_vo['oa_date']	?	date("Y-m-d",$case_fee_vo['oa_date'])	:	''}</td>
 								<td>{$case_fee_vo['due_date']	?	date("Y-m-d",$case_fee_vo['due_date'])	:	''}</td>
-								<td>{$case_fee_vo['allow_date']	?	date("Y-m-d",$case_fee_vo['allow_date'])	:	''}</td>
 								<td>
-									{$case_fee_vo['cost_id']	?	$case_fee_vo['cost_id']	:	''}<br>
-									{$case_fee_vo['cost_date']	?	date("Y-m-d",$case_fee_vo['cost_date'])	:	''}
+									{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	''}<br>
+									{$case_fee_vo['payment_date']	?	date("Y-m-d",$case_fee_vo['payment_date'])	:	''}
 								</td>
 								<td>{$case_fee_vo['cost_center_name']}</td>
 								<td>{$case_fee_vo['cost_amount']/100}</td>
@@ -147,6 +150,13 @@
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
 					交文产生的结算信息，共{$case_file_count}项。
+					<?php
+					$file_cost_amount	=	0;
+					for($j=0;$j<$case_file_count;$j++){
+						$file_cost_amount	+=	$case_file_list[$j]['cost_amount'];
+					}
+					?>
+					共结算金额{$file_cost_amount/100} 元
 				</div>
 			
 				<!-- Table -->
@@ -159,19 +169,14 @@
 								<th>我方案号</th>								
 								<th>对方案号</th>								
 								<th>专利名称</th>
-								<th>费用阶段</th>
 								<th>申请日</th>
 								<th>申请号</th>
-								<th>费用名称</th>
-								<th>CPC官费名称</th>
-								<th>官费</th>
-								<th>服务费</th>
+								<th>文件名称</th>
 								<th>官文日期</th>
 								<th>期限日</th>
-								<th>指示日期</th>
-								<th>结算单号及结算日</th>
-								<th>结算账户</th>
-								<th>结算金额</th>
+								<th>完成日期</th>
+								<th>服务费</th>
+								<th>内部结算金额</th>
 								<th>常用操作</th>
 								
 							</tr>
@@ -182,25 +187,16 @@
 							<tr>
 								
 								<td>{$i}</td>								
-								<td>
-									<a href="{:U('Case/view','case_id='.$case_file_vo['case_id'])}" target="_blank">{$case_file_vo['our_ref']}</a></td>								
+								<td>{$case_file_vo['our_ref']}</td>								
 								<td>{$case_file_vo['client_ref']}</td>
 								<td>{$case_file_vo['formal_title']}</td>
-								<td>{$case_file_vo['case_phase_name']}</td>
 								<td>{$case_file_vo['application_date']	?	date("Y-m-d",$case_file_vo['application_date'])	:	''}</td>
 								<td>{$case_file_vo['application_number']}</td>
 								<td>{$case_file_vo['file_type_name']}</td>
-								<td>{$case_file_vo['file_type_name_cpc']}</td>
-								<td>{$case_file_vo['cost_amount']/100}</td>
-								<td>{$case_file_vo['service_file']/100}</td>
 								<td>{$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])	:	''}</td>
 								<td>{$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])	:	''}</td>
-								<td>{$case_file_vo['allow_date']	?	date("Y-m-d",$case_file_vo['allow_date'])	:	''}</td>
-								<td>
-									{$case_file_vo['cost_id']	?	$case_file_vo['cost_id']	:	''}<br>
-									{$case_file_vo['cost_date']	?	date("Y-m-d",$case_file_vo['cost_date'])	:	''}
-								</td>
-								<td>{$case_file_vo['cost_center_name']}</td>
+								<td>{$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])	:	''}</td>
+								<td>{$case_file_vo['service_fee']/100}</td>
 								<td>{$case_file_vo['cost_amount']/100}</td>
 								<td><a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}" target="_blank">更新</a></td>
 								</tr>
@@ -209,7 +205,22 @@
 					</table> 
 				</div>
 			</div>
+			<form class="form-inline" method="post" action="__CONTROLLER__/adjustCost">
+				<!-- 隐藏域开始 -->
+				<input	type="hidden" name="cost_id" value="{$cost_list.cost_id}"></input>
+				<!-- 隐藏域结束 -->
+				  <div class="form-group">
+					<label for="cost_amount">上面详单的结算总金额</label>
+					<input type="text" class="form-control" id="cost_amount" name="cost_amount" size="6" value="{$fee_cost_amount/100 + $file_cost_amount/100}">
+				  </div>
+				  <div class="form-group">
+					<label for="other_fee">&nbsp;&nbsp;&nbsp;杂费金额</label>
+					<input type="text" class="form-control" id="other_fee" name="other_fee" size="25" placeholder="杂费金额；如无杂费就填0">
+				  </div>				  
+				<button type="submit" class="btn btn-primary">就这样，更新到顶部的结算单</button>						
+			</form>
         </div>
+		
 	  
 	  
 		
