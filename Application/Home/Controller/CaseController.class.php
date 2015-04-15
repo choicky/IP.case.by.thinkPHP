@@ -109,8 +109,11 @@ class CaseController extends Controller {
 				
 				//写入关联表数据
 				if(!$extend_info['case_extend_id']){
-					$extend_data['case_id']	=	$case_id;
-					$result_data	=	M('CaseExtend')->add($extend_data);
+					$map_case_extend['case_id']	=	$case_id;
+					$result_extend	=	M('CaseExtend')->where($map_case_extend)->find();
+					if(!is_array($result_extend)){
+						$result_data	=	M('CaseExtend')->add($map_case_extend);
+					}
 					$extend_info['case_extend_id']	=	D('CaseExtend')->returnCaseExtendId($case_id);
 				}
 				$result_extend	=	M('CaseExtend')->save($extend_info);
