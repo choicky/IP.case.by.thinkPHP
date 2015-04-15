@@ -8,11 +8,10 @@ class IndexController extends Controller {
 		if(!cookie('name')){
 			//$this->error('尚未登陆',U('User/login'));
 			header('Location: '.U('User/login'));
+		}else{
+			header('Location: '.U('Case/searchForNewPatent'));
 		}
-		
-		$msg	=	'首页还没有做好，先到 <a href="'.U('Case/searchForNewPatent').'">这里</a>看看吧。。';
-		
-		$this->show($msg); 
+		 
 		
     }
 	
