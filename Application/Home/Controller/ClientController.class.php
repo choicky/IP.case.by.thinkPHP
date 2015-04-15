@@ -4,19 +4,29 @@ use Think\Controller;
 
 class ClientController extends Controller {
     
-	//默认跳转到listPage，分页显示
+	//默认跳转到 listAll 
 	public function index(){
-        header("Location: listPage");
+        header("Location: listAll");
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
-		$p	= I("p",1,"int");
+		header("Location: listAll");
+		/*$p	= I("p",1,"int");
 		$limit	= C('RECORDS_PER_PAGE');
 		$client_list = D('Client')->listPage($p,$limit);
 		$this->assign('client_list',$client_list['list']);
 		$this->assign('client_page',$client_list['page']);
 		$this->assign('client_count',$client_list['count']);
+		$this->display();*/
+	}
+	
+	//显示全部
+	public function listAll(){
+		$client_list	=	D('Client')->field(true)->listAll();
+		$count_count	=	count($client_list);
+		$this->assign('client_list',$client_list);
+		$this->assign('client_count',$count_count);
 		$this->display();
 	}
 	
