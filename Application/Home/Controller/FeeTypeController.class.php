@@ -6,11 +6,13 @@ class FeeTypeController extends Controller {
     
 	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: listFeeType");
+        header("Location: listAll");
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
+		 header("Location: listAll");
+		/*
 		$p	= I("p",1,"int");
 		$limit	= C('RECORDS_PER_PAGE');
 		$fee_type_list = D('FeeType')->listPage($p,$limit);
@@ -19,6 +21,15 @@ class FeeTypeController extends Controller {
 		$this->assign('fee_type_page',$fee_type_list['page']);
 		$this->assign('fee_type_count',$fee_type_list['count']);		
 		
+		$this->display();*/
+	}
+	
+	//显示全部
+	public function listAll(){
+		$fee_type_list	=	D('FeeType')->field(true)->listAll();
+		$fee_type_count	=	count($fee_type_list);
+		$this->assign('fee_type_list',$fee_type_list);
+		$this->assign('fee_type_count',$fee_type_count);
 		$this->display();
 	}
 	

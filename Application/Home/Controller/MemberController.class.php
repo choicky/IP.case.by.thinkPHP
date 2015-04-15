@@ -6,16 +6,22 @@ class MemberController extends Controller {
     
 	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: listPage");
+        header("Location: listAll");
     }
 	
-	//默认跳转到listPage，分页显示
+	//显示全部
 	public function listAll(){
-        header("Location: listPage");
-    }
+		$member_list	=	D('Member')->field(true)->listAll();
+		$member_count	=	count($member_list);
+		$this->assign('member_list',$member_list);
+		$this->assign('member_count',$member_count);
+		$this->display();
+	}
 	
 	//列表，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
+		header("Location: listAll");
+		/*
 		$p	= I("p",1,"int");
 		$limit	= C('RECORDS_PER_PAGE');
 		$member_list = D('Member')->field(true)->listPage($p,$limit);
@@ -23,7 +29,7 @@ class MemberController extends Controller {
 		$this->assign('member_page',$member_list['page']);
 		$this->assign('member_count',$member_list['count']);
 
-		$this->display();
+		$this->display();*/
 	}
 	
 	//新增

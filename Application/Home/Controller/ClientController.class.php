@@ -6,27 +6,28 @@ class ClientController extends Controller {
     
 	//默认跳转到 listPage 
 	public function index(){
-        header("Location: listPage");
+        header("Location: listAll");
     }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
-		//header("Location: listAll");
+		header("Location: listAll");
+		/*
 		$p	= I("p",1,"int");
 		$limit	= C('200_PER_PAGE');
 		$client_list = D('Client')->listPage($p,$limit);
 		$this->assign('client_list',$client_list['list']);
 		$this->assign('client_page',$client_list['page']);
 		$this->assign('client_count',$client_list['count']);
-		$this->display();
+		$this->display();*/
 	}
 	
 	//显示全部
 	public function listAll(){
 		$client_list	=	D('Client')->field(true)->listAll();
-		$count_count	=	count($client_list);
+		$client_count	=	count($client_list);
 		$this->assign('client_list',$client_list);
-		$this->assign('client_count',$count_count);
+		$this->assign('client_count',$client_count);
 		$this->display();
 	}
 	

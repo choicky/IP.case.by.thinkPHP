@@ -108,7 +108,13 @@ class CaseController extends Controller {
 				 $result_case	=	$Model->save();	
 				
 				//写入关联表数据
-				$result_extend	=	M('CaseExtend')->save($extend_info);	
+				if(!$extend_info['case_extend_id']){
+					$extend_data['case_id']	=	$case_id;
+					$result_data	=	M('CaseExtend')->add($extend_data);
+					$extend_info['case_extend_id']	=	D('CaseExtend')->returnCaseExtendId($case_id);
+				}
+				$result_extend	=	M('CaseExtend')->save($extend_info);
+									
 				 
 			}
 			if((false !== $result_case)&&(false !== $result_extend)){
@@ -519,7 +525,7 @@ class CaseController extends Controller {
 	public function searchAll(){
 
 		//接收搜索参数
-		$key_word	=	trim(I('post.key_word'));
+		$key_word	=	trim(I('get.key_word'));
 		
 		if(!$key_word){
 			$this->error('要填写申请号、我方案号、或对方案号');

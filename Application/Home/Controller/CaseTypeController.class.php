@@ -9,13 +9,30 @@ class CaseTypeController extends Controller {
         header("Location: listPage");
     }
 	
-	//默认跳转到listPage，分页显示
+	//显示全部
 	public function listAll(){
-        header("Location: listPage");
-    }
+		$case_type_list	=	D('CaseTypeView')->field(true)->listAll();
+		$case_type_count	=	count($case_type_list);
+		$this->assign('case_type_list',$case_type_list);
+		$this->assign('case_type_count',$case_type_count);
+		
+		//取出 CaseGroup 表的内容以及数量
+		$case_group_list	=	D('CaseGroup')->listBasic();
+		$case_group_count	=	count($case_group_list);
+		$this->assign('case_group_list',$case_group_list);
+		$this->assign('case_group_count',$case_group_count);
+		
+		//取出其他变量
+		$row_limit  =   C("ROWS_PER_SELECT");
+		$this->assign('row_limit',$row_limit);
+		
+		$this->display();
+	}
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
+		header("Location: listAll");
+		/*
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
 		$case_type_list = D('CaseTypeView')->listPage($p,$limit);
@@ -33,7 +50,7 @@ class CaseTypeController extends Controller {
 		$row_limit  =   C("ROWS_PER_SELECT");
 		$this->assign('row_limit',$row_limit);
         	
-		$this->display();
+		$this->display();*/
 	}
 
 	//新增

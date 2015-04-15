@@ -68,7 +68,7 @@
 								</td>
 								<td>{$issue_date	=	$case_list['issue_date']	?	date("Y-m-d",$case_list['issue_date'])		:	''}</td>
 								<td>{$expired_date	=	$case_list['expired_date']	?	date("Y-m-d",$case_list['expired_date'])		:	''}</td>
-								<td><a href="{:U('Case/searchAll','key_world='.$case_list['related_our_ref'])}" target="_blank">{$case_list.related_our_ref}</td>
+								<td><a href="{:U('Case/searchAll','key_word='.$case_list['related_our_ref'])}" target="_blank">{$case_list.related_our_ref}</td>
 								<td>{$case_list.remarks}</td>
 							</tr>
 							                 

@@ -4,7 +4,7 @@
 	
 <!-- 区块 title 替换开始 --> 	
 	<block name="title">
-		<title>案件阶段列表</title>
+		<title>案件类型</title>
 	</block>
 <!-- 区块 title 替换结束 --> 	
 	
@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3>案件阶段列表</h3>
+					<h3>案件类型列表（共{$case_group_count}项）</h3>
 				</div>
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					“编号”是唯一的；表格底部有换页按钮；页面底部可以新增
+					专利的类型，必须含有“专利”二字；商标/版权的案件类型不能含“专利”二字。推荐格式为“P1-发明专利”，其中，“P1”是代号缩写，“发明”是细分。
 				</div>
 
 				<!-- Table -->
@@ -34,25 +34,34 @@
 						<thead>
 							<tr class="info">
 								<th>序号</th>
-								<th>阶段名称</th>
-								<th>常见操作</th>
+								<th>案件类型名称</th>
+								<th>包含的小类数量</th>
+								<th>常用操作</th>
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 将controller assign过来的 case_phase_list 赋给  case_phase_vo--> 
-							<volist name="case_phase_list" id="case_phase_vo">
+							<!-- 将controller assign过来的 case_group_list 赋给  case_group_vo--> 
+							<volist name="case_group_list" id="case_group_vo">
 							<tr>
 								<td>{$i}</td>
-								<td>{$case_phase_vo.case_phase_name}</td>
+								<td>{$case_group_vo.case_group_name}</td>
 								<td>
-									<a href="__CONTROLLER__/update/case_phase_id/{$case_phase_vo.case_phase_id}">更新</a> 
-									<a href="__CONTROLLER__/delete/case_phase_id/{$case_phase_vo.case_phase_id}">删除</a>
+									<?php
+										$case_type_count	=	count($case_group_vo['CaseType']);
+									?>
+									{$case_type_count	?	$case_type_count	:	'无'}
+									<a href="{:U('CaseType/view','case_group_id='.$case_group_vo['case_group_id'])}">查看与修改</a>
+								</td>
+								<td>
+									<a href="{:U('CaseGroup/update','case_group_id='.$case_group_vo['case_group_id'])}">更新</a>									
+									<a href="{:U('CaseGroup/delete','case_group_id='.$case_group_vo['case_group_id'])}">删除</a>
+									
 								</td>
 							</tr>
-							</volist>                 
+							</volist>               
 						</tbody>
 					</table> 
-					{$case_phase_page}
+					{$case_group_page}
 				</div>
 			</div>
         </div>
@@ -64,7 +73,7 @@
 	    <div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3 id="forms">新增</h3>
+					<h3 id="forms">新增案件类型</h3>
 				</div>
 			</div>
         </div>
@@ -74,16 +83,19 @@
 				<div class="well bs-component">
 					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
 						<fieldset>
-							<legend>“阶段名称是必须的</legend>
+							<legend>“案件类型名称</legend>
 							<div class="form-group">
-								<label for="case_phase_name" class="col-lg-3 control-label">阶段名称</label>
+								<label for="case_group_name" class="col-lg-3 control-label">案件类型名称</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="case_phase_name" name="case_phase_name" placeholder="阶段名称">
+									<input type="text" class="form-control" id="case_group_name" name="case_group_name" placeholder="账户名称">
 								</div>
 								<div class="col-lg-5">
-									<p>注意事项</p>
+									“专利”的案件类型名称必须含有“专利”二字；<br>
+									“商标”的案件类型名称必须含有“商标”二字；<br>
+									“版权”的案件类型名称必须含有“版权”二字。
 								</div>
 							</div>
+							
 
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">

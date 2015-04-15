@@ -6,11 +6,22 @@ class CaseGroupController extends Controller {
     
 	//默认跳转到listPage，分页显示
 	public function index(){
-        header("Location: listPage");
+        header("Location: listAll");
     }
+	
+	//显示全部
+	public function listAll(){
+		$case_group_list	=	D('CaseGroup')->field(true)->listAll();
+		$case_group_count	=	count($case_group_list);
+		$this->assign('case_group_list',$case_group_list);
+		$this->assign('case_group_count',$case_group_count);
+		$this->display();
+	}
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
+		header("Location: listAll");
+		/*
 		$p  =   I("p",1,"int");
 		$limit  =   C("RECORDS_PER_PAGE");
 		$case_group_list    =   D('CaseGroup')->listPage($p,$limit);
@@ -18,7 +29,7 @@ class CaseGroupController extends Controller {
 		$this->assign('case_group_page',$case_group_list['page']);
 		$this->assign('case_group_count',$case_group_list['count']);
         
-		$this->display();
+		$this->display();*/
 	}
 	
 	//新增
