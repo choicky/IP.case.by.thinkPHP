@@ -74,7 +74,7 @@
 											$claim_outcome	+=	$claim_vo['outcome_amount'];
 										?>
 									</volist>
-									<a href="__APP__/Home/Claim/view/balance_id/{$balance_vo.balance_id}">详情</a>
+									<a href="{:U('Claim/view','balance_id='.$balance_vo['balance_id'])}">详情</a>
 								</td>
 								<td align="right">
 									<?php
@@ -84,6 +84,7 @@
 											echo ('未全部结算');
 										}
 									?>
+									{$income_bool==1 and $outcome_bool==1	?	''	:	'未全部结算'}<br>
 									{$claim_income/100	+	$claim_outcome/100}
 								</td>
 								<td>
