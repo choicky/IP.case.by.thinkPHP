@@ -42,10 +42,9 @@
 								<th>对方当事人</th>
 								<th>跟进人员</th>
 								<th>账单编号</th>
-								<th>其他操作</th>
-								<th>&nbsp;|&nbsp;</th>
 								<th>已结算到</th>
 								<th>已结算金额</th>
+								<th>常用操作</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -62,12 +61,7 @@
 								<td>{$balance_vo.summary}</td>
 								<td>{$balance_vo.other_party}</td>
 								<td>{$balance_vo['Follower'].member_name}</td>
-								<td>{$balance_vo['bill_id']	?	$balance_vo['bill_id']	:	'无'}</td>
-								<td>
-									<a href="__CONTROLLER__/update/balance_id/{$balance_vo.balance_id}">更新</a> 
-									<a href="__CONTROLLER__/delete/balance_id/{$balance_vo.balance_id}">删除</a>
-								</td>
-								<td>&nbsp;|&nbsp;</td>
+								<td>{$balance_vo['bill_id']	?	$balance_vo['bill_id']	:	'无'}</td>								
 								<td>
 									<?php
 										$claim_income	=	0;
@@ -91,6 +85,10 @@
 										}
 									?>
 									{$claim_income/100	+	$claim_outcome/100}
+								</td>
+								<td>
+									<a href="{:U('Balance/update','balance_id='.$balance_vo.balance_id)}">更新</a> <br>
+									<a href="{:U('Balance/delete','balance_id='.$balance_vo.balance_id)}">删除</a>
 								</td>
 							</tr>
 							</volist>                 
@@ -116,7 +114,7 @@
         <div class="row">
 			<div class="col-lg-9">
 				<div class="well bs-component">
-					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
+					<form class="form-horizontal" method="post" action="{:U('Balance/add')}">
 						<fieldset>
 							<legend>尽量填写完整每一项</legend>
 							<div class="form-group">
