@@ -24,13 +24,13 @@ class BalanceController extends Controller {
 		$this->assign('balance_count',$balance_list['count']);
 		
 		//取出 Account 表的内容以及数量
-		$account_list	=	D('Account')->field(true)->listAll();
+		$account_list	=	D('Account')->listBasic();
 		$account_count	=	count($account_list);
 		$this->assign('account_list',$account_list);
 		$this->assign('account_count',$account_count);
 		
 		//取出 Member 表的内容以及数量
-		$member_list	=	D('Member')->field(true)->listAll();
+		$member_list	=	D('Member')->listBasic();
 		$member_count	=	count($member_list);
 		$this->assign('member_list',$member_list);
 		$this->assign('member_count',$member_count);
@@ -56,6 +56,8 @@ class BalanceController extends Controller {
 		$data['outcome_amount']	=	$data['outcome_amount']*100;
 		$data['summary']	=	trim(I('post.summary'));
 		$data['other_party']	=	trim(I('post.other_party'));
+		$data['follower_id']	=	trim(I('post.follower_id'));
+		$data['bill_id']	=	trim(I('post.bill_id'));
 
 		if(!$data['account_id']){
 			$this->error('未填写账户名称');
@@ -74,9 +76,8 @@ class BalanceController extends Controller {
 	public function update(){
 		if(IS_POST){
 			
-			$balance_id	=	trim(I('post.balance_id'));
-			
 			$data=array();
+			$data['account_id']	=	trim(I('post.balance_id'));
 			$data['account_id']	=	trim(I('post.account_id'));
 			$data['deal_date']	=	trim(I('post.deal_date'));
 			$data['deal_date']	=	strtotime($data['deal_date']);
@@ -91,9 +92,9 @@ class BalanceController extends Controller {
 
 			$result = D('Balance')->update($balance_id,$data);
 			if(false !== $result){
-				$this->success('修改成功', 'listPage');
+				$this->success('修改成功', U('Balance/view','balance_id='.$data['account_id']));
 			}else{
-				$this->error('修改失败', 'listPage');
+				$this->error('修改失败', U('Balance/view','balance_id='.$data['account_id']));
 			}
 		} else{
 			$balance_id = I('get.balance_id',0,'int');
@@ -106,13 +107,13 @@ class BalanceController extends Controller {
 			$this->assign('balance_list',$balance_list);
 			
 			//取出 Account 表的内容以及数量
-			$account_list	=	D('Account')->field(true)->listAll();
+			$account_list	=	D('Account')->listBasic();
 			$account_count	=	count($account_list);
 			$this->assign('account_list',$account_list);
 			$this->assign('account_count',$account_count);
 			
 			//取出 Member 表的内容以及数量
-			$member_list	=	D('Member')->field(true)->listAll();
+			$member_list	=	D('Member')->listBasic();
 			$member_count	=	count($member_list);
 			$this->assign('member_list',$member_list);
 			$this->assign('member_count',$member_count);
@@ -135,7 +136,7 @@ class BalanceController extends Controller {
 			$yes_btn	=	I('post.yes_btn');
 			
 			if(1==$no_btn){
-				$this->success('取消删除', 'listAll');
+				$this->success('取消删除', U('Balance/view','balance_id='.$data['account_id']));
 			}
 			
 			if(1==$yes_btn){

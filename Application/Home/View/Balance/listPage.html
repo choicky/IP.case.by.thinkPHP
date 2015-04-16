@@ -62,7 +62,7 @@
 								<td>{$balance_vo.summary}</td>
 								<td>{$balance_vo.other_party}</td>
 								<td>{$balance_vo['Follower'].member_name}</td>
-								<td>{$balance_vo.bill_id}</td>
+								<td>{$balance_vo['bill_id']	?	$balance_vo['bill_id']	:	'无'}</td>
 								<td>
 									<a href="__CONTROLLER__/update/balance_id/{$balance_vo.balance_id}">更新</a> 
 									<a href="__CONTROLLER__/delete/balance_id/{$balance_vo.balance_id}">删除</a>
@@ -198,7 +198,7 @@
 									<input type="text" class="form-control" id="bill_id" name="bill_id" placeholder="账单编号">
 								</div>
 								<div class="col-lg-5">
-									可从<a href="__APP__/Home/Bill/searchBill" target="_blank">这里</a>找到可用的账单编号			
+									可从<a href="{:U('Bill/searchBill')}" target="_blank">这里</a>找到可用的账单编号			
 								</div>
 							</div>
 
