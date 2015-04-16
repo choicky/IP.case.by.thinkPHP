@@ -124,9 +124,9 @@ class CaseFeeViewModel extends ViewModel {
 	);
 	
 	//返回本数据视图的所有数据
-	public function listAll() {
-		$order['due_date']	=	'asc';
+	public function listAll() {		
 		$order['our_ref']	=	'asc';
+		$order['due_date']	=	'asc';
 		$list	=	$this->order($order)->select();
 		return $list;
 	}
