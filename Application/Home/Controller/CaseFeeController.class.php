@@ -18,7 +18,7 @@ class CaseFeeController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
-		$case_fee_list = D('CaseFee')->listPage($p,$limit);
+		$case_fee_list = D('CaseFeeView')->listPage($p,$limit);
 		$this->assign('case_fee_list',$case_fee_list['list']);
 		$this->assign('case_fee_page',$case_fee_list['page']);
 		$this->assign('case_fee_count',$case_fee_list['count']);
@@ -112,7 +112,7 @@ class CaseFeeController extends Controller {
 			$case_fee_data['bill_id']	=	trim(I('post.bill_id'));
 			$case_fee_data['invoice_id']	=	trim(I('post.invoice_id'));
 			$case_fee_data['claim_id']	=	trim(I('post.claim_id'));
-			$case_fee_data['cost_center_id']	=	trim(I('post.cost_center_id'));
+			$case_fee_data['cost_id']	=	trim(I('post.cost_id'));
 			$case_fee_data['cost_amount']	=	100*trim(I('post.cost_amount'));
 			
 			$result	=	M('CaseFee')->save($case_fee_data);
