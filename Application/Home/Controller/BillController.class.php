@@ -36,14 +36,14 @@ class BillController extends Controller {
 	//新增
 	public function add(){
 		$data	=	array();
-		$data['handler_id'] = I('post.handler_id',0,'int');
+		$data['follower_id'] = I('post.follower_id',0,'int');
 		$data['bill_date']	=	trim(I('post.bill_date'));
 		//转为时间戳
-		$data['bill_date']	=	time($data['bill_date']);
+		$data['bill_date']	=	strtotime($data['bill_date']);
 		$data['client_id'] = I('post.client_id',0,'int');
-		$data['total_amount'] = I('post.total_amount',0,'int');
-		$data['official_fee'] = I('post.official_fee',0,'int');
-		$data['service_fee'] = I('post.service_fee',0,'int');
+		$data['total_amount'] = I('post.total_amount',0,'int')*100;
+		$data['official_fee'] = I('post.official_fee',0,'int')*100;
+		$data['service_fee'] = I('post.service_fee',0,'int')*100;
 		
 		if(!$data['handler_id']	or	!$data['client_id']){
 			$this->error('未填写开开单人、收单人');

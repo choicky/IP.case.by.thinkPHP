@@ -45,11 +45,11 @@
 							<tr>
 								<td><a href="{:U('Bill/view','bill_id='.$bill_vo['bill_id'])}">{$bill_vo.bill_id}</a></td>
 								<td>{$bill_vo.member_name}</td>
-								<td>{$bill_vo.bill_date|date="Y/m/d",###}</td>
+								<td>{$bill_vo['bill_date']	?	date("Y/m/d",$bill_vo['bill_date']	:	''}</td>
 								<td>{$bill_vo.client_name}</td>
-								<td>{$bill_vo.total_amount}</td>
-								<td>{$bill_vo.official_fee}</td>
-								<td>{$bill_vo.service_fee}</td>
+								<td>{$bill_vo['total_amount']/100}</td>
+								<td>{$bill_vo['official_fee']/100}</td>
+								<td>{$bill_vo['service_fee']}</td>
 								<td>
 									<a href="{:U('Bill/update','bill_id='.$bill_vo['bill_id'])}">更新</a><br>
 								</td>
@@ -77,7 +77,7 @@
         <div class="row">
 			<div class="col-lg-9">
 				<div class="well bs-component">
-					<form class="form-horizontal" method="post" action="__CONTROLLER__/add">
+					<form class="form-horizontal" method="post" action="{:U('Bill/add')}">
 						<fieldset>
 							<legend>“出单人”、“收单人”是必须的</legend>
 							<div class="form-group">
@@ -85,8 +85,8 @@
 								<div class="col-lg-4">
 									<select class="form-control" name="follower_id">
 										<option value=""></option>
-										<volist name="member_list" id="member_list">
-										<option value="{$member_list.member_id}"  >{$member_list.member_name}</option>
+										<volist name="member_list" id="member_vo">
+										<option value="{$member_vo.member_id}"  >{$member_vo.member_name}</option>
 										</volist>
 									</select>
 								</div>
@@ -108,8 +108,8 @@
 								<div class="col-lg-4">
 									<select class="form-control" name="client_id">
 										<option value=""></option>
-										<volist name="client_list" id="client_list">
-										<option value="{$client_list.client_id}"  >{$client_list.client_name}</option>
+										<volist name="client_list" id="client_vo">
+										<option value="{$client_vo.client_id}"  >{$client_vo.client_name}</option>
 										</volist>
 									</select>
 								</div>
