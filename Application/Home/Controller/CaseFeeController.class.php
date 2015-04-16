@@ -605,7 +605,7 @@ class CaseFeeController extends Controller {
 		$this->assign('case_phase_count',$case_phase_count);
 		
 		//获取本案子的 $case_type_name
-		$case_type_name	=	$case_list['CaseType']['case_type_name'];
+		$case_type_name	=	$case_list['case_type_name'];
 		
 		//根据 $case_type_name 是否包含“专利”来构造对应的检索条件
 		if(false	!==	strpos($case_type_name,'专利')){
