@@ -19,8 +19,8 @@ class ClaimModel extends RelationModel {
 		 array('cost_center_id','require','必须指明结算账户',1), //必须验证非空
 		 array('claim_date','require','必须指明认领日期',1), //必须验证非空
 		 array('balance_id','require','必须指明收支流水编号',1), //必须验证非空
-		 array('income_amount','require','未填写收入金额',0), //有字段时验证非空
-		 array('outcome_amount','require','未填写支出金额',0), //必须验证非空
+		 //array('income_amount','require','未填写收入金额',0), //有字段时验证非空
+		 //array('outcome_amount','require','未填写支出金额',0), //必须验证非空
 		 array('client_id','require','必须指明客户',1), //必须验证非空     
    );
    
