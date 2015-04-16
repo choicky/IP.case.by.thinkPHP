@@ -21,8 +21,8 @@
 		<div class="row">
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
-				<div class="panel-heading">
-					<p>点击“编号”可以编辑费用信息；点击“收支流水编号”能查看该笔收支流水的基本信息；点击"总金额"能搜索出相应的结果</p>
+				<div class="panel-heading panel-title">
+					<p>“编号”是唯一的，发票、到账、缴款单都是关联到这个“编号”。</p>
 				</div>
 
 				<!-- Table -->
@@ -31,29 +31,27 @@
 						<thead>
 							<tr class="info">
 								<th>编号</th>
-								<th>出单人</th>
-								<th>出单日期</th>
+								<th>跟案人</th>
+								<th>账单日期</th>
 								<th>收单人（客户）</th>
 								<th>总金额</th>
 								<th>官费</th>
 								<th>服务费</th>
-								<th>发票编号</th>
+								<th>常用操作</th>
 							</tr>
 						</thead>
 						<tbody>
-							<volist name="bill_list" id="bill_list">
+							<volist name="bill_list" id="bill_vo">
 							<tr>
-								<td><a href="__CONTROLLER__/edit/id/{$bill_list.bill_id}">{$bill_list.bill_id}</a></td>
-								<td>{$bill_list.member_name}</td>
-								<td>{$bill_list.bill_date|date="Y/m/d",###}</td>
-								<td><a href="__APP__/Home/Balance/view/id/{$bill_list.client_id}">{$bill_list.client_name}</a></td>
-								<td>{$bill_list.total_amount}</td>
-								<td>{$bill_list.official_fee}</td>
-								<td>{$bill_list.service_fee}</td>
+								<td><a href="{:U('Bill/view','bill_id='.$bill_vo['bill_id'])}">{$bill_vo.bill_id}</a></td>
+								<td>{$bill_vo.member_name}</td>
+								<td>{$bill_vo.bill_date|date="Y/m/d",###}</td>
+								<td>{$bill_vo.client_name}</td>
+								<td>{$bill_vo.total_amount}</td>
+								<td>{$bill_vo.official_fee}</td>
+								<td>{$bill_vo.service_fee}</td>
 								<td>
-									<volist name="bill_list['BillInvoice']" id="invoice_list">
-									<a href="__APP__/Home/Invoice/view/id/{$invoice_list.invoice_id}">{$invoice_list.invoice_id}</a><br/>
-									</volist>
+									<a href="{:U('Bill/update','bill_id='.$bill_vo['bill_id'])}">更新</a><br>
 								</td>
 							</tr>
 							</volist>                 
@@ -83,9 +81,10 @@
 						<fieldset>
 							<legend>“出单人”、“收单人”是必须的</legend>
 							<div class="form-group">
-								<label for="handler_id" class="col-lg-3 control-label">认领人</label>
+								<label for="follower_id" class="col-lg-3 control-label">出单人（跟案人）</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="handler_id" size="{$member_count<20?$member_count:20}">
+									<select class="form-control" name="follower_id">
+										<option value=""></option>
 										<volist name="member_list" id="member_list">
 										<option value="{$member_list.member_id}"  >{$member_list.member_name}</option>
 										</volist>
@@ -105,9 +104,10 @@
 								</div>
 							</div>							
 							<div class="form-group">
-								<label for="client_id" class="col-lg-3 control-label">收支流水编号</label>
+								<label for="client_id" class="col-lg-3 control-label">收单人（客户）</label>
 								<div class="col-lg-4">
-									<select multiple class="form-control" name="client_id" size="{$client_count<20?$client_count:20}">
+									<select class="form-control" name="client_id">
+										<option value=""></option>
 										<volist name="client_list" id="client_list">
 										<option value="{$client_list.client_id}"  >{$client_list.client_name}</option>
 										</volist>

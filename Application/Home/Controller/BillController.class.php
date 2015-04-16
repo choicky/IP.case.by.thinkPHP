@@ -12,22 +12,21 @@ class BillController extends Controller {
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
 		$p	= I("p",1,"int");
-		$limit	= 10;
-		$bill_list = D('Bill')->listPage($p,$limit);
+		$limit	= C('RECORDS_PER_PAGE');
+		$bill_list = D('BillView')->field(true)->listPage($p,$limit);
 		$this->assign('bill_list',$bill_list['list']);
 		$this->assign('bill_page',$bill_list['page']);
+		$this->assign('bill_count',$bill_list['count']);
 		
-		$member_list	=	D('Member')->listBasic();
-		$member_count	=	count($member_list);
+		//取出 Member 的数据
+		$member_list	=	D('Member')->field(true)->listBasic();
 		$this->assign('member_list',$member_list);
-		$this->assign('member_count',$member_count);
 		
-		
-		$client_list	=	D('Client')->listBasic();
-		$client_count	=	count($client_list);
+		//取出 Client 的数据
+		$client_list	=	D('Client')->field(true)->listBasic();
 		$this->assign('client_list',$client_list);
-		$this->assign('client_count',$client_count);
 		
+		//取出其他的数据
 		$today	=	date("Y-m-d",time());
 		$this->assign('today',$today);
 
