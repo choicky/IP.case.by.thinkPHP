@@ -29,8 +29,8 @@ class CaseModel extends RelationModel {
 	protected $_validate = array(
 		 array('our_ref','require','必须指明我方案号',1), //必须验证非空
 		 array('case_type_id','require','必须指明案件类型',1), //必须验证非空
-		 array('follower_id','require','必须指明跟案人/开案人',1), //必须验证非空
-		 array('client_id','require','必须指明客户',1), //必须验证非空
+		// array('follower_id','require','必须指明跟案人/开案人',1), //必须验证非空
+		// array('client_id','require','必须指明客户',1), //必须验证非空
 
    );
    
