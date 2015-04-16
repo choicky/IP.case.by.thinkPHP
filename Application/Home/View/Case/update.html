@@ -37,7 +37,7 @@
 							<div class="form-group">
 								<label for="case_type_id" class="col-lg-3 control-label">案件类型</label>
 								<div class="col-lg-4">
-									<select  class="form-control" name="case_type_id" size="{$case_type_count<$row_limit ? $case_type_count : $row_limit}">
+									<select  class="form-control" name="case_type_id">
 										<volist name="case_type_list" id="case_type_vo">
 										<option value="{$case_type_vo.case_type_id}" {$case_type_vo['case_type_id']==$case_list['case_type_id']? 'selected="selected"' :''}>{$case_type_vo.case_type_name}</option>
 										</volist>
@@ -52,7 +52,7 @@
 							<div class="form-group">
 								<label for="follower_id" class="col-lg-3 control-label">跟案人</label>
 								<div class="col-lg-4">
-									<select  class="form-control" name="follower_id" size="{$member_count<$row_limit ? $member_count : $row_limit}">
+									<select  class="form-control" name="follower_id">
 										<volist name="member_list" id="follower_vo">
 										<option value="{$follower_vo.member_id}" {$follower_vo['member_id']==$case_list['follower_id']? 'selected="selected"' :''}>{$follower_vo.member_name}</option>
 										</volist>
@@ -81,7 +81,7 @@
 							<div class="form-group">
 								<label for="client_id" class="col-lg-3 control-label">客源/客户</label>
 								<div class="col-lg-4">
-									<select  class="form-control" name="client_id" size="{$client_count<$row_limit ? $client_count : $row_limit}">
+									<select  class="form-control" name="client_id">
 										<volist name="client_list" id="client_vo">
 										<option value="{$client_vo.client_id}" {$client_vo['client_id']==$case_list['client_id']? 'selected="selected"' :''}>{$client_vo.client_name}</option>
 										</volist>
@@ -107,7 +107,7 @@
 							<div class="form-group">
 								<label for="applicant_id" class="col-lg-3 control-label">申请人</label>
 								<div class="col-lg-4">
-									<select  class="form-control" name="applicant_id" size="{$client_count<$row_limit ? $client_count : $row_limit }">
+									<select  class="form-control" name="applicant_id">
 										<volist name="client_list" id="applicant_vo">
 										<option value="{$applicant_vo.client_id}" {$applicant_vo['client_id']==$case_list['applicant_id']? 'selected="selected"' :''}>{$applicant_vo.client_name}</option>
 										</volist>
@@ -134,7 +134,7 @@
 							<div class="form-group">
 								<label for="handler_id" class="col-lg-3 control-label">处理人</label>
 								<div class="col-lg-4">
-									<select  class="form-control" name="handler_id" size="{$member_count<$row_limit ? $member_count : $row_limit}">
+									<select  class="form-control" name="handler_id">
 										<volist name="member_list" id="handler_vo">
 										<option value="{$handler_vo.member_id}" {$handler_vo['member_id']==$case_list['handler_id']? 'selected="selected"' :''}>{$handler_vo.member_name}</option>
 										</volist>
