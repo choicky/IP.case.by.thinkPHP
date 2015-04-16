@@ -14,39 +14,26 @@ class BalanceViewModel extends ViewModel {
 			'outcome_amount',
 			'summary',
 			'other_party',
+			'follower_id',
 			'_type'=>'LEFT'
 		),
 		
 		'Account'	=>	array(
 			'account_name',
-			'_on'	=>	'Balance.account_id=Account.account_id'
-		),
-		
-		'Claim'	=>	array(
-			'claim_id',
-			'_on'	=>	'Balance.account_id=Account.account_id'
-		),
-		
-		'Client'	=>	array(
-			'client_name',
-			'_on'	=>	'Balance.other_party_id=Client.client_id'
+			'_type'=>'LEFT',
+			'_on'	=>	'Account.account_id=Balance.account_id'
 		),
 		
 		'Member'	=>	array(
 			'member_name',
-			'_on'	=>	'Balance.claimer_id=Member.member_id'
-		),	
-		
-		'CostCenter'	=>	array(
-			'cost_center_name',
-			'_on'	=>	'Balance.cost_center_id=CostCenter.cost_center_name'
-		),	
+			'_on'	=>	'Member.member_id=Balance.follower_id'
+		),			
 	);
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
 		$order['deal_date']	=	'desc';
-		$list	=	$this->field(true)->order($order)->select();
+		$list	=	$this->order($order)->select();
 		return $list;
 	}
 		
@@ -59,7 +46,7 @@ class BalanceViewModel extends ViewModel {
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
 		$order['deal_date']	=	'desc';	
-		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
+		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		

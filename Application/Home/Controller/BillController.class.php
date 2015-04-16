@@ -44,6 +44,7 @@ class BillController extends Controller {
 		$data['total_amount'] = I('post.total_amount',0,'int')*100;
 		$data['official_fee'] = I('post.official_fee',0,'int')*100;
 		$data['service_fee'] = I('post.service_fee',0,'int')*100;
+		$data['other_fee'] = I('post.other_fee',0,'int')*100;
 		
 		if(!$data['follower_id']	or	!$data['client_id']){
 			$this->error('未填写开开单人、收单人');
@@ -62,87 +63,39 @@ class BillController extends Controller {
 	public function update(){
 		if(IS_POST){
 			
-			$bill_id = I('post.bill_id',0,'int');
-			
 			$data	=	array();
-			$data['handler_id'] = I('post.handler_id',0,'int');
+			$data['bill_id'] = I('post.bill_id',0,'int');
+			$data['follower_id'] = I('post.follower_id',0,'int');
 			$data['bill_date']	=	trim(I('post.bill_date'));
 			//转为时间戳
-			$data['bill_date']	=	time($data['bill_date']);
+			$data['bill_date']	=	strtotime($data['bill_date']);
 			$data['client_id'] = I('post.client_id',0,'int');
-			$data['total_amount'] = I('post.total_amount',0,'int');
-			$data['official_fee'] = I('post.official_fee',0,'int');
-			$data['service_fee'] = I('post.service_fee',0,'int');
+			$data['total_amount'] = I('post.total_amount',0,'int')*100;
+			$data['official_fee'] = I('post.official_fee',0,'int')*100;
+			$data['service_fee'] = I('post.service_fee',0,'int')*100;
+			$data['other_fee'] = I('post.other_fee',0,'int')*100;
 			
-			if(!$data['handler_id']	or	!$data['client_id']){
-				$this->error('未填写开开单人、收单人');
+			if(!$data['invoice_id']	or	!$data['follower_id']){
+				$this->error('未填写开开单人或跟案人');
 			} 
 			
-			$map['bill_id']	=	I('post.bill_id',0,'int');
-			$result = M('Bill')->where($map)->save($data);
-			/*
-			if(false == $result){
-					$this->error('修改1失败');
-				}*/
+			$result = M('Bill')->save($data);
 			
-			$Model	=	M('BillInvoice');
-			for($i=0;	$i<count(I('post.invoice_id'));	$i++){
-				$bill_invoice_id	=	trim(I('post.bill_invoice_id')[$i]);
-				$invoice_id	=	trim(I('post.invoice_id')[$i]);
+			if(false == $result){
+				$this->error('修改失败');
+			}else{
 				
-				var_dump($bill_invoice_id);
-				var_dump($invoice_id);
-				var_dump('aaaa');
-				
-				//如果主键不存在
-				if(!$bill_invoice_id){
-					//如果主键不存在，且 invoice_id 不为零，就增加
-					if($invoice_id){
-						$bill_invoice[$i]	=	array(
-							'bill_id'			=>	$bill_id,
-							'invoice_id'		=>	$invoice_id
-						);
-						$result	=	$Model->add($bill_invoice[$i]);
-						/*if(false == $result){
-							$this->error('修改2失败');
-						}*/
-					}else{
-					//如果主键不存在，且 invoice_id 为0，不做处理；
-					}
-				
-				//如果主键存在
-				}else{
-					//如果主键存在，且 invoice_id 不为零，就更新
-					if($invoice_id){ 
-						$map['bill_invoice_id']	=	$bill_invoice_id;
-						$bill_invoice[$i]	=	array(
-							'bill_id'			=>	$bill_id,
-							'invoice_id'		=>	$invoice_id
-						);
-						$result	=	$Model->where($map)->save($bill_invoice[$i]);
-						/*if(false == $result){
-							$this->error('修改3失败');
-						}*/
-					}else{
-					//如果主键存在，且invoice_id 为零，就删除
-						$map['bill_invoice_id']	=	$bill_invoice_id;
-						$result	=	$Model->where($map)->delete();
-						/*if(false == $result){
-							$this->error('修改4失败');
-						}*/
-					}
-					
-				}
-				
-			}
+			}$this->success('修改成功',U('Invoice/listPage'));
+			
+			
 		} else{
-			$bill_id = I('get.id',0,'int');
+			$bill_id = I('get.bill_id',0,'int');
 
 			if(!$bill_id){
 				$this->error('未指明要编辑的认领单号');
 			}
 			
-			$bill_list = D('Bill')->relation(true)->getByBillId($bill_id);
+			$bill_list = D('BillView')->getByBillId($bill_id);
 			$this->assign('bill_list',$bill_list);
 
 			$member_list	=	D('Member')->listBasic();
@@ -159,10 +112,77 @@ class BillController extends Controller {
 			$this->display();
 		}
 	}
-	public function testa(){
-		$bill_list = D('Bill')->listAll();
-		print_r($bill_list);
-		print_r($bill_list['BillInvoice']);
+	
+	//查看主键为 $bill_id 对应的开票信息、到账信息
+	public function view(){
 		
+		//接收对应的 $bill_id
+		$bill_id = I('get.bill_id',0,'int');
+		if(!$bill_id){
+			$this->error('未指明要查看的账单');
+		}
+		
+		//取出案件的基本信息
+		$bill_list = D('BillView')->field(true)->getByBillId($bill_id);
+		$this->assign('bill_list',$bill_list);
+		
+		//定义查询
+		$map['bill_id']	=	$bill_id;
+
+		/*
+		//取出到账信息
+		$balance_list	=	D('BalanceView')->where($map)->listAll();
+		$balance_count	=	count($balance_list);		
+		$this->assign('balance_list',$balance_list);
+		$this->assign('balance_count',$balance_count);
+		*/
+				
+		//取出到账认领信息
+		$claim_list	=	D('ClaimView')->where($map)->listAll();
+		$claim_count	=	count($claim_list);		
+		$this->assign('claim_list',$claim_list);
+		$this->assign('claim_count',$claim_count);
+		
+		//取出发票信息
+		$invoice_list	=	D('InvoiceView')->where($map)->listAll();
+		$invoice_count	=	count($invoice_list);		
+		$this->assign('invoice_list',$invoice_list);
+		$this->assign('invoice_count',$invoice_count);		
+
+		$this->display();
 	}
+	
+	//查看主键为 $bill_id 对应的开票信息、到账信息
+	public function detail(){
+		
+		//接收对应的 $bill_id
+		$bill_id = I('get.bill_id',0,'int');
+		if(!$bill_id){
+			$this->error('未指明要查看的账单');
+		}
+		
+		//取出案件的基本信息
+		$bill_list = D('BillView')->field(true)->getByBillId($bill_id);
+		$this->assign('bill_list',$bill_list);
+		
+		//定义查询
+		$map['bill_id']	=	$bill_id;
+		
+		/*
+		//取出交文产生的信息
+		$case_file_list	=	D('CaseFileView')->where($map)->listAll();
+		$case_file_count	=	count($case_file_list);		
+		$this->assign('case_file_list',$case_file_list);
+		$this->assign('case_file_count',$case_file_count);
+		*/
+		
+		//取出交费的信息
+		$case_fee_list	=	D('CaseFeeView')->where($map)->listAll();
+		$case_fee_count	=	count($case_fee_list);		
+		$this->assign('case_fee_list',$case_fee_list);
+		$this->assign('case_fee_count',$case_fee_count);	
+
+		$this->display();
+	}
+	
 }

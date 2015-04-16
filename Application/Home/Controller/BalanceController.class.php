@@ -57,7 +57,6 @@ class BalanceController extends Controller {
 		$data['summary']	=	trim(I('post.summary'));
 		$data['other_party']	=	trim(I('post.other_party'));
 		$data['follower_id']	=	trim(I('post.follower_id'));
-		$data['bill_id']	=	trim(I('post.bill_id'));
 
 		if(!$data['account_id']){
 			$this->error('未填写账户名称');
@@ -88,7 +87,6 @@ class BalanceController extends Controller {
 			$data['summary']	=	trim(I('post.summary'));
 			$data['other_party']	=	trim(I('post.other_party'));
 			$data['follower_id']	=	trim(I('post.follower_id'));
-			$data['bill_id']	=	trim(I('post.bill_id'));
 
 			$result = D('Balance')->update($balance_id,$data);
 			if(false !== $result){
@@ -136,7 +134,7 @@ class BalanceController extends Controller {
 			$yes_btn	=	I('post.yes_btn');
 			
 			if(1==$no_btn){
-				$this->success('取消删除', U('Balance/view','balance_id='.$data['account_id']));
+				$this->success('取消删除', U('Claim/view','balance_id='.$balance_id));
 			}
 			
 			if(1==$yes_btn){
@@ -193,12 +191,11 @@ class BalanceController extends Controller {
 			$follower_id	=	I('post.follower_id','0','int');
 			
 			//构造 maping
-			$map['deal_date']	=	array('EGT',$start_time);
-			$map['deal_date']	=	array('ELT',$end_time);			
+			$map['deal_date']	=	array('between',$start_time.','.$end_time);
 			if($account_id){
 				$map['account_id']	=	$account_id;
 			}
-			if($member_id){
+			if($follower_id){
 				$map['follower_id']	=	$follower_id;
 			}	
 			
@@ -207,6 +204,7 @@ class BalanceController extends Controller {
 			$balance_list = D('Balance')->where($map)->listPage($p,$page_limit);
 			$this->assign('balance_list',$balance_list['list']);
 			$this->assign('balance_page',$balance_list['page']);
+			$this->assign('balance_count',count($balance_list['list']));
 			
 			//返回搜索参数
 			$this->assign('account_id',$account_id);

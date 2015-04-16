@@ -19,14 +19,14 @@
         <div class="row">
 			<div class="col-lg-9">
 				<div class="well bs-component">
-					<form class="form-horizontal" method="post" action="__CONTROLLER__/update">
+					<form class="form-horizontal" method="post" action="{:U('Invoice/update')}">
 						<fieldset>
 							<legend>尽量填写完整每一项</legend>
 							<div class="form-group">
 								<label for="invoice_number" class="col-lg-3 control-label">发票号码</label>
 								<div class="col-lg-4">
 									<input type="hidden" class="form-control" id="invoice_id" name="invoice_id" value="{$invoice_list.invoice_id}">
-									<input type="text" class="form-control" id="invoice_number" name="invoice_number" value="{$invoice_list.invoice_number}">
+									<input type="text" class="form-control" id="invoice_number" name="invoice_number" value="{$invoice_list['invoice_number']	?	$invoice_list['invoice_number']	:	''}">
 								</div>
 								<div class="col-lg-5">
 									发票号码是必须的			
@@ -35,7 +35,7 @@
 							<div class="form-group">
 								<label for="invoice_date" class="col-lg-3 control-label">发票日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="invoice_date" name="invoice_date" value="{$invoice_list.invoice_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="invoice_date" name="invoice_date" value="{$invoice_list['invoice_date']	?	date("Y-m-d",$invoice_list['invoice_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									日期格式为 yyyy-mm-dd，可用鼠标选择
@@ -44,7 +44,8 @@
 							<div class="form-group">
 								<label for="client_id" class="col-lg-3 control-label">发票抬头</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="client_id" size="{$client_count<$row_limit ? $client_count : $row_limit}">
+									<select class="form-control" name="client_id">
+										<option value="" {$invoice_list['client_id']==0	? 'selected="selected"' :'' }></option>
 										<volist name="client_list" id="client_vo">
 										<option value="{$client_vo.client_id}" {$client_vo['client_id']==$invoice_list['client_id']? 'selected="selected"' :'' }>{$client_vo.client_name}</option>
 										</volist>
@@ -57,7 +58,7 @@
 							<div class="form-group">
 								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="total_amount" name="total_amount" value="{$invoice_list['total_amount']/100}">
+									<input type="text" class="form-control" id="total_amount" name="total_amount" value="{$invoice_list['total_amount']	?	$invoice_list['total_amount']/100	:	''}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
@@ -66,7 +67,7 @@
 							<div class="form-group">
 								<label for="official_fee" class="col-lg-3 control-label">官费金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="official_fee" name="official_fee" value="{$invoice_list['official_fee']/100}">
+									<input type="text" class="form-control" id="official_fee" name="official_fee" value="{$invoice_list['official_fee']	?	$invoice_list['official_fee']/100	:	''}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
@@ -75,7 +76,7 @@
 							<div class="form-group">
 								<label for="service_fee" class="col-lg-3 control-label">服务费金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="service_fee" name="service_fee" value="{$invoice_list['service_fee']/100}">
+									<input type="text" class="form-control" id="service_fee" name="service_fee" value="{$invoice_list['service_fee']	?	$invoice_list['service_fee']/100	:	''}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
@@ -85,7 +86,8 @@
 							<div class="form-group">
 								<label for="follower_id" class="col-lg-3 control-label">跟进人员</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="follower_id" size="{$member_count<$row_limit ? $member_count : $row_limit}">
+									<select class="form-control" name="follower_id">
+										<option value="" {$invoice_list['follower_id']==0	? 'selected="selected"' :'' }></option>
 										<volist name="member_list" id="member_vo">
 										<option value="{$member_vo.member_id}" {$member_vo['member_id']==$invoice_list['follower_id']? 'selected="selected"' :'' }>{$member_vo.member_name}</option>
 										</volist>
@@ -98,10 +100,10 @@
 							<div class="form-group">
 								<label for="bill_id" class="col-lg-3 control-label">账单编号</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="bill_id" name="bill_id" value="{$invoice_list.bill_id}">
+									<input type="text" class="form-control" id="bill_id" name="bill_id" value="{$invoice_list['bill_id']	?	$invoice_list['bill_id']	:	''}">
 								</div>
 								<div class="col-lg-5">
-									可从<a href="__APP__/Home/Bill/searchBill" target="_blank">这里</a>找到可用的账单编号			
+									可从<a href="__APP__/Home/Bill/search" target="_blank">这里</a>找到可用的账单编号			
 								</div>
 							</div>
 							

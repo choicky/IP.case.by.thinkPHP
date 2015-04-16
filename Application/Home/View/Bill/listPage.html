@@ -37,6 +37,7 @@
 								<th>总金额</th>
 								<th>官费</th>
 								<th>服务费</th>
+								<th>其他费用</th>
 								<th>常用操作</th>
 							</tr>
 						</thead>
@@ -49,9 +50,12 @@
 								<td>{$bill_vo.client_name}</td>
 								<td>{$bill_vo['total_amount']/100}</td>
 								<td>{$bill_vo['official_fee']/100}</td>
-								<td>{$bill_vo['service_fee']}</td>
+								<td>{$bill_vo['service_fee']/100}</td>
+								<td>{$bill_vo['other_fee']/100}</td>
 								<td>
-									<a href="{:U('Bill/update','bill_id='.$bill_vo['bill_id'])}">更新</a><br>
+									<a href="{:U('Bill/update','bill_id='.$bill_vo['bill_id'])}">更新</a>、
+									<a href="{:U('Bill/detail','bill_id='.$bill_vo['bill_id'])}">查看明细</a><br>
+									<a href="{:U('Bill/view','bill_id='.$bill_vo['bill_id'])}">查看发票与交款</a><br>
 								</td>
 							</tr>
 							</volist>                 

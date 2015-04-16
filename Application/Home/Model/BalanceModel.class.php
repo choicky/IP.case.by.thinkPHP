@@ -30,7 +30,7 @@ class BalanceModel extends RelationModel {
 			'class_name'		=>	'ClaimView',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'balance_id',			//外键
-			'mapping_fields'	=>	'claim_id,claimer_id,cost_center_name,claim_date,income_amount,outcome_amount,client_id,client_name',		//关联字段
+			'mapping_fields'	=>	'claim_id,claimer_id,member_name,cost_center_name,claim_date,balance_id,income_amount,outcome_amount,client_id,client_name,bill_id',		//关联字段
 		),
 	
 	);
@@ -45,7 +45,7 @@ class BalanceModel extends RelationModel {
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
 		$order['deal_date']	=	'desc';
-		$list	=	$this->relation(true)->field(true)->order($order)->page($p.','.$limit)->select();
+		$list	=	$this->relation(true)->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		

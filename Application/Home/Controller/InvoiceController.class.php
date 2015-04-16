@@ -18,9 +18,10 @@ class InvoiceController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
-		$invoice_list = D('Invoice')->listPage($p,$page_limit);
+		$invoice_list = D('InvoiceView')->listPage($p,$page_limit);
 		$this->assign('invoice_list',$invoice_list['list']);
 		$this->assign('invoice_page',$invoice_list['page']);
+		$this->assign('invoice_count',$invoice_list['count']);
 		
 		//取出 Client 表的内容以及数量
 		$client_list	=	D('Client')->field(true)->listAll();
@@ -76,9 +77,10 @@ class InvoiceController extends Controller {
 	public function update(){
 		if(IS_POST){
 			
-			$invoice_id	=	trim(I('post.invoice_id'));
+			
 			
 			$data	=	array();
+			$data['invoice_id']	=	trim(I('post.invoice_id'));
 			$data['invoice_number']	=	trim(I('post.invoice_number'));
 			$data['invoice_date']	=	trim(I('post.invoice_date'));
 			$data['invoice_date']	=	strtotime($data['invoice_date']);
@@ -92,7 +94,7 @@ class InvoiceController extends Controller {
 			$data['follower_id']	=	trim(I('post.follower_id'));
 			$data['bill_id']	=	trim(I('post.bill_id'));
 
-			$result = D('Invoice')->update($invoice_id,$data);
+			$result = M('Invoice')->save($data);
 			if(false !== $result){
 				$this->success('修改成功', 'listPage');
 			}else{
@@ -161,7 +163,7 @@ class InvoiceController extends Controller {
 				$this->error('未指明要删除的发票');
 			}
 
-			$invoice_list = D('Invoice')->relation(true)->field(true)->getByInvoiceId($invoice_id);			
+			$invoice_list = D('InvoiceView')->relation(true)->field(true)->getByInvoiceId($invoice_id);			
 			$this->assign('invoice_list',$invoice_list);
 
 			$this->display();
@@ -203,10 +205,8 @@ class InvoiceController extends Controller {
 			$follower_id	=	I('post.follower_id','0','int');
 			
 			//构造 maping
-			$map['invoice_date']	=	array('EGT',$start_time);
-			$map['invoice_date']	=	array('ELT',$end_time);
-			$map['total_amount']	=	array('EGT',$start_amount);
-			$map['deal_date']	=	array('ELT',$end_amount);			
+			$map['invoice_date']	=	array('between',$start_time.','.$end_time);
+			$map['total_amount']	=	array('between',$start_amount.','.$end_amount);
 			if($client_id){
 				$map['client_id']	=	$client_id;
 			}
@@ -216,9 +216,10 @@ class InvoiceController extends Controller {
 			
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
-			$invoice_list = D('Invoice')->where($map)->listPage($p,$page_limit);
+			$invoice_list = D('InvoiceView')->where($map)->listPage($p,$page_limit);
 			$this->assign('invoice_list',$invoice_list['list']);
 			$this->assign('invoice_page',$invoice_list['page']);
+			$this->assign('invoice_count',$invoice_list['count']);
 			
 			//返回搜索参数
 			$this->assign('client_id',$client_id);

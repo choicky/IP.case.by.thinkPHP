@@ -18,7 +18,7 @@ class ClaimController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
-		$claim_list = D('Claim')->listPage($p,$limit);
+		$claim_list = D('ClaimView')->listPage($p,$limit);
 		$this->assign('claim_list',$claim_list['list']);
 		$this->assign('claim_page',$claim_list['page']);
 		$this->assign('claim_count',$claim_list['count']);
@@ -113,7 +113,7 @@ class ClaimController extends Controller {
 			$yes_btn	=	I('post.yes_btn');
 
 			if(1==$no_btn){
-				$this->success('取消删除', 'view/balance_id/'.$balance_id);
+				$this->success('取消删除', U('Claim/view','balance_id='.$balance_id));
 			}
 			
 			if(1==$yes_btn){
@@ -122,7 +122,7 @@ class ClaimController extends Controller {
 
 				$result = M('Claim')->where($map)->delete();
 				if($result){
-					$this->success('删除成功', 'view/balance_id/'.$balance_id);
+					$this->success('删除成功', U('Claim/view','balance_id='.$balance_id));
 				}
 			}
 			
@@ -133,7 +133,7 @@ class ClaimController extends Controller {
 				$this->error('未指明要删除的流水');
 			}
 			
-			$claim_list = D('Claim')->relation(true)->field(true)->getByClaimId($claim_id);			
+			$claim_list = D('ClaimView')->field(true)->getByClaimId($claim_id);			
 			$this->assign('claim_list',$claim_list);
 			
 
@@ -154,8 +154,10 @@ class ClaimController extends Controller {
 		//默认查询 0 元 至 20000 元
 		$start_amount	=	0;
 		$end_amount	=	2000000;
-		$this->assign('start_amount',$start_amount);
-		$this->assign('end_amount',$end_amount);
+		$this->assign('start_income_amount',$start_amount);
+		$this->assign('end_income_amount',$end_amount);
+		$this->assign('start_outcome_amount',$start_amount);
+		$this->assign('end_outcome_amount',$end_amount);
 				
 		//取出 Client 表的基本内容，作为 options
 		$client_list	=	D('Client')->listBasic();
@@ -167,9 +169,14 @@ class ClaimController extends Controller {
 			$claimer_id	=	I('post.claimer_id','0','int');
 			$cost_center_id	=	I('post.cost_center_id','0','int');				
 			$client_id	=	I('post.client_id','0','int');
-			$start_amount	=	trim(I('post.start_amount'))*100;
-			$end_amount	=	trim(I('post.end_amount'))*100;			
-			
+			$start_income_amount	=	trim(I('post.start_income_amount'))*100;
+			$start_income_amount	=	$start_income_amount	?	$start_income_amount	:	'0';
+			$end_income_amount	=	trim(I('post.end_income_amount'))*100;			
+			$end_income_amount	=	$end_income_amount	?	$end_income_amount	:	'2000000';
+			$start_outcome_amount	=	trim(I('post.start_outcome_amount'))*100;
+			$start_outcome_amount	=	$start_outcome_amount	?	$start_outcome_amount	:	'0';
+			$end_outcome_amount	=	trim(I('post.end_outcome_amount'))*100;			
+			$end_outcome_amount	=	$end_outcome_amount	?	$end_outcome_amount	:	'2000000';
 			
 			//构造 maping
 			if($claimer_id){
@@ -182,14 +189,13 @@ class ClaimController extends Controller {
 				$map['client_id']	=	$client_id;
 			}			
 			
-			$map_amount['income_amount']	=	array('between',array($start_amount,$end_amount));
-			$map_amount['outcome_amount']	=	array('between',array($start_amount,$end_amount));
-			$map_amount['_logic'] = 'OR';			
+			$map['income_amount']	=	array('between',array($start_income_amount,$end_income_amount));
+			$map['outcome_amount']	=	array('between',array($start_outcome_amount,$end_outcome_amount));
 			
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
-			$claim_list = D('Claim')->where($map)->where($map_amount)->listPage($p,$page_limit);
-			$claim_count = D('Claim')->where($map)->where($map_amount)->count();
+			$claim_list = D('ClaimView')->where($map)->listPage($p,$page_limit);
+			$claim_count = count($claim_list['list']);
 			$this->assign('claim_list',$claim_list['list']);
 			$this->assign('claim_page',$claim_list['page']);
 			$this->assign('claim_count',$claim_count);
@@ -198,8 +204,10 @@ class ClaimController extends Controller {
 			$this->assign('claimer_id',$claimer_id);
 			$this->assign('cost_center_id',$cost_center_id);
 			$this->assign('client_id',$client_id);
-			$this->assign('start_amount',$start_amount);
-			$this->assign('end_amount',$end_amount);
+			$this->assign('start_income_amount',$start_income_amount);
+			$this->assign('end_income_amount',$end_income_amount);
+			$this->assign('start_outcome_amount',$start_outcome_amount);
+			$this->assign('end_outcome_amount',$end_outcome_amount);
 		
 		} 
 	
@@ -217,9 +225,11 @@ class ClaimController extends Controller {
 		$balance_list = D('Balance')->relation(true)->field(true)->getByBalanceId($balance_id);			
 		$this->assign('balance_list',$balance_list);
 		
-		$map['balance_id']	=	$balance_id;
-		$claim_list	=	D('Claim')->where($map)->listAll();
-		$this->assign('claim_list',$claim_list);
+		
+		//取出内部结算单的数量
+		$claim_count	=	count($balance_list['Claim']);
+		$this->assign('claim_count',$claim_count);		
+		
 		
 		//取出 Member 表的内容以及数量
 		$member_list	=	D('Member')->listBasic();

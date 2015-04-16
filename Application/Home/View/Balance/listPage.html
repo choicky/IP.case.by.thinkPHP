@@ -61,20 +61,23 @@
 								<td>{$balance_vo.summary}</td>
 								<td>{$balance_vo.other_party}</td>
 								<td>{$balance_vo['Follower'].member_name}</td>
-								<td>{$balance_vo['bill_id']	?	$balance_vo['bill_id']	:	'无'}</td>								
+								<td>
+									<volist name="balance_vo['Claim']" id="bill_vo">
+										<a href="{:U('Bill/view','bill_id='.$bill_vo['bill_id'])}" target="_blank">{$bill_vo['bill_id']	?	$bill_vo['bill_id']	:	''}</a><br>										
+									</volist>
 								<td>
 									<?php
 										$claim_income	=	0;
 										$claim_outcome	=	0;
 									?>
 									<volist name="balance_vo['Claim']" id="claim_vo">
-										{$claim_vo.cost_center_name}；
+										{$claim_vo.cost_center_name}<br>
 										<?php
 											$claim_income	+=	$claim_vo['income_amount'];
 											$claim_outcome	+=	$claim_vo['outcome_amount'];
 										?>
 									</volist>
-									<a href="{:U('Claim/view','balance_id='.$balance_vo['balance_id'])}"><br>详情</a>
+									<a href="{:U('Claim/view','balance_id='.$balance_vo['balance_id'])}">详情</a>
 								</td>
 								<td align="right">
 									{$claim_income/100	+	$claim_outcome/100}<br>
@@ -194,15 +197,7 @@
 									“跟进人员”主要是方便财务知道找谁咨询款项的信息			
 								</div>
 							</div>
-							<div class="form-group">
-								<label for="bill_id" class="col-lg-3 control-label">账单编号</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="bill_id" name="bill_id" placeholder="账单编号">
-								</div>
-								<div class="col-lg-5">
-									可从<a href="{:U('Bill/searchBill')}" target="_blank">这里</a>找到可用的账单编号			
-								</div>
-							</div>
+							
 
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">

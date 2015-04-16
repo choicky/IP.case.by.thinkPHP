@@ -32,23 +32,26 @@
 								<th>官费</th>
 								<th>服务费</th>
 								<th>客户</th>
-								<th>其他操作</th>
+								<th>账单编号</th>
+								<th>常用操作</th>
 							</tr>
 						</thead>
 						<tbody>
+							<!-- 将controller assign过来的 claim_list 赋给  claim_list--> 
 							<tr>
-								<td>{$claim_list.claim_id} </td>
-								<td>{$claim_list['Member'].member_name}</td>
-								<td>{$claim_list['CostCenter'].cost_center_name}</td>
-								<td>{$claim_list.claim_date|date="Y-m-d",###}</td>
+								<td>{$claim_list.claim_id}</td>
+								<td>{$claim_list.member_name}</td>
+								<td>{$claim_list.cost_center_name}</td>
+								<td>{$claim_list['claim_date']	?	date("Y-m-d",$claim_list['claim_date'])	:	''}</td>
 								<td align="right">{$claim_list['income_amount']/100}</td>
 								<td align="right">{$claim_list['outcome_amount']/100}</td>
-								<td>{$claim_list['official_fee']/100}</td>
-								<td>{$claim_list['service_fee']/100}</td>
+								<td align="right">{$claim_list['official_fee']/100}</td>
+								<td align="right">{$claim_list['service_fee']/100}</td>
 								<td>{$claim_list.client_name}</td>
-								<td><a href="__CONTROLLER__/update/claim_id/{$claim_list.claim_id}">更新</a> <a href="__CONTROLLER__/delete/claim_id/{$claim_list.claim_id}">删除</td>
+								<td><a href="{:U('Bill/view','bill_id='.$claim_list.bill_id)}" target="_blank">{$claim_list['bill_id']	?	$claim_list['bill_id']	:	''}</a></td>
+								<td><a href="{:U('Claim/update','claim_id='.$claim_list['claim_id'])}">更新</a><br>
+									<a href="{:U('Claim/delete','claim_id='.$claim_list['claim_id'])}">删除</a></td>
 							</tr>
-							</volist>                 
 						</tbody>
 					</table> 
 				</div>

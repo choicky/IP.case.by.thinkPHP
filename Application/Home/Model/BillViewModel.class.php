@@ -27,6 +27,7 @@ class BillViewModel extends ViewModel {
 			'total_amount',
 			'official_fee',
 			'service_fee',
+			'other_fee',
 			'_type'=>'LEFT'
 		),
 		
