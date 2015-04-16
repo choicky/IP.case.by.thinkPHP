@@ -122,7 +122,8 @@
 							<div class="form-group">
 								<label for="account_id" class="col-lg-3 control-label">账户名称</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="account_id" size="{$account_count<$row_limit ? $account_count : $row_limit}">
+									<select class="form-control" name="account_id">
+										<option value=""></option>
 										<volist name="account_list" id="account_vo">
 										<option value="{$account_vo.account_id}"  >{$account_vo.account_name}</option>
 										</volist>
@@ -180,7 +181,8 @@
 							<div class="form-group">
 								<label for="follower_id" class="col-lg-3 control-label">跟进人员</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="follower_id" size="{$member_count<$row_limit ? $member_count : $row_limit}">
+									<select class="form-control" name="follower_id">
+										<option value=""></option>
 										<volist name="member_list" id="member_vo">
 										<option value="{$member_vo.member_id}">{$member_vo.member_name}</option>
 										</volist>
