@@ -30,7 +30,8 @@
 								<label for="case_phase_id" class="col-lg-3 control-label">费用阶段</label>
 								<div class="col-lg-4">
 									
-									<select class="form-control" name="case_phase_id" size="{$case_phase_count<$row_limit ? $case_phase_count : $row_limit}">
+									<select class="form-control" name="case_phase_id">
+										<option value="" {$case_fee_list['case_phase_id']==0	?	'selected="selected"'	:	''}</option>
 										<volist name="case_phase_list" id="case_phase_vo">
 										<option value="{$case_phase_vo.case_phase_id}" {$case_phase_vo['case_phase_id']==$case_fee_list['case_phase_id'] ? 'selected="selected"' : ''}>{$case_phase_vo.case_phase_name}</option>
 										</volist>
@@ -47,7 +48,8 @@
 								<label for="fee_type_id" class="col-lg-3 control-label">费用名称</label>
 								<div class="col-lg-4">
 									
-									<select class="form-control" name="fee_type_id" size="{$fee_type_count<$row_limit ? $fee_type_count : $row_limit}">
+									<select class="form-control" name="fee_type_id">
+										<option value="" {$case_fee_list['fee_type_id']==0	?	'selected="selected"'	:	''}</option>
 										<volist name="fee_type_list" id="fee_type_vo">
 										<option value="{$fee_type_vo.fee_type_id}" {$fee_type_vo['fee_type_id']==$case_fee_list['fee_type_id'] ? 'selected="selected"' : ''}>{$fee_type_vo.fee_type_name}，{$fee_type_vo['fee_default_amount']/100}</option>
 										</volist>
@@ -107,7 +109,8 @@
 							<div class="form-group">
 								<label for="payer_id" class="col-lg-3 control-label">缴费人</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="payer_id" size="{$payer_count<$row_limit ? $payer_count : $row_limit}">
+									<select class="form-control" name="payer_id">
+										<option value="" {$case_fee_list['payer_id']==0	?	'selected="selected"'	:	''}</option>
 										<volist name="payer_list" id="payer_vo">
 										<option value="{$payer_vo.payer_id}" {$payer_vo['payer_id']==$case_fee_list['payer_id'] ? 'selected="selected"' : ''}>{$payer_vo.payer_name}</option>
 										</volist>
