@@ -73,7 +73,16 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					详细信息（因为交文而产生的账单详情）
+					<?php
+						$file_official_amount=0;
+						$file_service_amount=0;
+						for($j=0;$j<count($case_file_list);$j++){
+							$file_official_amount	+=	$case_file_list[$j]['official_fee']/100;
+							$file_service_amount	+=	$case_file_list[$j]['service_fee']/100;
+						}
+						$file_total_amount	=	$file_official_amount	+	$file_service_amount;
+					?>
+					详细信息（因为交文而产生的账单详情），共{$file_total_amount}元，其中官费{$file_official_amount}，服务费{$file_service_amount}
 				</div>
 
 				<!-- Table -->
@@ -127,7 +136,16 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					详细信息（因为交费而产生的账单详情）
+					<?php
+						$fee_official_amount=0;
+						$fee_service_amount=0;
+						for($j=0;$j<count($case_fee_list);$j++){
+							$fee_official_amount	+=	$case_fee_list[$j]['official_fee']/100;
+							$fee_service_amount	+=	$case_fee_list[$j]['service_fee']/100;
+						}
+						$fee_total_amount	=	$fee_official_amount	+	$fee_service_amount;
+					?>
+					详细信息（因为交费而产生的账单详情），共{$fee_total_amount}元，其中官费{$fee_official_amount}，服务费{$fee_service_amount}
 				</div>
 
 				<!-- Table -->
