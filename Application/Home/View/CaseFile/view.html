@@ -100,6 +100,12 @@
 								<th>官文发文日</th>								
 								<th>期限日</th>
 								<th>完成日</th>
+								<th>服务费</th>								
+								<th>账单号</th>
+								<th>发票单号</th>
+								<th>到账认领单号</th>
+								<th>内部结算单号</th>
+								<th>结算金额</th>
 								<th>常用操作</th>
 								
 							</tr>
@@ -111,9 +117,13 @@
 								
 								<td>{$i}</td>
 								<td>{$case_file_vo.file_type_name}</td>
-								<td>{$oa_date	=	$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])		:	''}</td>
-								<td>{$due_date	=	$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])		:	''}</td>
-								<td>{$completion_date	=	$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])		:	''}</td>
+								<td>{$case_file_vo['oa_date']	=	$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])		:	''}</td>
+								<td>{$case_file_vo['due_date']	=	$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])		:	''}</td>
+								<td>{$case_file_vo['completion_date']	=	$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])		:	''}</td>
+								<td>{$case_file_vo['service_fee']	=	$case_file_vo['service_fee']	?	$case_file_vo['service_fee']/100		:	''}</td>
+								<td>{$case_file_vo['bill_id']	=	$case_file_vo['bill_id']	?	$case_file_vo['bill_id']		:	''}</td>
+								<td>{$case_file_vo['invoice_id']	=	$case_file_vo['invoice_id']	?	$case_file_vo['invoice_id']		:	''}</td>
+								<td>{$case_file_vo['claim_id']	=	$case_file_vo['claim_id']	?	$case_file_vo['claim_id']		:	''}</td>
 								<td>
 									<a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}">更新</a>
 									<a href="{:U('CaseFile/delete','case_file_id='.$case_file_vo['case_file_id'])}">删除</a>

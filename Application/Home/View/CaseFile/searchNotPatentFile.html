@@ -115,40 +115,41 @@
 							<tr class="info">
 								
 								<th>序号</th>								
-								<th>我方案号</th>								
-								<th>对方案号</th>								
-								<th>专利名称</th>
-								<th>申请日</th>
-								<th>申请号</th>
-								<th>文件名称</th>
-								<th>官文日期</th>
+								<th>文件名称</th>								
+								<th>官文发文日</th>								
 								<th>期限日</th>
-								<th>完成日期</th>
-								<th>服务费</th>
-								<th>内部结算金额</th>
+								<th>完成日</th>
+								<th>服务费</th>								
+								<th>账单号</th>
+								<th>发票单号</th>
+								<th>到账认领单号</th>
+								<th>内部结算单号</th>
+								<th>结算金额</th>
 								<th>常用操作</th>
 								
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 将controller assign过来的 case_file_list 赋给  case_file_vo--> 
+							<!-- 将controller assign过来的 case_priority_list 赋给  case_priority_vo--> 
 							<volist name="case_file_list" id="case_file_vo">
 							<tr>
 								
-								<td>{$i}</td>								
-								<td>{$case_file_vo['our_ref']}</td>								
-								<td>{$case_file_vo['client_ref']}</td>
-								<td>{$case_file_vo['formal_title']}</td>
-								<td>{$case_file_vo['application_date']	?	date("Y-m-d",$case_file_vo['application_date'])	:	''}</td>
-								<td>{$case_file_vo['application_number']}</td>
-								<td>{$case_file_vo['file_type_name']}</td>
-								<td>{$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])	:	''}</td>
-								<td>{$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])	:	''}</td>
-								<td>{$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])	:	''}</td>
-								<td>{$case_file_vo['service_fee']/100}</td>
-								<td>{$case_file_vo['cost_amount']/100}</td>
-								<td><a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}" target="_blank">更新</a></td>
-								</tr>
+								<td>{$i}</td>
+								<td>{$case_file_vo.file_type_name}</td>
+								<td>{$case_file_vo['oa_date']	=	$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])		:	''}</td>
+								<td>{$case_file_vo['due_date']	=	$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])		:	''}</td>
+								<td>{$case_file_vo['completion_date']	=	$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])		:	''}</td>
+								<td>{$case_file_vo['service_fee']	=	$case_file_vo['service_fee']	?	$case_file_vo['service_fee']/100		:	''}</td>
+								<td>{$case_file_vo['bill_id']	=	$case_file_vo['bill_id']	?	$case_file_vo['bill_id']		:	''}</td>
+								<td>{$case_file_vo['invoice_id']	=	$case_file_vo['invoice_id']	?	$case_file_vo['invoice_id']		:	''}</td>
+								<td>{$case_file_vo['claim_id']	=	$case_file_vo['claim_id']	?	$case_file_vo['claim_id']		:	''}</td>
+								<td>
+									<a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}">更新</a>
+									<a href="{:U('CaseFile/delete','case_file_id='.$case_file_vo['case_file_id'])}">删除</a>
+									
+								</td>
+								
+							</tr>
 							</volist>
 						</tbody>
 					</table>  

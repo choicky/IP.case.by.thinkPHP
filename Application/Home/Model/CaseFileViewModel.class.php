@@ -31,6 +31,9 @@ class CaseFileViewModel extends ViewModel {
 			'due_date',
 			'completion_date',
 			'service_fee',
+			'bill_id',
+			'invoice_id',
+			'claim_id',
 			'cost_id',
 			'cost_amount',
 			'_type'=>'LEFT'

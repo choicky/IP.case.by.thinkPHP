@@ -40,6 +40,9 @@ class CaseFileController extends Controller {
 			$case_file_data['due_date']	=	strtotime(trim(I('post.due_date')));
 			$case_file_data['completion_date']	=	strtotime(trim(I('post.completion_date')));
 			$case_file_data['service_fee']	=	100*trim(I('post.service_fee'));
+			$case_file_data['bill_id']	=	trim(I('post.bill_id'));
+			$case_file_data['invoice_id']	=	trim(I('post.invoice_id'));
+			$case_file_data['claim_id']	=	trim(I('post.claim_id'));
 			$case_file_data['cost_id']	=	trim(I('post.cost_id'));
 			$case_file_data['cost_amount']	=	100*trim(I('post.cost_amount'));
 			
