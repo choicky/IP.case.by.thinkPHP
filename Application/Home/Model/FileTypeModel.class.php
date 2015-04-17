@@ -24,9 +24,10 @@ class FileTypeModel extends Model {
 		return $list;
 	}
 		
-	//返回本数据表的基本数据
-	public function listBasic() {
-		$list	=	$this->listAll();
+	//返回本数据表的基本数据，可作为选单
+	public function listBasic() {			
+		$order['convert(file_type_name using gb2312)']	=	'asc';
+		$list	=	$this->field('file_type_id,file_type_name')->order($order)->select();
 		return $list;
 	}
 	
