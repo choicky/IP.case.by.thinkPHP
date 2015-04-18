@@ -16,7 +16,7 @@ class ClaimViewModel extends ViewModel {
 			'outcome_amount',
 			'official_fee',
 			'service_fee',
-			'client_id',
+			'summary',
 			'bill_id',
 			'_type'=>'LEFT',
 		),
@@ -32,16 +32,7 @@ class ClaimViewModel extends ViewModel {
 			'_type'=>'LEFT',
 			'_on'	=>	'Member.member_id=Claim.claimer_id',
 			'_type'=>'LEFT'
-		),	
-		
-		'Client'	=>	array(
-			'client_name',
-			'_type'=>'LEFT',
-			'_on'	=>	'Claim.client_id=Client.client_id',
-			'_type'=>'LEFT'
-		),
-		
-		
+		),			
 	
 	);
 	

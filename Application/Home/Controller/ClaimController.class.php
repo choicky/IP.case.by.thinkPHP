@@ -80,13 +80,7 @@ class ClaimController extends Controller {
 			$member_list	=	D('Member')->listBasic();
 			$member_count	=	count($member_list);
 			$this->assign('member_list',$member_list);
-			$this->assign('member_count',$member_count);
-			
-			//取出 Client 表的内容以及数量
-			$client_list	=	D('Client')->listBasic();
-			$client_count	=	count($client_list);
-			$this->assign('client_list',$client_list);
-			$this->assign('client_count',$client_count);
+			$this->assign('member_count',$member_count);			
 			
 			//取出 CostCenter 表的内容以及数量
 			$cost_center_list	=	D('CostCenter')->listBasic();
@@ -159,16 +153,12 @@ class ClaimController extends Controller {
 		$this->assign('start_outcome_amount',$start_amount);
 		$this->assign('end_outcome_amount',$end_amount);
 				
-		//取出 Client 表的基本内容，作为 options
-		$client_list	=	D('Client')->listBasic();
-		$this->assign('client_list',$client_list);
-		
 		if(IS_POST){
 			
 			//接收搜索参数
 			$claimer_id	=	I('post.claimer_id','0','int');
 			$cost_center_id	=	I('post.cost_center_id','0','int');				
-			$client_id	=	I('post.client_id','0','int');
+			$summary	=	I('post.summary');
 			$start_income_amount	=	trim(I('post.start_income_amount'))*100;
 			$start_income_amount	=	$start_income_amount	?	$start_income_amount	:	'0';
 			$end_income_amount	=	trim(I('post.end_income_amount'))*100;			
@@ -185,8 +175,8 @@ class ClaimController extends Controller {
 			if($cost_center_id){
 				$map['cost_center_id']	=	$cost_center_id;
 			}
-			if($client_id){
-				$map['client_id']	=	$client_id;
+			if($summary){
+				$map['summary']	=	$summary;
 			}			
 			
 			$map['income_amount']	=	array('between',array($start_income_amount,$end_income_amount));
@@ -203,7 +193,7 @@ class ClaimController extends Controller {
 			//返回搜索参数
 			$this->assign('claimer_id',$claimer_id);
 			$this->assign('cost_center_id',$cost_center_id);
-			$this->assign('client_id',$client_id);
+			$this->assign('summary',$summary);
 			$this->assign('start_income_amount',$start_income_amount);
 			$this->assign('end_income_amount',$end_income_amount);
 			$this->assign('start_outcome_amount',$start_outcome_amount);
@@ -236,13 +226,7 @@ class ClaimController extends Controller {
 		$member_count	=	count($member_list);
 		$this->assign('member_list',$member_list);
 		$this->assign('member_count',$member_count);
-		
-		//取出 Client 表的内容以及数量
-		$client_list	=	D('Client')->listBasic();
-		$client_count	=	count($client_list);
-		$this->assign('client_list',$client_list);
-		$this->assign('client_count',$client_count);
-		
+				
 		//取出 CostCenter 表的内容以及数量
 		$cost_center_list	=	D('CostCenter')->listBasic();
 		$cost_center_count	=	count($cost_center_list);

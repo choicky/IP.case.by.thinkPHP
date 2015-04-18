@@ -89,7 +89,7 @@
 								<th>支出金额</th>
 								<th>官费</th>
 								<th>服务费</th>
-								<th>客户</th>
+								<th>摘要</th>
 								<th>账单编号</th>
 								<th>流水编号</th>
 								<th>常用操作</th>
@@ -107,7 +107,7 @@
 								<td align="right">{$claim_vo['outcome_amount']/100}</td>
 								<td align="right">{$claim_vo['official_fee']/100}</td>
 								<td align="right">{$claim_vo['service_fee']/100}</td>
-								<td>{$claim_vo.client_name}</td>
+								<td>{$claim_vo.summary}</td>
 								<td><a href="{:U('Bill/view','bill_id='.$claim_vo.bill_id)}" target="_blank">{$claim_vo['bill_id']	?	$claim_vo['bill_id']	:	''}</a></td>
 								<td><a href="{:U('Claim/view','balance_id='.$claim_vo['balance_id'])}" target="_blank">{$claim_vo['balance_id']	?	$claim_vo['balance_id']	:	''}</a></td>
 								<td><a href="{:U('Claim/update','claim_id='.$claim_vo['claim_id'])}">更新</a><br>

@@ -36,15 +36,6 @@ class ClaimModel extends RelationModel {
 			//'as_fields'			=>	'member_name'	//字段别名
 		),
 		
-		'Client'	=>	array(							//本数据关联的名称
-			'mapping_name'		=>	'Client',			//重新定义本数据关联的名称
-			'class_name'		=>	'Client',			//被关联的数据表
-			'mapping_type'		=>	self::BELONGS_TO,	//属于关系一对一关联			
-			'foreign_key'		=>	'client_id',		//外键
-			'mapping_fields'	=>	'client_name',	//关联字段
-			//'as_fields'			=>	'client_name'	//字段别名
-		),
-		
 		'CostCenter'	=>	array(							//本数据关联的名称
 			'mapping_name'		=>	'CostCenter',			//重新定义本数据关联的名称
 			'class_name'		=>	'CostCenter',			//被关联的数据表
