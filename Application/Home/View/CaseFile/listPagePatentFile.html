@@ -34,7 +34,13 @@
 						<thead>
 							<tr class="info">
 								
-								<th>序号</th>								
+								<th>序号</th>
+								<th>我方案号</th>
+								<th>对方案号</th>
+								<th>客户名称</th>
+								<th>申请日</th>
+								<th>申请号</th>
+								<th>专利名称</th>
 								<th>文件名称</th>								
 								<th>官文发文日</th>								
 								<th>期限日</th>
@@ -55,6 +61,12 @@
 							<tr>
 								
 								<td>{$i}</td>
+								<td>{$case_file_vo.our_ref}</td>
+								<td>{$case_file_vo.client_ref}</td>
+								<td>{$case_file_vo.client_name}</td>
+								<td>{$case_file_vo['application_date']	=	$case_file_vo['application_date']	?	date("Y-m-d",$case_file_vo['application_date'])		:	''}</td>
+								<td>{$case_file_vo.application_number}</td>
+								<td>{$case_file_vo.formal_title}</td>
 								<td>{$case_file_vo.file_type_name}</td>
 								<td>{$case_file_vo['oa_date']	=	$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])		:	''}</td>
 								<td>{$case_file_vo['due_date']	=	$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])		:	''}</td>
