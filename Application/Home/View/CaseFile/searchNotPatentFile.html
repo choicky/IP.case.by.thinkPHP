@@ -117,7 +117,9 @@
 								<th>序号</th>
 								<th>我方案号</th>
 								<th>对方案号</th>
-								<th>客户名称</th>
+								<th>客户</th>
+								<th>跟案人</th>
+								<th>申请人</th>
 								<th>申请日</th>
 								<th>申请号</th>
 								<th>商标类别</th>
@@ -144,6 +146,8 @@
 								<td>{$case_file_vo.our_ref}</td>
 								<td>{$case_file_vo.client_ref}</td>
 								<td>{$case_file_vo.client_name}</td>
+								<td>{$case_file_vo.follower_name}</td>
+								<td>{$case_file_vo.application_name}</td>
 								<td>{$case_file_vo['application_date']	=	$case_file_vo['application_date']	?	date("Y-m-d",$case_file_vo['application_date'])		:	''}</td>
 								<td>{$case_file_vo.application_number}</td>
 								<td>{$case_file_vo.formal_title}</td>

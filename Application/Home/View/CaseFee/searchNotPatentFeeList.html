@@ -136,9 +136,13 @@
 								
 								<th>序号</th>								
 								<th>我方案号</th>								
-								<th>对方案号</th>								
+								<th>对方案号</th>
+								<th>客户</th>
+								<th>跟案人</th>
+								<th>申请人</th>
 								<th>专利名称</th>
 								<th>费用阶段</th>
+								<th>申请日</th>
 								<th>申请号</th>
 								<th>费用名称</th>
 								<th>官费</th>
@@ -159,8 +163,12 @@
 								<td>{$i}</td>								
 								<td><a href="{:U('Case/view','case_id='.$case_fee_vo['case_id'])}" target="_blank">{$case_fee_vo['our_ref']}</a></td>								
 								<td>{$case_fee_vo['client_ref']}</td>
+								<td>{$case_fee_vo['client_name']}</td>
+								<td>{$case_fee_vo['follower_name']}</td>
+								<td>{$case_fee_vo['applicant_name']}</td>
 								<td>{$case_fee_vo['formal_title']}</td>
 								<td>{$case_fee_vo['case_phase_name']}</td>
+								<td>{$case_fee_vo['application_date']	?	date("Y-m-d",$case_fee_vo['application_date'])	:	''}</td>
 								<td>{$case_fee_vo['application_number']}</td>
 								<td>{$case_fee_vo['fee_type_name']}</td>
 								<td>{$case_fee_vo['official_fee']/100}</td>
