@@ -608,11 +608,22 @@ class CaseFeeController extends Controller {
 		$case_type_name	=	$case_list['case_type_name'];
 		
 		//根据 $case_type_name 是否包含“专利”来构造对应的检索条件
-		if(false	!==	strpos($case_type_name,'专利')){
-			$map_fee_type['fee_type_name']	=	array('like','%专利%');
+		if(false	!==	strpos($case_type_name,'发明')){
+			$map_fee_type['fee_type_name']	=	array('like','%发明%');
+		}elseif(false	!==	strpos($case_type_name,'实用新型')){
+			$map_fee_type['fee_type_name']	=	array('like','%实用新型%');
+		}elseif(false	!==	strpos($case_type_name,'外观设计')){
+			$map_fee_type['fee_type_name']	=	array('like','%外观设计%');
+		}elseif(false	!==	strpos($case_type_name,'商标')){
+			$map_fee_type['fee_type_name']	=	array('like','%商标%');
+		}elseif(false	!==	strpos($case_type_name,'版权')){
+			$map_fee_type['fee_type_name']	=	array('like','%版权%');
+		}elseif(false	!==	strpos($case_type_name,'其他')){
+			$map_fee_type['fee_type_name']	=	array('like','%其他%');
 		}else{
 			$map_fee_type['fee_type_name']	=	array('notlike','%专利%');
-		}	
+		}
+		
 		//取出 FeeType 表的内容以及数量
 		$fee_type_list	=	D('FeeType')->where($map_fee_type)->listBasic();
 		$fee_type_count	=	count($fee_type_list);
