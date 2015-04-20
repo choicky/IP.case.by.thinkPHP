@@ -612,7 +612,8 @@ class CaseFeeController extends Controller {
 			$map_fee_type['fee_type_name']	=	array('like','%专利%');
 		}else{
 			$map_fee_type['fee_type_name']	=	array('notlike','%专利%');
-		}
+		}	
+		//取出 FeeType 表的内容以及数量
 		$fee_type_list	=	D('FeeType')->where($map_fee_type)->listBasic();
 		$fee_type_count	=	count($fee_type_list);
 		$this->assign('fee_type_list',$fee_type_list);
