@@ -25,7 +25,7 @@
 			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					基本信息，点击<a href="{:U('Case/update','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>修改基本信息，点击<a href="{:U('Case/view','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>查看所有信息
+					基本信息。去<a href="{:U('Case/update','case_id='.$case_list['case_id'])}"> “修改基本信息” </a>；去<a href="http://www.soopat.com/Home/SipoLegal/{$case_list['application_number']|substr=0,-1}"> “Soopat查看法律状态” </a>
 				</div>
 
 				<!-- Table -->
@@ -86,7 +86,7 @@
 			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					交文记录信息，共{$case_file_count}项。点击<a href="{:U('CaseFile/view','case_id='.$case_list['case_id'])}" target="_blank"> 这里 </a>增加文件记录
+					交文记录信息，共{$case_file_count}项。去<a href="#addNew"> “增加文件记录” </a>。
 				</div>
 			
 				<!-- Table -->
