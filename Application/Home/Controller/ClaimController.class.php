@@ -40,7 +40,7 @@ class ClaimController extends Controller {
 			 $result	=	$Model->add();		 
 		}
 		if(false !== $result){
-			$this->success('新增成功', 'view/balance_id/'.$balance_id);
+			$this->success('新增成功', U('Claim/view','balance_id='.$balance_id));
 		}else{
 			$this->error('增加失败');
 		}
