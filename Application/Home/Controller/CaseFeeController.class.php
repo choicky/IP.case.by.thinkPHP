@@ -93,6 +93,82 @@ class CaseFeeController extends Controller {
 		}
 	}
 	
+	//批量新增年费	
+	public function addMoreAnnualFee(){
+		
+		//接收参数
+		$case_id	=	trim(I('post.case_id'));
+		$year_number	=	trim(I('post.year_number'));
+		$service_fee	=	trim(I('post.service_fee'))*100;
+		
+		//检查合法性
+		$map_case['case_id']	=	$case_id;
+		$case_list	=	M('Case')->where($map_case)->find();
+		if(!is_array($case_list)){
+			$this->error('案件编号不正确');
+		}
+		
+		//获取申请日
+		$application_date	=	$case_list['application_date'];
+		if(0 !== $application_date){
+			$current_time	=	time();		
+			$year_intavel	=	yearInterval($application_date,$current_time);			
+		}else{
+			$this->error('本案未填写申请日');
+		}		
+		
+		//获取“授权后”对应的ID
+		$map_case_phase['case_phase_name']	=	array('like','%授权后%');
+		$case_phase_list	=	M('CasePhase')->where($map_case_phase)->find();
+		$case_phase_id	=	$case_phase_list[$case_phase_id];
+		
+		//获取本条费用的案子的 $case_type_name
+		$case_type_name	=	D('CaseFee')->returnCaseTypeName($case_fee_id);
+		//根据 $case_type_name 构造对应的检索条件
+		if(false	!==	strpos($case_type_name,'发明')){
+			$map_fee_type['fee_type_name']	=	array('like','%发明%');
+		}elseif(false	!==	strpos($case_type_name,'实用新型')){
+			$map_fee_type['fee_type_name']	=	array('like','%实用新型%');
+		}elseif(false	!==	strpos($case_type_name,'外观设计')){
+			$map_fee_type['fee_type_name']	=	array('like','%外观设计%');
+		}else{
+			$this->error('创建失败');
+		}
+		
+		for($j==0;$j<$year_number;	$j++){
+			//根据年度构建搜索
+			$year_intavel	=	$year_intavel	+	$j;
+			$map_fee_type['fee_type_name_cpc']	=	array('like','%第'.$year_intavel.'年%');
+			
+			//获取费用类型的ID
+			$fee_type_list	=	M('FeeType')->where($map_fee_type)->find();
+			$fee_type_id	=	$fee_type_list['fee_type_id'];
+			$fee_default_amount	=	$fee_type_list['fee_default_amount'];
+			
+			//获取期限日
+			$due_date	=	strtotime ("+".$year_intavel." year", $application_date);
+			
+			//构造数组
+			$date_case_fee['case_id']	=	$case_id;
+			$date_case_fee['case_phase_id']	=	$case_phase_id;
+			$date_case_fee['fee_type_id']	=	$fee_type_id;
+			$date_case_fee['official_fee']	=	$fee_default_amount;
+			$date_case_fee['service_fee']	=	$service_fee;
+			$date_case_fee['due_date']	=	$due_date;
+			
+			$result_case_fee	=	M('CaseFee')->add($date_case_fee);
+		}			
+		
+		if(false !== $result_case_fee){
+			
+			// 写入新增数据成功，返回案件信息页面
+			$this->success('新增成功', U('CaseFee/view','case_id='.$case_id));
+			
+		}else{
+			$this->error('增加失败');
+		}
+	}
+	
 	//更新
 	public function update(){
 		

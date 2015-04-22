@@ -81,13 +81,12 @@ class CaseTypeController extends Controller {
 	//更新	
 	public function update(){
 		if(IS_POST){
-			$case_type_id	=	trim(I('post.case_type_id'));
-			
 			$data=array();
+			$data['case_type_id']	=	trim(I('post.case_type_id'));			
 			$data['case_type_name']	=	trim(I('post.case_type_name'));
 			$data['case_group_id']	=	trim(I('post.case_group_id'));	
 						
-			$result = D('CaseTypeView')->update($case_type_id,$data);
+			$result = M('CaseType')->save($data);
 			if(false !== $result){
 				$this->success('修改成功','view/case_group_id/'.$data['case_group_id']);
 			}else{

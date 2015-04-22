@@ -257,6 +257,51 @@
 					</form>
 				</div>
 			</div>
+			
+			<div class="col-lg-3">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="{:U('CaseFee/addMoreAnnualFee')}">
+						<fieldset>
+							<!-- 隐藏域开始 -->
+							<input type="hidden" class="form-control" id="case_id" name="case_id" value="{$case_list.case_id}">
+							<!-- 隐藏域结束 -->
+							<legend>批量增加年费</legend>							
+							<div class="form-group">
+								<label for="year_number" class="col-lg-3 control-label">未来</label>
+								<div class="col-lg-4">									
+									<select class="form-control" name="year_number">
+										<option value="1">1</option>
+										<option value="2" selected="selected">2</option>
+										<option value="3">3</option>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									年的年费
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="service_fee" class="col-lg-3 control-label">每年</label>
+								<div class="col-lg-4">									
+									<input type="text" class="form-control" id="service_fee" name="service_fee" value="200">
+								</div>
+								<div class="col-lg-5">
+									元服务费
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="warning" class="col-lg-10 control-label">批量增加后要检查是否正确</label>								
+							</div>
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button class="btn btn-default"> 取消 </button>
+									<button type="submit" class="btn btn-primary"> 确认 </button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
         </div>
 
 	</block>
