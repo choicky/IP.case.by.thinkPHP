@@ -151,7 +151,8 @@
 							<div class="form-group">
 								<label for="follower_id" class="col-lg-3 control-label">优先权国家/地区</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="priority_country_id" size="{$country_count<$row_limit ? $country_count : $row_limit}">
+									<select class="form-control" name="priority_country_id">
+										<option value=""></option>
 										<volist name="country_list" id="country_vo">
 										<option value="{$country_vo.country_id}">{$country_vo.country_name}</option>
 										</volist>

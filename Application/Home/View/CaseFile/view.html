@@ -165,7 +165,8 @@
 							<div class="form-group">
 								<label for="file_type_id" class="col-lg-3 control-label">文件名称</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="file_type_id" size="{$file_type_count<$row_limit ? $file_type_count : $row_limit}">
+									<select class="form-control" name="file_type_id">
+										<option value=""></option>
 										<volist name="file_type_list" id="file_type_vo">
 										<option value="{$file_type_vo.file_type_id}">{$file_type_vo.file_type_name}</option>
 										</volist>
