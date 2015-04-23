@@ -85,7 +85,7 @@ class BillController extends Controller {
 				$this->error('修改失败');
 			}else{
 				
-			}$this->success('修改成功',U('Invoice/listPage'));
+			}$this->success('修改成功',U('Bill/view','bill_id='.$data['bill_id']));
 			
 			
 		} else{
