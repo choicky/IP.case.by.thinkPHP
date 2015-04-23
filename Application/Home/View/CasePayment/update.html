@@ -46,7 +46,8 @@
 							<div class="form-group">
 								<label for="payer_id" class="col-lg-3 control-label">缴费人</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="payer_id" size="{$payer_count<$row_limit ? $payer_count : $row_limit}">
+									<select class="form-control" name="payer_id">
+										<option value=""></option>
 										<volist name="payer_list" id="payer_vo">
 										<option value="{$payer_vo.payer_id}" {$$payer_vo['payer_id']==$case_payment_list['payer_id']	?	'selected="selected"'	:	''}>{$payer_vo.payer_name}</option>
 										</volist>
