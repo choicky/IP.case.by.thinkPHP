@@ -75,7 +75,7 @@ class BillController extends Controller {
 			$data['service_fee'] = I('post.service_fee',0,'int')*100;
 			$data['other_fee'] = I('post.other_fee',0,'int')*100;
 			
-			if(!$data['invoice_id']	or	!$data['follower_id']){
+			if(!$data['client_id']	or	!$data['follower_id']){
 				$this->error('未填写开开单人或跟案人');
 			} 
 			
