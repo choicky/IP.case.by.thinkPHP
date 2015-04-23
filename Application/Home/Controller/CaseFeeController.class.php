@@ -702,6 +702,8 @@ class CaseFeeController extends Controller {
 			$map_fee_type['fee_type_name']	=	array('like','%外观设计%');
 		}elseif(false	!==	strpos($case_type_name,'PCT')){
 			$map_fee_type['fee_type_name']	=	array('like','%PCT%');
+		}elseif(false	!==	strpos($case_type_name,'检索')){
+			$map_fee_type['fee_type_name']	=	array('like','%检索%');
 		}elseif(false	!==	strpos($case_type_name,'商标')){
 			$map_fee_type['fee_type_name']	=	array('like','%商标%');
 		}elseif(false	!==	strpos($case_type_name,'版权')){
