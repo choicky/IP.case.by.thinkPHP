@@ -79,6 +79,8 @@
 						$service_fee_total	=0;
 						$official_fee_total	=0;
 						for($j=0;$j<count($case_fee_list);$j++){
+							$service_fee_total	+=	$case_fee_list[$j]['service_fee'];
+							$official_fee_total	+=	$case_fee_list[$j]['official_fee'];
 						}
 						$service_fee_total	=	$service_fee_total/100;
 						$official_fee_total	=	$official_fee_total/100;
