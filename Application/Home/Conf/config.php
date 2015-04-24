@@ -19,7 +19,7 @@ return array(
 	'SHOW_PAGE_TRACE' =>true, 
 	
 	//自定义分页显示时每页显示的最大条目数
-	'RECORDS_PER_PAGE'			=>	'25',
+	'RECORDS_PER_PAGE'			=>	'100',
 	
 	//自定义分页显示时每页显示200条
 	'200_PER_PAGE'			=>	'200',
