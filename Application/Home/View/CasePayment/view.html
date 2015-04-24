@@ -75,7 +75,16 @@
 			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					费用信息，共{$case_fee_count}项。点击”<a href="{:U('CasePaymentFee/view','case_payment_id='.$case_payment_list['case_payment_id'])}" target="_blank"> 这里 </a>增加费用记录
+					<?php
+						$service_fee_total	=0;
+						$official_fee_total	=0;
+						for($j=0;$j<count($case_fee_list);$j++){
+						}
+						$service_fee_total	=	$service_fee_total/100;
+						$official_fee_total	=	$official_fee_total/100;
+						$fee_total	=	$service_fee_total	+	$official_fee_total;
+					?>
+					费用信息，共{$case_fee_count}项，总费用{$fee_total}元，其中官费{$official_fee_total}元，服务费{$service_fee_total}元。
 				</div>
 			
 				<!-- Table -->
