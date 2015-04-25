@@ -192,8 +192,8 @@ class CaseFileController extends Controller {
 		$member_list	=	D('Member')->listBasic();
 		$this->assign('member_list',$member_list);
 		
-		//默认查询未来3个月期限
-		$start_due_date	=	time();
+		//默认查询未来1个月期限
+		$start_due_date	=	"";
 		$end_due_date	=	strtotime('+1 month');
 		$this->assign('start_due_date',$start_due_date);
 		$this->assign('end_due_date',$end_due_date);
@@ -268,8 +268,8 @@ class CaseFileController extends Controller {
 		$member_list	=	D('Member')->listBasic();
 		$this->assign('member_list',$member_list);
 		
-		//默认查询未来3个月期限
-		$start_due_date	=	time();
+		//默认查询未来1个月期限
+		$start_due_date	=	"";
 		$end_due_date	=	strtotime('+1 month');
 		$this->assign('start_due_date',$start_due_date);
 		$this->assign('end_due_date',$end_due_date);
@@ -344,9 +344,9 @@ class CaseFileController extends Controller {
 		$member_list	=	D('Member')->listBasic();
 		$this->assign('member_list',$member_list);
 		
-		//默认查询未来3个月期限
-		$start_completion_date	=	time();
-		$end_completion_date	=	strtotime('+1 month');
+		//默认查询最近1个月
+		$start_completion_date	=	strtotime('-1 month');
+		$end_completion_date	=	time();
 		$this->assign('start_completion_date',$start_completion_date);
 		$this->assign('end_completion_date',$end_completion_date);
 		
@@ -420,9 +420,9 @@ class CaseFileController extends Controller {
 		$member_list	=	D('Member')->listBasic();
 		$this->assign('member_list',$member_list);
 		
-		//默认查询未来3个月期限
-		$start_completion_date	=	time();
-		$end_completion_date	=	strtotime('+1 month');
+		//默认查询最近1个月
+		$start_completion_date	=	strtotime('-1 month');
+		$end_completion_date	=	time();
 		$this->assign('start_completion_date',$start_completion_date);
 		$this->assign('end_completion_date',$end_completion_date);
 		

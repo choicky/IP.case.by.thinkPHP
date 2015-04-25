@@ -314,8 +314,8 @@ class CaseFeeController extends Controller {
 		$cost_center_list	=	D('CostCenter')->listBasic();
 		$this->assign('cost_center_list',$cost_center_list);
 		
-		//默认查询未来3个月期限
-		$start_due_date	=	time();
+		//默认查询未来1个月期限
+		$start_due_date	=	"";
 		$end_due_date	=	strtotime('+1 month');
 		$this->assign('start_due_date',$start_due_date);
 		$this->assign('end_due_date',$end_due_date);
@@ -412,8 +412,8 @@ class CaseFeeController extends Controller {
 		$cost_center_list	=	D('CostCenter')->listBasic();
 		$this->assign('cost_center_list',$cost_center_list);
 		
-		//默认查询未来3个月期限
-		$start_due_date	=	time();
+		//默认查询未来1个月期限
+		$start_due_date	=	""
 		$end_due_date	=	strtotime('+1 month');
 		$this->assign('start_due_date',$start_due_date);
 		$this->assign('end_due_date',$end_due_date);
@@ -510,9 +510,9 @@ class CaseFeeController extends Controller {
 		$cost_center_list	=	D('CostCenter')->listBasic();
 		$this->assign('cost_center_list',$cost_center_list);
 		
-		//默认查询未来3个月期限
-		$start_payment_date	=	time();
-		$end_payment_date	=	strtotime('+1 month');
+		//默认查询最近一个月
+		$start_payment_date	=	strtotime('-1 month');
+		$end_payment_date	=	time();
 		$this->assign('start_payment_date',$start_payment_date);
 		$this->assign('end_payment_date',$end_payment_date);
 		
@@ -595,9 +595,9 @@ class CaseFeeController extends Controller {
 		$cost_center_list	=	D('CostCenter')->listBasic();
 		$this->assign('cost_center_list',$cost_center_list);
 		
-		//默认查询未来3个月期限
-		$start_payment_date	=	time();
-		$end_payment_date	=	strtotime('+1 month');
+		//默认查询最近一个月
+		$start_payment_date	=	strtotime('-1 month');
+		$end_payment_date	=	time();
 		$this->assign('start_payment_date',$start_payment_date);
 		$this->assign('end_payment_date',$end_payment_date);
 		
