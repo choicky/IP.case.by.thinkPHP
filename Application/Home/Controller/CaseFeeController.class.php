@@ -413,7 +413,7 @@ class CaseFeeController extends Controller {
 		$this->assign('cost_center_list',$cost_center_list);
 		
 		//默认查询未来1个月期限
-		$start_due_date	=	""
+		$start_due_date	=	"";
 		$end_due_date	=	strtotime('+1 month');
 		$this->assign('start_due_date',$start_due_date);
 		$this->assign('end_due_date',$end_due_date);
