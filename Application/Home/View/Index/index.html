@@ -1,0 +1,317 @@
+<!-- 继承模板页面 base --> 
+<!-- 该模板位于  ./Application\Home\View\Public --> 
+<extend name="Public:base" />
+	
+<!-- 区块 title 替换开始 --> 	
+	<block name="title">
+		<title>首页：任务监控</title>
+	</block>
+<!-- 区块 title 替换结束 --> 	
+	
+<!-- 区块 page 替换开始 --> 
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>未来一周的交文监控、未来一个月的缴费监控</h3>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					商标交文监控（未来一周），共{$not_patent_file_count}项。 <a href="{:U('CaseFile/searchNotPatentFile')}">>>更多的监控选项</a>
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								
+								<th>序号</th>
+								<th>我方案号</th>
+								<th>对方案号</th>
+								<th>客户</th>
+								<th>跟案人</th>
+								<th>申请人</th>
+								<th>申请日</th>
+								<th>申请号</th>
+								<th>商标类别</th>
+								<th>文件名称</th>								
+								<th>官文发文日</th>								
+								<th>期限日</th>
+								<th>完成日</th>
+								<th>服务费</th>								
+								<th>账单号</th>
+								<th>发票单号</th>
+								<th>到账认领单号</th>
+								<th>内部结算单号</th>
+								<th>结算金额</th>
+								<th>常用操作</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 case_priority_list 赋给  case_priority_vo--> 
+							<volist name="not_patent_file_list" id="not_patent_file_vo">
+							<tr>
+								
+								<td>{$i}</td>
+								<td>{$not_patent_file_vo.our_ref}</td>
+								<td>{$not_patent_file_vo.client_ref}</td>
+								<td>{$not_patent_file_vo.client_name}</td>
+								<td>{$not_patent_file_vo.follower_name}</td>
+								<td>{$not_patent_file_vo.application_name}</td>
+								<td>{$not_patent_file_vo['application_date']	=	$not_patent_file_vo['application_date']	?	date("Y-m-d",$not_patent_file_vo['application_date'])		:	''}</td>
+								<td>{$not_patent_file_vo.application_number}</td>
+								<td>{$not_patent_file_vo.formal_title}</td>
+								<td>{$not_patent_file_vo.file_type_name}</td>
+								<td>{$not_patent_file_vo['oa_date']	=	$not_patent_file_vo['oa_date']	?	date("Y-m-d",$not_patent_file_vo['oa_date'])		:	''}</td>
+								<td>{$not_patent_file_vo['due_date']	=	$not_patent_file_vo['due_date']	?	date("Y-m-d",$not_patent_file_vo['due_date'])		:	''}</td>
+								<td>{$not_patent_file_vo['completion_date']	=	$not_patent_file_vo['completion_date']	?	date("Y-m-d",$not_patent_file_vo['completion_date'])		:	''}</td>
+								<td>{$not_patent_file_vo['service_fee']	=	$not_patent_file_vo['service_fee']	?	$not_patent_file_vo['service_fee']/100		:	''}</td>
+								<td>{$not_patent_file_vo['bill_id']	=	$not_patent_file_vo['bill_id']	?	$not_patent_file_vo['bill_id']		:	''}</td>
+								<td>{$not_patent_file_vo['invoice_id']	=	$not_patent_file_vo['invoice_id']	?	$not_patent_file_vo['invoice_id']		:	''}</td>
+								<td>{$not_patent_file_vo['claim_id']	=	$not_patent_file_vo['claim_id']	?	$not_patent_file_vo['claim_id']		:	''}</td>
+								<td>{$not_patent_file_vo['cost_id']	=	$not_patent_file_vo['cost_id']	?	$not_patent_file_vo['cost_id']		:	''}</td>
+								<td>{$not_patent_file_vo['cost_amount']	=	$not_patent_file_vo['cost_amount']/100	?	$not_patent_file_vo['cost_amount']		:	''}</td>
+								<td>
+									<a href="{:U('CaseFile/update','case_file_id='.$not_patent_file_vo['case_file_id'])}">更新</a>
+									<a href="{:U('CaseFile/delete','case_file_id='.$not_patent_file_vo['case_file_id'])}">删除</a>
+									
+								</td>
+								
+							</tr>
+							</volist>
+						</tbody>
+					</table>  
+				</div>
+			</div>
+        </div>
+		
+		
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					商标缴费监控（未来两周），共{$not_patent_fee_count}项。<a href="{:U('CaseFee/searchNotPatentFee')}">>>更多的监控选项</a>
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								
+								<th>序号</th>								
+								<th>我方案号</th>								
+								<th>对方案号</th>
+								<th>客户</th>
+								<th>跟案人</th>
+								<th>申请人</th>
+								<th>专利名称</th>
+								<th>费用阶段</th>
+								<th>申请日</th>
+								<th>申请号</th>
+								<th>费用名称</th>
+								<th>官费</th>
+								<th>服务费</th>
+								<th>官文日期</th>
+								<th>期限日</th>
+								<th>指示日期</th>
+								<th>缴费单号及缴费日</th>
+								<th>常用操作</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 case_fee_list 赋给  case_fee_vo--> 
+							<volist name="not_patent_fee_list" id="not_patent_fee_vo">
+							<tr>
+								
+								<td>{$i}</td>								
+								<td><a href="{:U('Case/view','case_id='.$not_patent_fee_vo['case_id'])}" target="_blank">{$not_patent_fee_vo['our_ref']}</a></td>								
+								<td>{$not_patent_fee_vo['client_ref']}</td>
+								<td>{$not_patent_fee_vo['client_name']}</td>
+								<td>{$not_patent_fee_vo['follower_name']}</td>
+								<td>{$not_patent_fee_vo['applicant_name']}</td>
+								<td>{$not_patent_fee_vo['formal_title']}</td>
+								<td>{$not_patent_fee_vo['case_phase_name']}</td>
+								<td>{$not_patent_fee_vo['application_date']	?	date("Y-m-d",$not_patent_fee_vo['application_date'])	:	''}</td>
+								<td>{$not_patent_fee_vo['application_number']}</td>
+								<td>{$not_patent_fee_vo['fee_type_name']}</td>
+								<td>{$not_patent_fee_vo['official_fee']/100}</td>
+								<td>{$not_patent_fee_vo['service_fee']/100}</td>
+								<td>{$not_patent_fee_vo['oa_date']	?	date("Y-m-d",$not_patent_fee_vo['oa_date'])	:	''}</td>
+								<td>{$not_patent_fee_vo['due_date']	?	date("Y-m-d",$not_patent_fee_vo['due_date'])	:	''}</td>
+								<td>{$not_patent_fee_vo['allow_date']	?	date("Y-m-d",$not_patent_fee_vo['allow_date'])	:	''}</td>
+								<td>
+									{$not_patent_fee_vo['case_payment_id']	?	$not_patent_fee_vo['case_payment_id']	:	''}<br>
+									{$not_patent_fee_vo['payment_date']	?	date("Y-m-d",$not_patent_fee_vo['payment_date'])	:	''}
+								</td>
+								<td><a href="{:U('CaseFee/update','case_fee_id='.$not_patent_fee_vo['case_fee_id'])}" target="_blank">更新</a></td>
+								</tr>
+							</volist>
+						</tbody>
+					</table> 
+				</div>
+			</div>
+        </div>
+		
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					专利交文监控（未来一周），共{$patent_file_count}项。<a href="{:U('CaseFile/searchPatentFile')}">>>更多的监控选项</a>
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								
+								<th>序号</th>
+								<th>我方案号</th>
+								<th>对方案号</th>
+								<th>客户</th>
+								<th>跟案人</th>
+								<th>申请人</th>
+								<th>申请日</th>
+								<th>申请号</th>
+								<th>商标类别</th>
+								<th>文件名称</th>								
+								<th>官文发文日</th>								
+								<th>期限日</th>
+								<th>完成日</th>
+								<th>服务费</th>								
+								<th>账单号</th>
+								<th>发票单号</th>
+								<th>到账认领单号</th>
+								<th>内部结算单号</th>
+								<th>结算金额</th>
+								<th>常用操作</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 case_priority_list 赋给  case_priority_vo--> 
+							<volist name="patent_file_list" id="patent_file_vo">
+							<tr>
+								
+								<td>{$i}</td>
+								<td>{$patent_file_vo.our_ref}</td>
+								<td>{$patent_file_vo.client_ref}</td>
+								<td>{$patent_file_vo.client_name}</td>
+								<td>{$patent_file_vo.follower_name}</td>
+								<td>{$patent_file_vo.application_name}</td>
+								<td>{$patent_file_vo['application_date']	=	$patent_file_vo['application_date']	?	date("Y-m-d",$patent_file_vo['application_date'])		:	''}</td>
+								<td>{$patent_file_vo.application_number}</td>
+								<td>{$patent_file_vo.formal_title}</td>
+								<td>{$patent_file_vo.file_type_name}</td>
+								<td>{$patent_file_vo['oa_date']	=	$patent_file_vo['oa_date']	?	date("Y-m-d",$patent_file_vo['oa_date'])		:	''}</td>
+								<td>{$patent_file_vo['due_date']	=	$patent_file_vo['due_date']	?	date("Y-m-d",$patent_file_vo['due_date'])		:	''}</td>
+								<td>{$patent_file_vo['completion_date']	=	$patent_file_vo['completion_date']	?	date("Y-m-d",$patent_file_vo['completion_date'])		:	''}</td>
+								<td>{$patent_file_vo['service_fee']	=	$patent_file_vo['service_fee']	?	$patent_file_vo['service_fee']/100		:	''}</td>
+								<td>{$patent_file_vo['bill_id']	=	$patent_file_vo['bill_id']	?	$patent_file_vo['bill_id']		:	''}</td>
+								<td>{$patent_file_vo['invoice_id']	=	$patent_file_vo['invoice_id']	?	$patent_file_vo['invoice_id']		:	''}</td>
+								<td>{$patent_file_vo['claim_id']	=	$patent_file_vo['claim_id']	?	$patent_file_vo['claim_id']		:	''}</td>
+								<td>{$patent_file_vo['cost_id']	=	$patent_file_vo['cost_id']	?	$patent_file_vo['cost_id']		:	''}</td>
+								<td>{$patent_file_vo['cost_amount']	=	$patent_file_vo['cost_amount']/100	?	$patent_file_vo['cost_amount']		:	''}</td>
+								<td>
+									<a href="{:U('CaseFile/update','case_file_id='.$patent_file_vo['case_file_id'])}">更新</a>
+									<a href="{:U('CaseFile/delete','case_file_id='.$patent_file_vo['case_file_id'])}">删除</a>
+									
+								</td>
+								
+							</tr>
+							</volist>
+						</tbody>
+					</table>  
+				</div>
+			</div>
+        </div>
+		
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					专利缴费监控（未来两周），共{$patent_fee_count}项。<a href="{:U('CaseFee/searchPatentFee')}">>>更多的监控选项</a>
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								
+								<th>序号</th>								
+								<th>我方案号</th>								
+								<th>对方案号</th>
+								<th>客户</th>
+								<th>跟案人</th>
+								<th>申请人</th>
+								<th>专利名称</th>
+								<th>费用阶段</th>
+								<th>申请日</th>
+								<th>申请号</th>
+								<th>费用名称</th>
+								<th>官费</th>
+								<th>服务费</th>
+								<th>官文日期</th>
+								<th>期限日</th>
+								<th>指示日期</th>
+								<th>缴费单号及缴费日</th>
+								<th>常用操作</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 case_fee_list 赋给  case_fee_vo--> 
+							<volist name="patent_fee_list" id="patent_fee_vo">
+							<tr>
+								
+								<td>{$i}</td>								
+								<td><a href="{:U('Case/view','case_id='.$patent_fee_vo['case_id'])}" target="_blank">{$patent_fee_vo['our_ref']}</a></td>								
+								<td>{$patent_fee_vo['client_ref']}</td>
+								<td>{$patent_fee_vo['client_name']}</td>
+								<td>{$patent_fee_vo['follower_name']}</td>
+								<td>{$patent_fee_vo['applicant_name']}</td>
+								<td>{$patent_fee_vo['formal_title']}</td>
+								<td>{$patent_fee_vo['case_phase_name']}</td>
+								<td>{$patent_fee_vo['application_date']	?	date("Y-m-d",$patent_fee_vo['application_date'])	:	''}</td>
+								<td>{$patent_fee_vo['application_number']}</td>
+								<td>{$patent_fee_vo['fee_type_name']}</td>
+								<td>{$patent_fee_vo['official_fee']/100}</td>
+								<td>{$patent_fee_vo['service_fee']/100}</td>
+								<td>{$patent_fee_vo['oa_date']	?	date("Y-m-d",$patent_fee_vo['oa_date'])	:	''}</td>
+								<td>{$patent_fee_vo['due_date']	?	date("Y-m-d",$patent_fee_vo['due_date'])	:	''}</td>
+								<td>{$patent_fee_vo['allow_date']	?	date("Y-m-d",$patent_fee_vo['allow_date'])	:	''}</td>
+								<td>
+									{$patent_fee_vo['case_payment_id']	?	$patent_fee_vo['case_payment_id']	:	''}<br>
+									{$patent_fee_vo['payment_date']	?	date("Y-m-d",$patent_fee_vo['payment_date'])	:	''}
+								</td>
+								<td><a href="{:U('CaseFee/update','case_fee_id='.$patent_fee_vo['case_fee_id'])}" target="_blank">更新</a></td>
+								</tr>
+							</volist>
+						</tbody>
+					</table> 
+				</div>
+			</div>
+        </div>
+		
+		
+
+	</block>
+<!-- 区块 page 替换结束 --> 

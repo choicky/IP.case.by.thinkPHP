@@ -9,93 +9,62 @@ class IndexController extends Controller {
 			//$this->error('尚未登陆',U('User/login'));
 			header('Location: '.U('User/login'));
 		}else{
-			header('Location: '.U('Case/searchForNewPatent'));
-		}
-		 
-		
+			//监控未来一周的交文任务
+			$file_due_date	=	strtotime('+1 week');
+			
+			//构造共用的 mapping 
+			$map_case_file['completion_date']	=	array('LT',1);
+			$map_case_file['due_date']	=	array('LT',$file_due_date);
+			
+			//构造专利的 mapping
+			$patent_file_type_list	=	D('CaseType')->listPatentCaseTypeId();
+			$map_case_file['case_type_id']  = array('in',$patent_file_type_list);
+			
+			//搜索出专利交文任务
+			$patent_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			$patent_file_count	=	count($patent_file_list);
+			$this->assign('patent_file_list',$patent_file_list);
+			$this->assign('patent_file_count',$patent_file_count);
+			
+			//构造非专利的 mapping
+			$map_case_file['case_type_id']  = array('notin',$patent_file_type_list);
+			
+			//搜索出非专利交文任务
+			$not_patent_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			$not_patent_file_count	=	count($not_patent_file_list);
+			$this->assign('not_patent_file_list',$not_patent_file_list);
+			$this->assign('not_patent_file_count',$not_patent_file_count);
+			
+			//监控未来两周的缴费任务
+			$fee_due_date	=	strtotime('+2 week');
+			
+			//构造共用的 mapping 
+			$map_case_fee['case_payment_id']	=	array('LT',1);
+			$map_case_fee['due_date']	=	array('LT',$fee_due_date);
+			
+			//构造专利的 mapping
+			$patent_fee_type_list	=	D('CaseType')->listPatentCaseTypeId();
+			$map_case_fee['case_type_id']  = array('in',$patent_fee_type_list);
+			
+			//搜索出专利缴费任务
+			$patent_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			$patent_fee_count	=	count($patent_fee_list);
+			$this->assign('patent_fee_list',$patent_fee_list);
+			$this->assign('patent_fee_count',$patent_fee_count);
+			
+			//构造非专利的 mapping
+			$map_case_fee['case_type_id']  = array('notin',$patent_fee_type_list);
+			
+			//搜索出非专利缴费任务
+			$not_patent_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			$not_patent_fee_count	=	count($not_patent_fee_list);
+			$this->assign('not_patent_fee_list',$not_patent_fee_list);
+			$this->assign('not_patent_fee_count',$not_patent_fee_count);
+			
+		} 
+	
+	$this->display();
+	
     }
 	
-	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
-	public function listAll(){
-		
-		//通过系统继承的 D 方法实例化 IndexModel并调用其 listAll 方法
-		$data = D('Index')->listAll();
-		
-		//将 $data 的数据赋给变量名 data ，以便于模板调用
-		$this->assign('data',$data);
-		
-		//渲染模板，模板名与方法名对应，即，应该是 listAll.html
-		$this->display();
-	}
-	
-	//新增
-	public function add(){
-		//定义空数组
-		$data	=	array();
-		
-		//通过系统继承的 I 方法接收 post 过来的 index_content 值
-		$data['index_content']	=	I('post.index_content');
-		
-		//检测是否为空值		
-		if(!$data['index_content']){
-			$this->error('未填写');
-		} 
-		
-		//写入，返回值 $result 为 false 才是写入失败，其他情况都是成功
-		$result = D('Index')->add($data);
-		
-		if(false !== $result){
-			
-			// success 方法，第一个参数是提示信息，第二个参数是跳转到哪个 url
-			$this->success('新增成功', 'listAll');
-		}else{
-			
-			// error 方法，第一个参数是提示信息，第二个参数是跳转到哪个 url，第二个参数为空时，就是返回上一页
-			$this->error('增加失败');
-		}
-	}
-	
-	//编辑
-	public function update(){
-		
-		//检测是否 post ，此时是接收数据并保存
-		if(IS_POST){
-			
-			//通过 I 方法获取 post 过来的 index_id
-			$index_id	=	I('post.index_id');
-			
-			//定义空数组
-			$data=array();
-			
-			//通过 I 方法获取 post 过来的 index_content ，并去掉两端的空格
-			$data['index_content']	=	trim(I('post.index_content'));
-			
-			//通过 D 方法实例化 IndexModel 并调用其 update 方法
-			$result = D('Index')->update($index_id,$data);
-			if(false !== $result){
-				$this->success('修改成功', 'listAll');
-			}else{
-				$this->error('修改失败', 'listAll');
-			}
-		} else{			
-			//这是对于 get 方式的
-			
-			//通过 I 方法获取 get 过来的 id ，并赋给 $index_id
-			$index_id	=	I('get.id');
-			
-			// id 为空时报错
-			if(!$index_id){
-				$this->error('未指明要编辑的主键');
-			}
-			
-			//通过 D 方法调用 IndexModel 并调用其 getBy 方法，并查到 index_id=$index_id 的值
-			$data = D('Index')->getByIndexId($index_id);
-			
-			//将 $data 赋给 data ，以便于模板调用
-			$this->assign('data',$data);
-			
-			//渲染模板，模板名与方法名对应，即，应该是 update.html
-			$this->display();
-		}
-	}
 }
