@@ -52,7 +52,7 @@
 								<td>
 									{$case_payment_vo['payment_date']	?	date("Y-m-d",$case_payment_vo['payment_date'])	:	''}
 								</td>
-								<td>{$case_payment_vo['Payer']['payer_name']}</td>
+								<td>{$case_payment_vo['payer_name']}</td>
 								<td align="right">{$case_payment_vo['official_fee']/100}</td>
 								<td align="right">{$case_payment_vo['other_fee']/100}</td>
 								<td align="right">{$case_payment_vo['total_amount']/100}</td>
