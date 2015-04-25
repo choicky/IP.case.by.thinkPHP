@@ -36,7 +36,7 @@ class IndexController extends Controller {
 			$this->assign('not_patent_file_count',$not_patent_file_count);
 			
 			//监控未来两周的缴费任务
-			$fee_due_date	=	strtotime('+2 week');
+			$fee_due_date	=	strtotime('+1 week');
 			
 			//构造共用的 mapping 
 			$map_case_fee['case_payment_id']	=	array('LT',1);
