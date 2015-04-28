@@ -55,11 +55,5 @@ class BalanceModel extends RelationModel {
 		return array("list"=>$list,"page"=>$show,"count"=>$count);
 	}
 	
-	//更新本数据表中主键为$balance_id的记录，$data是数组
-	public function update($balance_id,$data){
-		$map['balance_id']	=	$balance_id;
-		$result	=	$this->where($map)->save($data);
-		return $result;
-	}
-
+	
 }

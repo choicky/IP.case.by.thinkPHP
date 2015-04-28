@@ -22,10 +22,12 @@
 					<form class="form-horizontal" method="post" action="__CONTROLLER__/update">
 						<fieldset>
 							<legend>尽量填写完整每一项</legend>
+							<!-- 隐藏域开始 -->
+							<input type="hidden" class="form-control" id="balance_id" name="balance_id" value="{$balance_list.balance_id}">
+							<!-- 隐藏域结束 -->
 							<div class="form-group">
 								<label for="account_id" class="col-lg-3 control-label">账户名称</label>
 								<div class="col-lg-4">
-									<input type="hidden" class="form-control" id="balance_id" name="balance_id" value="{$balance_list.balance_id}">
 									<select class="form-control" name="account_id">
 										<option value="" {$balance_list['account_id']==0	? 'selected="selected"' :'' }></option>
 										<volist name="account_list" id="account_vo">
@@ -40,7 +42,7 @@
 							<div class="form-group">
 								<label for="deal_date" class="col-lg-3 control-label">交易日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="deal_date" name="deal_date" placeholder="deal_date" value="{$balance_list.deal_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="deal_date" name="deal_date" placeholder="deal_date" value="{$balance_list['eal_date']	?	date("Y-m-d",$balance_list['eal_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									日期格式为 yyyy-mm-dd，可用鼠标选择

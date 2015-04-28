@@ -76,7 +76,7 @@ class BalanceController extends Controller {
 		if(IS_POST){
 			
 			$data=array();
-			$data['account_id']	=	trim(I('post.balance_id'));
+			$data['balance_id']	=	trim(I('post.balance_id'));
 			$data['account_id']	=	trim(I('post.account_id'));
 			$data['deal_date']	=	trim(I('post.deal_date'));
 			$data['deal_date']	=	strtotime($data['deal_date']);
@@ -88,11 +88,11 @@ class BalanceController extends Controller {
 			$data['other_party']	=	trim(I('post.other_party'));
 			$data['follower_id']	=	trim(I('post.follower_id'));
 
-			$result = D('Balance')->update($balance_id,$data);
+			$result = D('Balance')->save($data);
 			if(false !== $result){
-				$this->success('修改成功', U('Balance/view','balance_id='.$data['account_id']));
+				$this->success('修改成功', U('Claim/view','balance_id='.$data['balance_id']));
 			}else{
-				$this->error('修改失败', U('Balance/view','balance_id='.$data['account_id']));
+				$this->error('修改失败', U('Claim/view','balance_id='.$data['balance_id']));
 			}
 		} else{
 			$balance_id = I('get.balance_id',0,'int');
