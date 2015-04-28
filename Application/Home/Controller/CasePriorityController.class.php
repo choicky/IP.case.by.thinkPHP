@@ -178,9 +178,18 @@ class CasePriorityController extends Controller {
 			$this->error('未指明要查看的案件');
 		}
 
-		$case_list = D('Case')->relation(true)->field(true)->getByCaseId($case_id);
-		$case_priority_count	=	count($case_list['CasePriority']);
+		//取出案件的基本信息
+		$case_list = D('CaseView')->field(true)->getByCaseId($case_id);
+		
+		//定义查询
+		$map['case_id']	=	$case_id;
+		
+		//取出优先权信息
+		$case_priority_list	=	D('CasePriorityView')->where($map)->listAll();		
+		$case_priority_count	=	count($case_priority_list);
+		
 		$this->assign('case_list',$case_list);
+		$this->assign('case_priority_list',$case_priority_list);
 		$this->assign('case_priority_count',$case_priority_count);
 		
 		//取出 Country 表的内容以及数量
