@@ -94,78 +94,151 @@ class CaseFeeController extends Controller {
 	}
 	
 	//批量新增年费	
-	public function addMoreAnnualFee(){
+	public function addAnnualFee(){
 		
 		//接收参数
 		$case_id	=	trim(I('post.case_id'));
-		$year_number	=	trim(I('post.year_number'));
+		$case_type_name	=	trim(I('post.case_type_name'));
+		$application_date	=	trim(I('post.application_date'));
+		$registration	=	trim(I('post.registration'));
+		$due_date	=	trim(I('post.due_date'));
+		$annual_number	=	trim(I('post.annual_number'));
 		$service_fee	=	trim(I('post.service_fee'))*100;
 		
 		//检查合法性
-		$map_case['case_id']	=	$case_id;
-		$case_list	=	M('Case')->where($map_case)->find();
-		if(!is_array($case_list)){
-			$this->error('案件编号不正确');
+		if($registration){
+			if(!$due_date){
+				$this->error('增加失败，必须填写登年印的期限日');
+			}
+		}
+		if(!$case_type_name){
+			$this->error('增加失败，请先补充本案的案件类型');
 		}
 		
-		//获取申请日
-		$application_date	=	$case_list['application_date'];
-		if(0 !== $application_date){
-			$current_time	=	time();		
-			$year_intavel	=	yearInterval($application_date,$current_time);			
+		if(!$application_date){
+			$this->error('增加失败，请先补充本案的申请日');
+		}
+		
+		if(!$annual_number){
+			$this->error('增加失败，请选择年费的年度');
+		}
+		
+		if(!$case_id){
+			$this->error('增加失败，案件编号不正确');
 		}else{
-			$this->error('本案未填写申请日');
-		}		
+			$case_list	=	M('Case')->getByCaseId($case_id);
+			if(!is_array($case_list)){
+				$this->error('增加失败，案件编号不正确');
+			}	
+		}
 		
-		//获取“授权后”对应的ID
-		$map_case_phase['case_phase_name']	=	array('like','%授权后%');
-		$case_phase_list	=	M('CasePhase')->where($map_case_phase)->find();
-		$case_phase_id	=	$case_phase_list[$case_phase_id];
 		
-		//获取本条费用的案子的 $case_type_name
-		$case_type_name	=	D('CaseFee')->returnCaseTypeName($case_fee_id);
-		//根据 $case_type_name 构造对应的检索条件
+		//如果是登年印，就获取“授权时”对应的ID；否则获取“授权后”对应的ID
+		if($registration){
+			$map_case_phase['case_phase_name']	=	array('like','%授权时%');
+			$case_phase_list	=	M('CasePhase')->where($map_case_phase)->find();
+			$case_phase_id	=	$case_phase_list['case_phase_id'];
+		}else{
+			$map_case_phase['case_phase_name']	=	array('like','%授权后%');
+			$case_phase_list	=	M('CasePhase')->where($map_case_phase)->find();
+			$case_phase_id	=	$case_phase_list['case_phase_id'];
+		}
+		
+		//如果是登年印，就直接采用传递过来的期限日；否则需要计算出来期限日
+		if($registration){
+			$due_date	=	strtotime($due_date);
+		}else{
+			$due_date	=	strtotime ("+".$annual_number." year", $application_date);
+		}
+		
+		
+		//因为10以下的年费前面有0，先把0补上
+		if($annual_number	<	10){
+			$annual_number	=	'0'.$annual_number;
+		}
+		
+		//根据 $case_type_name 构造对应的检索条件以搜出年费的的ID
 		if(false	!==	strpos($case_type_name,'发明')){
-			$map_fee_type['fee_type_name']	=	array('like','%发明%');
+			$map_fee_type[0]['fee_type_name']	=	array('like','%发明%'.$annual_number.'年%');
 		}elseif(false	!==	strpos($case_type_name,'实用新型')){
-			$map_fee_type['fee_type_name']	=	array('like','%实用新型%');
+			$map_fee_type[0]['fee_type_name']	=	array('like','%实用新型%'.$annual_number.'年%');
 		}elseif(false	!==	strpos($case_type_name,'外观设计')){
-			$map_fee_type['fee_type_name']	=	array('like','%外观设计%');
+			$map_fee_type[0]['fee_type_name']	=	array('like','%外观设计%'.$annual_number.'年%');
 		}else{
-			$this->error('创建失败');
+			$this->error('增加失败，本案件类型没有年费任务');
 		}
 		
-		for($j==0;$j<$year_number;	$j++){
-			//根据年度构建搜索
-			$year_intavel	=	$year_intavel	+	$j;
-			$map_fee_type['fee_type_name_cpc']	=	array('like','%第'.$year_intavel.'年%');
-			
-			//获取费用类型的ID
-			$fee_type_list	=	M('FeeType')->where($map_fee_type)->find();
-			$fee_type_id	=	$fee_type_list['fee_type_id'];
-			$fee_default_amount	=	$fee_type_list['fee_default_amount'];
-			
-			//获取期限日
-			$due_date	=	strtotime ("+".$year_intavel." year", $application_date);
-			
-			//构造数组
-			$date_case_fee['case_id']	=	$case_id;
-			$date_case_fee['case_phase_id']	=	$case_phase_id;
-			$date_case_fee['fee_type_id']	=	$fee_type_id;
-			$date_case_fee['official_fee']	=	$fee_default_amount;
-			$date_case_fee['service_fee']	=	$service_fee;
-			$date_case_fee['due_date']	=	$due_date;
-			
-			$result_case_fee	=	M('CaseFee')->add($date_case_fee);
-		}			
+		//找到对应的 fee_type_id 和 fee_default_amount
+		$fee_type_list[0]	=	M('FeeType')->field(true)->where($map_fee_type[0])->find();
+		$fee_type_id[0]	=	$fee_type_list[0]['fee_type_id'];
+		$fee_default_amount[0]	=	$fee_type_list[0]['fee_default_amount'];
 		
-		if(false !== $result_case_fee){
-			
-			// 写入新增数据成功，返回案件信息页面
-			$this->success('新增成功', U('CaseFee/view','case_id='.$case_id));
-			
+		
+		//构造数组
+		$data_case_fee['case_id']	=	$case_id;
+		$data_case_fee['case_phase_id']	=	$case_phase_id;
+		$data_case_fee['fee_type_id']	=	$fee_type_id[0];
+		$data_case_fee['official_fee']	=	$fee_default_amount[0];
+		$data_case_fee['service_fee']	=	$service_fee;
+		$data_case_fee['due_date']	=	$due_date;
+		
+		//写入年费数据
+		$result_case_fee[0]	=	M('CaseFee')->add($data_case_fee);
+		if(!$result_case_fee[0]){			
+			$this->error('增加失败');			
 		}else{
-			$this->error('增加失败');
+			if(!$registration){
+			// 提醒
+			$this->success('费用任务增加完成，请检查费用任务是否正确', U('CaseFee/view','case_id='.$case_id));
+			}
+		}
+		
+		if($registration){
+			//登记费部分
+			if(false	!==	strpos($case_type_name,'发明')){
+				$map_fee_type[1]['fee_type_name']	=	array('like','%发明%登记%');
+			}elseif(false	!==	strpos($case_type_name,'实用新型')){
+				$map_fee_type[1]['fee_type_name']	=	array('like','%实用新型%登记%');
+			}elseif(false	!==	strpos($case_type_name,'外观设计')){
+				$map_fee_type[1]['fee_type_name']	=	array('like','%外观设计%登记%');
+			}			
+			//找到对应的 fee_type_id 和 fee_default_amount
+			$fee_type_list[1]	=	M('FeeType')->field(true)->where($map_fee_type[1])->find();
+			$fee_type_id[1]	=	$fee_type_list[1]['fee_type_id'];
+			$fee_default_amount[1]	=	$fee_type_list[1]['fee_default_amount'];
+			
+			//写入登记费
+			$data_case_fee['fee_type_id']	=	$fee_type_id[1];
+			$data_case_fee['official_fee']	=	$fee_default_amount[1];
+			$data_case_fee['service_fee']	=	"";
+			$result_case_fee[1]	=	M('CaseFee')->add($data_case_fee);
+			if(!$result_case_fee[1]){			
+				$this->error('增加失败');			
+			}
+			
+			//印刷税部分
+			if(false	!==	strpos($case_type_name,'发明')){
+				$map_fee_type[2]['fee_type_name']	=	array('like','%发明%印花税%');
+			}elseif(false	!==	strpos($case_type_name,'实用新型')){
+				$map_fee_type[2]['fee_type_name']	=	array('like','%实用新型%印花税%');
+			}elseif(false	!==	strpos($case_type_name,'外观设计')){
+				$map_fee_type[2]['fee_type_name']	=	array('like','%外观设计%印花税%');
+			}			
+			//找到对应的 fee_type_id 和 fee_default_amount
+			$fee_type_list[2]	=	M('FeeType')->field(true)->where($map_fee_type[2])->find();
+			$fee_type_id[2]	=	$fee_type_list[2]['fee_type_id'];
+			$fee_default_amount[2]	=	$fee_type_list[2]['fee_default_amount'];
+			
+			//写入印刷税
+			$data_case_fee['fee_type_id']	=	$fee_type_id[2];
+			$data_case_fee['official_fee']	=	$fee_default_amount[2];
+			$result_case_fee[2]	=	M('CaseFee')->add($data_case_fee);
+			if(!$result_case_fee[2]){			
+				$this->error('增加失败');			
+			}else{			
+				// 提醒
+				$this->success('费用任务增加完成，请检查费用任务是否正确', U('CaseFee/view','case_id='.$case_id));			
+			}		
 		}
 	}
 	
@@ -696,10 +769,13 @@ class CaseFeeController extends Controller {
 		//根据 $case_type_name 是否包含“专利”来构造对应的检索条件
 		if(false	!==	strpos($case_type_name,'发明')){
 			$map_fee_type['fee_type_name']	=	array('like','%发明%');
+			$annual_list	=	numberOption(20);
 		}elseif(false	!==	strpos($case_type_name,'实用新型')){
 			$map_fee_type['fee_type_name']	=	array('like','%实用新型%');
+			$annual_list	=	numberOption(10);
 		}elseif(false	!==	strpos($case_type_name,'外观设计')){
 			$map_fee_type['fee_type_name']	=	array('like','%外观设计%');
+			$annual_list	=	numberOption(10);
 		}elseif(false	!==	strpos($case_type_name,'PCT')){
 			$map_fee_type['fee_type_name']	=	array('like','%PCT%');
 		}elseif(false	!==	strpos($case_type_name,'检索')){
@@ -713,6 +789,9 @@ class CaseFeeController extends Controller {
 		}else{
 			$map_fee_type['fee_type_name']	=	array('notlike','%专利%');
 		}
+		
+		//输出 annual_list
+		$this->assign('annual_list',$annual_list);
 		
 		//取出 FeeType 表的内容以及数量
 		$fee_type_list	=	D('FeeType')->where($map_fee_type)->listBasic();

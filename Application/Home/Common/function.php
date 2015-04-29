@@ -1,4 +1,6 @@
 <?php
+
+//返回自2006年开始至目前的年份，可作为选单
 function yearOption(){
 	$current_year	=	intval(date("Y",time()));
 	$start_year	=	2006;
@@ -9,6 +11,7 @@ function yearOption(){
 	return($year_list);	
 }
 
+//返回包含了专利这个大类的列表
 function patentCaseGroupOption(){
 	$map['case_group_name']	=	array('like','%专利%');
 	$order['convert(case_type_group_name using gb2312)']	=	'asc';
@@ -16,11 +19,13 @@ function patentCaseGroupOption(){
 	return $patent_type_data;
 }
 
+//100倍的函数
 function multiplyByHundred($number){
 	$number	=	$number	*	100;	
 	return $number;
 }
 
+//数字选项
 function numberOption($j){
 	for($i=1;$i<=$j;$i++){
 		$number_list[$i]=$i;
