@@ -148,7 +148,8 @@ class CaseFeeController extends Controller {
 		if($registration){
 			$due_date	=	strtotime($due_date);
 		}else{
-			$due_date	=	strtotime ("+".$annual_number." year", $application_date);
+			$year_diff	=	$annual_number	-	1;
+			$due_date	=	strtotime ("+".$year_diff." year", $application_date);
 		}
 		
 		
