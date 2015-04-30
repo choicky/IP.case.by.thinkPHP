@@ -207,7 +207,7 @@ class CaseFileController extends Controller {
 			$is_filed	=	I('post.is_filed','0','int');
 			
 			$start_due_date	=	trim(I('post.start_due_date'));
-			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : time();			
+			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : "";			
 			$end_due_date	=	trim(I('post.end_due_date'));
 			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+1 month');
 			
@@ -283,7 +283,7 @@ class CaseFileController extends Controller {
 			$is_filed	=	I('post.is_filed','0','int');
 			
 			$start_due_date	=	trim(I('post.start_due_date'));
-			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : time();			
+			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : "";			
 			$end_due_date	=	trim(I('post.end_due_date'));
 			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+1 month');
 			
