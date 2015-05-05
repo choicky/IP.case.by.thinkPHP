@@ -2,7 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 
-class TestController extends Controller {
+class CheckController extends Controller {
 
 	public function listNotIssued(){
 		
