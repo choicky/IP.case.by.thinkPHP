@@ -38,7 +38,6 @@
 								<th>客户</th>
 								<th>申请人</th>
 								<th>跟案人</th>
-								<th>已提交？</th>
 								<th>&nbsp;</th>
 							</tr>
 							
@@ -76,13 +75,7 @@
 										</volist>
 									</select>
 								</td>
-								<td>
-									<select class="form-control" name="is_filed">
-										<option value="0" }>不限</option>
-										<option value="1" {$is_filed==1	?	'selected="selected"'	:	''}>未交</option>										
-										<option value="2" {$is_filed==2	?	'selected="selected"'	:	''}>已交</option>
-									</select>
-								</td>								
+															
 								<td><button type="submit" class="btn btn-primary">搜</button></td>						
 							</tr>
 						</form>

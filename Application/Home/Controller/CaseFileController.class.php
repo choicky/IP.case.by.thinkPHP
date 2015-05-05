@@ -374,13 +374,6 @@ class CaseFileController extends Controller {
 				$map_case_file['follower_id']	=	$follower_id;
 			}	
 			
-			if(1==$is_filed){
-				$map_case_file['completion_date']	=	array('LT',1);
-			}
-			if(2==$is_filed){
-				$map_case_file['completion_date']	=	array('GT',1);
-			}
-			
 			$map_case_file['completion_date']	=	array('between',$start_completion_date.','.$end_completion_date);
 			
 			//获取专利的 case_type_id 集合
@@ -449,13 +442,6 @@ class CaseFileController extends Controller {
 			if($follower_id){
 				$map_case_file['follower_id']	=	$follower_id;
 			}	
-			
-			if(1==$is_filed){
-				$map_case_file['completion_date']	=	array('LT',1);
-			}
-			if(2==$is_filed){
-				$map_case_file['completion_date']	=	array('GT',1);
-			}
 			
 			$map_case_file['completion_date']	=	array('between',$start_completion_date.','.$end_completion_date);
 			
