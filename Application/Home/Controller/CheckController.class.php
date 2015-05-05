@@ -6,37 +6,28 @@ class CheckController extends Controller {
 
 	public function listNotIssued(){
 		
-		$this->show('<h2>尚未登记授权日的专利案件列表</h2>');
-		
-		
 		//获取专利案列表
 		$case_list	=	$this->listAllPatent2();
+		$case_count	=	count($case_list);
 		
-		for($j=0;$j<count($case_list);$j++){
-			
-			//提取 case_id 和 our_ref
-			$case_id[$j]=$case_list[$j]['case_id'];
-			$our_ref[$j]=$case_list[$j]['our_ref'];
-			
-			$this->show('<a href="'.U('Case/view','case_id='.$case_id[$j]).'" target="_blank">'.$our_ref[$j].'</a><br>');		
-			
-		}
-		
+		$this->assign('case_list',$case_list);
+		$this->assign('case_count',$case_count);
+
+		$this->display();
 	
     }
 	
 	public function listNoFee(){
 		
-		$this->show('<h2>尚未登记有费用的专利案件列表</h2>');
 		
 		//获取专利案列表
-		$case_list	=	$this->listAllPatent();
+		$case_tmp_list	=	$this->listAllPatent();
 		
-		for($j=0;$j<count($case_list);$j++){
+		for($j=0;$j<count($case_tmp_list);$j++){
 			
 			//提取 case_id 和 our_ref
-			$case_id[$j]=$case_list[$j]['case_id'];
-			$our_ref[$j]=$case_list[$j]['our_ref'];
+			$case_id[$j]=$case_tmp_list[$j]['case_id'];
+			$our_ref[$j]=$case_tmp_list[$j]['our_ref'];
 			
 			/*
 			//获取“授权后”对应的ID
@@ -52,12 +43,17 @@ class CheckController extends Controller {
 			$case_fee_list	=	M('CaseFee')->where($map_case_fee)->find();
 			
 			if(!is_array($case_fee_list)){
-				$this->show('<a href="'.U('Case/view','case_id='.$case_id[$j]).'" target="_blank">'.$our_ref[$j].'</a><br>');
+				$case_list[$j]	=	$case_tmp_list[$j];
 			}			
 			
 			
 		}
 		
+		$case_count	=	count($case_list);
+		
+		$this->assign('case_list',$case_list);
+		$this->assign('case_count',$case_count);
+		$this->display();
 	
     }
 	
