@@ -143,7 +143,7 @@
 							<tr>
 								
 								<td>{$i}</td>
-								<td>{$case_file_vo.our_ref}</td>
+								<td><a href="{:U('Case/view','case_id='.$case_file_vo['case_id'])}">{$case_file_vo.our_ref}</a></td>
 								<td>{$case_file_vo.client_ref}</td>
 								<td>{$case_file_vo.client_name}</td>
 								<td>{$case_file_vo.follower_name}</td>
