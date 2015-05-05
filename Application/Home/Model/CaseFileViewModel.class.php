@@ -102,8 +102,8 @@ class CaseFileViewModel extends ViewModel {
 	
 	//返回本数据视图的所有数据
 	public function listAll() {
-		$order['our_ref']	=	'asc';
 		$order['due_date']	=	'asc';
+		$order['our_ref']	=	'asc';
 		$list	=	$this->order($order)->select();
 		return $list;
 	}
@@ -116,8 +116,8 @@ class CaseFileViewModel extends ViewModel {
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['our_ref']	=	'asc';
-		$order['due_date']	=	'asc';	
+		$order['due_date']	=	'asc';
+		$order['our_ref']	=	'asc';	
 		$list	=	$this->field(true)->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
@@ -130,8 +130,8 @@ class CaseFileViewModel extends ViewModel {
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPageSearch($p,$limit,$map) {
-		$order['our_ref']	=	'asc';
-		$order['due_date']	=	'asc';	
+		$order['due_date']	=	'asc';
+		$order['our_ref']	=	'asc';	
 		$list	=	$this->field(true)->order($order)->where($map)->page($p.','.$limit)->select();
 		
 		$count	= $this->where($map)->count();
