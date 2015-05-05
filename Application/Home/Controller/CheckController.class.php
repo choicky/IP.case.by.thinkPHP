@@ -18,8 +18,7 @@ class CheckController extends Controller {
 			$case_id[$j]=$case_list[$j]['case_id'];
 			$our_ref[$j]=$case_list[$j]['our_ref'];
 			
-			$this->show('<a href="'.U('Case/view','case_id='.$case_id[$j]).'">'.$our_ref[$j].'</a><br>');
-			
+			$this->show('<a href="'.U('Case/view','case_id='.$case_id[$j]).'" target="_blank">'.$our_ref[$j].'</a><br>');		
 			
 		}
 		
@@ -53,7 +52,7 @@ class CheckController extends Controller {
 			$case_fee_list	=	M('CaseFee')->where($map_case_fee)->find();
 			
 			if(!is_array($case_fee_list)){
-				$this->show('<a href="'.U('Case/view','case_id='.$case_id[$j]).'">'.$our_ref[$j].'</a><br>');
+				$this->show('<a href="'.U('Case/view','case_id='.$case_id[$j]).'" target="_blank">'.$our_ref[$j].'</a><br>');
 			}			
 			
 			
@@ -66,8 +65,9 @@ class CheckController extends Controller {
 	public function listAllPatent() {
 		$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
 		$map['case_type_id']  = array('in',$case_type_list);
+		$map['expired_date']	=	array('LT',1);
 		
-		$order['our_ref']	=	'desc';
+		$order['our_ref']	=	'asc';
 		$list	=	D('CaseView')->where($map)->order($order)->select();
 
 		return $list;
@@ -79,7 +79,7 @@ class CheckController extends Controller {
 		$map['case_type_id']  = array('in',$case_type_list);
 		$map['issue_date']	=	array('LT',1);
 		
-		$order['our_ref']	=	'desc';
+		$order['our_ref']	=	'asc';
 		$list	=	D('CaseView')->where($map)->order($order)->select();
 
 		return $list;
