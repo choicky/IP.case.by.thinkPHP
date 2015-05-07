@@ -4,10 +4,27 @@ use Think\Controller;
 
 class CheckController extends Controller {
 
+	//找出没有登记发证日的专利案子
+	public function checkNotIssued() {
+		
+		//找到专利的 case_type_id
+		$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
+		
+		//构造 mapping
+		$map['case_type_id']  = array('in',$case_type_list);
+		$map['issue_date']	=	array('LT',1);
+		$map['expired_date']	=	array('LT',1);
+		
+		$order['our_ref']	=	'asc';
+		$list	=	D('CaseView')->where($map)->order($order)->select();
+
+		return $list;
+	}
+	
 	public function listNotIssued(){
 		
 		//获取专利案列表
-		$case_list	=	$this->listAllPatent2();
+		$case_list	=	$this->checkNotIssued();
 		$case_count	=	count($case_list);
 		
 		$this->assign('case_list',$case_list);
@@ -17,11 +34,27 @@ class CheckController extends Controller {
 	
     }
 	
+	
+	//找出没有登记失效日的专利案子
+	public function checkNotExpired() {
+		//找到专利的 case_type_id
+		$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
+		
+		//找到专利的 case_type_id
+		$map['case_type_id']  = array('in',$case_type_list);
+		$map['expired_date']	=	array('LT',1);
+		
+		$order['our_ref']	=	'asc';
+		$list	=	D('CaseView')->where($map)->order($order)->select();
+
+		return $list;
+	}
+	
 	public function listNoFee(){
 		
 		
 		//获取专利案列表
-		$case_tmp_list	=	$this->listAllPatent();
+		$case_tmp_list	=	$this->checkNotExpired();
 		
 		for($j=0;$j<count($case_tmp_list);$j++){
 			
@@ -57,28 +90,8 @@ class CheckController extends Controller {
 	
     }
 	
-	//返回本数据视图的所有专利数据
-	public function listAllPatent() {
-		$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
-		$map['case_type_id']  = array('in',$case_type_list);
-		$map['expired_date']	=	array('LT',1);
-		
-		$order['our_ref']	=	'asc';
-		$list	=	D('CaseView')->where($map)->order($order)->select();
-
-		return $list;
-	}
 	
-	//返回本数据视图的所有专利数据
-	public function listAllPatent2() {
-		$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
-		$map['case_type_id']  = array('in',$case_type_list);
-		$map['issue_date']	=	array('LT',1);
-		
-		$order['our_ref']	=	'asc';
-		$list	=	D('CaseView')->where($map)->order($order)->select();
-
-		return $list;
-	}
+	
+	
 	
 }

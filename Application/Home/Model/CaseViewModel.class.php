@@ -189,7 +189,7 @@ class CaseViewModel extends ViewModel {
 		$map_application_number['application_number']  = array('like',"%".$key_word."%");
 		$case_application_number_list	=	$this->field(true)->where($map_application_number)->order($order)->select();
 		$case_application_number_count	=	count($case_application_number_list);
-				
+		
 		return array(
 			"case_our_ref_list"=>$case_our_ref_list,
 			"case_our_ref_count"=>$case_our_ref_count,
