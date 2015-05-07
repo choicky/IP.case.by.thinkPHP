@@ -33,6 +33,7 @@
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
+								<th>序号</th>
 								<th>盈方案号</th>
 								<th>跟案人</th>								
 								<th>开案日</th>								
@@ -50,6 +51,7 @@
 							<!-- 将controller assign过来的 case_vo 赋给  case_vo--> 
 							<volist name="case_list" id="case_vo">
 							<tr>
+								<td>{$i}</td>
 								<td><a href="{:U('Case/view','case_id='.$case_vo['case_id'])}" target="_blank">{$case_vo.our_ref}<a></td>
 								<td>{$case_vo['follower_name']}</td>
 								<td>{$create_date	=	$case_vo['create_date']	?	date("Y-m-d",$case_vo['create_date'])		:	''}</td>
