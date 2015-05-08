@@ -136,7 +136,7 @@ class CostController extends Controller {
 	}
 	
 	//更新	
-	public function adjustCost(){
+	public function adjust(){
 		if(IS_POST){
 			
 			$data=array();

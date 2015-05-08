@@ -53,9 +53,9 @@
 								<td>{$invoice_vo.invoice_number}</td>
 								<td>{$invoice_vo.invoice_date|date="Y-m-d",###}</td>
 								<td>{$invoice_vo.client_name}</td>
-								<td align="right">{$invoice_vo['total_amount']/100}</td>
-								<td align="right">{$invoice_vo['official_fee']/100}</td>
-								<td align="right">{$invoice_vo['service_fee']/100}</td>
+								<td align="right">{$invoice_vo['total_amount']	?	$invoice_vo['total_amount']/100	:	''}</td>
+								<td align="right">{$invoice_vo['official_fee']	?	$invoice_vo['official_fee']/100	:	''}</td>
+								<td align="right">{$invoice_vo['service_fee']	?	$invoice_vo['service_fee']/100	:	''}</td>
 								<td>{$invoice_vo.member_name}</td>
 								<td>
 									<a href="{:U('Bill/view','bill_id='.$invoice_vo['bill_id'])}" target="_blank">{$invoice_vo['bill_id']	?	$invoice_vo['bill_id']	: ''}</a>

@@ -34,13 +34,10 @@
 						<thead>
 							<tr class="info">
 								<th>认领人</th>
-								<th>结算账户</th>
+								<th>最早日期</th>
 								<th>最小收入金额</th>
-								<th>最大收入金额</th>
 								<th>最小支出金额</th>
-								<th>最大支出金额</th>
 								<th>摘要</th>
-								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -53,6 +50,28 @@
 										<option value="{$member_vo.member_id}"} {$member_vo['member_id']==$claimer_id	?	'selected="selected"'	:	''}>{$member_vo.member_name}</option>
 										</volist>
 									</select>
+								</td>
+								<td>
+									<input type="date" class="form-control" id="start_time" name="start_time" placeholder="最早日期" value="{$start_time	?	date("Y-m-d",$start_time)	:	''}"></td>
+								<td>
+									<input type="text" class="form-control" id="start_income_amount" name="start_income_amount" size="8" value="{$start_income_amount/100}"></td>
+								
+								<td>
+									<input type="text" class="form-control" id="start_outcome_amount" name="start_outcome_amount" size="8" value="{$start_outcome_amount/100}"></td>
+								
+								<td>
+									<input type="text" class="form-control" id="summary" name="summary" size="20" value="{$summary}"></td>								
+							
+							</tr>
+							<tr class="info">
+								<th>结算账户</th>
+								<th>最晚日期</th>
+								<th>最大收入金额</th>
+								<th>最大支出金额</th>
+								<th>&nbsp;</th>
+								
+							</tr>
+							<tr>
 								<td>
 									<select class="form-control" name="cost_center_id">
 										<option value="0" {$cost_center_id==0	?	'selected="selected"'	:	''}> 不限 </option>
@@ -60,23 +79,23 @@
 										<option value="{$cost_center_vo.cost_center_id}"} {$cost_center_vo['cost_center_id']==$cost_center_id	?	'selected="selected"'	:	''}>{$cost_center_vo.cost_center_name}</option>
 										</volist>
 									</select>
+								</td>
 								<td>
-									<input type="text" class="form-control" id="start_income_amount" name="start_income_amount" size="8" value="{$start_income_amount/100}"></td>
+									<input type="date" class="form-control" id="end_time" name="end_time" placeholder="最晚日期" value="{$end_time	?	date("Y-m-d",$end_time)	:	''}"></td>
+								
 								<td>
 									<input type="text" class="form-control" id="end_income_amount" name="end_income_amount" size="8" value="{$end_income_amount/100}"></td>
+								
 								<td>
-									<input type="text" class="form-control" id="start_outcome_amount" name="start_outcome_amount" size="8" value="{$start_outcome_amount/100}"></td>
-								<td>
-									<input type="text" class="form-control" id="end_outcome_amount" name="end_outcome_amount" size="8" value="{$end_outcome_amount/100}"></td>
-								<td>
-									<input type="text" class="form-control" id="summary" name="summary" size="20" value="{$summary}"></td>	
+									<input type="text" class="form-control" id="end_outcome_amount" name="end_outcome_amount" size="8" value="{$end_outcome_amount/100}"></td>								
 							
 								<td><button type="submit" class="btn btn-primary">搜</button></td>
 							
 							</tr>
 							</form>
 						</tbody>
-					</table> 
+					</table>				
+					
 				</div>
 					
 			</div>
@@ -85,7 +104,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3>搜索结果（共{$claim_count}项）</h3>
+					<h3>搜索结果（共{$claim_count}项，总收入{$income_amount_total}元，总支出{$outcome_amount_total}元）</h3>
 				</div>
 			</div>
 		</div>
@@ -110,7 +129,7 @@
 								<th>支出金额</th>
 								<th>官费</th>
 								<th>服务费</th>
-								<th>客户</th>
+								<th>摘要</th>
 								<th>账单编号</th>
 								<th>常用操作</th>
 							</tr>
@@ -123,10 +142,10 @@
 								<td>{$claim_vo.member_name}</td>
 								<td>{$claim_vo.cost_center_name}</td>
 								<td>{$claim_vo['claim_date']	?	date("Y-m-d",$claim_vo['claim_date'])	:	''}</td>
-								<td align="right">{$claim_vo['income_amount']/100}</td>
-								<td align="right">{$claim_vo['outcome_amount']/100}</td>
-								<td align="right">{$claim_vo['official_fee']/100}</td>
-								<td align="right">{$claim_vo['service_fee']/100}</td>
+								<td align="right">{$claim_vo['income_amount']	?	$claim_vo['income_amount']/100	:	''}</td>
+								<td align="right">{$claim_vo['outcome_amount']	?	$claim_vo['outcome_amount']/100	:	''}</td>
+								<td align="right">{$claim_vo['official_fee']	?	$claim_vo['official_fee']/100	:	''}</td>
+								<td align="right">{$claim_vo['service_fee']	?	$claim_vo['service_fee']/100	:	''}</td>
 								<td>{$claim_vo.summary}</td>
 								<td><a href="{:U('Bill/view','bill_id='.$claim_vo.bill_id)}" target="_blank">{$claim_vo['bill_id']	?	$claim_vo['bill_id']	:	''}</a></td>
 								<td><a href="{:U('Claim/update','claim_id='.$claim_vo['claim_id'])}">更新</a><br>

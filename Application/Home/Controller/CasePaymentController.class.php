@@ -130,4 +130,24 @@ class CasePaymentController extends Controller {
 	}
 	
 	
+	//更新	
+	public function adjust(){
+		if(IS_POST){
+			
+			$data=array();
+			$data['case_payment_id']	=	trim(I('post.case_payment_id'));
+			$data['official_fee']	=	100*trim(I('post.official_fee'));
+			$data['other_fee']	=	100*trim(I('post.other_fee'));
+			$data['total_amount']	=	$data['official_fee']	+	$data['other_fee'];
+
+			$result = M('CasePayment')->save($data);
+			if(false !== $result){
+				$this->success('修改成功', U('CasePayment/view','case_payment_id='.$data['case_payment_id']));
+			}else{
+				$this->error('修改失败');
+			}
+		} 
+	}
+	
+	
 }

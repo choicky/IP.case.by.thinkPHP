@@ -48,10 +48,10 @@
 								<td>{$bill_vo.member_name}</td>
 								<td>{$bill_vo['bill_date']	?	date("Y/m/d",$bill_vo['bill_date'])	:	''}</td>
 								<td>{$bill_vo.client_name}</td>
-								<td>{$bill_vo['total_amount']/100}</td>
-								<td>{$bill_vo['official_fee']/100}</td>
-								<td>{$bill_vo['service_fee']/100}</td>
-								<td>{$bill_vo['other_fee']/100}</td>
+								<td align="right">{$bill_vo['total_amount']	?	$bill_vo['total_amount']/100	:	''}</td>
+								<td align="right">{$bill_vo['official_fee']	?	$bill_vo['official_fee']/100	:	''}</td>
+								<td align="right">{$bill_vo['service_fee']	?	$bill_vo['service_fee']/100	:	''}</td>
+								<td align="right">{$bill_vo['other_fee']	?	$bill_vo['other_fee']/100	:	''}</td>
 								<td>
 									<a href="{:U('Bill/update','bill_id='.$bill_vo['bill_id'])}">更新</a>、
 									<a href="{:U('Bill/detail','bill_id='.$bill_vo['bill_id'])}">查看明细</a><br>

@@ -144,6 +144,12 @@ class ClaimController extends Controller {
 		//取出 CostCenter 表的基本内容，作为 options
 		$cost_center_list	=	D('CostCenter')->listBasic();
 		$this->assign('cost_center_list',$cost_center_list);
+		
+		//默认查询最近一个月
+		$start_time	=	strtotime("-1 month");
+		$end_time	=	time();
+		$this->assign('start_time',$start_time);
+		$this->assign('end_time',$end_time);
 				
 		//默认查询 0 元 至 20000 元
 		$start_amount	=	0;
@@ -157,7 +163,11 @@ class ClaimController extends Controller {
 			
 			//接收搜索参数
 			$claimer_id	=	I('post.claimer_id','0','int');
-			$cost_center_id	=	I('post.cost_center_id','0','int');				
+			$cost_center_id	=	I('post.cost_center_id','0','int');
+			$start_time	=	trim(I('post.start_time'));
+			$start_time	=	$start_time	?	strtotime($start_time)	:	strtotime('-1 month');
+			$end_time	=	trim(I('post.end_time'));
+			$end_time	=	$end_time	?	strtotime($end_time)	:	time();			
 			$summary	=	I('post.summary');
 			$start_income_amount	=	trim(I('post.start_income_amount'))*100;
 			$start_income_amount	=	$start_income_amount	?	$start_income_amount	:	'0';
@@ -169,6 +179,7 @@ class ClaimController extends Controller {
 			$end_outcome_amount	=	$end_outcome_amount	?	$end_outcome_amount	:	'2000000';
 			
 			//构造 maping
+			$map['claim_date']	=	array('between',$start_time.','.$end_time);
 			if($claimer_id){
 				$map['claimer_id']	=	$claimer_id;
 			}
@@ -182,6 +193,7 @@ class ClaimController extends Controller {
 			$map['income_amount']	=	array('between',array($start_income_amount,$end_income_amount));
 			$map['outcome_amount']	=	array('between',array($start_outcome_amount,$end_outcome_amount));
 			
+			//分页返回
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
 			$claim_list = D('ClaimView')->where($map)->listPage($p,$page_limit);
@@ -189,6 +201,19 @@ class ClaimController extends Controller {
 			$this->assign('claim_list',$claim_list['list']);
 			$this->assign('claim_page',$claim_list['page']);
 			$this->assign('claim_count',$claim_count);
+			
+			//返回统计信息
+			$claim_list_tmp = D('ClaimView')->where($map)->select();
+			$claim_count	=	count($claim_list_tmp);
+			$income_amount_total	=	0;
+			$outcome_amount_total	=	0;			
+			for($j=0;$j<$claim_count;$j++){
+				$income_amount_total	+=	$claim_list_tmp[$j]['income_amount']/100;
+				$outcome_amount_total	+=	$claim_list_tmp[$j]['outcome_amount']/100;
+			}
+			$this->assign('claim_count',$claim_count);
+			$this->assign('income_amount_total',$income_amount_total);
+			$this->assign('outcome_amount_total',$outcome_amount_total);
 			
 			//返回搜索参数
 			$this->assign('claimer_id',$claimer_id);
@@ -198,6 +223,8 @@ class ClaimController extends Controller {
 			$this->assign('end_income_amount',$end_income_amount);
 			$this->assign('start_outcome_amount',$start_outcome_amount);
 			$this->assign('end_outcome_amount',$end_outcome_amount);
+			$this->assign('start_time',$start_time);
+			$this->assign('end_time',$end_time);
 		
 		} 
 	

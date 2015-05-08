@@ -110,11 +110,11 @@ if(!cookie('name')){
 				<li><a href="__MODULE__/Payer/listAll">缴费人列表、编辑</a></li>
                 <li><a href="__MODULE__/Payer/listAll#addNew">录入新缴费人</a></li>
 				<li class="divider"></li>
-				<li><h5>结算单</h5></li>
-				<li><a href="__MODULE__/Cost/listPage">结算单列表、管理</a></li>
-                <li><a href="__MODULE__/Cost/listPage#addNew">新增结算单</a></li>
-				<li><h5>结算账户</h5></li>
-                <li><a href="__MODULE__/CostCenter/listPage">管理内部结算账户</a></li>
+				<li><h5>内部结算</h5></li>
+				<li><a href="__MODULE__/Cost/listPage">内部结算单列表、管理</a></li>
+                <li><a href="__MODULE__/Cost/listPage#addNew">新增内部结算单</a></li>
+				<li><a href="__MODULE__/CostCenter/listPage">管理内部结算账户</a></li>
+				
               </ul>
             </li>
 			
@@ -126,11 +126,11 @@ if(!cookie('name')){
 			<li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">财务 <span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
-				<li><h5>收支流水</h5></li>
+				<li><h5>实际收支流水</h5></li>
 				<li><a href="__MODULE__/Balance/listPage">总列表</a></li>
 				<li><a href="__MODULE__/Balance/search">查询</a></li>
 
-				<li><h5>交款信息</h5></li>
+				<li><h5>收支流水的分摊</h5></li>
                 <li><a href="__MODULE__/Claim/listPage">总列表</a></li>
                 <li><a href="__MODULE__/Claim/search">查询</a></li>
 
@@ -138,8 +138,13 @@ if(!cookie('name')){
                 <li><a href="__MODULE__/Invoice/listPage">总列表</a></li>
                 <li><a href="__MODULE__/Invoice/search">查询</a></li>
 
-				<li><h5>财务账户</h5></li>
+				<li><h5>实际财务账户</h5></li>
                 <li><a href="__MODULE__/Account/listPage">总列表</a></li>
+				
+				<li><h5>内部结算账户</h5></li>
+                <li><a href="__MODULE__/CostCenter/listPage">内部结算账户列表</a></li>
+				<li><a href="__MODULE__/CostCenter/listPage">每月汇总各个结算账户的收支</a></li>
+				<li><a href="__MODULE__/CostCenter/listPage">查看各个结算账户的余额</a></li>
 				<li class="divider"></li>
               </ul>
             </li>

@@ -199,12 +199,26 @@ class BalanceController extends Controller {
 				$map['follower_id']	=	$follower_id;
 			}	
 			
+			//分页返回
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
 			$balance_list = D('Balance')->where($map)->listPage($p,$page_limit);
 			$this->assign('balance_list',$balance_list['list']);
 			$this->assign('balance_page',$balance_list['page']);
-			$this->assign('balance_count',count($balance_list['list']));
+			
+			
+			//返回统计信息
+			$balance_list_tmp = D('Balance')->where($map)->select();
+			$balance_count	=	count($balance_list_tmp);
+			$income_amount_total	=	0;
+			$outcome_amount_total	=	0;			
+			for($j=0;$j<$balance_count;$j++){
+				$income_amount_total	+=	$balance_list_tmp[$j]['income_amount']/100;
+				$outcome_amount_total	+=	$balance_list_tmp[$j]['outcome_amount']/100;
+			}
+			$this->assign('balance_count',$balance_count);
+			$this->assign('income_amount_total',$income_amount_total);
+			$this->assign('outcome_amount_total',$outcome_amount_total);
 			
 			//返回搜索参数
 			$this->assign('account_id',$account_id);
