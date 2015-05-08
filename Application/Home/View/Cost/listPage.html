@@ -108,7 +108,8 @@
 							<div class="form-group">
 								<label for="cost_center_id" class="col-lg-3 control-label">结算账户</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="cost_center_id" size="{$cost_center_count<$row_limit ? $cost_center_count : $row_limit}">
+									<select class="form-control" name="cost_center_id">
+										<option value=""></option>
 										<volist name="cost_center_list" id="cost_center_vo">
 										<option value="{$cost_center_vo.cost_center_id}"  >{$cost_center_vo.cost_center_name}</option>
 										</volist>
