@@ -30,15 +30,17 @@
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
-								<th>#</th>
+								<th>序号</th>
 								<th>核算账户名称</th>
+								<th>常用操作</th>
 							</tr>
 						</thead>
 						<tbody>
 							<volist name="cost_center_list" id="cost_center_list">
 							<tr>
 								<td>{$i}</td>
-								<td><a href="__CONTROLLER__/edit/id/{$cost_center_list.cost_center_id}">{$cost_center_list.cost_center_name}</a></td>
+								<td>{$cost_center_list.cost_center_name}</td>
+								<td><a href="{:U('CostCenter/update','cost_center_id='.$cost_center_list['cost_center_id'])}">更新</a></td>
 							</tr>
 							</volist>                 
 						</tbody>

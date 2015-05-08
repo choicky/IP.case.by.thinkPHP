@@ -53,7 +53,7 @@ class CostCenterController extends Controller {
 				$this->error('修改失败', 'listPage');
 			}
 		} else{
-			$cost_center_id = I('get.id',0,'int');
+			$cost_center_id = I('get.cost_center_id',0,'int');
 
 			if(!$cost_center_id){
 				$this->error('未指明要编辑的客户');
