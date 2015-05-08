@@ -37,9 +37,8 @@
 								<th>结算单名称</th>
 								<th>结算日期</th>
 								<th>结算账户</th>
-								<th>结算金额</th>
-								<th>其他费用</th>
-								<th>总结算金额</th>
+								<th>内部结算收入</th>
+								<th>内部结算支出</th>
 								<th>常用操作</th>								
 							</tr>
 						</thead>
@@ -53,9 +52,8 @@
 									{$cost_vo['cost_date']	?	date("Y-m-d",$cost_vo['cost_date'])	:	''}
 								</td>
 								<td>{$cost_vo['cost_center_name']}</td>
-								<td align="right">{$cost_vo['cost_amount']/100}</td>
-								<td align="right">{$cost_vo['other_fee']/100}</td>
-								<td align="right">{$cost_vo['total_amount']/100}</td>
+								<td align="right">{$cost_vo['income_amount']	?	$cost_vo['income_amount']/100	:	''}</td>
+								<td align="right">{$cost_vo['outcome_amount']	?	$cost_vo['outcome_amount']/100	:	''}</td>
 								<td>
 									<a href="{:U('Cost/view','cost_id='.$cost_vo['cost_id'])}" target="_blank">查看详情<a>、
 									<a href="{:U('Cost/update','cost_id='.$cost_vo['cost_id'])}" target="_blank">更新<a>

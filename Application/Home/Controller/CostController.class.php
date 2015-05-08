@@ -30,9 +30,7 @@ class CostController extends Controller {
 		$this->assign('cost_center_count',$cost_center_count);		
 		
 		//取出其他变量
-		$row_limit  =   C("ROWS_PER_SELECT");
 		$today	=	time();
-		$this->assign('row_limit',$row_limit);
 		$this->assign('today',$today);
 		
 		$this->display();
@@ -44,9 +42,8 @@ class CostController extends Controller {
 		$data['cost_name']	=	trim(I('post.cost_name'));
 		$data['cost_date']	=	strtotime(trim(I('post.cost_date')));
 		$data['cost_center_id']	=	trim(I('post.cost_center_id'));
-		$data['cost_amount']	=	trim(I('post.cost_amount'))*100;
-		$data['other_fee']	=	trim(I('post.other_fee'))*100;
-		$data['total_amount']	=	trim(I('post.total_amount'))*100;
+		$data['income_amount']	=	trim(I('post.income_amount'))*100;
+		$data['outcome_amount']	=	trim(I('post.outcome_amount'))*100;
 		
 		if(!$data['cost_name']){
 			$this->error('未填写结算单名称');
@@ -70,9 +67,8 @@ class CostController extends Controller {
 			$data['cost_name']	=	trim(I('post.cost_name'));
 			$data['cost_date']	=	strtotime(trim(I('post.cost_date')));
 			$data['cost_center_id']	=	trim(I('post.cost_center_id'));
-			$data['cost_amount']	=	trim(I('post.cost_amount'))*100;
-			$data['other_fee']	=	trim(I('post.other_fee'))*100;
-			$data['total_amount']	=	trim(I('post.total_amount'))*100;
+			$data['income_amount']	=	trim(I('post.income_amount'))*100;
+			$data['outcome_amount']	=	trim(I('post.outcome_amount'))*100;
 
 			$result = M('Cost')->save($data);
 			if(false !== $result){
@@ -118,17 +114,11 @@ class CostController extends Controller {
 		//取出 Cost 信息
 		$cost_list = D('CostView')->field(true)->getByCostId($cost_id);	
 		
-		//取出 CaseFee 信息
-		$case_fee_list	=	D('CaseFeeView')->field(true)->where($map)->listAll();
-		$case_fee_count	=	count($case_fee_list);
-		
 		//取出 CaseFile 信息
 		$case_file_list	=	D('CaseFileView')->field(true)->where($map)->listAll();
 		$case_file_count	=	count($case_file_list);
 		
 		$this->assign('cost_list',$cost_list);
-		$this->assign('case_fee_list',$case_fee_list);
-		$this->assign('case_fee_count',$case_fee_count);
 		$this->assign('case_file_list',$case_file_list);
 		$this->assign('case_file_count',$case_file_count);		
 
@@ -141,9 +131,11 @@ class CostController extends Controller {
 			
 			$data=array();
 			$data['cost_id']	=	trim(I('post.cost_id'));
-			$data['cost_amount']	=	100*trim(I('post.cost_amount'));
-			$data['other_fee']	=	100*trim(I('post.other_fee'));
-			$data['total_amount']	=	$data['cost_amount']	+	$data['other_fee'];
+			$data['income_amount']	=	100*trim(I('post.income_amount'));
+			
+			$outcome_amount	=	100*trim(I('post.outcome_amount'));
+			$other_outcome	=	100*trim(I('post.other_outcome'));
+			$data['outcome_amount']	=	$outcome_amount	+	$other_outcome;
 
 			$result = M('Cost')->save($data);
 			if(false !== $result){

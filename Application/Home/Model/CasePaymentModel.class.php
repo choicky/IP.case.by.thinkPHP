@@ -10,22 +10,22 @@
 // +----------------------------------------------------------------------
 
 namespace Home\Model;
-use Think\Model\RelationModel;
+use Think\Model;
 
-class CasePaymentModel extends RelationModel {
+class CasePaymentModel extends Model {
 	
 	
 	//返回本数据表的所有数据
 	public function listAll() {			
 		$order['payment_date']	=	'desc';
-		$list	=	$this->relation(true)->order($order)->select();
+		$list	=	$this->order($order)->select();
 		return $list;
 	}
 
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
 		$order['payment_date']	=	'desc';
-		$list	=	$this->relation(true)->order($order)->page($p.','.$limit)->select();
+		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();
 		

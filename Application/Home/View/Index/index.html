@@ -65,7 +65,7 @@
 							<tr>
 								
 								<td>{$i}</td>
-								<td>{$not_patent_file_vo.our_ref}</td>
+								<td><a href="{:U('Case/view','case_id='.$not_patent_file_vo['case_id'])}" target="_blank">{$not_patent_file_vo['our_ref']}</a></td>
 								<td>{$not_patent_file_vo.client_ref}</td>
 								<td>{$not_patent_file_vo.client_name}</td>
 								<td>{$not_patent_file_vo.follower_name}</td>
@@ -210,7 +210,7 @@
 							<tr>
 								
 								<td>{$i}</td>
-								<td>{$patent_file_vo.our_ref}</td>
+								<td><a href="{:U('Case/view','case_id='.$patent_file_vo['case_id'])}" target="_blank">{$patent_file_vo['our_ref']}</a></td>
 								<td>{$patent_file_vo.client_ref}</td>
 								<td>{$patent_file_vo.client_name}</td>
 								<td>{$patent_file_vo.follower_name}</td>

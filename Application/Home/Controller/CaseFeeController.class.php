@@ -262,8 +262,6 @@ class CaseFeeController extends Controller {
 			$case_fee_data['bill_id']	=	trim(I('post.bill_id'));
 			$case_fee_data['invoice_id']	=	trim(I('post.invoice_id'));
 			$case_fee_data['claim_id']	=	trim(I('post.claim_id'));
-			$case_fee_data['cost_id']	=	trim(I('post.cost_id'));
-			$case_fee_data['cost_amount']	=	100*trim(I('post.cost_amount'));
 			
 			$result	=	M('CaseFee')->save($case_fee_data);
 			

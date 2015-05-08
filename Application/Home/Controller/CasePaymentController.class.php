@@ -77,9 +77,9 @@ class CasePaymentController extends Controller {
 
 			$result = M('CasePayment')->save($data);
 			if(false !== $result){
-				$this->success('修改成功', 'listPage');
+				$this->success('修改成功', U('CasePayment/view','case_payment_id='.$data['case_payment_id']));
 			}else{
-				$this->error('修改失败', 'listPage');
+				$this->error('修改失败', U('CasePayment/view','case_payment_id='.$data['case_payment_id']));
 			}
 		} else{
 			$case_payment_id = I('get.case_payment_id',0,'int');
