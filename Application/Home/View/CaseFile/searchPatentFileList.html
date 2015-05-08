@@ -152,10 +152,10 @@
 								<td>{$case_file_vo['invoice_id']	=	$case_file_vo['invoice_id']	?	$case_file_vo['invoice_id']		:	''}</td>
 								<td>{$case_file_vo['claim_id']	=	$case_file_vo['claim_id']	?	$case_file_vo['claim_id']		:	''}</td>
 								<td>{$case_file_vo['cost_id']	=	$case_file_vo['cost_id']	?	$case_file_vo['cost_id']		:	''}</td>
-								<td>{$case_file_vo['cost_amount']	=	$case_file_vo['cost_amount']/100	?	$case_file_vo['cost_amount']		:	''}</td>
+								<td>{$case_file_vo['cost_amount']	=	$case_file_vo['cost_amount']	?	$case_file_vo['cost_amount']/100		:	''}</td>
 								<td>
-									<a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}">更新</a>
-									<a href="{:U('CaseFile/delete','case_file_id='.$case_file_vo['case_file_id'])}">删除</a>
+									<a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}" target="_blank">更新</a>
+									<a href="{:U('CaseFile/delete','case_file_id='.$case_file_vo['case_file_id'])}" target="_blank">删除</a>
 									
 								</td>
 								
