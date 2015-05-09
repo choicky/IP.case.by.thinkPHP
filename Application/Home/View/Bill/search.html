@@ -50,7 +50,7 @@
 									<select class="form-control" name="client_id">
 									<option value="0"> 不限 </option>
 									<volist name="client_list" id="client_vo">
-									<option value="{$client_vo.client_id}"} {$client_vo['client_id']==$client_id	?	'selected="selected"'	:	''}>{$client_vo.client_name}年 &nbsp;</option>
+									<option value="{$client_vo.client_id}"} {$client_vo['client_id']==$client_id	?	'selected="selected"'	:	''}>{$client_vo.client_name}</option>
 									</volist>
 									</select></td>
 								<td>

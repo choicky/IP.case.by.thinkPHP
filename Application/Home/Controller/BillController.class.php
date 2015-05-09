@@ -199,7 +199,7 @@ class BillController extends Controller {
 		
 		//默认查询 0 元 至 20000 元
 		$start_amount	=	0;
-		$end_amount	=	2000000;
+		$end_amount	=	20000000;
 		$this->assign('start_amount',$start_amount);
 		$this->assign('end_amount',$end_amount);
 		
