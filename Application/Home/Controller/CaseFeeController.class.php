@@ -53,7 +53,6 @@ class CaseFeeController extends Controller {
 		$map_case_fee['case_type_id']  = array('in',$case_type_list);
 		
 		$case_list	=	M('Case')->where($map_case_fee)->select();
-		print_r($case_type_list);
 		
 		$case_fee_list = D('CaseFeeView')->listPageSearch($p,$page_limit,$map_case_fee);
 		$this->assign('case_fee_list',$case_fee_list['list']);

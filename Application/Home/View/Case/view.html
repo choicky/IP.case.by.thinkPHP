@@ -214,8 +214,6 @@
 								<th>账单号</th>
 								<th>发票单号</th>
 								<th>到账认领单号</th>
-								<th>内部结算单号</th>
-								<th>结算金额</th>
 								<th>常用操作</th>
 								
 							</tr>
@@ -243,8 +241,6 @@
 									<a href="{:U('Invoice/view','invoice_id='.$case_fee_vo['invoice_id'])}" target="_blank">{$case_fee_vo['invoice_id']	?	$case_fee_vo['invoice_id']	:	''}</a></td>
 								<td>
 									<a href="{:U('Claim/view','claim_id='.$case_fee_vo['claim_id'])}" target="_blank">{$case_fee_vo['claim_id']	?	$case_fee_vo['claim_id']	:	''}</a></td>
-								<td>{$case_fee_vo.cost_center_name}</td>
-								<td>{$case_fee_vo['cost_amount']	?	$case_fee_vo['cost_amount']/100		:	''}</td>
 								<td>
 									<a href="{:U('CaseFee/update','case_fee_id='.$case_fee_vo['case_fee_id'])}">更新</a>
 									<a href="{:U('CaseFee/delete','case_fee_id='.$case_fee_vo['case_fee_id'])}">删除</a>
