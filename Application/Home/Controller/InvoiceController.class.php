@@ -210,7 +210,7 @@ class InvoiceController extends Controller {
 			if($client_id){
 				$map['client_id']	=	$client_id;
 			}
-			if($member_id){
+			if($follower_id){
 				$map['follower_id']	=	$follower_id;
 			}	
 			
