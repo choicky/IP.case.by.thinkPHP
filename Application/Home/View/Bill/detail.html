@@ -41,6 +41,7 @@
 								<th>官费</th>
 								<th>服务费</th>
 								<th>其他费用</th>
+								<th>到账情况</th>
 								<th>常用操作</th>
 							</tr>
 						</thead>
@@ -54,6 +55,7 @@
 								<td>{$bill_list['official_fee']/100}</td>
 								<td>{$bill_list['service_fee']/100}</td>
 								<td>{$bill_list['other_fee']/100}</td>
+								<td align="right">{$bill_list.is_paid}</td>
 								<td>
 									<a href="{:U('Bill/update','bill_id='.$bill_list['bill_id'])}">更新</a>、
 									<a href="{:U('Bill/detail','bill_id='.$bill_list['bill_id'])}">查看明细</a><br>

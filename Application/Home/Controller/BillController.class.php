@@ -14,6 +14,24 @@ class BillController extends Controller {
 		$p	= I("p",1,"int");
 		$limit	= C('RECORDS_PER_PAGE');
 		$bill_list = D('BillView')->field(true)->listPage($p,$limit);
+		
+		//判断到账情况
+		for($j=0;$j<count($bill_list['list']);$j++){
+			$bill_id	=	$bill_list['list'][$j]['bill_id'];
+			$total_amount	=	$bill_list['list'][$j]['total_amount'];
+			
+			//查找到账情况
+			$map_claim['bill_id']	=	$bill_id;
+			$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
+			$income_amount	=	$claim_list[0]['income_amount'];
+			
+			if($total_amount	==	$income_amount){
+				$bill_list['list'][$j]['is_paid']	=	"全额到账";
+			}else{
+				$bill_list['list'][$j]['is_paid']	=	"尚未全额到账";
+			}
+		}
+		
 		$this->assign('bill_list',$bill_list['list']);
 		$this->assign('bill_page',$bill_list['page']);
 		$this->assign('bill_count',$bill_list['count']);
@@ -122,8 +140,21 @@ class BillController extends Controller {
 			$this->error('未指明要查看的账单');
 		}
 		
-		//取出案件的基本信息
+		//取出账单的基本信息
 		$bill_list = D('BillView')->field(true)->getByBillId($bill_id);
+				
+		//判断到账情况
+		$total_amount	=	$bill_list['total_amount'];		
+		//查找到账情况
+		$map_claim['bill_id']	=	$bill_id;
+		$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
+		$income_amount	=	$claim_list[0]['income_amount'];		
+		if($total_amount	==	$income_amount){
+			$bill_list['is_paid']	=	"全额到账";
+		}else{
+			$bill_list['is_paid']	=	"尚未全额到账";
+		}
+		
 		$this->assign('bill_list',$bill_list);
 		
 		//定义查询
@@ -161,8 +192,21 @@ class BillController extends Controller {
 			$this->error('未指明要查看的账单');
 		}
 		
-		//取出案件的基本信息
+		//取出账单的基本信息
 		$bill_list = D('BillView')->field(true)->getByBillId($bill_id);
+				
+		//判断到账情况
+		$total_amount	=	$bill_list['total_amount'];		
+		//查找到账情况
+		$map_claim['bill_id']	=	$bill_id;
+		$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
+		$income_amount	=	$claim_list[0]['income_amount'];		
+		if($total_amount	==	$income_amount){
+			$bill_list['is_paid']	=	"全额到账";
+		}else{
+			$bill_list['is_paid']	=	"尚未全额到账";
+		}
+		
 		$this->assign('bill_list',$bill_list);
 		
 		//定义查询
