@@ -79,9 +79,31 @@
 							</tr>
 						</tbody>
 					</table> 
-					
+					<form class="form-inline" method="post" action="__CONTROLLER__/adjust">
+						<!-- 隐藏域开始 -->
+						<input	type="hidden" name="inner_balance_id" value="{$inner_balance_list.inner_balance_id}"></input>
+						<!-- 隐藏域结束 -->
+						  <div class="form-group">
+							<label for="true_income_amount">根据下面清单，本期实际收入</label>
+							<input type="text" class="form-control" id="true_income_amount" name="true_income_amount" size="6" value="{$true_income_amount}">
+						  </div>
+						  <div class="form-group">
+							<label for="true_outcome_amount">本期实际支出</label>
+							<input type="text" class="form-control" id="true_outcome_amount" name="true_outcome_amount" size="6" value="{$true_outcome_amount}">
+						  </div>
+						  <div class="form-group">
+							<label for="inner_income_amount">本期内部收入</label>
+							<input type="text" class="form-control" id="inner_income_amount" name="inner_income_amount" size="6" value="{$inner_income_amount}">
+						  </div>
+						  <div class="form-group">
+							<label for="inner_outcome_amount">本期内部支出</label>
+							<input type="text" class="form-control" id="inner_outcome_amount" name="inner_outcome_amount" size="6" value="{$inner_outcome_amount}">
+						  </div>
+						  				  
+						<button type="submit" class="btn btn-primary">就这样，更新到本期汇总</button>						
+					</form>
 				</div>
-			</div>
+			</div>			
         </div>
 		
 		<!-- Page Header

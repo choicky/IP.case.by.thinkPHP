@@ -195,5 +195,25 @@ class InnerBalanceController extends Controller {
 		$this->display();
 	}
 	
+	//更新	
+	public function adjust(){
+		if(IS_POST){
+			
+			$data=array();
+			$data['inner_balance_id']	=	trim(I('post.inner_balance_id'));
+			$data['true_income_amount']	=	100*trim(I('post.true_income_amount'));
+			$data['true_outcome_amount']	=	100*trim(I('post.true_outcome_amount'));
+			$data['inner_income_amount']	=	100*trim(I('post.inner_income_amount'));
+			$data['inner_outcome_amount']	=	100*trim(I('post.inner_outcome_amount'));
+			$data['balance_amount']	=	$data['true_income_amount']	+	$data['inner_income_amount']	-	$data['true_outcome_amount']	-	$data['inner_outcome_amount'];
+
+			$result = M('InnerBalance')->save($data);
+			if(false !== $result){
+				$this->success('修改成功', U('InnerBalance/view','inner_balance_id='.$data['inner_balance_id']));
+			}else{
+				$this->error('修改失败');
+			}
+		} 
+	}
 	
 }
