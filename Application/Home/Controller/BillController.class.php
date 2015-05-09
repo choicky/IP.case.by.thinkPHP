@@ -147,9 +147,9 @@ class BillController extends Controller {
 		$total_amount	=	$bill_list['total_amount'];		
 		//查找到账情况
 		$map_claim['bill_id']	=	$bill_id;
-		$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
-		$income_amount	=	$claim_list[0]['income_amount'];		
-		if($total_amount	==	$income_amount){
+		$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount,sum(outcome_amount) as outcome_amount')->where($map_claim)->select();
+		$true_income_amount	=	$claim_list[0]['income_amount']	-	$claim_list[0]['outcome_amount'];		
+		if($total_amount	==	$true_income_amount){
 			$bill_list['is_paid']	=	"全额到账";
 		}else{
 			$bill_list['is_paid']	=	"尚未全额到账";
@@ -199,9 +199,9 @@ class BillController extends Controller {
 		$total_amount	=	$bill_list['total_amount'];		
 		//查找到账情况
 		$map_claim['bill_id']	=	$bill_id;
-		$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
-		$income_amount	=	$claim_list[0]['income_amount'];		
-		if($total_amount	==	$income_amount){
+		$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount,sum(outcome_amount) as outcome_amount')->where($map_claim)->select();
+		$true_income_amount	=	$claim_list[0]['income_amount']	-	$claim_list[0]['outcome_amount'];		
+		if($total_amount	==	$true_income_amount){			
 			$bill_list['is_paid']	=	"全额到账";
 		}else{
 			$bill_list['is_paid']	=	"尚未全额到账";
@@ -277,7 +277,23 @@ class BillController extends Controller {
 			
 			//根据到账情况不同进行处理
 			if(0==$is_paid){
-				$bill_list = D('BillView')->where($map)->listAll();							
+				$bill_list = D('BillView')->where($map)->listAll();
+				
+				//判断到账情况
+				for($j=0;$j<count($bill_list);$j++){
+					$bill_id	=	$bill_list[$j]['bill_id'];
+					$total_amount	=	$bill_list[$j]['total_amount'];
+					
+					//查找到账情况
+					$map_claim['bill_id']	=	$bill_id;
+					$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount,sum(outcome_amount) as outcome_amount')->where($map_claim)->select();
+					$true_income_amount	=	$claim_list[0]['income_amount']	-	$claim_list[0]['outcome_amount'];		
+					if($total_amount	==	$true_income_amount){
+						$bill_list[$j]['is_paid']	=	"全额到账";
+					}else{
+						$bill_list[$j]['is_paid']	=	"尚未全额到账";
+					}
+				}
 			}
 			if(1==$is_paid){
 				$bill_list_tmp = D('BillView')->where($map)->listAll();
@@ -288,11 +304,11 @@ class BillController extends Controller {
 					
 					//查找到账情况
 					$map_claim['bill_id']	=	$bill_id;
-					$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
-					$income_amount	=	$claim_list[0]['income_amount'];
-					
-					if($total_amount	==	$income_amount){
+					$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount,sum(outcome_amount) as outcome_amount')->where($map_claim)->select();
+					$true_income_amount	=	$claim_list[0]['income_amount']	-	$claim_list[0]['outcome_amount'];		
+					if($total_amount	==	$true_income_amount){
 						$bill_list[$j]	=	$bill_list_tmp[$j];
+						$bill_list[$j]['is_paid']	=	"全额到账";
 					}
 				}					
 			}
@@ -305,33 +321,17 @@ class BillController extends Controller {
 					
 					//查找到账情况
 					$map_claim['bill_id']	=	$bill_id;
-					$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
-					$income_amount	=	$claim_list[0]['income_amount'];
+					$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount,sum(outcome_amount) as outcome_amount')->where($map_claim)->select();
+					$true_income_amount	=	$claim_list[0]['income_amount']	-	$claim_list[0]['outcome_amount'];
 					
-					if($total_amount	!=	$income_amount){
+					if($total_amount	!=	$true_income_amount){
 						$bill_list[$j]	=	$bill_list_tmp[$j];
+						$bill_list[$j]['is_paid']	=	"尚未全额到账";
 					}
 				}					
 			}
 			
 			$bill_count	=	count($bill_list);
-			
-			//判断到账情况
-			for($j=0;$j<$bill_count;$j++){
-				$bill_id	=	$bill_list[$j]['bill_id'];
-				$total_amount	=	$bill_list[$j]['total_amount'];
-				
-				//查找到账情况
-				$map_claim['bill_id']	=	$bill_id;
-				$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
-				$income_amount	=	$claim_list[0]['income_amount'];
-				
-				if($total_amount	==	$income_amount){
-					$bill_list[$j]['is_paid']	=	"全额到账";
-				}else{
-					$bill_list[$j]['is_paid']	=	"尚未全额到账";
-				}
-			}
 			
 			$this->assign('bill_list',$bill_list);
 			$this->assign('bill_count',$bill_count);
