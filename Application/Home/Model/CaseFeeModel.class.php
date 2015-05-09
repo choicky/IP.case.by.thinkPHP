@@ -25,7 +25,6 @@ class CaseFeeModel extends RelationModel {
 		// 将金额乘以100，multiplyByHundred 自定义于 common 文件夹的 function.php
 		array('official_fee','multiplyByHundred',3,'function') , 
 		array('service_fee','multiplyByHundred',3,'function') , 
-		array('cost_amount','multiplyByHundred',3,'function') , 
 	);
 	
 	//定义本数据表的自动验证，0为存在字段就验证，1为必须验证，2是值不为空时才验证

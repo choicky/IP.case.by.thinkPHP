@@ -625,13 +625,21 @@ class CaseFeeController extends Controller {
 			$map_case_fee['case_type_id']  = array('in',$case_type_list);
 			
 			
-			//分页显示搜索结果
-			$p	= I("p",1,"int");
-			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_fee_list = D('CaseFeeView')->listPageSearch($p,$page_limit,$map_case_fee);
-			$this->assign('case_fee_list',$case_fee_list['list']);
-			$this->assign('case_fee_page',$case_fee_list['page']);
-			$this->assign('case_fee_count',$case_fee_list['count']);
+			//搜索结果
+			$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			$case_fee_count	=	count($case_fee_list);
+			$this->assign('case_fee_list',$case_fee_list);
+			$this->assign('case_fee_count',$case_fee_count);
+			
+			//返回统计结果
+			$total_official_fee	=	0;
+			$total_service_fee	=	0;
+			for($j=0;$j<$case_fee_count;$j++){
+				$total_official_fee	+=	$case_fee_list[$j]['official_fee'];
+				$total_service_fee	+=	$case_fee_list[$j]['service_fee'];
+			}
+			$this->assign('total_official_fee',$total_official_fee);
+			$this->assign('total_service_fee',$total_service_fee);
 			
 			//返回所接受的检索条件
 			$this->assign('client_id',$client_id);
