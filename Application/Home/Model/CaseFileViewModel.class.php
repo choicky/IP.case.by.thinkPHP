@@ -34,7 +34,7 @@ class CaseFileViewModel extends ViewModel {
 			'bill_id',
 			'invoice_id',
 			'claim_id',
-			'cost_id',
+			'inner_balance_id',
 			'cost_amount',
 			'_type'=>'LEFT'
 		),

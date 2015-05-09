@@ -34,7 +34,7 @@ class CaseFeeInfoViewModel extends ViewModel {
 			'bill_id',
 			'invoice_id',
 			'claim_id',
-			'cost_id',
+			'inner_balance_id',
 			'cost_amount',
 			'_type'=>'LEFT'
 		),
@@ -77,10 +77,10 @@ class CaseFeeInfoViewModel extends ViewModel {
 			'_on'	=>	'Payer.payer_id=CaseFee.payer_id'
 		),		
 		
-		'Cost'	=>	array(
-			'cost_name',
+		'InnerBalance'	=>	array(
+			'inner_balance_name',
 			'_type'=>'LEFT',
-			'_on'	=>	'Cost.cost_id=CaseFee.cost_id'
+			'_on'	=>	'InnerBalance.inner_balance_id=CaseFee.inner_balance_id'
 		),
 		
 		'Client'	=>	array(

@@ -43,7 +43,7 @@ class CaseFileController extends Controller {
 			$case_file_data['bill_id']	=	trim(I('post.bill_id'));
 			$case_file_data['invoice_id']	=	trim(I('post.invoice_id'));
 			$case_file_data['claim_id']	=	trim(I('post.claim_id'));
-			$case_file_data['cost_id']	=	trim(I('post.cost_id'));
+			$case_file_data['inner_balance_id']	=	trim(I('post.inner_balance_id'));
 			$case_file_data['cost_amount']	=	100*trim(I('post.cost_amount'));
 			
 			$result	=	M('CaseFile')->save($case_file_data);

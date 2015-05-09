@@ -6,7 +6,7 @@
 // +----------------------------------------------------------------------
 // | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
 // +----------------------------------------------------------------------
-// | This file is required by: InnerBalanceController
+// | This file is required by: CostController
 // +----------------------------------------------------------------------
 
 namespace Home\Model;
@@ -18,14 +18,11 @@ class InnerBalanceViewModel extends ViewModel {
 	protected $viewFields = array(
 		'InnerBalance'	=>	array(
 			'inner_balance_id',
+			'inner_balance_name',
+			'inner_balance_date',
 			'cost_center_id',
-			'start_date',
-			'end_date',
-			'true_income_amount',
-			'true_outcome_amount',
-			'inner_income_amount',
-			'inner_outcome_amount',
-			'balance_amount',			
+			'income_amount',
+			'outcome_amount',
 			'_type'=>'LEFT'
 		),
 		
@@ -37,14 +34,14 @@ class InnerBalanceViewModel extends ViewModel {
 	
 	//返回本数据表的所有数据
 	public function listAll() {			
-		$order['start_date']	=	'desc';
+		$order['inner_balance_date']	=	'desc';
 		$list	=	$this->order($order)->select();
 		return $list;
 	}
 
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['start_date']	=	'desc';
+		$order['inner_balance_date']	=	'desc';
 		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();

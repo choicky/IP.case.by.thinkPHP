@@ -6,42 +6,45 @@
 // +----------------------------------------------------------------------
 // | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
 // +----------------------------------------------------------------------
-// | This file is required by: CostController
+// | This file is required by: CostCenterBalanceController
 // +----------------------------------------------------------------------
 
 namespace Home\Model;
 use Think\Model\ViewModel;
 
-class CostViewModel extends ViewModel {
+class CostCenterBalanceViewModel extends ViewModel {
 	
 	//定义 CaseFee 表与 Case 表的视图关系
 	protected $viewFields = array(
-		'Cost'	=>	array(
-			'cost_id',
-			'cost_name',
-			'cost_date',
+		'CostCenterBalance'	=>	array(
+			'cost_center_balance_id',
 			'cost_center_id',
-			'income_amount',
-			'outcome_amount',
+			'start_date',
+			'end_date',
+			'true_income_amount',
+			'true_outcome_amount',
+			'inner_income_amount',
+			'inner_outcome_amount',
+			'balance_amount',			
 			'_type'=>'LEFT'
 		),
 		
 		'CostCenter'	=>	array(
 			'cost_center_name',
-			'_on'	=>	'CostCenter.cost_center_id=Cost.cost_center_id'
+			'_on'	=>	'CostCenter.cost_center_id=CostCenterBalance.cost_center_id'
 		),
 	);
 	
 	//返回本数据表的所有数据
 	public function listAll() {			
-		$order['cost_date']	=	'desc';
+		$order['start_date']	=	'desc';
 		$list	=	$this->order($order)->select();
 		return $list;
 	}
 
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['cost_date']	=	'desc';
+		$order['start_date']	=	'desc';
 		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
 		$count	= $this->count();

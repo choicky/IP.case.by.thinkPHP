@@ -18,21 +18,20 @@ class InnerBalanceController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
-		$inner_balance_list = D('InnerBalanceView')->listPage($p,$page_limit);
+		$inner_balance_list = D('InnerBalanceView')->field(true)->listPage($p,$page_limit);
 		$this->assign('inner_balance_list',$inner_balance_list['list']);
 		$this->assign('inner_balance_page',$inner_balance_list['page']);
 		$this->assign('inner_balance_count',$inner_balance_list['count']);
 		
 		//取出 CostCenter 表的内容以及数量
-		$cost_center_list	=	D('cost_center')->field(true)->listBasic();
+		$cost_center_list	=	D('CostCenter')->field(true)->listBasic();
+		$cost_center_count	=	count($cost_center_list);
 		$this->assign('cost_center_list',$cost_center_list);
-		
+		$this->assign('cost_center_count',$cost_center_count);		
 		
 		//取出其他变量
-		$start_date	=	strtotime("-1 month");
-		$end_date	=	time();
-		$this->assign('start_date',$start_date);
-		$this->assign('end_date',$end_date);
+		$today	=	time();
+		$this->assign('today',$today);
 		
 		$this->display();
 	}
@@ -40,54 +39,15 @@ class InnerBalanceController extends Controller {
 	//新增
 	public function add(){
 		$data	=	array();
+		$data['inner_balance_name']	=	trim(I('post.inner_balance_name'));
+		$data['inner_balance_date']	=	strtotime(trim(I('post.inner_balance_date')));
 		$data['cost_center_id']	=	trim(I('post.cost_center_id'));
-		$data['end_date']	=	trim(I('post.end_date'));
-		$data['end_date']	=	$data['end_date']	?	strtotime($data['end_date'])	:	time();
-		$data['start_date']	=	trim(I('post.start_date'));
-		$data['start_date']	=	$data['start_date']	?	strtotime($data['start_date'])	:	strtotime("-1 month",$data['end_date']);
-					
+		$data['income_amount']	=	trim(I('post.income_amount'))*100;
+		$data['outcome_amount']	=	trim(I('post.outcome_amount'))*100;
 		
-		if(!$data['cost_center_id']){
-			$this->error('未选择内部结算中心');
-		}
-
-		if($data['end_date']<$data['start_date']){
-			$this->error('起始时间不正确');
-		}
-		
-		//从 Claim 表找出实际收支
-		$map_claim['cost_center_id']	=	$data['cost_center_id'];
-		$map_claim['claim_date']	=	array('between',$data['start_date'].','.$data['end_date']);
-		$claim_list	=	M('Claim')->field(true)->where($map_claim)->select();		
-		$true_income_amount	=	0;
-		$true_outcome_amount	=	0;
-		if(is_array($claim_list)){
-			for($j=0;$j<count($claim_list);$j++){
-				$true_income_amount	+=	$claim_list[$j]['income_amount'];
-				$true_outcome_amount	+=	$claim_list[$j]['outcome_amount'];
-			}
-		}
-		
-		//从 Cost 表找出内部收支
-		$map_cost['cost_center_id']	=	$data['cost_center_id'];
-		$map_cost['cost_date']	=	array('between',$data['start_date'].','.$data['end_date']);
-		$cost_list	=	M('Cost')->field(true)->where($map_cost)->select();		
-		$inner_income_amount	=	0;
-		$inner_outcome_amount	=	0;
-		if(is_array($cost_list)){
-			for($j=0;$j<count($cost_list);$j++){
-				$inner_income_amount	+=	$cost_list[$j]['income_amount'];
-				$inner_outcome_amount	+=	$cost_list[$j]['outcome_amount'];
-			}
-		}
-		
-		//构造其他数值
-		$data['true_income_amount']	=	$true_income_amount;
-		$data['true_outcome_amount']	=	$true_outcome_amount;
-		$data['inner_income_amount']	=	$inner_income_amount;
-		$data['inner_outcome_amount']	=	$inner_outcome_amount;
-		$data['balance_amount']	=	$true_income_amount	+	$inner_income_amount	-	$true_outcome_amount	-	$inner_outcome_amount;
-		
+		if(!$data['inner_balance_name']){
+			$this->error('未填写结算单名称');
+		} 
 
 		$result = M('InnerBalance')->add($data);
 		
@@ -104,20 +64,17 @@ class InnerBalanceController extends Controller {
 			
 			$data=array();
 			$data['inner_balance_id']	=	trim(I('post.inner_balance_id'));
+			$data['inner_balance_name']	=	trim(I('post.inner_balance_name'));
+			$data['inner_balance_date']	=	strtotime(trim(I('post.inner_balance_date')));
 			$data['cost_center_id']	=	trim(I('post.cost_center_id'));
-			$data['start_date']	=	strtotime(trim(I('post.start_date')));
-			$data['end_date']	=	strtotime(trim(I('post.end_date')));
-			$data['true_income_amount']	=	trim(I('post.true_income_amount'))*100;
-			$data['true_outcome_amount']	=	trim(I('post.true_outcome_amount'))*100;
-			$data['inner_income_amount']	=	trim(I('post.inner_income_amount'))*100;
-			$data['inner_outcome_amount']	=	trim(I('post.inner_outcome_amount'))*100;
-			$data['balance_amount']	=	$data['true_income_amount']	-	$data['true_outcome_amount']	+	$data['inner_outcome_amount']	-	$data['inner_outcome_amount'];
-		
+			$data['income_amount']	=	trim(I('post.income_amount'))*100;
+			$data['outcome_amount']	=	trim(I('post.outcome_amount'))*100;
+
 			$result = M('InnerBalance')->save($data);
 			if(false !== $result){
-				$this->success('修改成功', U('InnerBalance/view','inner_balance_id='.$data['inner_balance_id']));
+				$this->success('修改成功', 'listPage');
 			}else{
-				$this->error('修改失败', U('InnerBalance/view','inner_balance_id='.$data['inner_balance_id']));
+				$this->error('修改失败');
 			}
 		} else{
 			$inner_balance_id = I('get.inner_balance_id',0,'int');
@@ -126,13 +83,19 @@ class InnerBalanceController extends Controller {
 				$this->error('未指明要编辑的缴费单');
 			}
 
-			$inner_balance_list = D('InnerBalanceView')->getByInnerBalanceId($inner_balance_id);			
+			$inner_balance_list = D('InnerBalanceView')->field(true)->getByCostId($inner_balance_id);			
 			$this->assign('inner_balance_list',$inner_balance_list);
 			
-			//取出 cost_center 表的内容以及数量
-			$cost_center_list	=	D('cost_center')->field(true)->listBasic();
+			//取出 CostCenter 表的内容以及数量
+			$cost_center_list	=	D('CostCenter')->field(true)->listBasic();
+			$cost_center_count	=	count($cost_center_list);
 			$this->assign('cost_center_list',$cost_center_list);
-			
+			$this->assign('cost_center_count',$cost_center_count);		
+		
+			//取出其他变量
+			$row_limit  =   C("ROWS_PER_SELECT");
+			$this->assign('row_limit',$row_limit);
+
 			$this->display();
 		}
 	}
@@ -142,55 +105,22 @@ class InnerBalanceController extends Controller {
 		$inner_balance_id = I('get.inner_balance_id',0,'int');
 
 		if(!$inner_balance_id){
-			$this->error('未指明要查看的汇总单');
+			$this->error('未指明要查看的缴费单');
 		}
 		
-		//取出 InnerBalance 的信息
-		$inner_balance_list = D('InnerBalanceView')->field(true)->getByInnerBalanceId($inner_balance_id);		
+		//定义查询条件
+		$map['inner_balance_id']	=	$inner_balance_id;
+		
+		//取出 Cost 信息
+		$inner_balance_list = D('InnerBalanceView')->field(true)->getByCostId($inner_balance_id);	
+		
+		//取出 CaseFile 信息
+		$case_file_list	=	D('CaseFileView')->field(true)->where($map)->listAll();
+		$case_file_count	=	count($case_file_list);
+		
 		$this->assign('inner_balance_list',$inner_balance_list);
-		
-		//取出本次汇总的基础信息
-		$cost_center_id	=	$inner_balance_list['cost_center_id'];
-		$start_date	=	$inner_balance_list['start_date'];
-		$end_date	=	$inner_balance_list['end_date'];
-		
-		//从 Claim 表找出实际收支
-		$map_claim['cost_center_id']	=	$cost_center_id;
-		$map_claim['claim_date']	=	array('between',$start_date.','.$end_date);
-		$claim_list	=	D('ClaimView')->field(true)->where($map_claim)->listAll();		
-		$this->assign('claim_list',$claim_list);
-		$this->assign('claim_count',count($claim_list));
-		
-		//统计 Claim 的信息
-		$true_income_amount	=	0;
-		$true_outcome_amount	=	0;
-		if(is_array($claim_list)){
-			for($j=0;$j<count($claim_list);$j++){
-				$true_income_amount	+=	$claim_list[$j]['income_amount']/100;
-				$true_outcome_amount	+=	$claim_list[$j]['outcome_amount']/100;
-			}
-		}
-		$this->assign('true_income_amount',$true_income_amount);
-		$this->assign('true_outcome_amount',$true_outcome_amount);
-		
-		//从 Cost 表找出内部收支
-		$map_cost['cost_center_id']	=	$cost_center_id;
-		$map_cost['cost_date']	=	array('between',$start_date.','.$end_date);
-		$cost_list	=	D('CostView')->field(true)->where($map_cost)->listAll();
-		$this->assign('cost_list',$cost_list);
-		$this->assign('cost_count',count($cost_list));		
-		
-		//统计 Cost 的信息
-		$inner_income_amount	=	0;
-		$inner_outcome_amount	=	0;
-		if(is_array($cost_list)){
-			for($j=0;$j<count($cost_list);$j++){
-				$inner_income_amount	+=	$cost_list[$j]['income_amount']/100;
-				$inner_outcome_amount	+=	$cost_list[$j]['outcome_amount']/100;
-			}
-		}
-		$this->assign('inner_income_amount',$inner_income_amount);
-		$this->assign('inner_outcome_amount',$inner_outcome_amount);		
+		$this->assign('case_file_list',$case_file_list);
+		$this->assign('case_file_count',$case_file_count);		
 
 		$this->display();
 	}
@@ -201,19 +131,20 @@ class InnerBalanceController extends Controller {
 			
 			$data=array();
 			$data['inner_balance_id']	=	trim(I('post.inner_balance_id'));
-			$data['true_income_amount']	=	100*trim(I('post.true_income_amount'));
-			$data['true_outcome_amount']	=	100*trim(I('post.true_outcome_amount'));
-			$data['inner_income_amount']	=	100*trim(I('post.inner_income_amount'));
-			$data['inner_outcome_amount']	=	100*trim(I('post.inner_outcome_amount'));
-			$data['balance_amount']	=	$data['true_income_amount']	+	$data['inner_income_amount']	-	$data['true_outcome_amount']	-	$data['inner_outcome_amount'];
+			$data['income_amount']	=	100*trim(I('post.income_amount'));
+			
+			$outcome_amount	=	100*trim(I('post.outcome_amount'));
+			$other_outcome	=	100*trim(I('post.other_outcome'));
+			$data['outcome_amount']	=	$outcome_amount	+	$other_outcome;
 
 			$result = M('InnerBalance')->save($data);
 			if(false !== $result){
-				$this->success('修改成功', U('InnerBalance/view','inner_balance_id='.$data['inner_balance_id']));
+				$this->success('修改成功', U('Cost/view','inner_balance_id='.$data['inner_balance_id']));
 			}else{
 				$this->error('修改失败');
 			}
 		} 
 	}
+	
 	
 }

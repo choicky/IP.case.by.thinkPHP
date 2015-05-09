@@ -1,0 +1,108 @@
+<extend name="Public:base" />
+	
+	<block name="title">
+		<title>更新汇总信息</title>
+	</block>
+	
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3 id="forms">更新汇总信息</h3>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="col-lg-9">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="__CONTROLLER__/update">
+						<fieldset>
+							<legend>尽量填写完整每一项</legend>
+							<!-- 隐藏域开始-->
+								<input type="hidden" class="form-control" id="cost_center_balance_id" name="cost_center_balance_id" value="{$cost_center_balance_list.cost_center_balance_id}">
+							<!-- 隐藏域结束-->
+							<div class="form-group">
+								<label for="cost_center_id" class="col-lg-3 control-label">结算账户</label>
+								<div class="col-lg-4">
+									<select class="form-control" name="cost_center_id">
+										<option value=""></option>
+										<volist name="cost_center_list" id="cost_center_vo">
+										<option value="{$cost_center_vo.cost_center_id}" {$cost_center_vo['cost_center_id']==$cost_center_balance_list['cost_center_id']	?	'selected="selected"'	:	''}>{$cost_center_vo.cost_center_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									<p>用鼠标选择</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="start_date" class="col-lg-3 control-label">本期开始日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="start_date" name="start_date" value="{$cost_center_balance_list['start_date']	?	date("Y-m-d",$cost_center_balance_list['start_date'])	:	''}">
+								</div>
+								<div class="col-lg-5">
+									日期格式为 yyyy-mm-dd，可用鼠标选择
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="end_date" class="col-lg-3 control-label">本期结束日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="end_date" name="end_date" value="{$cost_center_balance_list['end_date']	?	date("Y-m-d",$cost_center_balance_list['end_date'])	:	''}">
+								</div>
+								<div class="col-lg-5">
+									日期格式为 yyyy-mm-dd，可用鼠标选择
+								</div>
+							</div>							
+							<div class="form-group">
+								<label for="true_income_amount" class="col-lg-3 control-label">本期实际收入</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="true_income_amount" name="true_income_amount" value="{$cost_center_balance_list['true_income_amount']/100}">
+								</div>
+								<div class="col-lg-5">
+									小数点必须使用英文的“.”
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="true_outcome_amount" class="col-lg-3 control-label">本期实际支出</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="true_outcome_amount" name="true_outcome_amount" value="{$cost_center_balance_list['true_outcome_amount']/100}">
+								</div>
+								<div class="col-lg-5">
+									小数点必须使用英文的“.”
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inner_income_amount" class="col-lg-3 control-label">本期内部收入</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="inner_income_amount" name="inner_income_amount" value="{$cost_center_balance_list['inner_income_amount']/100}">
+								</div>
+								<div class="col-lg-5">
+									小数点必须使用英文的“.”
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inner_outcome_amount" class="col-lg-3 control-label">本期内部支出</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="inner_outcome_amount" name="inner_outcome_amount" value="{$cost_center_balance_list['inner_outcome_amount']/100}">
+								</div>
+								<div class="col-lg-5">
+									小数点必须使用英文的“.”
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button type="reset" class="btn btn-default"> 取消 </button>
+									<button type="submit" class="btn btn-primary"> 确认 </button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+        </div>
+	</block>

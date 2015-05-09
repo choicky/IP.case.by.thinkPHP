@@ -82,13 +82,13 @@ class CostCenterController extends Controller {
 			$cost_center_id	=	$cost_center_list[$j]['cost_center_id'];
 			
 			//构造 mapping
-			$map_inner_balance['cost_center_id']	=	$cost_center_id;
-			$map_inner_balance['end_date']	=	array('LT',time());
+			$map_cost_center_balance['cost_center_id']	=	$cost_center_id;
+			$map_cost_center_balance['end_date']	=	array('LT',time());
 			
 			//获取数据
-			$inner_balance_list	=	M('InnerBalance')->where($map_inner_balance)->field('sum(balance_amount) as balance_amount')->select();			
+			$cost_center_balance_list	=	M('CostCenterBalance')->where($map_cost_center_balance)->field('sum(balance_amount) as balance_amount')->select();			
 			
-			$cost_center_list[$j]['balance_amount']	=	$inner_balance_list[0]['balance_amount'];
+			$cost_center_list[$j]['balance_amount']	=	$cost_center_balance_list[0]['balance_amount'];
 		}
 		
 		$this->assign('cost_center_list',$cost_center_list);
