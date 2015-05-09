@@ -157,26 +157,7 @@
 								<div class="col-lg-5">
 									可通过<a href="{:U('Claim/listPage')}" target="_blank">这里</a>查看所有的账单编号。
 								</div>
-							</div>
-							<div class="form-group">
-								<label for="cost_id" class="col-lg-3 control-label">内部结算单编号</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="cost_id" name="cost_id" value="{$case_fee_list['cost_id'] ? $case_fee_list['cost_id'] : ''}">									
-								</div>
-								<div class="col-lg-5">
-									可通过<a href="{:U('Cost/listPage')}" target="_blank">这里</a>查看所有的账单编号。
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="cost_amount" class="col-lg-3 control-label">内部结算金额</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="cost_amount" name="cost_amount" value="{$case_fee_list['cost_amount']/100}">
-								</div>
-								<div class="col-lg-5">
-									如没有管理费，就是结算官费部分；否则就是官费部分+服务费部分<br>
-									要输入半角的字符，例如12，不要输入全角的字符，如１２
-								</div>
-							</div>
+							</div>							
 							
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">
