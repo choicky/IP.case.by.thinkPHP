@@ -9,30 +9,10 @@ class CostCenterController extends Controller {
         header("Location: listPage");
     }
 	
-	//显示所有账户列表，并显示账户余额
+	//默认跳转到listPage，分页显示
 	public function listAll(){
-		$cost_center_list = D('CostCenter')->listAll();
-		
-		
-		for($j=0;$j<count($cost_center_list);$j++){
-			//获取每一条记录的 cost_center_id
-			$cost_center_id	=	$cost_center_list[$j]['cost_center_id'];
-			
-			//构造 mapping
-			$map_inner_balance['cost_center_id']	=	$cost_center_id;
-			$map_inner_balance['end_date']	=	array('LT',time());
-			
-			//获取数据
-			$inner_balance_list	=	M('InnerBalance')->where($map_inner_balance)->field('sum(balance_amount) as balance_amount')->select();			
-			
-			$cost_center_list[$j]['balance_amount']	=	$inner_balance_list[0]['balance_amount'];
-		}
-		
-		$this->assign('cost_center_list',$cost_center_list);
-		$this->assign('cost_center_count',count($cost_center_list));
-
-		$this->display();
-	}
+        header("Location: listPage");
+    }
 	
 	//分页显示，其中，$p为当前分页数，$limit为每页显示的记录数
 	public function listPage(){
@@ -90,5 +70,30 @@ class CostCenterController extends Controller {
 
 			$this->display();
 		}
+	}
+	
+	//显示所有账户列表，并显示账户余额
+	public function listBalance(){
+		$cost_center_list = D('CostCenter')->listAll();
+		
+		
+		for($j=0;$j<count($cost_center_list);$j++){
+			//获取每一条记录的 cost_center_id
+			$cost_center_id	=	$cost_center_list[$j]['cost_center_id'];
+			
+			//构造 mapping
+			$map_inner_balance['cost_center_id']	=	$cost_center_id;
+			$map_inner_balance['end_date']	=	array('LT',time());
+			
+			//获取数据
+			$inner_balance_list	=	M('InnerBalance')->where($map_inner_balance)->field('sum(balance_amount) as balance_amount')->select();			
+			
+			$cost_center_list[$j]['balance_amount']	=	$inner_balance_list[0]['balance_amount'];
+		}
+		
+		$this->assign('cost_center_list',$cost_center_list);
+		$this->assign('cost_center_count',count($cost_center_list));
+
+		$this->display();
 	}
 }

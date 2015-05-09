@@ -144,7 +144,7 @@ if(!cookie('name')){
 				<li><h5>内部结算账户</h5></li>
                 <li><a href="__MODULE__/CostCenter/listPage">内部结算账户列表</a></li>
 				<li><a href="__MODULE__/InnerBalance/listPage">各结算账户每月收支汇总</a></li>
-				<li><a href="__MODULE__/CostCenter/listAll">各个结算账户的当前余额</a></li>
+				<li><a href="__MODULE__/CostCenter/listBalance">各个结算账户的当前余额</a></li>
 				<li class="divider"></li>
               </ul>
             </li>
@@ -158,7 +158,8 @@ if(!cookie('name')){
               <ul class="dropdown-menu" aria-labelledby="themes">
                 <li><h5>账单</h5></li>				
 				<li><a href="__MODULE__/Bill/listPage">账单列表</a></li>
-                <li><a href="__MODULE__/Bill/listPage#addNew">录入新账单</a></li>                
+                <li><a href="__MODULE__/Bill/listPage#addNew">录入新账单</a></li>
+                <li><a href="__MODULE__/Bill/search">搜索账单</a></li>
                 <li><h5>收支认领</h5></li>
 				<li><a href="__MODULE__/Claim/listPage">收支认领列表</a></li>
                 <li><a href="__MODULE__/Claim/listPage#addNew">录入新收支认领</a></li>
@@ -308,10 +309,7 @@ if(!cookie('name')){
       </footer>
 
 
-    </div>
-
-
-    
+    </div>    
     
     
   </body>

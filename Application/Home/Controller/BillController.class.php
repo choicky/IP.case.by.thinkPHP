@@ -185,4 +185,107 @@ class BillController extends Controller {
 		$this->display();
 	}
 	
+	//搜索
+	public function search(){
+		//取出 Client 表的基本内容，作为 options
+		$client_list	=	D('Client')->listBasic();
+		$this->assign('client_list',$client_list);
+		
+		//默认查询最近一个月
+		$start_time	=	strtotime("-1 month");
+		$end_time	=	time();
+		$this->assign('start_time',$start_time);
+		$this->assign('end_time',$end_time);
+		
+		//默认查询 0 元 至 20000 元
+		$start_amount	=	0;
+		$end_amount	=	2000000;
+		$this->assign('start_amount',$start_amount);
+		$this->assign('end_amount',$end_amount);
+		
+		//取出 Member 表的基本内容，作为 options
+		$member_list	=	D('Member')->listBasic();
+		$this->assign('member_list',$member_list);
+		
+		if(IS_POST){
+			
+			//接收搜索参数
+			$client_id	=	I('post.client_id','0','int');
+			$end_time	=	trim(I('post.end_time'));
+			$end_time	=	$end_time	?	strtotime($end_time)	:	time();
+			$start_time	=	trim(I('post.start_time'));
+			$start_time	=	$start_time	?	strtotime($start_time)	:	strtotime("-1 month",$end_time);
+			$start_amount	=	trim(I('post.start_amount'))*100;			
+			$end_amount	=	trim(I('post.end_amount'))*100;	
+			$follower_id	=	I('post.follower_id','0','int');
+			$is_paid	=	I('post.is_paid','0','int');
+			
+			
+			//构造 maping
+			$map['bill_date']	=	array('between',$start_time.','.$end_time);
+			$map['total_amount']	=	array('between',$start_amount.','.$end_amount);
+			if($client_id){
+				$map['client_id']	=	$client_id;
+			}
+			if($member_id){
+				$map['follower_id']	=	$follower_id;
+			}	
+			
+			//根据到账情况不同进行处理
+			if(0==$is_paid){
+				$bill_list = D('BillView')->where($map)->listAll();							
+			}
+			if(1==$is_paid){
+				$bill_list_tmp = D('BillView')->where($map)->listAll();
+								
+				for($j=0;$j<count($bill_list_tmp);$j++){
+					$bill_id	=	$bill_list_tmp[$j]['bill_id'];
+					$total_amount	=	$bill_list_tmp[$j]['total_amount'];
+					
+					//查找到账情况
+					$map_claim['bill_id']	=	$bill_id;
+					$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
+					$income_amount	=	$claim_list[0]['income_amount'];
+					
+					if($total_amount	==	$income_amount){
+						$bill_list[$j]	=	$bill_list_tmp[$j];
+					}
+				}					
+			}
+			if(2==$is_paid){
+				$bill_list_tmp = D('BillView')->where($map)->listAll();
+								
+				for($j=0;$j<count($bill_list_tmp);$j++){
+					$bill_id	=	$bill_list_tmp[$j]['bill_id'];
+					$total_amount	=	$bill_list_tmp[$j]['total_amount'];
+					
+					//查找到账情况
+					$map_claim['bill_id']	=	$bill_id;
+					$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
+					$income_amount	=	$claim_list[0]['income_amount'];
+					
+					if($total_amount	!=	$income_amount){
+						$bill_list[$j]	=	$bill_list_tmp[$j];
+					}
+				}					
+			}
+			
+			$bill_count	=	count($bill_list);
+			
+			$this->assign('bill_list',$bill_list);
+			$this->assign('bill_count',$bill_count);
+			
+			//返回搜索参数
+			$this->assign('client_id',$client_id);
+			$this->assign('start_time',$start_time);
+			$this->assign('end_time',$end_time);
+			$this->assign('start_amount',$start_amount);
+			$this->assign('end_amount',$end_amount);
+			$this->assign('follower_id',$follower_id);
+			$this->assign('is_paid',$is_paid);		
+		} 
+	
+	$this->display();
+	}
+	
 }
