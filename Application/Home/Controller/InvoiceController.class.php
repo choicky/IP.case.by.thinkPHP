@@ -163,7 +163,7 @@ class InvoiceController extends Controller {
 				$this->error('未指明要删除的发票');
 			}
 
-			$invoice_list = D('InvoiceView')->relation(true)->field(true)->getByInvoiceId($invoice_id);			
+			$invoice_list = D('InvoiceView')->field(true)->getByInvoiceId($invoice_id);			
 			$this->assign('invoice_list',$invoice_list);
 
 			$this->display();
