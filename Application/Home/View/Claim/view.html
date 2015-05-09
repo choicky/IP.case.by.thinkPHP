@@ -149,7 +149,7 @@
 								<td align="right">{$claim_vo['official_fee']	?	$claim_vo['official_fee']/100	:	''}</td>
 								<td align="right">{$claim_vo['service_fee']	?	$claim_vo['service_fee']/100	:	''}</td>
 								<td>{$claim_vo.summary}</td>
-								<td><a href="{:U('Bill/view','bill_id='.$claim_vo.bill_id)}" target="_blank">{$claim_vo['bill_id']	?	$claim_vo['bill_id']	:	''}</a></td>
+								<td><a href="{:U('Bill/view','bill_id='.$claim_vo['bill_id'])}" target="_blank">{$claim_vo['bill_id']	?	$claim_vo['bill_id']	:	''}</a></td>
 								<td><a href="{:U('Claim/update','claim_id='.$claim_vo['claim_id'])}">更新</a><br>
 									<a href="{:U('Claim/delete','claim_id='.$claim_vo['claim_id'])}">删除</a></td>
 							</tr>
