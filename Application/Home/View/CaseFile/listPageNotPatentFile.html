@@ -59,31 +59,31 @@
 						</thead>
 						<tbody>
 							<!-- 将controller assign过来的 case_priority_list 赋给  case_priority_vo--> 
-							<volist name="case_file_list" id="case_file_vo">
+							<volist name="case_file_list" id="case_file_list">
 							<tr>
 								
 								<td>{$i}</td>
-								<td>{$case_file_vo.our_ref}</td>
-								<td>{$case_file_vo.client_ref}</td>
-								<td>{$case_file_vo.client_name}</td>
-								<td>{$case_file_vo.follower_name}</td>
-								<td>{$case_file_vo.application_name}</td>
-								<td>{$case_file_vo['application_date']	=	$case_file_vo['application_date']	?	date("Y-m-d",$case_file_vo['application_date'])		:	''}</td>
-								<td>{$case_file_vo.application_number}</td>
-								<td>{$case_file_vo.formal_title}</td>
-								<td>{$case_file_vo.file_type_name}</td>
-								<td>{$case_file_vo['oa_date']	=	$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])		:	''}</td>
-								<td>{$case_file_vo['due_date']	=	$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])		:	''}</td>
-								<td>{$case_file_vo['completion_date']	=	$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])		:	''}</td>
-								<td>{$case_file_vo['service_fee']	=	$case_file_vo['service_fee']	?	$case_file_vo['service_fee']/100		:	''}</td>
-								<td>{$case_file_vo['bill_id']	=	$case_file_vo['bill_id']	?	$case_file_vo['bill_id']		:	''}</td>
-								<td>{$case_file_vo['invoice_id']	=	$case_file_vo['invoice_id']	?	$case_file_vo['invoice_id']		:	''}</td>
-								<td>{$case_file_vo['claim_id']	=	$case_file_vo['claim_id']	?	$case_file_vo['claim_id']		:	''}</td>
-								<td>{$case_file_vo['cost_id']	=	$case_file_vo['cost_id']	?	$case_file_vo['cost_id']		:	''}</td>
-								<td>{$case_file_vo['cost_amount']	=	$case_file_vo['cost_amount']	?	$case_file_vo['cost_amount']/100		:	''}</td>
+								<td>{$case_file_list.our_ref}</td>
+								<td>{$case_file_list.client_ref}</td>
+								<td>{$case_file_list.client_name}</td>
+								<td>{$case_file_list.follower_name}</td>
+								<td>{$case_file_list.application_name}</td>
+								<td>{$case_file_list['application_date']	=	$case_file_list['application_date']	?	date("Y-m-d",$case_file_list['application_date'])		:	''}</td>
+								<td>{$case_file_list.application_number}</td>
+								<td>{$case_file_list.formal_title}</td>
+								<td>{$case_file_list.file_type_name}</td>
+								<td>{$case_file_list['oa_date']	=	$case_file_list['oa_date']	?	date("Y-m-d",$case_file_list['oa_date'])		:	''}</td>
+								<td>{$case_file_list['due_date']	=	$case_file_list['due_date']	?	date("Y-m-d",$case_file_list['due_date'])		:	''}</td>
+								<td>{$case_file_list['completion_date']	=	$case_file_list['completion_date']	?	date("Y-m-d",$case_file_list['completion_date'])		:	''}</td>
+								<td>{$case_file_list['service_fee']	=	$case_file_list['service_fee']	?	$case_file_list['service_fee']/100		:	''}</td>
+								<td>{$case_file_list['bill_id']	=	$case_file_list['bill_id']	?	$case_file_list['bill_id']		:	''}</td>
+								<td>{$case_file_list['invoice_id']	=	$case_file_list['invoice_id']	?	$case_file_list['invoice_id']		:	''}</td>
+								<td>{$case_file_list['claim_id']	=	$case_file_list['claim_id']	?	$case_file_list['claim_id']		:	''}</td>
+								<td><a href="{:U('Cost/view','cost_id='.$case_file_list['cost_id'])}">{$case_file_list['cost_id']	=	$case_file_list['cost_id']	?	$case_file_list['cost_id']		:	''}</a></td>
+								<td>{$case_file_list['cost_amount']	=	$case_file_list['cost_amount']	?	$case_file_list['cost_amount']/100		:	''}</td>
 								<td>
-									<a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}">更新</a>
-									<a href="{:U('CaseFile/delete','case_file_id='.$case_file_vo['case_file_id'])}">删除</a>
+									<a href="{:U('CaseFile/update','case_file_id='.$case_file_list['case_file_id'])}">更新</a>
+									<a href="{:U('CaseFile/delete','case_file_id='.$case_file_list['case_file_id'])}">删除</a>
 									
 								</td>
 								

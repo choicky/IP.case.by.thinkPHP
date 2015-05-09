@@ -1,7 +1,7 @@
 <extend name="Public:base" />
 	
 	<block name="title">
-		<title>删除费用</title>
+		<title>删除费用任务</title>
 	</block>
 	
 	<block name="page">
@@ -11,7 +11,7 @@
         <div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3 id="forms">删除费用</h3>
+					<h3 id="forms">删除费用任务</h3>
 				</div>
 			</div>
         </div>
@@ -25,7 +25,8 @@
 						<thead>
 							<tr class="info">
 								
-								<th>序号</th>
+								<th>编号</th>
+								<th>案号</th>
 								<th>阶段</th>
 								<th>名称</th>
 								<th>官费金额</th>
@@ -48,6 +49,7 @@
 							<tr>
 								
 								<td>{$case_fee_list.case_fee_id}</td>
+								<td>{$case_fee_list.our_ref}</td>
 								<td>{$case_fee_list.case_phase_name}</td>
 								<td>{$case_fee_list.fee_type_name}</td>
 								<td>{$case_fee_list['official_fee']/100}</td>
