@@ -77,7 +77,7 @@
 									<select class="form-control" name="follower_id">
 										<option value="0"> 不限 </option>
 										<volist name="member_list" id="member_vo">
-										<option value="{$member_vo.member_id}"} {$member_vo['member_id']==$follower_id	?	'selected="selected"'	:	''}>{$member_vo.member_name}年 &nbsp;</option>
+										<option value="{$member_vo.member_id}"} {$member_vo['member_id']==$follower_id	?	'selected="selected"'	:	''}>{$member_vo.member_name}</option>
 										</volist>
 									</select></td>								
 								<td><button type="submit" class="btn btn-primary">搜</button></td>
