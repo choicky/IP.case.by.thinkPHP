@@ -316,6 +316,23 @@ class BillController extends Controller {
 			
 			$bill_count	=	count($bill_list);
 			
+			//判断到账情况
+			for($j=0;$j<$bill_count;$j++){
+				$bill_id	=	$bill_list[$j]['bill_id'];
+				$total_amount	=	$bill_list[$j]['total_amount'];
+				
+				//查找到账情况
+				$map_claim['bill_id']	=	$bill_id;
+				$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
+				$income_amount	=	$claim_list[0]['income_amount'];
+				
+				if($total_amount	==	$income_amount){
+					$bill_list[$j]['is_paid']	=	"全额到账";
+				}else{
+					$bill_list[$j]['is_paid']	=	"尚未全额到账";
+				}
+			}
+			
 			$this->assign('bill_list',$bill_list);
 			$this->assign('bill_count',$bill_count);
 			
