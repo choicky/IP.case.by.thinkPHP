@@ -50,14 +50,14 @@
 									<select class="form-control" name="client_id">
 									<option value="0"> 不限 </option>
 									<volist name="client_list" id="client_vo">
-									<option value="{$client_vo.client_id}"} {$client_vo['client_id']==$client_id	?	'selected="selected"'	:	''}>{$client_vo.client_name}</option>
+									<option value="{$client_vo.client_id}" {$client_vo['client_id']==$client_id	?	'selected="selected"'	:	''}>{$client_vo.client_name}</option>
 									</volist>
 									</select></td>
 								<td>
 									<select class="form-control" name="is_paid">
-									<option value="0" {0==$is_paid	?	'selected="selected"'	:	''}> 不限 </option>
-									<option value="1" {1==$is_paid	?	'selected="selected"'	:	''}> 全额到账 </option>
-									<option value="2" {2==$is_paid	?	'selected="selected"'	:	''}> 未全额到账 </option>
+									<option value="0" {$is_paid==0	?	'selected="selected"'	:	''}> 不限 </option>
+									<option value="1" {$is_paid==1	?	'selected="selected"'	:	''}> 全额到账 </option>
+									<option value="2" {$is_paid==2	?	'selected="selected"'	:	''}> 未全额到账 </option>
 									</select></td>
 								
 							</tr>
