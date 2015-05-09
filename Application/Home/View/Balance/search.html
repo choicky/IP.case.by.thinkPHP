@@ -122,7 +122,7 @@
 											$claim_outcome	+=	$claim_vo['outcome_amount'];
 										?>
 									</volist>
-									<a href="{:U('Claim/view','balance_id='.$balance_vo['balance_id'])}">详情</a>
+									<a href="{:U('Claim/view','balance_id='.$balance_vo['balance_id'])}" target="_blank">详情</a>
 								</td>
 								<td align="right">
 									{$claim_income/100	+	$claim_outcome/100}<br>
@@ -139,7 +139,7 @@
 									
 								</td>
 								<td>
-									<a href="{:U('Balance/update','balance_id='.$balance_vo['balance_id'])}">更新</a> <br>
+									<a href="{:U('Balance/update','balance_id='.$balance_vo['balance_id'])}" target="_blank">更新</a> <br>
 									<a href="{:U('Balance/delete','balance_id='.$balance_vo['balance_id'])}">删除</a>
 								</td>
 							</tr>
