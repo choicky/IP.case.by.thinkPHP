@@ -16,7 +16,7 @@ return array(
     'DB_PREFIX'             =>  'tp_',    // 数据库表前缀
 	
 	// 显示页面Trace信息
-	'SHOW_PAGE_TRACE' =>FALSE, 
+	'SHOW_PAGE_TRACE' =>TRUE, 
 	
 	//自定义分页显示时每页显示的最大条目数
 	'RECORDS_PER_PAGE'			=>	'100',

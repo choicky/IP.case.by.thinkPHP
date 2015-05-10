@@ -119,12 +119,6 @@ class ClientController extends Controller {
 					$this->error('该客户/申请人已关联到案件，不可删除，只能修改');
 				}
 				
-				//判断是否有付款信息
-				$condition_balance	=	M('Balance')->where($map)->find();
-				if(is_array($condition_balance)){
-					$this->error('该客户/申请人已有付款信息，不可删除，只能修改');
-				}
-				
 				//判断是否有账单信息
 				$condition_bill	=	M('Bill')->where($map)->find();
 				if(is_array($condition_bill)){
