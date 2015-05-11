@@ -80,7 +80,7 @@
 										<option value="{$member_vo.member_id}"} {$member_vo['member_id']==$follower_id	?	'selected="selected"'	:	''}>{$member_vo.member_name}</option>
 										</volist>
 									</select></td>								
-								<td><button type="submit" class="btn btn-primary">搜</button></td>
+								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>
 							</form>
 							</tr>
 						</tbody>
@@ -232,8 +232,8 @@
 						  
 							<div class="form-group">
 								<div class="col-lg-4 col-lg-offset-3">
-									<button class="btn btn-default">Cancel</button>
-									<button type="submit" class="btn btn-primary">Submit</button>
+									<button type="reset" value="reset" class="btn btn-default">Cancel</button>
+									<button type="submit" value="submit" class="btn btn-primary">Submit</button>
 								</div>
 							</div>
 						</fieldset>
