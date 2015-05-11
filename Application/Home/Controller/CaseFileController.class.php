@@ -62,31 +62,27 @@ class CaseFileController extends Controller {
 			}
 
 			$case_file_list = M('CaseFile')->getByCaseFileId($case_file_id);
+
 			$this->assign('case_file_list',$case_file_list);
 			
 			//获取本条费用的案子的 $case_type_name
 			$case_type_name	=	D('CaseFile')->returnCaseTypeName($case_file_id);
 			//获取本案子的 $case_type_name
-			$case_type_name	=	$case_list['case_type_name'];
 			
+		
 			//根据 $case_type_name 是否包含“专利”来构造对应的检索条件
 			if(false	!==	strpos($case_type_name,'专利')){
 				$map_file_type['file_type_name']	=	array('like','%专利%');
 			}else{
 				$map_file_type['file_type_name']	=	array('notlike','%专利%');
 			}
-				
+							
 			//取出 FileType 表的内容以及数量
 			$file_type_list	=	D('FileType')->where($map_file_type)->listBasic();
 			$file_type_count	=	count($file_type_list);
 			$this->assign('file_type_list',$file_type_list);
 			$this->assign('file_type_count',$file_type_count);
 			
-			//取出 FileType 表的内容以及数量
-			$file_type_list	=	D('FileType')->field(true)->listAll();
-			$file_type_count	=	count($file_type_list);
-			$this->assign('file_type_list',$file_type_list);
-			$this->assign('file_type_count',$file_type_count);
 			
 			//取出其他变量
 			$row_limit  =   C("ROWS_PER_SELECT");
@@ -127,7 +123,8 @@ class CaseFileController extends Controller {
 				$this->error('未指明要删除的流水');
 			}
 			
-			$case_file_list = D('CaseFileView')->field(true)->getByCaseFileId($case_file_id);			
+			$case_file_list = D('CaseFileView')->field(true)->getByCaseFileId($case_file_id);
+			
 			$this->assign('case_file_list',$case_file_list);			
 
 			$this->display();

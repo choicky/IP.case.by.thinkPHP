@@ -32,7 +32,7 @@
 									<select class="form-control" name="file_type_id">
 										<option value=""></option>
 										<volist name="file_type_list" id="file_type_vo">
-										<option value="{$file_type_vo.file_type_id}" selected="{$file_type_vo['file_type_id']==$case_file_list['file_type_id']	?	'selected'	:	''}">{$file_type_vo.file_type_name}</option>
+										<option value="{$file_type_vo.file_type_id}" {$file_type_vo['file_type_id']==$case_file_list['file_type_id']	?	'selected="selected"'	:	''}">{$file_type_vo.file_type_name}</option>
 										</volist>
 									</select>
 								</div>
