@@ -25,7 +25,7 @@
 			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					基本信息，点击<a href="{:U('Cost/update','inner_balance_id='.$inner_balance_list['inner_balance_id'])}" target="_blank"> 这里 </a>修改基本信息
+					基本信息，点击<a href="{:U('InnerBalance/update','inner_balance_id='.$inner_balance_list['inner_balance_id'])}" target="_blank"> 这里 </a>修改基本信息
 				</div>
 
 				<!-- Table -->
@@ -54,8 +54,8 @@
 								<td align="right">{$inner_balance_list['income_amount']	?	$inner_balance_list['income_amount']/100	:	''}</td>
 								<td align="right">{$inner_balance_list['outcome_amount']	?	$inner_balance_list['outcome_amount']/100	:	''}</td>
 								<td>
-									<a href="{:U('Cost/view','inner_balance_id='.$inner_balance_list['inner_balance_id'])}" target="_blank">查看详情<a>、
-									<a href="{:U('Cost/update','inner_balance_id='.$inner_balance_list['inner_balance_id'])}" target="_blank">更新<a>
+									<a href="{:U('InnerBalance/view','inner_balance_id='.$inner_balance_list['inner_balance_id'])}" target="_blank">查看详情<a>、
+									<a href="{:U('InnerBalance/update','inner_balance_id='.$inner_balance_list['inner_balance_id'])}" target="_blank">更新<a>
 								</td>								
 							</tr>
 							</volist>                 

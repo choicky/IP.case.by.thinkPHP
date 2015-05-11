@@ -83,7 +83,7 @@ class InnerBalanceController extends Controller {
 				$this->error('未指明要编辑的缴费单');
 			}
 
-			$inner_balance_list = D('InnerBalanceView')->field(true)->getByCostId($inner_balance_id);			
+			$inner_balance_list = D('InnerBalanceView')->field(true)->getByInnerBalanceId($inner_balance_id);			
 			$this->assign('inner_balance_list',$inner_balance_list);
 			
 			//取出 CostCenter 表的内容以及数量
@@ -112,7 +112,7 @@ class InnerBalanceController extends Controller {
 		$map['inner_balance_id']	=	$inner_balance_id;
 		
 		//取出 Cost 信息
-		$inner_balance_list = D('InnerBalanceView')->field(true)->getByCostId($inner_balance_id);	
+		$inner_balance_list = D('InnerBalanceView')->field(true)->getByInnerBalanceId($inner_balance_id);	
 		
 		//取出 CaseFile 信息
 		$case_file_list	=	D('CaseFileView')->field(true)->where($map)->listAll();
@@ -139,7 +139,7 @@ class InnerBalanceController extends Controller {
 
 			$result = M('InnerBalance')->save($data);
 			if(false !== $result){
-				$this->success('修改成功', U('Cost/view','inner_balance_id='.$data['inner_balance_id']));
+				$this->success('修改成功', U('InnerBalance/view','inner_balance_id='.$data['inner_balance_id']));
 			}else{
 				$this->error('修改失败');
 			}

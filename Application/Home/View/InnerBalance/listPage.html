@@ -55,8 +55,8 @@
 								<td align="right">{$cost_vo['income_amount']	?	$cost_vo['income_amount']/100	:	''}</td>
 								<td align="right">{$cost_vo['outcome_amount']	?	$cost_vo['outcome_amount']/100	:	''}</td>
 								<td>
-									<a href="{:U('Cost/view','inner_balance_id='.$cost_vo['inner_balance_id'])}" target="_blank">查看详情<a>、
-									<a href="{:U('Cost/update','inner_balance_id='.$cost_vo['inner_balance_id'])}" target="_blank">更新<a>
+									<a href="{:U('InnerBalance/view','inner_balance_id='.$cost_vo['inner_balance_id'])}" target="_blank">查看详情<a>、
+									<a href="{:U('InnerBalance/update','inner_balance_id='.$cost_vo['inner_balance_id'])}" target="_blank">更新<a>
 								</td>								
 							</tr>
 							</volist>                 
@@ -82,7 +82,7 @@
         <div class="row">
 			<div class="col-lg-9">
 				<div class="well bs-component">
-					<form class="form-horizontal" method="post" action="{:U('Cost/add')}">
+					<form class="form-horizontal" method="post" action="{:U('InnerBalance/add')}">
 						<fieldset>
 							<legend>尽量填写完整每一项</legend>
 							<div class="form-group">
