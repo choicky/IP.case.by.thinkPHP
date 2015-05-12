@@ -62,7 +62,7 @@ class ClaimController extends Controller {
 				 $result	=	$Model->save();		 
 			}
 			if(false !== $result){
-				$this->success('修改成功', 'view/balance_id/'.$balance_id);
+				$this->success('修改成功', U('Claim/view','balance_id='.$balance_id));
 			}else{
 				$this->error('修改失败');
 			}
@@ -87,10 +87,6 @@ class ClaimController extends Controller {
 			$cost_center_count	=	count($cost_center_list);
 			$this->assign('cost_center_list',$cost_center_list);
 			$this->assign('cost_center_count',$cost_center_count);
-			
-			//取出其他变量
-			$row_limit  =   C("ROWS_PER_SELECT");
-			$this->assign('row_limit',$row_limit);
 			
 			$this->display();
 		}
@@ -127,7 +123,8 @@ class ClaimController extends Controller {
 				$this->error('未指明要删除的流水');
 			}
 			
-			$claim_list = D('ClaimView')->field(true)->getByClaimId($claim_id);			
+			$claim_list = D('ClaimView')->field(true)->getByClaimId($claim_id);
+			
 			$this->assign('claim_list',$claim_list);
 			
 
@@ -241,7 +238,6 @@ class ClaimController extends Controller {
 
 		$balance_list = D('Balance')->relation(true)->field(true)->getByBalanceId($balance_id);			
 		$this->assign('balance_list',$balance_list);
-		
 		
 		//取出内部结算单的数量
 		$claim_count	=	count($balance_list['Claim']);

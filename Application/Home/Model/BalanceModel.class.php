@@ -30,7 +30,7 @@ class BalanceModel extends RelationModel {
 			'class_name'		=>	'ClaimView',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'balance_id',			//外键
-			'mapping_fields'	=>	'claim_id,claimer_id,member_name,cost_center_name,claim_date,balance_id,income_amount,outcome_amount,summary,bill_id',		//关联字段
+			'mapping_fields'	=>	'claim_id,claimer_id,member_name,cost_center_name,claim_date,balance_id,income_amount,outcome_amount,summary,bill_id,case_payment_id',		//关联字段
 		),
 	
 	);

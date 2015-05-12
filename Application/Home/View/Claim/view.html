@@ -42,6 +42,7 @@
 								<th>对方当事人</th>
 								<th>跟进人员</th>
 								<th>账单编号</th>
+								<th>缴费单编号</th>
 								<th>已分摊到</th>
 								<th>已分摊金额</th>
 								<th>常用操作</th>
@@ -63,7 +64,11 @@
 								<td>
 									<volist name="balance_list['Claim']" id="bill_vo">
 										<a href="{:U('Bill/view','bill_id='.$bill_vo['bill_id'])}" target="_blank">{$bill_vo['bill_id']	?	$bill_vo['bill_id']	:	''}</a><br>										
-									</volist>
+									</volist></td>
+								<td>
+									<volist name="balance_list['Claim']" id="case_payment_vo">
+										<a href="{:U('CasePayment/view','case_payment_id='.$case_payment_vo['case_payment_id'])}" target="_blank">{$case_payment_vo['case_payment_id']	?	$case_payment_vo['case_payment_id']	:	''}</a><br>										
+									</volist></td>
 								<td>
 									<?php
 										$claim_income	=	0;
@@ -133,6 +138,7 @@
 								<th>服务费</th>
 								<th>摘要</th>
 								<th>账单编号</th>
+								<th>缴费单编号</th>
 								<th>常用操作</th>
 							</tr>
 						</thead>
@@ -149,7 +155,8 @@
 								<td align="right">{$claim_vo['official_fee']	?	$claim_vo['official_fee']/100	:	''}</td>
 								<td align="right">{$claim_vo['service_fee']	?	$claim_vo['service_fee']/100	:	''}</td>
 								<td>{$claim_vo.summary}</td>
-								<td><a href="{:U('Bill/view','bill_id='.$claim_vo['bill_id'])}" target="_blank">{$claim_vo['bill_id']	?	$claim_vo['bill_id']	:	''}</a></td>
+								<td><a href="{:U('Bill/view','bill_id='.$claim_vo['bill_id'])}" target="_blank">{$claim_vo['bill_id']	?	$claim_vo['bill_id']	:	''}</a><br>{$claim_vo['bill_date']	?	date("Y-m-d",$claim_vo['bill_date'])	:	''}</td>
+								<td><a href="{:U('CasePayment/view','case_payment_id='.$claim_vo['case_payment_id'])}" target="_blank">{$claim_vo['case_payment_id']	?	$claim_vo['case_payment_id']	:	''}</a><br>{$claim_vo['payment_date']	?	date("Y-m-d",$claim_vo['payment_date'])	:	''}</td>
 								<td><a href="{:U('Claim/update','claim_id='.$claim_vo['claim_id'])}">更新</a><br>
 									<a href="{:U('Claim/delete','claim_id='.$claim_vo['claim_id'])}">删除</a></td>
 							</tr>
@@ -267,6 +274,15 @@
 								</div>
 								<div class="col-lg-5">
 									可从<a href="{:U('Bill/search')}" target="_blank">这里</a>查找账单编号
+								</div>
+							</div>	
+							<div class="form-group">
+								<label for="case_payment_id" class="col-lg-3 control-label">缴费单编号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="case_payment_id" name="case_payment_id" placeholder="缴费单编号">
+								</div>
+								<div class="col-lg-5">
+									可从<a href="{:U('CasePayment/listPage')}" target="_blank">这里</a>查找缴费单编号
 								</div>
 							</div>	
 

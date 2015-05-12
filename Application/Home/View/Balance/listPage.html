@@ -42,6 +42,7 @@
 								<th>对方当事人</th>
 								<th>跟进人员</th>
 								<th>账单编号</th>
+								<th>缴费单编号</th>
 								<th>已分摊到</th>
 								<th>已分摊金额</th>
 								<th>常用操作</th>
@@ -64,7 +65,11 @@
 								<td>
 									<volist name="balance_vo['Claim']" id="bill_vo">
 										<a href="{:U('Bill/view','bill_id='.$bill_vo['bill_id'])}" target="_blank">{$bill_vo['bill_id']	?	$bill_vo['bill_id']	:	''}</a><br>										
-									</volist>
+									</volist></td>
+								<td>
+									<volist name="balance_vo['Claim']" id="case_payment_vo">
+										<a href="{:U('CasePayment/view','case_payment_id='.$case_payment_vo['case_payment_id'])}" target="_blank">{$case_payment_vo['case_payment_id']	?	$case_payment_vo['case_payment_id']	:	''}</a><br>										
+									</volist></td>
 								<td>
 									<?php
 										$claim_income	=	0;

@@ -212,13 +212,13 @@ class BillController extends Controller {
 		//定义查询
 		$map['bill_id']	=	$bill_id;
 		
-		/*
+		
 		//取出交文产生的信息
 		$case_file_list	=	D('CaseFileView')->where($map)->listAll();
 		$case_file_count	=	count($case_file_list);		
 		$this->assign('case_file_list',$case_file_list);
 		$this->assign('case_file_count',$case_file_count);
-		*/
+		
 		
 		//取出交费的信息
 		$case_fee_list	=	D('CaseFeeView')->where($map)->listAll();
