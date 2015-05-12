@@ -29,7 +29,6 @@ class CaseFeeViewModel extends ViewModel {
 			'oa_date',
 			'due_date',
 			'allow_date',
-			'payer_id',
 			'case_payment_id',
 			'bill_id',
 			'invoice_id',
@@ -69,18 +68,19 @@ class CaseFeeViewModel extends ViewModel {
 			'_on'	=>	'FeeType.fee_type_id=CaseFee.fee_type_id'
 		),	
 		
-		'Payer'	=>	array(
-			'payer_name',
-			'_type'=>'LEFT',
-			'_on'	=>	'Payer.payer_id=CaseFee.payer_id'
-		),
-
 		'CasePayment'	=>	array(
 			'payment_date',
+			'payer_id',
 			'_type'=>'LEFT',
 			'_on'	=>	'CasePayment.case_payment_id=CaseFee.case_payment_id'
 		),		
 		
+		'Payer'	=>	array(
+			'payer_name',
+			'_type'=>'LEFT',
+			'_on'	=>	'Payer.payer_id=CasePayment.payer_id'
+		),
+
 		'Client'	=>	array(
 			'client_name',
 			'_type'=>'LEFT',
