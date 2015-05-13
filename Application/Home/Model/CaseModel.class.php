@@ -18,11 +18,10 @@ class CaseModel extends RelationModel {
 	
 	//定义本数据表的自动完成
 	protected $_auto = array(		
-		array('create_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
-		array('application_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
-		array('publication_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
-		array('issue_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
-		array('expired_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+		array('create_date','strtotime',3,'function,ignore') , // 将 yyyy-mm-dd 转换时间戳
+		array('application_date','strtotime',3,'function,ignore') , // 将 yyyy-mm-dd 转换时间戳
+		array('issue_date','strtotime',3,'function,ignore') , // 将 yyyy-mm-dd 转换时间戳
+		array('expired_date','strtotime',3,'function,ignore') , // 将 yyyy-mm-dd 转换时间戳
 	);
 	
 	//定义本数据表的自动验证
