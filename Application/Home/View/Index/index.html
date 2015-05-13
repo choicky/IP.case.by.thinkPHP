@@ -127,7 +127,6 @@
 								<th>服务费</th>
 								<th>官文日期</th>
 								<th>期限日</th>
-								<th>指示日期</th>
 								<th>缴费单号及缴费日</th>
 								<th>常用操作</th>
 								
@@ -153,7 +152,6 @@
 								<td>{$not_patent_fee_vo['service_fee']/100}</td>
 								<td>{$not_patent_fee_vo['oa_date']	?	date("Y-m-d",$not_patent_fee_vo['oa_date'])	:	''}</td>
 								<td>{$not_patent_fee_vo['due_date']	?	date("Y-m-d",$not_patent_fee_vo['due_date'])	:	''}</td>
-								<td>{$not_patent_fee_vo['allow_date']	?	date("Y-m-d",$not_patent_fee_vo['allow_date'])	:	''}</td>
 								<td>
 									{$not_patent_fee_vo['case_payment_id']	?	$not_patent_fee_vo['case_payment_id']	:	''}<br>
 									{$not_patent_fee_vo['payment_date']	?	date("Y-m-d",$not_patent_fee_vo['payment_date'])	:	''}
@@ -271,7 +269,6 @@
 								<th>服务费</th>
 								<th>官文日期</th>
 								<th>期限日</th>
-								<th>指示日期</th>
 								<th>缴费单号及缴费日</th>
 								<th>常用操作</th>
 								
@@ -297,7 +294,6 @@
 								<td>{$patent_fee_vo['service_fee']/100}</td>
 								<td>{$patent_fee_vo['oa_date']	?	date("Y-m-d",$patent_fee_vo['oa_date'])	:	''}</td>
 								<td>{$patent_fee_vo['due_date']	?	date("Y-m-d",$patent_fee_vo['due_date'])	:	''}</td>
-								<td>{$patent_fee_vo['allow_date']	?	date("Y-m-d",$patent_fee_vo['allow_date'])	:	''}</td>
 								<td>
 									{$patent_fee_vo['case_payment_id']	?	$patent_fee_vo['case_payment_id']	:	''}<br>
 									{$patent_fee_vo['payment_date']	?	date("Y-m-d",$patent_fee_vo['payment_date'])	:	''}

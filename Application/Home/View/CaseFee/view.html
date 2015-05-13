@@ -101,7 +101,6 @@
 								<th>服务费</th>
 								<th>官文发文日</th>								
 								<th>期限日</th>
-								<th>指示日</th>
 								<th>缴费人</th>
 								<th>缴费单号及日期</th>
 								<th>账单号</th>
@@ -123,7 +122,6 @@
 								<td>{$service_fee	=	$case_fee_vo['service_fee']	?	$case_fee_vo['service_fee']/100		:	''}</td>
 								<td>{$oa_date	=	$case_fee_vo['oa_date']	?	date("Y-m-d",$case_fee_vo['oa_date'])		:	''}</td>
 								<td>{$due_date	=	$case_fee_vo['due_date']	?	date("Y-m-d",$case_fee_vo['due_date'])		:	''}</td>
-								<td>{$allow_date	=	$case_fee_vo['allow_date']	?	date("Y-m-d",$case_fee_vo['allow_date'])		:	''}</td>
 								<td>{$case_fee_vo.payer_name}</td>
 								<td>
 									<a href="{:U('CasePayment/view','case_payment_id='.$case_fee_vo['case_payment_id'])}" target="_blank">{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	''} &nbsp;</a>
@@ -234,15 +232,7 @@
 									日期格式为 yyyy-mm-dd，可用鼠标选择
 								</div>
 							</div>
-							<div class="form-group">
-								<label for="allow_date" class="col-lg-3 control-label">客户指示同意缴费的日期</label>
-								<div class="col-lg-4">
-									<input type="date" class="form-control" id="allow_date" name="allow_date" placeholder="客户指示同意缴费的日期" value="">
-								</div>
-								<div class="col-lg-5">
-									日期格式为 yyyy-mm-dd，可用鼠标选择
-								</div>
-							</div>
+							
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">
 									<button type="reset" value="reset" class="btn btn-default"> 取消 </button>

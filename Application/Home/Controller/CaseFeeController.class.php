@@ -255,7 +255,6 @@ class CaseFeeController extends Controller {
 			$case_fee_data['service_fee']	=	100*trim(I('post.service_fee'));			
 			$case_fee_data['oa_date']	=	strtotime(trim(I('post.oa_date')));			
 			$case_fee_data['due_date']	=	strtotime(trim(I('post.due_date')));
-			$case_fee_data['allow_date']	=	strtotime(trim(I('post.allow_date')));
 			$case_fee_data['payer_id']	=	trim(I('post.payer_id'));
 			$case_fee_data['case_payment_id']	=	trim(I('post.case_payment_id'));
 			$case_fee_data['bill_id']	=	trim(I('post.bill_id'));
@@ -427,9 +426,7 @@ class CaseFeeController extends Controller {
 			if($cost_center_id){
 				$map_case_fee['cost_center_id']	=	$cost_center_id;
 			}
-			if($allow_to_pay){
-				$map_case_fee['allow_date']	=	array('GT',1);
-			}
+
 			if(1==$is_paid){
 				$map_case_fee['case_payment_id']	=	array('LT',1);
 			}
@@ -525,9 +522,7 @@ class CaseFeeController extends Controller {
 			if($cost_center_id){
 				$map_case_fee['cost_center_id']	=	$cost_center_id;
 			}
-			if($allow_to_pay){
-				$map_case_fee['allow_date']	=	array('GT',1);
-			}
+
 			if(1==$is_paid){
 				$map_case_fee['case_payment_id']	=	array('LT',1);
 			}

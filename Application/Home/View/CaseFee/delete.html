@@ -33,7 +33,6 @@
 								<th>服务费金额</th>
 								<th>官文发文日</th>	
 								<th>期限日</th>	
-								<th>客户指示日</th>	
 								<th>缴费单编号及完成日</th>									
 								<th>缴费人</th>								
 								<th>账单编号</th>
@@ -56,8 +55,6 @@
 								<td>{$case_fee_list['service_fee']/100}</td>
 								<td>{$case_fee_list['oa_date'] ? $case_fee_list['oa_date']|date="Y-m-d",### : ''}</td>
 								<td>{$case_fee_list['due_date'] ? $case_fee_list['due_date']|date="Y-m-d",### : ''}</td>
-								<td>{$case_fee_list['allow_date'] ? $case_fee_list['allow_date']|date="Y-m-d",### : ''}</td>
-								
 								<td>
 									<a href="{:U('CasePayment/view','case_payment_id='.$case_fee_list['case_payment_id'])}" target="">{$case_fee_list['case_payment_id'] ? $case_fee_list['case_payment_id'] : ''}<a><br>
 									{$case_fee_list['payment_date'] ? $case_fee_list['payment_date']|date="Y-m-d",### : ''}
