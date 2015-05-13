@@ -18,10 +18,10 @@ class CaseModel extends RelationModel {
 	
 	//定义本数据表的自动完成
 	protected $_auto = array(		
-		array('create_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
-		array('application_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
-		array('issue_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
-		array('expired_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+		array('create_date','convertToTimestamp',3,'callback') , // 将 yyyy-mm-dd 转换时间戳
+		array('application_date','convertToTimestamp',3,'callback') , // 将 yyyy-mm-dd 转换时间戳
+		array('issue_date','convertToTimestamp',3,'callback') , // 将 yyyy-mm-dd 转换时间戳
+		array('expired_date','convertToTimestamp',3,'callback') , // 将 yyyy-mm-dd 转换时间戳
 	);
 	
 	//定义本数据表的自动验证
@@ -32,6 +32,12 @@ class CaseModel extends RelationModel {
 		// array('client_id','require','必须指明客户',1), //必须验证非空
 
    );
+   
+   //空值就保留；否则就是 strtotime 
+	protected function convertToTimestamp($time_string){
+		$result	=	$time_string	?	strtotime($time_string)	:	'';
+		return $result;
+	}
    
    //基于案号 $our_ref 返回对应的 $case_id 
 	public function returnCaseId($our_ref){
