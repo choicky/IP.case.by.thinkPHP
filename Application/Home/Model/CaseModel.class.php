@@ -22,6 +22,7 @@ class CaseModel extends RelationModel {
 		array('application_date','convertToTimestamp',3,'callback') , // 将 yyyy-mm-dd 转换时间戳
 		array('issue_date','convertToTimestamp',3,'callback') , // 将 yyyy-mm-dd 转换时间戳
 		array('expired_date','convertToTimestamp',3,'callback') , // 将 yyyy-mm-dd 转换时间戳
+		array('applicant_id','checkApplicant',3,'callback') , // 将 yyyy-mm-dd 转换时间戳
 	);
 	
 	//定义本数据表的自动验证
@@ -38,6 +39,16 @@ class CaseModel extends RelationModel {
 		$result	=	$time_string	?	strtotime($time_string)	:	'';
 		return $result;
 	}
+	
+		
+	//判断申请人与客户是否相同
+	protected function checkApplicant($applicant_id){
+		$client_id	=	I('post.client_id');
+		if($applicant_id	==	"same"){
+			$applicant_id	=	$client_id;
+		}		
+		return $applicant_id;
+	}
    
    //基于案号 $our_ref 返回对应的 $case_id 
 	public function returnCaseId($our_ref){
@@ -46,6 +57,7 @@ class CaseModel extends RelationModel {
 		$case_id	=	$case_id_list['case_id'];
 		return $case_id;
 	}
+
 	
 	/* ====为了简化，暂时省掉
 	//定义本数据表的数据关联
