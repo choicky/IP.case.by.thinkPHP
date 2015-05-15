@@ -45,8 +45,8 @@
 								<td>
 									{$balance_list.deal_date|date="Y-m-d",###}
 								</td>
-								<td align="right">{$balance_list['income_amount']/100}</td>
-								<td align="right">{$balance_list['outcome_amount']/100}</td>
+								<td align="right">{$balance_list['income_amount']	?	$balance_list['income_amount']/100	:	''}</td>
+								<td align="right">{$balance_list['outcome_amount']	?	$balance_list['outcome_amount']/100	:	''}</td>
 								<td>{$balance_list.summary}</td>
 								<td>{$balance_list.other_party}</td>
 								<td>{$balance_list['Follower'].member_name}</td>

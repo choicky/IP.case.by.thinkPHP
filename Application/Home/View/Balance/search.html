@@ -101,8 +101,8 @@
 								<td>
 									{$balance_vo.deal_date|date="Y-m-d",###}
 								</td>
-								<td align="right">{$balance_vo['income_amount']/100}</td>
-								<td align="right">{$balance_vo['outcome_amount']/100}</td>
+								<td align="right">{$balance_vo['income_amount']	?	$balance_vo['income_amount']/100	:	''}</td>
+								<td align="right">{$balance_vo['outcome_amount']	?	$balance_vo['outcome_amount']/100	:	''}</td>
 								<td>{$balance_vo.summary}</td>
 								<td>{$balance_vo.other_party}</td>
 								<td>{$balance_vo['Follower'].member_name}</td>
