@@ -191,7 +191,7 @@ class BalanceController extends Controller {
 			$follower_id	=	I('post.follower_id','0','int');
 			
 			//构造 maping
-			//$map['deal_date']	=	array('between',$start_time.','.$end_time);
+			$map['deal_date']	=	array('between',$start_time.','.$end_time);
 			if($account_id){
 				$map['account_id']	=	$account_id;
 			}
