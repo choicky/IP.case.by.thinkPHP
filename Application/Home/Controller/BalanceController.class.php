@@ -191,7 +191,7 @@ class BalanceController extends Controller {
 			$follower_id	=	I('post.follower_id','0','int');
 			
 			//构造 maping
-			$map['deal_date']	=	array('between',$start_time.','.$end_time);
+			//$map['deal_date']	=	array('between',$start_time.','.$end_time);
 			if($account_id){
 				$map['account_id']	=	$account_id;
 			}
@@ -199,24 +199,25 @@ class BalanceController extends Controller {
 				$map['follower_id']	=	$follower_id;
 			}	
 			
-			//分页返回
-			$p	= I("p",1,"int");
-			$page_limit  =   C("RECORDS_PER_PAGE");
-			$balance_list = D('Balance')->where($map)->listPage($p,$page_limit);
-			$this->assign('balance_list',$balance_list['list']);
-			$this->assign('balance_page',$balance_list['page']);
+			//返回结果
+			//$p	= I("p",1,"int");
+			//$page_limit  =   C("RECORDS_PER_PAGE");
+			//$balance_list = D('Balance')->where($map)->listPage($p,$page_limit);
+			$balance_list = D('Balance')->where($map)->listAll();
+			$balance_count	=	count($balance_list);
+			$this->assign('balance_list',$balance_list);
+			$this->assign('balance_count',$balance_count);
 			
 			
 			//返回统计信息
-			$balance_list_tmp = D('Balance')->where($map)->select();
-			$balance_count	=	count($balance_list_tmp);
+			//$balance_list_tmp = D('Balance')->where($map)->select();
+			//$balance_count	=	count($balance_list_tmp);
 			$income_amount_total	=	0;
 			$outcome_amount_total	=	0;			
 			for($j=0;$j<$balance_count;$j++){
-				$income_amount_total	+=	$balance_list_tmp[$j]['income_amount']/100;
-				$outcome_amount_total	+=	$balance_list_tmp[$j]['outcome_amount']/100;
+				$income_amount_total	+=	$balance_list[$j]['income_amount']/100;
+				$outcome_amount_total	+=	$balance_list[$j]['outcome_amount']/100;
 			}
-			$this->assign('balance_count',$balance_count);
 			$this->assign('income_amount_total',$income_amount_total);
 			$this->assign('outcome_amount_total',$outcome_amount_total);
 			
