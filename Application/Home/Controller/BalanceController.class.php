@@ -225,19 +225,34 @@ class BalanceController extends Controller {
 			//$balance_list = D('Balance')->where($map)->listPage($p,$page_limit);
 			$balance_list = D('Balance')->where($map)->listAll();
 			$balance_count	=	count($balance_list);
+			
+			//判断是否完全分摊、以及统计总金额
+			$income_amount_total	=	0;
+			$outcome_amount_total	=	0;
+			for($j=0;$j<count($balance_list);$j++){
+				$balance_income_amount	=	$balance_list[$j]['income_amount'];
+				$balance_outcome_amount	=	$balance_list[$j]['outcome_amount'];
+				
+				$income_amount_total	+=	$balance_income_amount/100;
+				$outcome_amount_total	+=	$balance_outcome_amount/100;
+				
+				$claim_income_amount	=	0;
+				$claim_outcome_amount	=	0;
+				for($k=0;$k<count($balance_list[$j]['Claim']);$k++){
+					$claim_income_amount	+=	$balance_list[$j]['Claim'][$k]['income_amount'];
+					$claim_outcome_amount	+=	$balance_list[$j]['Claim'][$k]['outcome_amount'];
+				}
+				
+				if($balance_income_amount	==	$claim_income_amount	and	$balance_outcome_amount	==	$claim_outcome_amount){
+					$balance_list[$j]['claimed']	=	1;
+				}else{
+					$balance_list[$j]['claimed']	=	0;
+				}
+			}
 			$this->assign('balance_list',$balance_list);
 			$this->assign('balance_count',$balance_count);
 			
-			
-			//返回统计信息
-			//$balance_list_tmp = D('Balance')->where($map)->select();
-			//$balance_count	=	count($balance_list_tmp);
-			$income_amount_total	=	0;
-			$outcome_amount_total	=	0;			
-			for($j=0;$j<$balance_count;$j++){
-				$income_amount_total	+=	$balance_list[$j]['income_amount']/100;
-				$outcome_amount_total	+=	$balance_list[$j]['outcome_amount']/100;
-			}
+
 			$this->assign('income_amount_total',$income_amount_total);
 			$this->assign('outcome_amount_total',$outcome_amount_total);
 			
