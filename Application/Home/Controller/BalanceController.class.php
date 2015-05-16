@@ -19,6 +19,26 @@ class BalanceController extends Controller {
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
 		$balance_list = D('Balance')->listPage($p,$page_limit);
+		
+		//判断是否完全分摊
+		for($j=0;$j<count($balance_list['list']);$j++){
+			$balance_income_amount	=	$balance_list['list'][$j]['income_amount'];
+			$balance_outcome_amount	=	$balance_list['list'][$j]['outcome_amount'];
+			
+			$claim_income_amount	=	0;
+			$claim_outcome_amount	=	0;
+			for($k=0;$k<count($balance_list['list'][$j]['Claim']);$k++){
+				$claim_income_amount	+=	$balance_list['list'][$j]['Claim'][$k]['income_amount'];
+				$claim_outcome_amount	+=	$balance_list['list'][$j]['Claim'][$k]['outcome_amount'];
+			}
+			
+			if($balance_income_amount	==	$claim_income_amount	and	$balance_outcome_amount	==	$claim_outcome_amount){
+				$balance_list['list'][$j]['claimed']	=	1;
+			}else{
+				$balance_list['list'][$j]['claimed']	=	0;
+			}
+		}
+
 		$this->assign('balance_list',$balance_list['list']);
 		$this->assign('balance_page',$balance_list['page']);
 		$this->assign('balance_count',$balance_list['count']);

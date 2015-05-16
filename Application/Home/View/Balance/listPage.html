@@ -4,7 +4,7 @@
 	
 <!-- 区块 title 替换开始 --> 	
 	<block name="title">
-		<title>列表</title>
+		<title>实际收支流水列表</title>
 	</block>
 <!-- 区块 title 替换结束 --> 	
 	
@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3>列表（共{$balance_count}项）</h3>
+					<h3>实际收支流水列表，共{$balance_count} 项）</h3>
 				</div>
 			</div>
 		</div>
@@ -43,8 +43,8 @@
 								<th>跟进人员</th>
 								<th>账单编号</th>
 								<th>缴费单编号</th>
-								<th>已分摊到</th>
-								<th>已分摊金额</th>
+								<th>分摊情况</th>
+								<th>已全额分摊</th>
 								<th>常用操作</th>
 							</tr>
 						</thead>
@@ -70,37 +70,19 @@
 									<volist name="balance_vo['Claim']" id="case_payment_vo">
 										<a href="{:U('CasePayment/view','case_payment_id='.$case_payment_vo['case_payment_id'])}" target="_blank">{$case_payment_vo['case_payment_id']	?	$case_payment_vo['case_payment_id']	:	''}</a><br>										
 									</volist></td>
-								<td>
-									<?php
-										$claim_income	=	0;
-										$claim_outcome	=	0;
-									?>
+								<td align="right">
 									<volist name="balance_vo['Claim']" id="claim_vo">
-										{$claim_vo.cost_center_name}<br>
-										<?php
-											$claim_income	+=	$claim_vo['income_amount'];
-											$claim_outcome	+=	$claim_vo['outcome_amount'];
-										?>
+										{$claim_vo.cost_center_name}，{$claim_vo['income_amount']	?	$claim_vo['income_amount']/100	:	$claim_vo['outcome_amount']/100}<br>
 									</volist>
-									<a href="{:U('Claim/view','balance_id='.$balance_vo['balance_id'])}" target="_blank">详情</a>
+									<a href="{:U('Claim/view','balance_id='.$balance_vo['balance_id'])}" target="_blank">修改分摊</a>										
 								</td>
 								<td align="right">
-									{$claim_income/100	+	$claim_outcome/100}<br>
-									<?php
-										$income_bool	=	$balance_vo['income_amount']	==	$claim_income	?	1	:	0;
-										$outcome_bool	=	$balance_vo['outcome_amount']	==	$claim_outcome	?	1	:	0;	
-										if(!$income_bool or !$outcome_bool){
-											echo ('未全额分摊');
-										}else{
-											echo ('已分摊');
-										}
-									?>
-									
-									
+									{$balance_vo['claimed']	?	'Yes'	:	'否'}
 								</td>
 								<td>
 									<a href="{:U('Balance/update','balance_id='.$balance_vo['balance_id'])}" target="_blank">更新</a> <br>
 									<a href="{:U('Balance/delete','balance_id='.$balance_vo['balance_id'])}">删除</a>
+									
 								</td>
 							</tr>
 							</volist>                 
