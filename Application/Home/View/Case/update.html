@@ -111,7 +111,8 @@
 								<label for="applicant_id" class="col-lg-3 control-label">申请人</label>
 								<div class="col-lg-4">
 									<select  class="form-control" name="applicant_id">
-										<option value="" {$case_list['applicant_id']==0	? 'selected="selected"' :''}></option>
+										<option value=""}></option>
+										<option value="same" style="color:#FF0000"}>申请人与客户相同</option>
 										<volist name="client_list" id="applicant_vo">
 										<option value="{$applicant_vo.client_id}" {$applicant_vo['client_id']==$case_list['applicant_id']? 'selected="selected"' :''}>{$applicant_vo.client_name}</option>
 										</volist>
