@@ -176,8 +176,6 @@
 								<th>期限日</th>
 								<th>指示日期</th>
 								<th>缴费单号及缴费日</th>
-								<th>结算账户</th>
-								<th>结算金额</th>
 								<th>常用操作</th>
 								
 							</tr>
@@ -191,8 +189,8 @@
 								<td>
 									<a href="{:U('Case/view','case_id='.$case_fee_vo['case_id'])}" target="_blank">{$case_fee_vo['our_ref']}</a></td>								
 								<td>{$case_fee_vo['client_ref']}</td>
-								<td>{$case_file_vo['client_name']}</td>
-								<td>{$case_file_vo['applicant_name']}</td>
+								<td>{$case_fee_vo['client_name']}</td>
+								<td>{$case_fee_vo['applicant_name']}</td>
 								<td>{$case_fee_vo['formal_title']}</td>
 								<td>{$case_fee_vo['case_phase_name']}</td>
 								<td>{$case_fee_vo['application_date']	?	date("Y-m-d",$case_fee_vo['application_date'])	:	''}</td>
@@ -207,8 +205,6 @@
 									{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	''}<br>
 									{$case_fee_vo['payment_date']	?	date("Y-m-d",$case_fee_vo['payment_date'])	:	''}
 								</td>
-								<td>{$case_fee_vo['cost_center_name']}</td>
-								<td>{$case_fee_vo['cost_amount']/100}</td>
 								<td><a href="{:U('CaseFee/update','case_fee_id='.$case_fee_vo['case_fee_id'])}" target="_blank">更新</a></td>
 								</tr>
 							</volist>
