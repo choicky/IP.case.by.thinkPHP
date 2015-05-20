@@ -125,7 +125,7 @@ class InnerBalanceController extends Controller {
 		$this->display();
 	}
 	
-	//更新	
+	//快捷更新	
 	public function adjust(){
 		if(IS_POST){
 			

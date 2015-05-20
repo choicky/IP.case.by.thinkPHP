@@ -215,16 +215,52 @@ class BillController extends Controller {
 		
 		//取出交文产生的信息
 		$case_file_list	=	D('CaseFileView')->where($map)->listAll();
-		$case_file_count	=	count($case_file_list);		
+		
+		//交文费用统计信息
+		$case_file_count	=	count($case_file_list);	
+		$file_official_fee=0;
+		$file_service_fee=0;
+		for($j=0;$j<$case_file_count;$j++){
+			$file_official_fee	+=	$case_file_list[$j]['official_fee']/100;
+			$file_service_fee	+=	$case_file_list[$j]['service_fee']/100;
+		}
+		$file_total_amount	=	$file_official_fee	+	$file_service_fee;
+		
+		//传递结果
 		$this->assign('case_file_list',$case_file_list);
 		$this->assign('case_file_count',$case_file_count);
+		$this->assign('file_total_amount',$file_total_amount);
+		$this->assign('file_official_fee',$file_official_fee);
+		$this->assign('file_service_fee',$file_service_fee);
 		
 		
 		//取出交费的信息
 		$case_fee_list	=	D('CaseFeeView')->where($map)->listAll();
-		$case_fee_count	=	count($case_fee_list);		
+		
+		//交费费用统计信息
+		$case_fee_count	=	count($case_fee_list);	
+		$fee_official_fee=0;
+		$fee_service_fee=0;
+		for($j=0;$j<$case_fee_count;$j++){
+			$fee_official_fee	+=	$case_fee_list[$j]['official_fee']/100;
+			$fee_service_fee	+=	$case_fee_list[$j]['service_fee']/100;
+		}
+		$fee_total_amount	=	$fee_official_fee	+	$fee_service_fee;
+		
+		//传递结果
 		$this->assign('case_fee_list',$case_fee_list);
-		$this->assign('case_fee_count',$case_fee_count);	
+		$this->assign('case_fee_count',$case_fee_count);
+		$this->assign('fee_total_amount',$fee_total_amount);
+		$this->assign('fee_official_fee',$fee_official_fee);
+		$this->assign('fee_service_fee',$fee_service_fee);
+		
+		//汇总总费用
+		$total_amount	=	$file_total_amount	+	$fee_total_amount;
+		$total_official_fee	=	$file_official_fee	+	$fee_official_fee;
+		$total_service_fee	=	$file_service_fee	+	$fee_service_fee;
+		$this->assign('total_amount',$total_amount);
+		$this->assign('total_official_fee',$total_official_fee);
+		$this->assign('total_service_fee',$total_service_fee);
 
 		$this->display();
 	}
@@ -347,6 +383,28 @@ class BillController extends Controller {
 		} 
 	
 	$this->display();
+	}
+	
+	//快捷更新	
+	public function adjust(){
+		if(IS_POST){
+			
+			$data=array();
+			$data['bill_id']	=	trim(I('post.bill_id'));
+			$data['total_amount']	=	100*trim(I('post.total_amount',0,'int'));
+			$data['official_fee']	=	100*trim(I('post.official_fee',0,'int'));
+			$data['service_fee']	=	100*trim(I('post.service_fee',0,'int'));
+			$data['other_fee']	=	100*trim(I('post.other_fee',0,'int'));
+			
+			$data['total_amount']	=	$data['total_amount']	+	$data['other_fee'];
+
+			$result = M('Bill')->save($data);
+			if(false !== $result){
+				$this->success('修改成功', U('Bill/detail','bill_id='.$data['bill_id']));
+			}else{
+				$this->error('修改失败');
+			}
+		} 
 	}
 	
 }

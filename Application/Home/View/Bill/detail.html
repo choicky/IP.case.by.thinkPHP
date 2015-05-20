@@ -65,6 +65,28 @@
 						</tbody>
 					</table> 
 				</div>
+				
+				<form class="form-inline" method="post" action="__CONTROLLER__/adjust">
+				<!-- 隐藏域开始 -->
+				<input	type="hidden" name="bill_id" value="{$bill_list['bill_id']}"></input>
+				<input	type="hidden" name="official_fee" value="{$total_official_fee}"></input>
+				<input	type="hidden" name="service_fee" value="{$total_service_fee}"></input>
+				<!-- 隐藏域结束 -->
+				  <div class="form-group">
+					<label for="total_amount">下面详单总费用</label>
+					<input type="text" class="form-control" id="total_amount" name="total_amount" size="12" value="{$total_amount}">
+				  </div>
+				  <div class="form-group">
+					（其中官费 {$total_official_fee} ；服务费 {$total_service_fee}） 
+				  </div>
+				  <div class="form-group">
+					<label for="other_fee">其他结算费用</label>
+					<input type="text" class="form-control" id="other_fee" name="other_fee" size="12" placeholder="如无就留空">
+				  </div>
+				  
+				<button type="submit" value="submit" class="btn btn-primary">就这样，更新到账单</button>						
+			</form>
+			
 			</div>
         </div>
 		
@@ -75,16 +97,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					<?php
-						$file_official_amount=0;
-						$file_service_amount=0;
-						for($j=0;$j<count($case_file_list);$j++){
-							$file_official_amount	+=	$case_file_list[$j]['official_fee']/100;
-							$file_service_amount	+=	$case_file_list[$j]['service_fee']/100;
-						}
-						$file_total_amount	=	$file_official_amount	+	$file_service_amount;
-					?>
-					详细信息（因为交文而产生的账单详情），共{$file_total_amount}元，其中官费{$file_official_amount}，服务费{$file_service_amount}
+					详细信息（因为交文而产生的账单详情），共{$file_total_amount}元，其中官费{$file_official_fee}，服务费{$file_service_fee}
 				</div>
 
 				<!-- Table -->
@@ -142,16 +155,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					<?php
-						$fee_official_amount=0;
-						$fee_service_amount=0;
-						for($j=0;$j<count($case_fee_list);$j++){
-							$fee_official_amount	+=	$case_fee_list[$j]['official_fee']/100;
-							$fee_service_amount	+=	$case_fee_list[$j]['service_fee']/100;
-						}
-						$fee_total_amount	=	$fee_official_amount	+	$fee_service_amount;
-					?>
-					详细信息（因为交费而产生的账单详情），共{$fee_total_amount}元，其中官费{$fee_official_amount}，服务费{$fee_service_amount}
+					详细信息（因为交费而产生的账单详情），共{$fee_total_amount}元，其中官费{$fee_official_fee}，服务费{$fee_service_fee}
 				</div>
 
 				<!-- Table -->
@@ -212,6 +216,25 @@
 					</table> 
 				</div>
 			</div>
+							<form class="form-inline" method="post" action="__CONTROLLER__/adjust">
+				<!-- 隐藏域开始 -->
+				<input	type="hidden" name="bill_id" value="{$bill_list['bill_id']}"></input>
+				<!-- 隐藏域结束 -->
+				  <div class="form-group">
+					<label for="outcome_amount">下面详单总官费</label>
+					<input type="text" class="form-control" id="official_fee" name="official_fee" size="6" value="{$file_official_amount	+	$fee_official_amount}">
+				  </div>
+				  <div class="form-group">
+					<label for="other_outcome">其他结算费用</label>
+					<input type="text" class="form-control" id="other_outcome" name="other_outcome" size="25" placeholder="其他结算费用，如无就填0">
+				  </div>
+				  <div class="form-group">
+					<label for="income_amount">其他结算收入</label>
+					<input type="text" class="form-control" id="income_amount" name="income_amount" size="25" placeholder="其他结算收入，如无就填0">
+				  </div>
+				  
+				<button type="submit" value="submit" class="btn btn-primary">就这样，更新到顶部的结算单</button>						
+			</form>
         </div>
 
 	</block>
