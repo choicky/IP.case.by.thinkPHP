@@ -72,7 +72,7 @@ class CaseViewModel extends ViewModel {
 		'Handler'	=>	array(
 			'member_name'	=>	'handler_name',	//重新定义名称
 			'_table'=>"__MEMBER__",	//定义数据表
-			'_on'	=>	'Handler.member_id=CaseInfo.follower_id',
+			'_on'	=>	'Handler.member_id=CaseInfo.handler_id',
 			'_type'=>'LEFT'			//定义join类型
 		),
 		
