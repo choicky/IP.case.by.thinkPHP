@@ -113,6 +113,12 @@ class CaseFeeViewModel extends ViewModel {
 			'_type'=>'LEFT',
 			'_on'	=>	'CaseType.case_type_id=CaseInfo.case_type_id'
 		),
+		
+		'Bill'	=>	array(
+			'bill_date',
+			'_type'=>'LEFT',
+			'_on'	=>	'Bill.bill_id=CaseFee.bill_id'
+		),
 	);
 	
 	//返回本数据视图的所有数据
