@@ -350,6 +350,24 @@ class CaseFeeController extends Controller {
 			if(1==$yes_btn){
 				
 				$map['case_fee_id']	=	$case_fee_id;
+				
+				//获取基本信息
+				$case_fee_list	=	M('CaseFee')->getByCaseFeeId($map['case_fee_id']);
+				
+				//判断
+				if($case_fee_list['case_payment_id']	>	0){
+					$this->error('本费用已关联到缴费单，不可删除', U('Case/view','case_id='.$case_id));
+				}
+				if($case_fee_list['bill_id']	>	0){
+					$this->error('本费用已关联到账单，不可删除', U('Case/view','case_id='.$case_id));
+				}				
+				if($case_fee_list['invoice_id']	>	0){
+					$this->error('本费用已关联到发票，不可删除', U('Case/view','case_id='.$case_id));
+				}
+				if($case_fee_list['claim_id']	>	0){
+					$this->error('本费用已关联到收支认领单，不可删除', U('Case/view','case_id='.$case_id));
+				}
+
 
 				$result = M('CaseFee')->where($map)->delete();
 				if($result){
