@@ -234,7 +234,8 @@
 									<a href="{:U('CasePayment/view','case_payment_id='.$case_fee_vo['case_payment_id'])}" target="_blank">{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	''} &nbsp;</a>
 									{$case_fee_vo['payment_date']	?	date("Y-m-d",$case_fee_vo['payment_date'])	:	''}</td>
 								<td>
-									<a href="{:U('Bill/view','bill_id='.$case_fee_vo['bill_id'])}" target="_blank">{$case_fee_vo['bill_id']	?	$case_fee_vo['bill_id']	:	''}</a></td>
+									<a href="{:U('Bill/view','bill_id='.$case_fee_vo['bill_id'])}" target="_blank">{$case_fee_vo['bill_id']	?	$case_fee_vo['bill_id']	:	''}</a>
+									{$case_fee_vo['bill_date']	?	date("Y-m-d",$case_fee_vo['bill_date'])	:	''}</td>
 								<td>
 									<a href="{:U('Invoice/view','invoice_id='.$case_fee_vo['invoice_id'])}" target="_blank">{$case_fee_vo['invoice_id']	?	$case_fee_vo['invoice_id']	:	''}</a></td>
 								<td>
