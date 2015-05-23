@@ -171,13 +171,13 @@
 								
 								<td>{$case_application_number_vo['handler_name']}</td>
 								
-								<td>{$case_our_ref_vo['application_date'] ? $case_our_ref_vo['application_date']|date="Y-m-d",### : ''}</td>
+								<td>{$case_application_number_vo['application_date'] ? $case_application_number_vo['application_date']|date="Y-m-d",### : ''}</td>
 								<td><a href="__CONTROLLER__/view/case_id/{$case_application_number_vo.case_id}">{$case_application_number_vo.application_number}</a></td>
 								
 								<td>
 									{$case_application_number_vo['formal_title'] ? $case_application_number_vo['formal_title'] : $case_application_number_vo['TmCategory']['tm_category_number']}
 								</td>
-								<td>{$case_our_ref_vo.remarks}</td>
+								<td>{$case_application_number_vo.remarks}</td>
 								<td>
 									<a href="__APP__/Home/CaseFile/view/case_id/{$case_application_number_vo.case_id}">交文管理</a>
 									<a href="__APP__/Home/CaseFee/view/case_id/{$case_application_number_vo.case_id}"><br>交费管理</a>
@@ -263,13 +263,13 @@
 								
 								<td>{$case_client_ref_vo['handler_name']}</td>
 								
-								<td>{$case_our_ref_vo['application_date'] ? $case_our_ref_vo['application_date']|date="Y-m-d",### : ''}</td>
+								<td>{$case_client_ref_vo['application_date'] ? $case_client_ref_vo['application_date']|date="Y-m-d",### : ''}</td>
 								<td>{$case_client_ref_vo.application_number}</td>
 								
 								<td>
 									{$case_client_ref_vo['formal_title'] ? $case_client_ref_vo['formal_title'] : $case_client_ref_vo['TmCategory']['tm_category_number']}
 								</td>
-								<td>{$case_our_ref_vo.remarks}</td>
+								<td>{$case_client_ref_vo.remarks}</td>
 								<td>
 									<a href="__APP__/Home/CaseFile/view/case_id/{$case_client_ref_vo.case_id}">交文管理</a>
 									<a href="__APP__/Home/CaseFee/view/case_id/{$case_client_ref_vo.case_id}"><br>交费管理</a>
