@@ -123,8 +123,21 @@ class CasePaymentController extends Controller {
 		//取出 CaseFee 的信息
 		$case_fee_list = D('CaseFeeView')->field(true)->where($map)->listAll();	
 		$case_fee_count	=	count($case_fee_list);		
+
+		//统计信息
+		$service_fee_total	=0;
+		$official_fee_total	=0;
+		for($j=0;$j<$case_fee_count;$j++){
+			$service_fee_total	+=	$case_fee_list[$j]['service_fee']/100;
+			$official_fee_total	+=	$case_fee_list[$j]['official_fee']/100;
+		}
+		$fee_total	=	$service_fee_total	+	$official_fee_total;
+		
 		$this->assign('case_fee_list',$case_fee_list);
-		$this->assign('case_fee_count',$case_fee_count);		
+		$this->assign('case_fee_count',$case_fee_count);
+		$this->assign('service_fee_total',$service_fee_total);
+		$this->assign('official_fee_total',$official_fee_total);
+		$this->assign('fee_total',$fee_total);
 
 		$this->display();
 	}

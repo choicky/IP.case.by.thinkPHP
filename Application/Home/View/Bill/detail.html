@@ -216,25 +216,6 @@
 					</table> 
 				</div>
 			</div>
-							<form class="form-inline" method="post" action="__CONTROLLER__/adjust">
-				<!-- 隐藏域开始 -->
-				<input	type="hidden" name="bill_id" value="{$bill_list['bill_id']}"></input>
-				<!-- 隐藏域结束 -->
-				  <div class="form-group">
-					<label for="outcome_amount">下面详单总官费</label>
-					<input type="text" class="form-control" id="official_fee" name="official_fee" size="6" value="{$file_official_amount	+	$fee_official_amount}">
-				  </div>
-				  <div class="form-group">
-					<label for="other_outcome">其他结算费用</label>
-					<input type="text" class="form-control" id="other_outcome" name="other_outcome" size="25" placeholder="其他结算费用，如无就填0">
-				  </div>
-				  <div class="form-group">
-					<label for="income_amount">其他结算收入</label>
-					<input type="text" class="form-control" id="income_amount" name="income_amount" size="25" placeholder="其他结算收入，如无就填0">
-				  </div>
-				  
-				<button type="submit" value="submit" class="btn btn-primary">就这样，更新到顶部的结算单</button>						
-			</form>
         </div>
 
 	</block>

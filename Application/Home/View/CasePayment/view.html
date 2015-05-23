@@ -64,6 +64,22 @@
 					</table> 
 					
 				</div>
+				
+				<form class="form-inline" method="post" action="__CONTROLLER__/adjust">
+					<!-- 隐藏域开始 -->
+					<input	type="hidden" name="case_payment_id" value="{$case_payment_list.case_payment_id}"></input>
+					<!-- 隐藏域结束 -->
+					  <div class="form-group">
+						<label for="official_fee">下面详单的结算总官费</label>
+						<input type="text" class="form-control" id="official_fee" name="official_fee" size="6" value="{$official_fee_total}">
+					  </div>
+					  <div class="form-group">
+						<label for="other_fee">&nbsp;&nbsp;&nbsp;杂费金额</label>
+						<input type="text" class="form-control" id="other_fee" name="other_fee" size="25" placeholder="如无就留空或填0">
+					  </div>				  
+					<button type="submit" value="submit" class="btn btn-primary">就这样，更新到顶部的结算单</button>						
+				</form>
+				
 			</div>
         </div>
 		
@@ -74,17 +90,7 @@
 			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					<?php
-						$service_fee_total	=0;
-						$official_fee_total	=0;
-						for($j=0;$j<count($case_fee_list);$j++){
-							$service_fee_total	+=	$case_fee_list[$j]['service_fee'];
-							$official_fee_total	+=	$case_fee_list[$j]['official_fee'];
-						}
-						$service_fee_total	=	$service_fee_total/100;
-						$official_fee_total	=	$official_fee_total/100;
-						$fee_total	=	$service_fee_total	+	$official_fee_total;
-					?>
+
 					费用信息，共{$case_fee_count}项，总费用{$fee_total}元，其中官费{$official_fee_total}元，服务费{$service_fee_total}元。
 				</div>
 			
@@ -149,23 +155,7 @@
 						</tbody>
 					</table> 
 				</div>
-			</div>
-			
-			<form class="form-inline" method="post" action="__CONTROLLER__/adjust">
-				<!-- 隐藏域开始 -->
-				<input	type="hidden" name="case_payment_id" value="{$case_payment_list.case_payment_id}"></input>
-				<!-- 隐藏域结束 -->
-				  <div class="form-group">
-					<label for="official_fee">上面详单的结算总官费</label>
-					<input type="text" class="form-control" id="official_fee" name="official_fee" size="6" value="{$official_fee_total}">
-				  </div>
-				  <div class="form-group">
-					<label for="other_fee">&nbsp;&nbsp;&nbsp;杂费金额</label>
-					<input type="text" class="form-control" id="other_fee" name="other_fee" size="25" placeholder="杂费金额；如无杂费就填0">
-				  </div>				  
-				<button type="submit" value="submit" class="btn btn-primary">就这样，更新到顶部的结算单</button>						
-			</form>
-			
+			</div>		
         </div>
 	  
 	  
