@@ -105,12 +105,18 @@ class BalanceController extends Controller {
 			
 			$balance_id	=	I('post.balance_id',0,'int');
 			
-			$income_amount	=	I('post.income_amount',0,'int');
-			$outcome_amount	=	I('post.outcome_amount',0,'int');
+			$income_amount	=	I('post.income_amount');
+			$outcome_amount	=	I('post.outcome_amount');
 			
 			if(!$balance_id){
 				$this->error('未指明要编辑的收支流水编号');
 			}
+			var_dump($balance_id);
+			var_dump($income_amount);
+			var_dump($outcome_amount);
+			
+			var_dump(!$income_amount);
+			var_dump(!$outcome_amount);
 			
 			if(!$income_amount and !$outcome_amount){
 				$this->error('未填写金额');
