@@ -29,7 +29,14 @@ class CasePaymentViewModel extends ViewModel {
 		
 		'Payer'	=>	array(
 			'payer_name',
+			'_type'=>'LEFT',
 			'_on'	=>	'Payer.payer_id=CasePayment.payer_id'
+		),
+		
+		'Balance'	=>	array(
+			'balance_id',
+			'deal_date',
+			'_on'	=>	'Balance.case_payment_id=CasePayment.case_payment_id'
 		),
 	);
 	

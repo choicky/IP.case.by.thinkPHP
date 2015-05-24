@@ -18,24 +18,33 @@ class BalanceController extends Controller {
 	public function listPage(){
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
-		$balance_list = D('Balance')->listPage($p,$page_limit);
+		$balance_list = D('BalanceView')->listPage($p,$page_limit);
 		
-		//判断是否完全分摊
 		for($j=0;$j<count($balance_list['list']);$j++){
+			//取出 Claim 信息
+			$balance_id	=	$balance_list['list'][$j]['balance_id'];
+			$map_claim['balance_id']	=	$balance_id;
+			$claim_list	=	D('ClaimView')->field(true)->where($map_claim)->listAll();
+			
+			//将 Claim 结果加入到 $balance_list
+			$balance_list['list'][$j]['Claim']	=	$claim_list;
+			
+			//判断是否完全分摊、以及统计总金额
 			$balance_income_amount	=	$balance_list['list'][$j]['income_amount'];
 			$balance_outcome_amount	=	$balance_list['list'][$j]['outcome_amount'];
 			
 			$claim_income_amount	=	0;
 			$claim_outcome_amount	=	0;
-			for($k=0;$k<count($balance_list['list'][$j]['Claim']);$k++){
-				$claim_income_amount	+=	$balance_list['list'][$j]['Claim'][$k]['income_amount'];
-				$claim_outcome_amount	+=	$balance_list['list'][$j]['Claim'][$k]['outcome_amount'];
+			for($k=0;$k<count($claim_list);$k++){
+				$claim_income_amount	+=	$claim_list[$k]['income_amount'];
+				$claim_outcome_amount	+=	$claim_list[$k]['outcome_amount'];
 			}
 			
+			//将统计结果加入到 $balance_list			
 			if($balance_income_amount	==	$claim_income_amount	and	$balance_outcome_amount	==	$claim_outcome_amount){
-				$balance_list['list'][$j]['claimed']	=	1;
+				$balance_list['list'][$j]['is_claimed']	=	1;
 			}else{
-				$balance_list['list'][$j]['claimed']	=	0;
+				$balance_list['list'][$j]['is_claimed']	=	0;
 			}
 		}
 
@@ -66,26 +75,25 @@ class BalanceController extends Controller {
 	
 	//新增
 	public function add(){
-		$data	=	array();
-		$data['account_id']	=	trim(I('post.account_id'));
-		$data['deal_date']	=	trim(I('post.deal_date'));
-		$data['deal_date']	=	strtotime($data['deal_date']);
-		$data['income_amount']	=	trim(I('post.income_amount'));
-		$data['income_amount']	=	$data['income_amount']*100;
-		$data['outcome_amount']	=	trim(I('post.outcome_amount'));
-		$data['outcome_amount']	=	$data['outcome_amount']*100;
-		$data['summary']	=	trim(I('post.summary'));
-		$data['other_party']	=	trim(I('post.other_party'));
-		$data['follower_id']	=	trim(I('post.follower_id'));
-
-		if(!$data['account_id']){
-			$this->error('未填写账户名称');
-		} 
-
-		$result = M('Balance')->add($data);
+		$income_amount	=	I('post.income_amount',0,'int');
+		$outcome_amount	=	I('post.outcome_amount',0,'int');
 		
+		if(!$income_amount and !$outcome_amount){
+			$this->error('未填写金额');
+		}
+
+		$Model	=	D('Balance');
+		if (!$Model->create()){ // 创建数据对象
+			 // 如果创建失败 表示验证没有通过 输出错误提示信息
+			 $this->error($Model->getError());
+			 //exit($Model->getError());
+		}else{
+			 // 验证通过 写入新增数据
+			 $result	=	$Model->add();		 
+		}
+
 		if(false !== $result){
-			$this->success('新增成功', 'listAll');
+			$this->success('新增成功', U('Balance/listPage'));
 		}else{
 			$this->error('增加失败');
 		}
@@ -95,30 +103,40 @@ class BalanceController extends Controller {
 	public function update(){
 		if(IS_POST){
 			
-			$data=array();
-			$data['balance_id']	=	trim(I('post.balance_id'));
-			$data['account_id']	=	trim(I('post.account_id'));
-			$data['deal_date']	=	trim(I('post.deal_date'));
-			$data['deal_date']	=	strtotime($data['deal_date']);
-			$data['income_amount']	=	trim(I('post.income_amount'));
-			$data['income_amount']	=	$data['income_amount']*100;
-			$data['outcome_amount']	=	trim(I('post.outcome_amount'));
-			$data['outcome_amount']	=	$data['outcome_amount']*100;
-			$data['summary']	=	trim(I('post.summary'));
-			$data['other_party']	=	trim(I('post.other_party'));
-			$data['follower_id']	=	trim(I('post.follower_id'));
-
-			$result = D('Balance')->save($data);
-			if(false !== $result){
-				$this->success('修改成功', U('Claim/view','balance_id='.$data['balance_id']));
-			}else{
-				$this->error('修改失败', U('Claim/view','balance_id='.$data['balance_id']));
+			$balance_id	=	I('post.balance_id',0,'int');
+			
+			$income_amount	=	I('post.income_amount',0,'int');
+			$outcome_amount	=	I('post.outcome_amount',0,'int');
+			
+			if(!$balance_id){
+				$this->error('未指明要编辑的收支流水编号');
 			}
+			
+			if(!$income_amount and !$outcome_amount){
+				$this->error('未填写金额');
+			}
+
+			$Model	=	D('Balance');
+			if (!$Model->create()){ // 创建数据对象
+				 // 如果创建失败 表示验证没有通过 输出错误提示信息
+				 $this->error($Model->getError());
+				 //exit($Model->getError());
+			}else{
+				 // 验证通过 写入新增数据
+				 $result	=	$Model->save();		 
+			}
+
+			if(false !== $result){
+				$this->success('修改成功', U('Claim/view','balance_id='.$balance_id));
+			}else{
+				$this->error('修改失败', U('Claim/view','balance_id='.$balance_id));
+			}
+			
 		} else{
 			$balance_id = I('get.balance_id',0,'int');
 
 			if(!$balance_id){
-				$this->error('未指明要编辑的账户');
+				$this->error('未指明要编辑的收支流水编号');
 			}
 
 			$balance_list = M('Balance')->getByBalanceId($balance_id);			
@@ -158,7 +176,17 @@ class BalanceController extends Controller {
 			}
 			
 			if(1==$yes_btn){
-				$map['balance_id']	=	$balance_id;
+				$balance_list	=	M('Balance')->field(true)->getByBalanceId($balance_id);
+				
+				//判断关联性
+				if($balance_list['bill_id']	>	0){
+					$this->error('本收支流水已关联到账单，解除关联后才能删除');
+				}
+				if($balance_list['case_payment_id']	>	0){
+					$this->error('本收支流水已关联缴费单，解除关联后才能删除');
+				}
+				
+				$map['balance_id']	=	$balance_id;				
 				$condition	=	M('Claim')->where($map)->find();
 				if(is_array($condition)){
 					$this->error('本收支流水已结算，不可删除，只能修改');
@@ -177,7 +205,34 @@ class BalanceController extends Controller {
 				$this->error('未指明要删除的流水');
 			}
 
-			$balance_list = D('Balance')->relation(true)->field(true)->getByBalanceId($balance_id);			
+			$balance_list = D('BalanceView')->field(true)->getByBalanceId($balance_id);
+
+			//取出 Claim 信息
+			$balance_id	=	$balance_list['balance_id'];
+			$map_claim['balance_id']	=	$balance_id;
+			$claim_list	=	D('ClaimView')->field(true)->where($map_claim)->listAll();
+			
+			//将 Claim 结果加入到 $balance_list
+			$balance_list['Claim']	=	$claim_list;
+			
+			//判断是否完全分摊、以及统计总金额
+			$balance_income_amount	=	$balance_list['income_amount'];
+			$balance_outcome_amount	=	$balance_list['outcome_amount'];
+			
+			$claim_income_amount	=	0;
+			$claim_outcome_amount	=	0;
+			for($k=0;$k<count($claim_list);$k++){
+				$claim_income_amount	+=	$claim_list[$k]['income_amount'];
+				$claim_outcome_amount	+=	$claim_list[$k]['outcome_amount'];
+			}
+			
+			//将统计结果加入到 $balance_list			
+			if($balance_income_amount	==	$claim_income_amount	and	$balance_outcome_amount	==	$claim_outcome_amount){
+				$balance_list['is_claimed']	=	1;
+			}else{
+				$balance_list['is_claimed']	=	0;
+			}
+			
 			$this->assign('balance_list',$balance_list);
 
 			$this->display();
@@ -204,10 +259,10 @@ class BalanceController extends Controller {
 			
 			//接收搜索参数
 			$account_id	=	I('post.account_id','0','int');
-			$start_time	=	trim(I('post.start_time'));
-			$start_time	=	$start_time	?	strtotime($start_time)	:	strtotime('-1 month');
 			$end_time	=	trim(I('post.end_time'));
 			$end_time	=	$end_time	?	strtotime($end_time)	:	time();
+			$start_time	=	trim(I('post.start_time'));
+			$start_time	=	$start_time	?	strtotime($start_time)	:	strtotime("-1 month",$end_time);			
 			$follower_id	=	I('post.follower_id','0','int');
 			
 			//构造 maping
@@ -223,32 +278,38 @@ class BalanceController extends Controller {
 			//$p	= I("p",1,"int");
 			//$page_limit  =   C("RECORDS_PER_PAGE");
 			//$balance_list = D('Balance')->where($map)->listPage($p,$page_limit);
-			$balance_list = D('Balance')->where($map)->listAll();
+			$balance_list = D('BalanceView')->where($map)->listAll();
 			$balance_count	=	count($balance_list);
 			
 			//判断是否完全分摊、以及统计总金额
-			$income_amount_total	=	0;
-			$outcome_amount_total	=	0;
-			for($j=0;$j<count($balance_list);$j++){
+			for($j=0;$j<$balance_count;$j++){
+				//取出 Claim 信息
+				$balance_id	=	$balance_list[$j]['balance_id'];
+				$map_claim['balance_id']	=	$balance_id;
+				$claim_list	=	D('ClaimView')->field(true)->where($map_claim)->listAll();
+				
+				//将 Claim 结果加入到 $balance_list
+				$balance_list[$j]['Claim']	=	$claim_list;
+				
+				//判断是否完全分摊、以及统计总金额
 				$balance_income_amount	=	$balance_list[$j]['income_amount'];
 				$balance_outcome_amount	=	$balance_list[$j]['outcome_amount'];
 				
-				$income_amount_total	+=	$balance_income_amount/100;
-				$outcome_amount_total	+=	$balance_outcome_amount/100;
-				
 				$claim_income_amount	=	0;
 				$claim_outcome_amount	=	0;
-				for($k=0;$k<count($balance_list[$j]['Claim']);$k++){
-					$claim_income_amount	+=	$balance_list[$j]['Claim'][$k]['income_amount'];
-					$claim_outcome_amount	+=	$balance_list[$j]['Claim'][$k]['outcome_amount'];
+				for($k=0;$k<count($claim_list);$k++){
+					$claim_income_amount	+=	$claim_list[$k]['income_amount'];
+					$claim_outcome_amount	+=	$claim_list[$k]['outcome_amount'];
 				}
 				
+				//将统计结果加入到 $balance_list			
 				if($balance_income_amount	==	$claim_income_amount	and	$balance_outcome_amount	==	$claim_outcome_amount){
-					$balance_list[$j]['claimed']	=	1;
+					$balance_list[$j]['is_claimed']	=	1;
 				}else{
-					$balance_list[$j]['claimed']	=	0;
+					$balance_list[$j]['is_claimed']	=	0;
 				}
 			}
+			
 			$this->assign('balance_list',$balance_list);
 			$this->assign('balance_count',$balance_count);
 			

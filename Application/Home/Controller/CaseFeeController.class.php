@@ -368,7 +368,6 @@ class CaseFeeController extends Controller {
 					$this->error('本费用已关联到收支认领单，不可删除', U('Case/view','case_id='.$case_id));
 				}
 
-
 				$result = M('CaseFee')->where($map)->delete();
 				if($result){
 					$this->success('删除成功', U('Case/view','case_id='.$case_id));
@@ -390,7 +389,7 @@ class CaseFeeController extends Controller {
 	}
 	
 	//搜索专利费用
-	public function searchPatentFee(){
+	public function searchPatentFeeByDueDate(){
 		
 		//取出 Client 表的内容以及数量
 		$client_list	=	D('Client')->listBasic();
@@ -408,9 +407,9 @@ class CaseFeeController extends Controller {
 		$cost_center_list	=	D('CostCenter')->listBasic();
 		$this->assign('cost_center_list',$cost_center_list);
 		
-		//默认查询未来1个月期限
-		$start_due_date	=	"";
-		$end_due_date	=	strtotime('+1 month');
+		//默认查询前3个月、未来3个月期限
+		$start_due_date	=	strtotime('-3 month');;
+		$end_due_date	=	strtotime('+3 month');
 		$this->assign('start_due_date',$start_due_date);
 		$this->assign('end_due_date',$end_due_date);
 		
@@ -421,14 +420,14 @@ class CaseFeeController extends Controller {
 			$applicant_id	=	I('post.applicant_id','0','int');
 			$follower_id	=	I('post.follower_id','0','int');
 			$cost_center_id	=	I('post.cost_center_id','0','int');	
-			$allow_to_pay	=	I('post.allow_to_pay','0','int');
+			$is_billed	=	I('post.is_billed','0','int');
 			$is_paid	=	I('post.is_paid','0','int');
 			$case_phase_id	=	I('post.case_phase_id','0','int');
 			
-			$start_due_date	=	trim(I('post.start_due_date'));
-			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : "";			
 			$end_due_date	=	trim(I('post.end_due_date'));
-			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+1 month');
+			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+3 month',time());
+			$start_due_date	=	trim(I('post.start_due_date'));
+			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : strtotime('-6 month',$end_due_date);			
 			
 			//构造 maping
 			if($client_id){
@@ -446,10 +445,10 @@ class CaseFeeController extends Controller {
 			}
 
 			if(1==$is_paid){
-				$map_case_fee['case_payment_id']	=	array('LT',1);
+				$map_case_fee['case_payment_id']	=	array('GT',1);
 			}
 			if(2==$is_paid){
-				$map_case_fee['case_payment_id']	=	array('GT',1);
+				$map_case_fee['case_payment_id']	=	array('LT',1);
 			}
 			if($case_phase_id){
 				$map_case_fee['case_phase_id']	=	$case_phase_id;
@@ -460,21 +459,43 @@ class CaseFeeController extends Controller {
 			$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
 			$map_case_fee['case_type_id']  = array('in',$case_type_list);
 			
+			//根据是否开了账单进行处理
+			//不限是否开了账单
+			if(0==$is_billed){
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}			
+			//开了账单
+			if(1==$is_billed){
+				$map_case_fee['bill_id']  = array('GT',0);
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}
+			//未开账单
+			if(2==$is_billed){
+				$map_case_fee['bill_id']  = array('LT',1);
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}
 			
-			//分页显示搜索结果
-			$p	= I("p",1,"int");
-			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_fee_list = D('CaseFeeView')->listPageSearch($p,$page_limit,$map_case_fee);
-			$this->assign('case_fee_list',$case_fee_list['list']);
-			$this->assign('case_fee_page',$case_fee_list['page']);
-			$this->assign('case_fee_count',$case_fee_list['count']);
+			//返回搜索结果
+			$case_fee_count	=	count($case_fee_list);
+			$this->assign('case_fee_list',$case_fee_list);
+			$this->assign('case_fee_count',$case_fee_count);
+			
+			//返回统计结果
+			$total_official_fee	=	0;
+			$total_service_fee	=	0;
+			for($j=0;$j<$case_fee_count;$j++){
+				$total_official_fee	+=	$case_fee_list[$j]['official_fee'];
+				$total_service_fee	+=	$case_fee_list[$j]['service_fee'];
+			}
+			$this->assign('total_official_fee',$total_official_fee);
+			$this->assign('total_service_fee',$total_service_fee);			
 			
 			//返回所接受的检索条件
 			$this->assign('client_id',$client_id);
 			$this->assign('applicant_id',$applicant_id);
 			$this->assign('follower_id',$follower_id);
 			$this->assign('cost_center_id',$cost_center_id);
-			$this->assign('allow_to_pay',$allow_to_pay);
+			$this->assign('is_billed',$is_billed);
 			$this->assign('is_paid',$is_paid);
 			$this->assign('case_phase_id',$case_phase_id);
 			$this->assign('start_due_date',$start_due_date);
@@ -486,7 +507,7 @@ class CaseFeeController extends Controller {
 	}
 	
 	//搜索非专利费用
-	public function searchNotPatentFee(){
+	public function searchNotPatentFeeByDueDate(){
 		
 		//取出 Client 表的内容以及数量
 		$client_list	=	D('Client')->listBasic();
@@ -504,9 +525,9 @@ class CaseFeeController extends Controller {
 		$cost_center_list	=	D('CostCenter')->listBasic();
 		$this->assign('cost_center_list',$cost_center_list);
 		
-		//默认查询未来1个月期限
-		$start_due_date	=	"";
-		$end_due_date	=	strtotime('+1 month');
+		//默认查询前3个月、未来3个月期限
+		$start_due_date	=	strtotime('-3 month');;
+		$end_due_date	=	strtotime('+3 month');
 		$this->assign('start_due_date',$start_due_date);
 		$this->assign('end_due_date',$end_due_date);
 		
@@ -517,14 +538,14 @@ class CaseFeeController extends Controller {
 			$applicant_id	=	I('post.applicant_id','0','int');
 			$follower_id	=	I('post.follower_id','0','int');
 			$cost_center_id	=	I('post.cost_center_id','0','int');	
-			$allow_to_pay	=	I('post.allow_to_pay','0','int');
+			$is_billed	=	I('post.is_billed','0','int');
 			$is_paid	=	I('post.is_paid','0','int');
 			$case_phase_id	=	I('post.case_phase_id','0','int');
 			
-			$start_due_date	=	trim(I('post.start_due_date'));
-			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : "";			
 			$end_due_date	=	trim(I('post.end_due_date'));
-			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+1 month');
+			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+3 month',time());
+			$start_due_date	=	trim(I('post.start_due_date'));
+			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : strtotime('-6 month',$end_due_date);	
 			
 			//构造 maping
 			if($client_id){
@@ -542,35 +563,57 @@ class CaseFeeController extends Controller {
 			}
 
 			if(1==$is_paid){
-				$map_case_fee['case_payment_id']	=	array('LT',1);
+				$map_case_fee['case_payment_id']	=	array('GT',1);
 			}
 			if(2==$is_paid){
-				$map_case_fee['case_payment_id']	=	array('GT',1);
+				$map_case_fee['case_payment_id']	=	array('LT',1);
 			}
 			if($case_phase_id){
 				$map_case_fee['case_phase_id']	=	$case_phase_id;
 			}
 			$map_case_fee['due_date']	=	array('between',$start_due_date.','.$end_due_date);
 			
-			//获取专利的 case_type_id 集合
+			//获取非专利的 case_type_id 集合
 			$case_type_list	=	D('CaseType')->listNotPatentCaseTypeId();
 			$map_case_fee['case_type_id']  = array('in',$case_type_list);
 			
+			//根据是否开了账单进行处理
+			//不限是否开了账单
+			if(0==$is_billed){
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}			
+			//开了账单
+			if(1==$is_billed){
+				$map_case_fee['bill_id']  = array('GT',0);
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}
+			//未开账单
+			if(2==$is_billed){
+				$map_case_fee['bill_id']  = array('LT',1);
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}
 			
-			//分页显示搜索结果
-			$p	= I("p",1,"int");
-			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_fee_list = D('CaseFeeView')->listPageSearch($p,$page_limit,$map_case_fee);
-			$this->assign('case_fee_list',$case_fee_list['list']);
-			$this->assign('case_fee_page',$case_fee_list['page']);
-			$this->assign('case_fee_count',$case_fee_list['count']);
+			//返回搜索结果
+			$case_fee_count	=	count($case_fee_list);
+			$this->assign('case_fee_list',$case_fee_list);
+			$this->assign('case_fee_count',$case_fee_count);
+			
+			//返回统计结果
+			$total_official_fee	=	0;
+			$total_service_fee	=	0;
+			for($j=0;$j<$case_fee_count;$j++){
+				$total_official_fee	+=	$case_fee_list[$j]['official_fee'];
+				$total_service_fee	+=	$case_fee_list[$j]['service_fee'];
+			}
+			$this->assign('total_official_fee',$total_official_fee);
+			$this->assign('total_service_fee',$total_service_fee);			
 			
 			//返回所接受的检索条件
 			$this->assign('client_id',$client_id);
 			$this->assign('applicant_id',$applicant_id);
 			$this->assign('follower_id',$follower_id);
 			$this->assign('cost_center_id',$cost_center_id);
-			$this->assign('allow_to_pay',$allow_to_pay);
+			$this->assign('is_billed',$is_billed);
 			$this->assign('is_paid',$is_paid);
 			$this->assign('case_phase_id',$case_phase_id);
 			$this->assign('start_due_date',$start_due_date);
@@ -582,7 +625,7 @@ class CaseFeeController extends Controller {
 	}
 	
 	//搜索专利费用
-	public function searchPatentFeeList(){
+	public function searchPatentFeeByCompletionDate(){
 		
 		//取出 Client 表的内容以及数量
 		$client_list	=	D('Client')->listBasic();
@@ -614,11 +657,11 @@ class CaseFeeController extends Controller {
 			$follower_id	=	I('post.follower_id','0','int');
 			$cost_center_id	=	I('post.cost_center_id','0','int');	
 			$case_phase_id	=	I('post.case_phase_id','0','int');
-			
-			$start_payment_date	=	trim(I('post.start_payment_date'));
-			$start_payment_date	=	$start_payment_date ? strtotime($start_payment_date) : time();			
+			$is_billed	=	I('post.is_billed','0','int');
 			$end_payment_date	=	trim(I('post.end_payment_date'));
-			$end_payment_date	=	$end_payment_date ? strtotime($end_payment_date) : strtotime('+1 month');
+			$end_payment_date	=	$end_payment_date ? strtotime($end_payment_date) : time();			
+			$start_payment_date	=	trim(I('post.start_payment_date'));
+			$start_payment_date	=	$start_payment_date ? strtotime($start_payment_date) : strtotime('-1 month',$end_payment_date);
 			
 			//构造 maping
 			if($client_id){
@@ -643,9 +686,24 @@ class CaseFeeController extends Controller {
 			$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
 			$map_case_fee['case_type_id']  = array('in',$case_type_list);
 			
+			//根据是否开了账单进行处理
+			//不限是否开了账单
+			if(0==$is_billed){
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}
 			
-			//搜索结果
-			$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			//开了账单
+			if(1==$is_billed){
+				$map_case_fee['bill_id']  = array('GT',0);
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}
+			//未开账单
+			if(2==$is_billed){
+				$map_case_fee['bill_id']  = array('LT',1);
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}
+			
+			//返回搜索结果
 			$case_fee_count	=	count($case_fee_list);
 			$this->assign('case_fee_list',$case_fee_list);
 			$this->assign('case_fee_count',$case_fee_count);
@@ -665,6 +723,7 @@ class CaseFeeController extends Controller {
 			$this->assign('applicant_id',$applicant_id);
 			$this->assign('follower_id',$follower_id);
 			$this->assign('cost_center_id',$cost_center_id);
+			$this->assign('is_billed',$is_billed);
 			$this->assign('case_phase_id',$case_phase_id);
 			$this->assign('start_payment_date',$start_payment_date);
 			$this->assign('end_payment_date',$end_payment_date);
@@ -675,7 +734,7 @@ class CaseFeeController extends Controller {
 	}
 	
 	//搜索非专利费用
-	public function searchNotPatentFeeList(){
+	public function searchNotPatentFeeByCompletionDate(){
 		
 		//取出 Client 表的内容以及数量
 		$client_list	=	D('Client')->listBasic();
@@ -707,11 +766,11 @@ class CaseFeeController extends Controller {
 			$follower_id	=	I('post.follower_id','0','int');
 			$cost_center_id	=	I('post.cost_center_id','0','int');	
 			$case_phase_id	=	I('post.case_phase_id','0','int');
-			
-			$start_payment_date	=	trim(I('post.start_payment_date'));
-			$start_payment_date	=	$start_payment_date ? strtotime($start_payment_date) : time();			
+			$is_billed	=	I('post.is_billed','0','int');
 			$end_payment_date	=	trim(I('post.end_payment_date'));
-			$end_payment_date	=	$end_payment_date ? strtotime($end_payment_date) : strtotime('+1 month');
+			$end_payment_date	=	$end_payment_date ? strtotime($end_payment_date) : time();			
+			$start_payment_date	=	trim(I('post.start_payment_date'));
+			$start_payment_date	=	$start_payment_date ? strtotime($start_payment_date) : strtotime('-1 month',$end_payment_date);
 			
 			//构造 maping
 			if($client_id){
@@ -736,7 +795,29 @@ class CaseFeeController extends Controller {
 			$case_type_list	=	D('CaseType')->listNotPatentCaseTypeId();
 			$map_case_fee['case_type_id']  = array('in',$case_type_list);
 			
+			//根据是否开了账单进行处理
+			//不限是否开了账单
+			if(0==$is_billed){
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}
 			
+			//开了账单
+			if(1==$is_billed){
+				$map_case_fee['bill_id']  = array('GT',0);
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}
+			//未开账单
+			if(2==$is_billed){
+				$map_case_fee['bill_id']  = array('LT',1);
+				$case_fee_list = D('CaseFeeView')->field(true)->where($map_case_fee)->listAll();
+			}
+			
+			//返回搜索结果
+			$case_fee_count	=	count($case_fee_list);
+			$this->assign('case_fee_list',$case_fee_list);
+			$this->assign('case_fee_count',$case_fee_count);
+			
+			/*
 			//分页显示搜索结果
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
@@ -744,6 +825,7 @@ class CaseFeeController extends Controller {
 			$this->assign('case_fee_list',$case_fee_list['list']);
 			$this->assign('case_fee_page',$case_fee_list['page']);
 			$this->assign('case_fee_count',$case_fee_list['count']);
+			*/
 			
 			//返回所接受的检索条件
 			$this->assign('client_id',$client_id);
@@ -751,6 +833,7 @@ class CaseFeeController extends Controller {
 			$this->assign('follower_id',$follower_id);
 			$this->assign('cost_center_id',$cost_center_id);
 			$this->assign('case_phase_id',$case_phase_id);
+			$this->assign('is_billed',$is_billed);
 			$this->assign('start_payment_date',$start_payment_date);
 			$this->assign('end_payment_date',$end_payment_date);
 		

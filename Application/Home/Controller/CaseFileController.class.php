@@ -109,6 +109,26 @@ class CaseFileController extends Controller {
 			if(1==$yes_btn){
 				
 				$map['case_file_id']	=	$case_file_id;
+				
+				//获取基本信息
+				$case_file_list	=	M('CaseFile')->getByCaseFileId($map['case_file_id']);
+				
+				//判断
+				if($case_file_list['inner_balance_id']	>	0){
+					$this->error('本费用已关联到内部结算单，不可删除', U('Case/view','case_id='.$case_id));
+				}
+				if($case_file_list['cost_amount']	>	0){
+					$this->error('本费用已关联到内部结算单，不可删除', U('Case/view','case_id='.$case_id));
+				}
+				if($case_file_list['bill_id']	>	0){
+					$this->error('本费用已关联到账单，不可删除', U('Case/view','case_id='.$case_id));
+				}				
+				if($case_file_list['invoice_id']	>	0){
+					$this->error('本费用已关联到发票，不可删除', U('Case/view','case_id='.$case_id));
+				}
+				if($case_file_list['claim_id']	>	0){
+					$this->error('本费用已关联到收支认领单，不可删除', U('Case/view','case_id='.$case_id));
+				}
 
 				$result = M('CaseFile')->where($map)->delete();
 				if($result){
@@ -179,7 +199,7 @@ class CaseFileController extends Controller {
 	}
 	
 	//搜索专利文件
-	public function searchPatentFile(){
+	public function searchPatentFileByDueDate(){
 		
 		//取出 Client 表的内容以及数量
 		$client_list	=	D('Client')->listBasic();
@@ -189,9 +209,9 @@ class CaseFileController extends Controller {
 		$member_list	=	D('Member')->listBasic();
 		$this->assign('member_list',$member_list);
 		
-		//默认查询未来1个月期限
-		$start_due_date	=	"";
-		$end_due_date	=	strtotime('+1 month');
+		//默认查询前3个月、未来3个月期限
+		$start_due_date	=	strtotime('-3 month');;
+		$end_due_date	=	strtotime('+3 month');
 		$this->assign('start_due_date',$start_due_date);
 		$this->assign('end_due_date',$end_due_date);
 		
@@ -202,11 +222,12 @@ class CaseFileController extends Controller {
 			$applicant_id	=	I('post.applicant_id','0','int');
 			$follower_id	=	I('post.follower_id','0','int');
 			$is_filed	=	I('post.is_filed','0','int');
+			$is_paid	=	I('post.is_paid','0','int');
 			
-			$start_due_date	=	trim(I('post.start_due_date'));
-			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : "";			
 			$end_due_date	=	trim(I('post.end_due_date'));
-			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+1 month');
+			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+3 month',time());
+			$start_due_date	=	trim(I('post.start_due_date'));
+			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : strtotime('-6 month',$end_due_date);
 			
 			//构造 maping
 			if($client_id){
@@ -220,10 +241,10 @@ class CaseFileController extends Controller {
 			}	
 			
 			if(1==$is_filed){
-				$map_case_file['completion_date']	=	array('LT',1);
+				$map_case_file['completion_date']	=	array('GT',1);
 			}
 			if(2==$is_filed){
-				$map_case_file['completion_date']	=	array('GT',1);
+				$map_case_file['completion_date']	=	array('LT',1);
 			}
 			
 			$map_case_file['due_date']	=	array('between',$start_due_date.','.$end_due_date);
@@ -232,20 +253,40 @@ class CaseFileController extends Controller {
 			$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
 			$map_case_file['case_type_id']  = array('in',$case_type_list);
 			
+			//根据是否开了账单进行处理
+			//不限是否开了账单
+			if(0==$is_billed){
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}			
+			//开了账单
+			if(1==$is_billed){
+				$map_case_file['bill_id']  = array('GT',0);
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}
+			//未开账单
+			if(2==$is_billed){
+				$map_case_file['bill_id']  = array('LT',0);
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}
 			
-			//分页显示搜索结果
-			$p	= I("p",1,"int");
-			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_file_list = D('CaseFileView')->listPageSearch($p,$page_limit,$map_case_file);
-			$this->assign('case_file_list',$case_file_list['list']);
-			$this->assign('case_file_page',$case_file_list['page']);
-			$this->assign('case_file_count',$case_file_list['count']);
+			//返回搜索结果
+			$case_file_count	=	count($case_file_list);
+			$this->assign('case_file_list',$case_file_list);
+			$this->assign('case_file_count',$case_file_count);
+			
+			//返回统计结果
+			$total_service_fee	=	0;
+			for($j=0;$j<$case_file_count;$j++){
+				$total_service_fee	+=	$case_file_list[$j]['service_fee'];
+			}
+			$this->assign('total_service_fee',$total_service_fee);
 			
 			//返回所接受的检索条件
 			$this->assign('client_id',$client_id);
 			$this->assign('applicant_id',$applicant_id);
 			$this->assign('follower_id',$follower_id);
 			$this->assign('is_filed',$is_filed);
+			$this->assign('is_billed',$is_billed);
 			$this->assign('start_due_date',$start_due_date);
 			$this->assign('end_due_date',$end_due_date);
 		
@@ -255,7 +296,7 @@ class CaseFileController extends Controller {
 	}
 	
 	//搜索非专利文件
-	public function searchNotPatentFile(){
+	public function searchNotPatentFileByDueDate(){
 		
 		//取出 Client 表的内容以及数量
 		$client_list	=	D('Client')->listBasic();
@@ -265,9 +306,9 @@ class CaseFileController extends Controller {
 		$member_list	=	D('Member')->listBasic();
 		$this->assign('member_list',$member_list);
 		
-		//默认查询未来1个月期限
-		$start_due_date	=	"";
-		$end_due_date	=	strtotime('+1 month');
+		//默认查询前3个月、未来3个月期限
+		$start_due_date	=	strtotime('-3 month');;
+		$end_due_date	=	strtotime('+3 month');
 		$this->assign('start_due_date',$start_due_date);
 		$this->assign('end_due_date',$end_due_date);
 		
@@ -278,11 +319,12 @@ class CaseFileController extends Controller {
 			$applicant_id	=	I('post.applicant_id','0','int');
 			$follower_id	=	I('post.follower_id','0','int');
 			$is_filed	=	I('post.is_filed','0','int');
+			$is_paid	=	I('post.is_paid','0','int');
 			
-			$start_due_date	=	trim(I('post.start_due_date'));
-			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : "";			
 			$end_due_date	=	trim(I('post.end_due_date'));
-			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+1 month');
+			$end_due_date	=	$end_due_date ? strtotime($end_due_date) : strtotime('+3 month',time());
+			$start_due_date	=	trim(I('post.start_due_date'));
+			$start_due_date	=	$start_due_date ? strtotime($start_due_date) : strtotime('-6 month',$end_due_date);
 			
 			//构造 maping
 			if($client_id){
@@ -296,10 +338,10 @@ class CaseFileController extends Controller {
 			}	
 			
 			if(1==$is_filed){
-				$map_case_file['completion_date']	=	array('LT',1);
+				$map_case_file['completion_date']	=	array('GT',1);
 			}
 			if(2==$is_filed){
-				$map_case_file['completion_date']	=	array('GT',1);
+				$map_case_file['completion_date']	=	array('LT',1);
 			}
 			
 			$map_case_file['due_date']	=	array('between',$start_due_date.','.$end_due_date);
@@ -309,13 +351,33 @@ class CaseFileController extends Controller {
 			$map_case_file['case_type_id']  = array('in',$case_type_list);
 			
 			
-			//分页显示搜索结果
-			$p	= I("p",1,"int");
-			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_file_list = D('CaseFileView')->listPageSearch($p,$page_limit,$map_case_file);
-			$this->assign('case_file_list',$case_file_list['list']);
-			$this->assign('case_file_page',$case_file_list['page']);
-			$this->assign('case_file_count',$case_file_list['count']);
+			//根据是否开了账单进行处理
+			//不限是否开了账单
+			if(0==$is_billed){
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}			
+			//开了账单
+			if(1==$is_billed){
+				$map_case_file['bill_id']  = array('GT',0);
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}
+			//未开账单
+			if(2==$is_billed){
+				$map_case_file['bill_id']  = array('LT',0);
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}
+			
+			//返回搜索结果
+			$case_file_count	=	count($case_file_list);
+			$this->assign('case_file_list',$case_file_list);
+			$this->assign('case_file_count',$case_file_count);
+			
+			//返回统计结果
+			$total_service_fee	=	0;
+			for($j=0;$j<$case_file_count;$j++){
+				$total_service_fee	+=	$case_file_list[$j]['service_fee'];
+			}
+			$this->assign('total_service_fee',$total_service_fee);
 			
 			//返回所接受的检索条件
 			$this->assign('client_id',$client_id);
@@ -331,7 +393,7 @@ class CaseFileController extends Controller {
 	}
 	
 	//搜索
-	public function searchPatentFileList(){
+	public function searchPatentFileByCompletionDate(){
 		
 		//取出 Client 表的内容以及数量
 		$client_list	=	D('Client')->listBasic();
@@ -354,11 +416,11 @@ class CaseFileController extends Controller {
 			$applicant_id	=	I('post.applicant_id','0','int');
 			$follower_id	=	I('post.follower_id','0','int');
 			$is_filed	=	I('post.is_filed','0','int');
-			
-			$start_completion_date	=	trim(I('post.start_completion_date'));
-			$start_completion_date	=	$start_completion_date ? strtotime($start_completion_date) : time();			
+			$is_billed	=	I('post.is_billed','0','int');
 			$end_completion_date	=	trim(I('post.end_completion_date'));
-			$end_completion_date	=	$end_completion_date ? strtotime($end_completion_date) : strtotime('+1 month');
+			$end_completion_date	=	$end_completion_date ? strtotime($end_completion_date) : time();			
+			$start_completion_date	=	trim(I('post.start_completion_date'));
+			$start_completion_date	=	$start_completion_date ? strtotime($start_completion_date) : strtotime('-1 month',$end_completion_date);			
 			
 			//构造 maping
 			if($client_id){
@@ -377,20 +439,40 @@ class CaseFileController extends Controller {
 			$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
 			$map_case_file['case_type_id']  = array('in',$case_type_list);
 			
+			//根据是否开了账单进行处理
+			//不限是否开了账单
+			if(0==$is_billed){
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}			
+			//开了账单
+			if(1==$is_billed){
+				$map_case_file['bill_id']  = array('GT',0);
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}
+			//未开账单
+			if(2==$is_billed){
+				$map_case_file['bill_id']  = array('LT',0);
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}
 			
-			//分页显示搜索结果
-			$p	= I("p",1,"int");
-			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_file_list = D('CaseFileView')->listPageSearch($p,$page_limit,$map_case_file);
-			$this->assign('case_file_list',$case_file_list['list']);
-			$this->assign('case_file_page',$case_file_list['page']);
-			$this->assign('case_file_count',$case_file_list['count']);
+			//返回搜索结果
+			$case_file_count	=	count($case_file_list);
+			$this->assign('case_file_list',$case_file_list);
+			$this->assign('case_file_count',$case_file_count);
+			
+			//返回统计结果
+			$total_service_fee	=	0;
+			for($j=0;$j<$case_file_count;$j++){
+				$total_service_fee	+=	$case_file_list[$j]['service_fee'];
+			}
+			$this->assign('total_service_fee',$total_service_fee);
 			
 			//返回所接受的检索条件
 			$this->assign('client_id',$client_id);
 			$this->assign('applicant_id',$applicant_id);
 			$this->assign('follower_id',$follower_id);
 			$this->assign('is_filed',$is_filed);
+			$this->assign('is_billed',$is_billed);
 			$this->assign('start_completion_date',$start_completion_date);
 			$this->assign('end_completion_date',$end_completion_date);
 		
@@ -400,7 +482,7 @@ class CaseFileController extends Controller {
 	}
 	
 	//搜索
-	public function searchNotPatentFileList(){
+	public function searchNotPatentFileByCompletionDate(){
 		
 		//取出 Client 表的内容以及数量
 		$client_list	=	D('Client')->listBasic();
@@ -423,11 +505,11 @@ class CaseFileController extends Controller {
 			$applicant_id	=	I('post.applicant_id','0','int');
 			$follower_id	=	I('post.follower_id','0','int');
 			$is_filed	=	I('post.is_filed','0','int');
-			
-			$start_completion_date	=	trim(I('post.start_completion_date'));
-			$start_completion_date	=	$start_completion_date ? strtotime($start_completion_date) : time();			
+			$is_billed	=	I('post.is_billed','0','int');
 			$end_completion_date	=	trim(I('post.end_completion_date'));
-			$end_completion_date	=	$end_completion_date ? strtotime($end_completion_date) : strtotime('+1 month');
+			$end_completion_date	=	$end_completion_date ? strtotime($end_completion_date) : time();			
+			$start_completion_date	=	trim(I('post.start_completion_date'));
+			$start_completion_date	=	$start_completion_date ? strtotime($start_completion_date) : strtotime('-1 month',$end_completion_date);
 			
 			//构造 maping
 			if($client_id){
@@ -446,14 +528,33 @@ class CaseFileController extends Controller {
 			$case_type_list	=	D('CaseType')->listNotPatentCaseTypeId();
 			$map_case_file['case_type_id']  = array('in',$case_type_list);
 			
+			//根据是否开了账单进行处理
+			//不限是否开了账单
+			if(0==$is_billed){
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}			
+			//开了账单
+			if(1==$is_billed){
+				$map_case_file['bill_id']  = array('GT',0);
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}
+			//未开账单
+			if(2==$is_billed){
+				$map_case_file['bill_id']  = array('LT',0);
+				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
+			}
 			
-			//分页显示搜索结果
-			$p	= I("p",1,"int");
-			$page_limit  =   C("RECORDS_PER_PAGE");
-			$case_file_list = D('CaseFileView')->listPageSearch($p,$page_limit,$map_case_file);
-			$this->assign('case_file_list',$case_file_list['list']);
-			$this->assign('case_file_page',$case_file_list['page']);
-			$this->assign('case_file_count',$case_file_list['count']);
+			//返回搜索结果
+			$case_file_count	=	count($case_file_list);
+			$this->assign('case_file_list',$case_file_list);
+			$this->assign('case_file_count',$case_file_count);
+			
+			//返回统计结果
+			$total_service_fee	=	0;
+			for($j=0;$j<$case_file_count;$j++){
+				$total_service_fee	+=	$case_file_list[$j]['service_fee'];
+			}
+			$this->assign('total_service_fee',$total_service_fee);
 			
 			//返回所接受的检索条件
 			$this->assign('client_id',$client_id);

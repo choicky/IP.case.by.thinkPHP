@@ -58,28 +58,18 @@ class CostCenterBalanceController extends Controller {
 		//从 Claim 表找出实际收支
 		$map_claim['cost_center_id']	=	$data['cost_center_id'];
 		$map_claim['claim_date']	=	array('between',$data['start_date'].','.$data['end_date']);
-		$claim_list	=	M('Claim')->field(true)->where($map_claim)->select();		
-		$true_income_amount	=	0;
-		$true_outcome_amount	=	0;
-		if(is_array($claim_list)){
-			for($j=0;$j<count($claim_list);$j++){
-				$true_income_amount	+=	$claim_list[$j]['income_amount'];
-				$true_outcome_amount	+=	$claim_list[$j]['outcome_amount'];
-			}
-		}
+		$claim_list	=	M('Claim')->field('sum(income_amount) as total_income_amount, sum(outcome_amount) as total_outcome_amount')->where($map_claim)->select();		
+		$true_income_amount	=	$claim_list[0]['total_income_amount'];
+		$true_outcome_amount	=	$claim_list[0]['total_outcome_amount'];
 		
-		//从 Cost 表找出内部收支
-		$map_cost['cost_center_id']	=	$data['cost_center_id'];
-		$map_cost['inner_balance_date']	=	array('between',$data['start_date'].','.$data['end_date']);
-		$inner_balance_list	=	M('InnerBalance')->field(true)->where($map_cost)->select();		
-		$inner_income_amount	=	0;
-		$inner_outcome_amount	=	0;
-		if(is_array($inner_balance_list)){
-			for($j=0;$j<count($inner_balance_list);$j++){
-				$inner_income_amount	+=	$inner_balance_list[$j]['income_amount'];
-				$inner_outcome_amount	+=	$inner_balance_list[$j]['outcome_amount'];
-			}
-		}
+		
+		//从 InnerBalance 表找出内部收支
+		$map_inner_balance['cost_center_id']	=	$data['cost_center_id'];
+		$map_inner_balance['inner_balance_date']	=	array('between',$data['start_date'].','.$data['end_date']);
+		$inner_balance_list	=	M('InnerBalance')->field('sum(income_amount) as total_income_amount, sum(outcome_amount) as total_outcome_amount')->where($map_inner_balance)->select();		
+		$inner_income_amount	=	$inner_balance_list[0]['total_income_amount'];;
+		$inner_outcome_amount	=	$inner_balance_list[0]['total_outcome_amount'];;
+		
 		
 		//构造其他数值
 		$data['true_income_amount']	=	$true_income_amount;
@@ -173,10 +163,10 @@ class CostCenterBalanceController extends Controller {
 		$this->assign('true_income_amount',$true_income_amount);
 		$this->assign('true_outcome_amount',$true_outcome_amount);
 		
-		//从 Cost 表找出内部收支
-		$map_cost['cost_center_id']	=	$cost_center_id;
-		$map_cost['inner_balance_date']	=	array('between',$start_date.','.$end_date);
-		$inner_balance_list	=	D('InnerBalanceView')->field(true)->where($map_cost)->listAll();
+		//从 InnerBalance 表找出内部收支
+		$map_inner_balance['cost_center_id']	=	$cost_center_id;
+		$map_inner_balance['inner_balance_date']	=	array('between',$start_date.','.$end_date);
+		$inner_balance_list	=	D('InnerBalanceView')->field(true)->where($map_inner_balance)->listAll();
 		$this->assign('inner_balance_list',$inner_balance_list);
 		$this->assign('inner_balance_count',count($inner_balance_list));		
 		

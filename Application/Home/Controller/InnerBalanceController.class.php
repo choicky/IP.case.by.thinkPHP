@@ -108,14 +108,13 @@ class InnerBalanceController extends Controller {
 			$this->error('未指明要查看的缴费单');
 		}
 		
-		//定义查询条件
-		$map['inner_balance_id']	=	$inner_balance_id;
-		
-		//取出 Cost 信息
+		//取出 InnerBalance 信息
 		$inner_balance_list = D('InnerBalanceView')->field(true)->getByInnerBalanceId($inner_balance_id);	
 		
 		//取出 CaseFile 信息
-		$case_file_list	=	D('CaseFileView')->field(true)->where($map)->listAll();
+		$map_case_file['inner_balance_id']	=	$inner_balance_id;
+		
+		$case_file_list	=	D('CaseFileView')->field(true)->where($map_case_file)->listAll();
 		$case_file_count	=	count($case_file_list);
 		
 		$this->assign('inner_balance_list',$inner_balance_list);

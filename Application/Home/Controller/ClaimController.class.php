@@ -161,10 +161,10 @@ class ClaimController extends Controller {
 			//接收搜索参数
 			$claimer_id	=	I('post.claimer_id','0','int');
 			$cost_center_id	=	I('post.cost_center_id','0','int');
-			$start_time	=	trim(I('post.start_time'));
-			$start_time	=	$start_time	?	strtotime($start_time)	:	strtotime('-1 month');
 			$end_time	=	trim(I('post.end_time'));
-			$end_time	=	$end_time	?	strtotime($end_time)	:	time();			
+			$end_time	=	$end_time	?	strtotime($end_time)	:	time();
+			$start_time	=	trim(I('post.start_time'));
+			$start_time	=	$start_time	?	strtotime($start_time)	:	strtotime('-1 month',$end_time);			
 			$summary	=	I('post.summary');
 			$start_income_amount	=	trim(I('post.start_income_amount'))*100;
 			$start_income_amount	=	$start_income_amount	?	$start_income_amount	:	'0';
@@ -184,12 +184,19 @@ class ClaimController extends Controller {
 				$map['cost_center_id']	=	$cost_center_id;
 			}
 			if($summary){
-				$map['summary']	=	$summary;
+				$map['summary']	=	array('like', '%'.$summary.'%');
 			}			
 			
 			$map['income_amount']	=	array('between',array($start_income_amount,$end_income_amount));
 			$map['outcome_amount']	=	array('between',array($start_outcome_amount,$end_outcome_amount));
 			
+			//搜索结果
+			$claim_list = D('ClaimView')->field(true)->where($map)->listAll();
+			$claim_count	=	count($claim_list);
+			$this->assign('claim_list',$claim_list);
+			$this->assign('claim_count',$claim_count);
+			
+			/*
 			//分页返回
 			$p	= I("p",1,"int");
 			$page_limit  =   C("RECORDS_PER_PAGE");
@@ -198,17 +205,15 @@ class ClaimController extends Controller {
 			$this->assign('claim_list',$claim_list['list']);
 			$this->assign('claim_page',$claim_list['page']);
 			$this->assign('claim_count',$claim_count);
+			*/
 			
 			//返回统计信息
-			$claim_list_tmp = D('ClaimView')->where($map)->select();
-			$claim_count	=	count($claim_list_tmp);
 			$income_amount_total	=	0;
 			$outcome_amount_total	=	0;			
 			for($j=0;$j<$claim_count;$j++){
-				$income_amount_total	+=	$claim_list_tmp[$j]['income_amount']/100;
-				$outcome_amount_total	+=	$claim_list_tmp[$j]['outcome_amount']/100;
+				$income_amount_total	+=	$claim_list[$j]['income_amount']/100;
+				$outcome_amount_total	+=	$claim_list[$j]['outcome_amount']/100;
 			}
-			$this->assign('claim_count',$claim_count);
 			$this->assign('income_amount_total',$income_amount_total);
 			$this->assign('outcome_amount_total',$outcome_amount_total);
 			
@@ -236,7 +241,31 @@ class ClaimController extends Controller {
 			$this->error('未指明要查看的收支流水');
 		}
 
-		$balance_list = D('Balance')->relation(true)->field(true)->getByBalanceId($balance_id);			
+		$balance_list = D('BalanceView')->field(true)->getByBalanceId($balance_id);
+		//取出 Claim 信息
+		$map_claim['balance_id']	=	$balance_id;
+		$claim_list	=	D('ClaimView')->field(true)->where($map_claim)->listAll();
+		
+		//将 Claim 结果加入到 $balance_list
+		$balance_list['Claim']	=	$claim_list;
+		
+		//判断是否完全分摊、以及统计总金额
+		$balance_income_amount	=	$balance_list['income_amount'];
+		$balance_outcome_amount	=	$balance_list['outcome_amount'];
+		
+		$claim_income_amount	=	0;
+		$claim_outcome_amount	=	0;
+		for($k=0;$k<count($claim_list);$k++){
+			$claim_income_amount	+=	$claim_list[$k]['income_amount'];
+			$claim_outcome_amount	+=	$claim_list[$k]['outcome_amount'];
+		}
+		
+		//将统计结果加入到 $balance_list			
+		if($balance_income_amount	==	$claim_income_amount	and	$balance_outcome_amount	==	$claim_outcome_amount){
+			$balance_list['is_claimed']	=	1;
+		}else{
+			$balance_list['is_claimed']	=	0;
+		}
 		$this->assign('balance_list',$balance_list);
 		
 		//取出内部结算单的数量

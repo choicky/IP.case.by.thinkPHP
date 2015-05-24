@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3>搜索专利交文记录</h3>
+					<h3>搜索商标交文记录</h3>
 				</div>
 			</div>
 		</div>
@@ -38,12 +38,13 @@
 								<th>客户</th>
 								<th>申请人</th>
 								<th>跟案人</th>
+								<th>已开账单？</th>
 								<th>&nbsp;</th>
 							</tr>
 							
 						</thead>
 						<tbody>
-						<form class="form-inline" method="post" action="__CONTROLLER__/searchPatentFileList">
+						<form class="form-inline" method="post" action="__CONTROLLER__/searchNotPatentFileByCompletionDate">
 							<tr>
 								<td>
 									<input type="date" class="form-control" id="start_completion_date" name="start_completion_date" value="{$start_completion_date|date="Y-m-d",###}">
@@ -75,6 +76,14 @@
 										</volist>
 									</select>
 								</td>
+								<td>
+									<select class="form-control" name="is_billed">
+										<option value="0" }>不限</option>
+										<option value="1" {$is_billed==1	?	'selected="selected"'	:	''}>已开</option>										
+										<option value="2" {$is_billed==2	?	'selected="selected"'	:	''}>未开</option>
+									</select>
+								</td>
+															
 								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>						
 							</tr>
 						</form>

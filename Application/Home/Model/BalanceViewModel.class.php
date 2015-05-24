@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | This project is based on ThinkPHP 3.2, created by Choicky ZHOU (zhoucaiqi@gmail.com).
+// +----------------------------------------------------------------------
+// | Choicky ZHOU is a lawyer in China, specialized in IP matters such as patent, trademark and copyright.
+// +----------------------------------------------------------------------
+// | "Think\Model" is for normal Model, "Think\Model\RelationModel" for relation Model, "Think\Model\ViewModel" for view Model.
+// +----------------------------------------------------------------------
+// | This file is required by: BalanceController
+// +----------------------------------------------------------------------
+
 namespace Home\Model;
 use Think\Model\ViewModel;
 
@@ -15,6 +25,8 @@ class BalanceViewModel extends ViewModel {
 			'summary',
 			'other_party',
 			'follower_id',
+			'bill_id',
+			'case_payment_id',
 			'_type'=>'LEFT'
 		),
 		
@@ -26,8 +38,24 @@ class BalanceViewModel extends ViewModel {
 		
 		'Member'	=>	array(
 			'member_name',
+			'_type'=>'LEFT',
 			'_on'	=>	'Member.member_id=Balance.follower_id'
-		),			
+		),
+		
+		'Bill'	=>	array(
+			'bill_date',
+			'total_amount'	=>	'bill_amount',
+			'_type'=>'LEFT',
+			'_on'	=>	'Bill.bill_id=Balance.bill_id'
+		),
+		
+		'CasePayment'	=>	array(
+			'payment_date',
+			'total_amount'	=>	'payment_amount',
+			'_type'=>'LEFT',
+			'_on'	=>	'CasePayment.case_payment_id=Balance.case_payment_id'
+		),
+		
 	);
 	
 	//返回本数据视图的所有数据

@@ -4,6 +4,18 @@ use Think\Model\RelationModel;
 
 class BalanceModel extends RelationModel {
 	
+	//定义本数据表的自动完成
+	protected $_auto = array(		
+		array('deal_date','stringToTimestamp',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+		array('income_amount','multiplyByHundred',3,'function') , // 将金额乘以100
+		array('outcome_amount','multiplyByHundred',3,'function') , // 将金额乘以100
+	);
+	
+	//定义本数据表的自动验证
+	protected $_validate = array(
+		 array('account_id','require','必须指明账户',1), //必须验证非空    
+   );
+	
 	//定义本数据表的数据关联
 	protected $_link = array(
 		
@@ -30,7 +42,7 @@ class BalanceModel extends RelationModel {
 			'class_name'		=>	'ClaimView',		//被关联的数据表
 			'mapping_type'		=>	self::HAS_MANY,		//主从关系的一对多关联
 			'foreign_key'		=>	'balance_id',			//外键
-			'mapping_fields'	=>	'claim_id,claimer_id,member_name,cost_center_name,claim_date,balance_id,income_amount,outcome_amount,summary,bill_id,case_payment_id',		//关联字段
+			'mapping_fields'	=>	'claim_id,claimer_id,member_name,cost_center_name,claim_date,balance_id,income_amount,outcome_amount,summary',		//关联字段
 		),
 	
 	);

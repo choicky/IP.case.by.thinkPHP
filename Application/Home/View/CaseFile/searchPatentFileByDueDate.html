@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3>搜索商标交文记录</h3>
+					<h3>搜索专利交文任务</h3>
 				</div>
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					默认查找最近一个月提交的文件，可手动修改查询条件
+					默认查找期限日在下个月之前的文件，可手动修改查询条件
 				</div>
 
 				<!-- Table -->
@@ -33,23 +33,25 @@
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
-								<th>交文日开始时间</th>	
-								<th>交文日截止时间</th>								
+								<th>期限日开始时间</th>	
+								<th>期限日截止时间</th>								
 								<th>客户</th>
 								<th>申请人</th>
 								<th>跟案人</th>
+								<th>已提交？</th>
+								<th>已开账单？</th>
 								<th>&nbsp;</th>
 							</tr>
 							
 						</thead>
 						<tbody>
-						<form class="form-inline" method="post" action="__CONTROLLER__/searchNotPatentFileList">
+						<form class="form-inline" method="post" action="__CONTROLLER__/searchPatentFileByDueDate">
 							<tr>
 								<td>
-									<input type="date" class="form-control" id="start_completion_date" name="start_completion_date" value="{$start_completion_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="start_due_date" name="start_due_date" value="{$start_due_date|date="Y-m-d",###}">
 								</td>
 								<td>
-									<input type="date" class="form-control" id="end_completion_date" name="end_completion_date" value="{$end_completion_date|date="Y-m-d",###}">
+									<input type="date" class="form-control" id="end_due_date" name="end_due_date" value="{$end_due_date|date="Y-m-d",###}">
 								</td>
 								<td>
 									<select class="form-control" name="client_id">
@@ -75,7 +77,20 @@
 										</volist>
 									</select>
 								</td>
-															
+								<td>
+									<select class="form-control" name="is_filed">
+										<option value="0" }>不限</option>
+										<option value="1" {$is_filed==1	?	'selected="selected"'	:	''}>已交</option>										
+										<option value="2" {$is_filed==2	?	'selected="selected"'	:	''}>未交</option>
+									</select>
+								</td>
+								<td>
+									<select class="form-control" name="is_billed">
+										<option value="0" }>不限</option>
+										<option value="1" {$is_billed==1	?	'selected="selected"'	:	''}>已开</option>										
+										<option value="2" {$is_billed==2	?	'selected="selected"'	:	''}>未开</option>
+									</select>
+								</td>
 								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>						
 							</tr>
 						</form>
@@ -136,7 +151,7 @@
 							<tr>
 								
 								<td>{$i}</td>
-								<td><a href="{:U('Case/view','case_id='.$case_file_list['case_id'])}">{$case_file_list.our_ref}</a></td>
+								<td>{$case_file_list.our_ref}</td>
 								<td>{$case_file_list.client_ref}</td>
 								<td>{$case_file_list.client_name}</td>
 								<td>{$case_file_list.follower_name}</td>
@@ -155,8 +170,8 @@
 								<td><a href="{:U('Cost/view','cost_id='.$case_file_list['cost_id'])}">{$case_file_list['cost_id']	=	$case_file_list['cost_id']	?	$case_file_list['cost_id']		:	''}</a></td>
 								<td>{$case_file_list['cost_amount']	=	$case_file_list['cost_amount']	?	$case_file_list['cost_amount']/100		:	''}</td>
 								<td>
-									<a href="{:U('CaseFile/update','case_file_id='.$case_file_list['case_file_id'])}" target="_blank">更新</a>
-									<a href="{:U('CaseFile/delete','case_file_id='.$case_file_list['case_file_id'])}" target="_blank">删除</a>
+									<a href="{:U('CaseFile/update','case_file_id='.$case_file_list['case_file_id'])}">更新</a>
+									<a href="{:U('CaseFile/delete','case_file_id='.$case_file_list['case_file_id'])}">删除</a>
 									
 								</td>
 								
@@ -164,7 +179,6 @@
 							</volist>
 						</tbody>
 					</table>  
-					{$case_file_page}
 				</div>
 			</div>
         </div>

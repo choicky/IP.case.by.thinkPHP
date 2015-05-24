@@ -21,11 +21,11 @@ class BillController extends Controller {
 			$total_amount	=	$bill_list['list'][$j]['total_amount'];
 			
 			//查找到账情况
-			$map_claim['bill_id']	=	$bill_id;
-			$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount')->where($map_claim)->select();
-			$income_amount	=	$claim_list[0]['income_amount'];
+			$map_balance['bill_id']	=	$bill_id;
+			$balance_list	=	M('Balance')->field('sum(income_amount) as total_income_amount, sum(outcome_amount) as total_outcome_amount')->where($map_balance)->select();
+			$total_income_amount	=	$claim_list[0]['total_income_amount']	-	$claim_list[0]['total_outcome_amount'];
 			
-			if($total_amount	==	$income_amount){
+			if($total_amount	==	$total_income_amount){
 				$bill_list['list'][$j]['is_paid']	=	"全额到账";
 			}else{
 				$bill_list['list'][$j]['is_paid']	=	"尚未全额到账";
@@ -53,25 +53,18 @@ class BillController extends Controller {
 	
 	//新增
 	public function add(){
-		$data	=	array();
-		$data['follower_id'] = I('post.follower_id',0,'int');
-		$data['bill_date']	=	trim(I('post.bill_date'));
-		//转为时间戳
-		$data['bill_date']	=	strtotime($data['bill_date']);
-		$data['client_id'] = I('post.client_id',0,'int');
-		$data['total_amount'] = I('post.total_amount',0,'int')*100;
-		$data['official_fee'] = I('post.official_fee',0,'int')*100;
-		$data['service_fee'] = I('post.service_fee',0,'int')*100;
-		$data['other_fee'] = I('post.other_fee',0,'int')*100;
-		
-		if(!$data['follower_id']	or	!$data['client_id']){
-			$this->error('未填写开开单人、收单人');
-		} 
+		$Model	=	D('Bill');
+		if (!$Model->create()){ // 创建数据对象
+			 // 如果创建失败 表示验证没有通过 输出错误提示信息
+			 $this->error($Model->getError());
+			 //exit($Model->getError());
+		}else{
+			 // 验证通过 写入新增数据
+			 $result	=	$Model->add();		 
+		}
 
-		$result = M('Bill')->add($data);
-		
 		if(false !== $result){
-			$this->success('新增成功', 'listPage');
+			$this->success('新增成功',U('Bill/listPage'));
 		}else{
 			$this->error('增加失败');
 		}
@@ -81,36 +74,33 @@ class BillController extends Controller {
 	public function update(){
 		if(IS_POST){
 			
-			$data	=	array();
-			$data['bill_id'] = I('post.bill_id',0,'int');
-			$data['follower_id'] = I('post.follower_id',0,'int');
-			$data['bill_date']	=	trim(I('post.bill_date'));
-			//转为时间戳
-			$data['bill_date']	=	strtotime($data['bill_date']);
-			$data['client_id'] = I('post.client_id',0,'int');
-			$data['total_amount'] = I('post.total_amount',0,'int')*100;
-			$data['official_fee'] = I('post.official_fee',0,'int')*100;
-			$data['service_fee'] = I('post.service_fee',0,'int')*100;
-			$data['other_fee'] = I('post.other_fee',0,'int')*100;
+			$bill_id	=	I('post.bill_id',0,'int');
 			
-			if(!$data['client_id']	or	!$data['follower_id']){
-				$this->error('未填写开开单人或跟案人');
-			} 
+			if(!$bill_id){
+				$this->error('未指明要编辑的账单编号');
+			}
 			
-			$result = M('Bill')->save($data);
-			
-			if(false == $result){
-				$this->error('修改失败');
+			$Model	=	D('Bill');
+			if (!$Model->create()){ // 创建数据对象
+				 // 如果创建失败 表示验证没有通过 输出错误提示信息
+				 $this->error($Model->getError());
+				 //exit($Model->getError());
 			}else{
-				
-			}$this->success('修改成功',U('Bill/view','bill_id='.$data['bill_id']));
-			
+				 // 验证通过 写入新增数据
+				 $result	=	$Model->save();		 
+			}
+
+			if(false !== $result){
+				$this->success('修改成功', U('Bill/view','bill_id='.$bill_id));
+			}else{
+				$this->error('修改失败');
+			}
 			
 		} else{
 			$bill_id = I('get.bill_id',0,'int');
 
 			if(!$bill_id){
-				$this->error('未指明要编辑的认领单号');
+				$this->error('未指明要编辑的账单编号');
 			}
 			
 			$bill_list = D('BillView')->getByBillId($bill_id);
@@ -125,7 +115,6 @@ class BillController extends Controller {
 			$client_count	=	count($client_list);
 			$this->assign('client_list',$client_list);
 			$this->assign('client_count',$client_count);
-
 
 			$this->display();
 		}
@@ -142,40 +131,47 @@ class BillController extends Controller {
 		
 		//取出账单的基本信息
 		$bill_list = D('BillView')->field(true)->getByBillId($bill_id);
-				
+			
+		//取出到账信息
+		$map_balance['bill_id']	=	$bill_id;
+		$balance_list	=	D('BalanceView')->where($map_balance)->listAll();		
+
+		$balance_count	=	count($balance_list);		
+		$this->assign('balance_list',$balance_list);
+		$this->assign('balance_count',$balance_count);
+		
 		//判断到账情况
-		$total_amount	=	$bill_list['total_amount'];		
-		//查找到账情况
-		$map_claim['bill_id']	=	$bill_id;
-		$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount,sum(outcome_amount) as outcome_amount')->where($map_claim)->select();
-		$true_income_amount	=	$claim_list[0]['income_amount']	-	$claim_list[0]['outcome_amount'];		
+		$total_amount	=	$bill_list['total_amount'];
+		
+		$total_income_amount	=	0;
+		$total_outcome_amount	=	0;		
+		for($j=0;$j<$balance_count;$j++){
+			$balance_id_list[$j]	=	$balance_list[$j]['balance_id'];
+			
+			$total_income_amount	+=	$balance_list[$j]['income_amount'];
+			$total_outcome_amount	+=	$balance_list[$j]['outcome_amount'];
+		}
+		
+		$true_income_amount	=	$total_income_amount	-	$total_outcome_amount;		
+		
 		if($total_amount	==	$true_income_amount){
-			$bill_list['is_paid']	=	"全额到账";
+			$bill_list['is_paid']	=	1;
 		}else{
-			$bill_list['is_paid']	=	"尚未全额到账";
+			$bill_list['is_paid']	=	0;
 		}
 		
 		$this->assign('bill_list',$bill_list);
 		
-		//定义查询
-		$map['bill_id']	=	$bill_id;
-
 		/*
-		//取出到账信息
-		$balance_list	=	D('BalanceView')->where($map)->listAll();
-		$balance_count	=	count($balance_list);		
-		$this->assign('balance_list',$balance_list);
-		$this->assign('balance_count',$balance_count);
-		*/
-				
-		//取出到账认领信息
-		$claim_list	=	D('ClaimView')->where($map)->listAll();
+		$map_claim['balance_id']	=	array('in',$balance_id_list);
+		$claim_list	=	D('ClaimView')->where($map_claim)->listAll();
 		$claim_count	=	count($claim_list);		
 		$this->assign('claim_list',$claim_list);
 		$this->assign('claim_count',$claim_count);
+		*/
 		
 		//取出发票信息
-		$invoice_list	=	D('InvoiceView')->where($map)->listAll();
+		$invoice_list	=	D('InvoiceView')->where($map_bill)->listAll();
 		$invoice_count	=	count($invoice_list);		
 		$this->assign('invoice_list',$invoice_list);
 		$this->assign('invoice_count',$invoice_count);		
@@ -195,26 +191,37 @@ class BillController extends Controller {
 		//取出账单的基本信息
 		$bill_list = D('BillView')->field(true)->getByBillId($bill_id);
 				
+		//取出到账信息
+		$map_balance['bill_id']	=	$bill_id;
+		$balance_list	=	D('BalanceView')->where($map_balance)->listAll();
+		$balance_count	=	count($balance_list);		
+				
 		//判断到账情况
-		$total_amount	=	$bill_list['total_amount'];		
-		//查找到账情况
-		$map_claim['bill_id']	=	$bill_id;
-		$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount,sum(outcome_amount) as outcome_amount')->where($map_claim)->select();
-		$true_income_amount	=	$claim_list[0]['income_amount']	-	$claim_list[0]['outcome_amount'];		
-		if($total_amount	==	$true_income_amount){			
+		$total_amount	=	$bill_list['total_amount'];
+		
+		$total_income_amount	=	0;
+		$total_outcome_amount	=	0;		
+		for($j=0;$j<$balance_count;$j++){
+			$balance_id_list[$j]	=	$balance_list[$j]['balance_id'];
+			$total_income_amount	+=	$balance_list[$j]['income_amount'];
+			$total_outcome_amount	+=	$balance_list[$j]['outcome_amount'];
+		}
+		
+		$true_income_amount	=	$total_income_amount	-	$total_outcome_amount;		
+		
+		if($total_amount	==	$true_income_amount){
 			$bill_list['is_paid']	=	"全额到账";
 		}else{
 			$bill_list['is_paid']	=	"尚未全额到账";
 		}
 		
-		$this->assign('bill_list',$bill_list);
+		$this->assign('bill_list',$bill_list);		
 		
 		//定义查询
-		$map['bill_id']	=	$bill_id;
-		
+		$map_file_or_fee['bill_id']	=	$bill_id;
 		
 		//取出交文产生的信息
-		$case_file_list	=	D('CaseFileView')->where($map)->listAll();
+		$case_file_list	=	D('CaseFileView')->where($map_file_or_fee)->listAll();
 		
 		//交文费用统计信息
 		$case_file_count	=	count($case_file_list);	
@@ -235,7 +242,7 @@ class BillController extends Controller {
 		
 		
 		//取出交费的信息
-		$case_fee_list	=	D('CaseFeeView')->where($map)->listAll();
+		$case_fee_list	=	D('CaseFeeView')->where($map_file_or_fee)->listAll();
 		
 		//交费费用统计信息
 		$case_fee_count	=	count($case_fee_list);	
@@ -298,22 +305,21 @@ class BillController extends Controller {
 			$start_amount	=	trim(I('post.start_amount'))*100;			
 			$end_amount	=	trim(I('post.end_amount'))*100;	
 			$follower_id	=	I('post.follower_id','0','int');
-			$is_paid	=	I('post.is_paid','0','int');
-			
+			$is_paid	=	I('post.is_paid','0','int');			
 			
 			//构造 maping
-			$map['bill_date']	=	array('between',$start_time.','.$end_time);
-			$map['total_amount']	=	array('between',$start_amount.','.$end_amount);
+			$map_bill['bill_date']	=	array('between',$start_time.','.$end_time);
+			$map_bill['total_amount']	=	array('between',$start_amount.','.$end_amount);
 			if($client_id){
-				$map['client_id']	=	$client_id;
+				$map_bill['client_id']	=	$client_id;
 			}
 			if($follower_id){
-				$map['follower_id']	=	$follower_id;
+				$map_bill['follower_id']	=	$follower_id;
 			}	
 			
 			//根据到账情况不同进行处理
 			if(0==$is_paid){
-				$bill_list = D('BillView')->where($map)->listAll();
+				$bill_list = D('BillView')->field(true)->where($map_bill)->listAll();
 				
 				//判断到账情况
 				for($j=0;$j<count($bill_list);$j++){
@@ -321,9 +327,9 @@ class BillController extends Controller {
 					$total_amount	=	$bill_list[$j]['total_amount'];
 					
 					//查找到账情况
-					$map_claim['bill_id']	=	$bill_id;
-					$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount,sum(outcome_amount) as outcome_amount')->where($map_claim)->select();
-					$true_income_amount	=	$claim_list[0]['income_amount']	-	$claim_list[0]['outcome_amount'];		
+					$map_balance['bill_id']	=	$bill_id;
+					$balance_list	=	M('Balance')->field('sum(income_amount) as total_income_amount,sum(outcome_amount) as total_outcome_amount')->where($map_balance)->select();
+					$true_income_amount	=	$claim_list[0]['total_income_amount']	-	$claim_list[0]['total_outcome_amount'];		
 					if($total_amount	==	$true_income_amount){
 						$bill_list[$j]['is_paid']	=	"全额到账";
 					}else{
@@ -332,16 +338,16 @@ class BillController extends Controller {
 				}
 			}
 			if(1==$is_paid){
-				$bill_list_tmp = D('BillView')->where($map)->listAll();
+				$bill_list_tmp = D('BillView')->field(true)->where($map_bill)->listAll();
 								
 				for($j=0;$j<count($bill_list_tmp);$j++){
 					$bill_id	=	$bill_list_tmp[$j]['bill_id'];
 					$total_amount	=	$bill_list_tmp[$j]['total_amount'];
 					
 					//查找到账情况
-					$map_claim['bill_id']	=	$bill_id;
-					$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount,sum(outcome_amount) as outcome_amount')->where($map_claim)->select();
-					$true_income_amount	=	$claim_list[0]['income_amount']	-	$claim_list[0]['outcome_amount'];		
+					$map_balance['bill_id']	=	$bill_id;
+					$balance_list	=	M('Balance')->field('sum(income_amount) as total_income_amount,sum(outcome_amount) as total_outcome_amount')->where($map_balance)->select();
+					$true_income_amount	=	$claim_list[0]['total_income_amount']	-	$claim_list[0]['total_outcome_amount'];		
 					if($total_amount	==	$true_income_amount){
 						$bill_list[$j]	=	$bill_list_tmp[$j];
 						$bill_list[$j]['is_paid']	=	"全额到账";
@@ -349,17 +355,16 @@ class BillController extends Controller {
 				}					
 			}
 			if(2==$is_paid){
-				$bill_list_tmp = D('BillView')->where($map)->listAll();
+				$bill_list_tmp = D('BillView')->field(true)->where($map_bill)->listAll();
 								
 				for($j=0;$j<count($bill_list_tmp);$j++){
 					$bill_id	=	$bill_list_tmp[$j]['bill_id'];
 					$total_amount	=	$bill_list_tmp[$j]['total_amount'];
 					
 					//查找到账情况
-					$map_claim['bill_id']	=	$bill_id;
-					$claim_list	=	M('Claim')->field('sum(income_amount) as income_amount,sum(outcome_amount) as outcome_amount')->where($map_claim)->select();
-					$true_income_amount	=	$claim_list[0]['income_amount']	-	$claim_list[0]['outcome_amount'];
-					
+					$map_balance['bill_id']	=	$bill_id;
+					$balance_list	=	M('Balance')->field('sum(income_amount) as total_income_amount,sum(outcome_amount) as total_outcome_amount')->where($map_balance)->select();
+					$true_income_amount	=	$claim_list[0]['total_income_amount']	-	$claim_list[0]['total_outcome_amount'];					
 					if($total_amount	!=	$true_income_amount){
 						$bill_list[$j]	=	$bill_list_tmp[$j];
 						$bill_list[$j]['is_paid']	=	"尚未全额到账";

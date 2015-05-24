@@ -43,8 +43,8 @@
 								<th>跟进人员</th>
 								<th>账单编号</th>
 								<th>缴费单编号</th>
-								<th>已分摊到</th>
-								<th>已分摊金额</th>
+								<th>分摊情况</th>
+								<th>已全额分摊</th>
 								<th>常用操作</th>
 							</tr>
 						</thead>
@@ -52,7 +52,7 @@
 							<!-- 将controller assign过来的 balance_list 赋给  balance_list--> 
 							<tr>
 								<td>{$balance_list.balance_id}</td>
-								<td>{$balance_list['Account'].account_name}</td>
+								<td>{$balance_list.account_name}</td>
 								<td>
 									{$balance_list.deal_date|date="Y-m-d",###}
 								</td>
@@ -60,46 +60,22 @@
 								<td align="right">{$balance_list['outcome_amount']	?	$balance_list['outcome_amount']/100	:	''}</td>
 								<td>{$balance_list.summary}</td>
 								<td>{$balance_list.other_party}</td>
-								<td>{$balance_list['Follower'].member_name}</td>
-								<td>
-									<volist name="balance_list['Claim']" id="bill_vo">
-										<a href="{:U('Bill/view','bill_id='.$bill_vo['bill_id'])}" target="_blank">{$bill_vo['bill_id']	?	$bill_vo['bill_id']	:	''}</a><br>										
-									</volist></td>
-								<td>
-									<volist name="balance_list['Claim']" id="case_payment_vo">
-										<a href="{:U('CasePayment/view','case_payment_id='.$case_payment_vo['case_payment_id'])}" target="_blank">{$case_payment_vo['case_payment_id']	?	$case_payment_vo['case_payment_id']	:	''}</a><br>										
-									</volist></td>
-								<td>
-									<?php
-										$claim_income	=	0;
-										$claim_outcome	=	0;
-									?>
+								<td>{$balance_list.member_name}</td>
+								<td><a href="{:U('Bill/view','bill_id='.$balance_list['bill_id'])}" target="_blank">{$balance_list['bill_id']	?	$balance_list['bill_id']	:	''}</a></td>
+								<td><a href="{:U('CasePayment/view','case_payment_id='.$balance_list['case_payment_id'])}" target="_blank">{$balance_list['case_payment_id']	?	$balance_list['case_payment_id']	:	''}</a></td>
+								<td align="right">
 									<volist name="balance_list['Claim']" id="claim_vo">
-										{$claim_vo.cost_center_name}<br>
-										<?php
-											$claim_income	+=	$claim_vo['income_amount'];
-											$claim_outcome	+=	$claim_vo['outcome_amount'];
-										?>
+										{$claim_vo.cost_center_name}，{$claim_vo['income_amount']	?	$claim_vo['income_amount']/100	:	$claim_vo['outcome_amount']/100}<br>
 									</volist>
-									<a href="{:U('Claim/view','balance_id='.$balance_list['balance_id'])}">详情</a>
+									<a href="{:U('Claim/view','balance_id='.$balance_list['balance_id'])}" target="_blank">修改分摊</a>										
 								</td>
 								<td align="right">
-									{$claim_income/100	+	$claim_outcome/100}<br>
-									<?php
-										$income_bool	=	$balance_list['income_amount']	==	$claim_income	?	1	:	0;
-										$outcome_bool	=	$balance_list['outcome_amount']	==	$claim_outcome	?	1	:	0;	
-										if(!$income_bool or !$outcome_bool){
-											echo ('未全部结算');
-										}else{
-											echo ('已全部结算');
-										}
-									?>
-									
-									
+									{$balance_list['is_claimed']	?	'Yes'	:	'否'}
 								</td>
 								<td>
-									<a href="{:U('Balance/update','balance_id='.$balance_list['balance_id'])}">更新</a> <br>
+									<a href="{:U('Balance/update','balance_id='.$balance_list['balance_id'])}" target="_blank">更新</a> <br>
 									<a href="{:U('Balance/delete','balance_id='.$balance_list['balance_id'])}">删除</a>
+									
 								</td>
 							</tr>
 						</tbody>

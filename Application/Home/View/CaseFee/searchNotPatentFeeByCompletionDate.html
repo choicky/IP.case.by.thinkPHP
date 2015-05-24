@@ -36,12 +36,13 @@
 								<th>缴费日开始时间</th>								
 								<th>客户</th>
 								<th>跟案人</th>
+								<th>已开账单？</th>
 								<th>费用阶段</th>								
 							</tr>
 							
 						</thead>
 						<tbody>
-						<form class="form-inline" method="post" action="__CONTROLLER__/searchNotPatentFeeList">
+						<form class="form-inline" method="post" action="__CONTROLLER__/searchNotPatentFeeByCompletionDate">
 							<tr>
 								
 								<td>
@@ -63,7 +64,14 @@
 										</volist>
 									</select>
 								</td>
-								
+								<td>
+									<select class="form-control" name="is_billed">
+										<option value="0" }>不限</option>										
+										<option value="1" {$is_billed==1	?	'selected="selected"'	:	''}>已开</option>
+										<option value="2" {$is_billed==2	?	'selected="selected"'	:	''}>未开</option>
+										</volist>
+									</select>
+								</td>
 								<td>
 									<select class="form-control" name="case_phase_id">
 										<option value="0"}>不限</option>
@@ -78,6 +86,7 @@
 								<th>缴费日截止时间</th>
 								<th>申请人</th>
 								<th>结算账户</th>
+								<th>&nbsp;</th>
 								<th>&nbsp;</th>
 							</tr>
 							
@@ -102,7 +111,9 @@
 									</select>
 								</td>
 															
-								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>						
+								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>
+								<td></td>
+								
 								
 							</tr>
 						</form>
@@ -140,7 +151,7 @@
 								<th>客户</th>
 								<th>跟案人</th>
 								<th>申请人</th>
-								<th>专利名称</th>
+								<th>商标名称</th>
 								<th>费用阶段</th>
 								<th>申请日</th>
 								<th>申请号</th>
@@ -165,7 +176,7 @@
 								<td>{$case_fee_vo['client_name']}</td>
 								<td>{$case_fee_vo['follower_name']}</td>
 								<td>{$case_fee_vo['applicant_name']}</td>
-								<td>{$case_fee_vo['formal_title']}</td>
+								<td>{$case_fee_vo['tentative_title']}</td>
 								<td>{$case_fee_vo['case_phase_name']}</td>
 								<td>{$case_fee_vo['application_date']	?	date("Y-m-d",$case_fee_vo['application_date'])	:	''}</td>
 								<td>{$case_fee_vo['application_number']}</td>
@@ -184,8 +195,7 @@
 								</tr>
 							</volist>
 						</tbody>
-					</table> 
-					{$case_fee_page}
+					</table>
 				</div>
 			</div>
         </div>

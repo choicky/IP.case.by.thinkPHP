@@ -6,7 +6,7 @@ class ClaimModel extends RelationModel {
 	
 	//定义本数据表的自动完成
 	protected $_auto = array(		
-		array('claim_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+		array('claim_date','stringToTimestamp',3,'function') , // 将 yyyy-mm-dd 转换时间戳
 		array('income_amount','multiplyByHundred',3,'function') , // 将金额乘以100
 		array('outcome_amount','multiplyByHundred',3,'function') , // 将金额乘以100
 		array('official_fee','multiplyByHundred',3,'function') , // 将金额乘以100

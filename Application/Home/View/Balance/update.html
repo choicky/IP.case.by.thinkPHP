@@ -42,7 +42,7 @@
 							<div class="form-group">
 								<label for="deal_date" class="col-lg-3 control-label">交易日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="deal_date" name="deal_date" placeholder="deal_date" value="{$balance_list['eal_date']	?	date("Y-m-d",$balance_list['eal_date'])	:	''}">
+									<input type="date" class="form-control" id="deal_date" name="deal_date" placeholder="deal_date" value="{$balance_list['deal_date']	?	date("Y-m-d",$balance_list['deal_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									日期格式为 yyyy-mm-dd，可用鼠标选择
@@ -51,7 +51,7 @@
 							<div class="form-group">
 								<label for="income_amount" class="col-lg-3 control-label">收入金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="income_amount" name="income_amount" value="{$balance_list['income_amount']/100}">
+									<input type="text" class="form-control" id="income_amount" name="income_amount" value="{$balance_list['income_amount']	?	$balance_list['income_amount']/100	:	''}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
@@ -60,7 +60,7 @@
 							<div class="form-group">
 								<label for="outcome_amount" class="col-lg-3 control-label">支出金额</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="outcome_amount" name="outcome_amount" value="{$balance_list['outcome_amount']/100}">
+									<input type="text" class="form-control" id="outcome_amount" name="outcome_amount" value="{$balance_list['outcome_amount']	?	$balance_list['outcome_amount']/100	:	''}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
@@ -96,6 +96,25 @@
 								</div>
 								<div class="col-lg-5">
 									“跟进人员”主要是方便财务知道找谁咨询款项的信息			
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="bill_id" class="col-lg-3 control-label">账单编号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="bill_id" name="bill_id" value="{$balance_list['bill_id']	?	$balance_list['bill_id']	:	''}">
+								</div>
+								<div class="col-lg-5">
+									营业收入应当填写账单编号。			
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="case_payment_id" class="col-lg-3 control-label">缴费单编号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="case_payment_id" name="case_payment_id" value="{$balance_list['case_payment_id']	?	$balance_list['case_payment_id']	:	''}">
+								</div>
+								<div class="col-lg-5">
+									如果缴纳专利费，应当填写缴费单编号。			
 								</div>
 							</div>
 							

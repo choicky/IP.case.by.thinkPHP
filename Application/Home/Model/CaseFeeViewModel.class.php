@@ -28,7 +28,6 @@ class CaseFeeViewModel extends ViewModel {
 			'service_fee',
 			'oa_date',
 			'due_date',
-			'allow_date',
 			'case_payment_id',
 			'bill_id',
 			'invoice_id',

@@ -68,6 +68,79 @@
 			</div>
         </div>
 		
+		<!-- Forms
+			================================================== -->
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					到账信息
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								<th>序号</th>
+								<th>交易账户</th>
+								<th>交易日期</th>
+								<th>收入金额</th>
+								<th>支出金额</th>
+								<th>摘要</th>
+								<th>对方当事人</th>
+								<th>跟进人员</th>
+								<th>账单编号</th>
+								<th>缴费单编号</th>
+								<th>分摊情况</th>
+								<th>已全额分摊</th>
+								<th>常用操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 将controller assign过来的 balance_list 赋给  balance_vo--> 
+							<volist name="balance_list" id="balance_vo">
+							<tr>
+								<td>{$i}</td>
+								<td>{$balance_vo.account_name}</td>
+								<td>
+									{$balance_vo.deal_date|date="Y-m-d",###}
+								</td>
+								<td align="right">{$balance_vo['income_amount']	?	$balance_vo['income_amount']/100	:	''}</td>
+								<td align="right">{$balance_vo['outcome_amount']	?	$balance_vo['outcome_amount']/100	:	''}</td>
+								<td>{$balance_vo.summary}</td>
+								<td>{$balance_vo.other_party}</td>
+								<td>{$balance_vo.member_name}</td>
+								<td>
+									<volist name="balance_vo['Claim']" id="bill_vo">
+										<a href="{:U('Bill/view','bill_id='.$bill_vo['bill_id'])}" target="_blank">{$bill_vo['bill_id']	?	$bill_vo['bill_id']	:	''}</a><br>										
+									</volist></td>
+								<td>
+									<volist name="balance_vo['Claim']" id="case_payment_vo">
+										<a href="{:U('CasePayment/view','case_payment_id='.$case_payment_vo['case_payment_id'])}" target="_blank">{$case_payment_vo['case_payment_id']	?	$case_payment_vo['case_payment_id']	:	''}</a><br>										
+									</volist></td>
+								<td align="right">
+									<volist name="balance_vo['Claim']" id="claim_vo">
+										{$claim_vo.cost_center_name}，{$claim_vo['income_amount']	?	$claim_vo['income_amount']/100	:	$claim_vo['outcome_amount']/100}<br>
+									</volist>
+									<a href="{:U('Claim/view','balance_id='.$balance_vo['balance_id'])}" target="_blank">修改分摊</a>										
+								</td>
+								<td align="right">
+									{$balance_vo['claimed']	?	'Yes'	:	'否'}
+								</td>
+								<td>
+									<a href="{:U('Balance/update','balance_id='.$balance_vo['balance_id'])}" target="_blank">更新</a> <br>
+									<a href="{:U('Balance/delete','balance_id='.$balance_vo['balance_id'])}">删除</a>
+									
+								</td>
+							</tr>
+							</volist>                 
+						</tbody>
+					</table> 
+				</div>
+			</div>
+        </div>
+		
 		
 		<!-- Forms
 			================================================== -->

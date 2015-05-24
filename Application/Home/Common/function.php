@@ -25,6 +25,12 @@ function multiplyByHundred($number){
 	return $number;
 }
 
+//自定义 strtotime
+function stringToTimestamp($time_string){
+	$result	=	$time_string	?	strtotime($time_string)	:	'';
+	return $result;
+}
+
 //数字选项
 function numberOption($j){
 	for($i=1;$i<=$j;$i++){

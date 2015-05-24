@@ -17,8 +17,6 @@ class ClaimViewModel extends ViewModel {
 			'official_fee',
 			'service_fee',
 			'summary',
-			'bill_id',
-			'case_payment_id',
 			'_type'=>'LEFT',
 		),
 		
@@ -35,17 +33,25 @@ class ClaimViewModel extends ViewModel {
 			'_type'=>'LEFT'
 		),
 		
+		'Balance'	=>	array(
+			'bill_id',
+			'case_payment_id',
+			'_type'=>'LEFT',
+			'_on'	=>	'Balance.balance_id=Claim.balance_id',
+			'_type'=>'LEFT'
+		),
+		
 		'Bill'	=>	array(
 			'bill_date',
 			'_type'=>'LEFT',
-			'_on'	=>	'Bill.bill_id=Claim.bill_id',
+			'_on'	=>	'Bill.bill_id=Balance.bill_id',
 			'_type'=>'LEFT'
 		),
 		
 		'CasePayment'	=>	array(
 			'payment_date',
 			'_type'=>'LEFT',
-			'_on'	=>	'CasePayment.case_payment_id=Claim.case_payment_id',
+			'_on'	=>	'CasePayment.case_payment_id=Balance.case_payment_id',
 			'_type'=>'LEFT'
 		),
 	

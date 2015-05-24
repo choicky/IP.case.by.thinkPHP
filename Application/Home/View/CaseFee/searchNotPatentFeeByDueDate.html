@@ -25,7 +25,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					默认查找期限日在下个月之前的费用，可手动修改查询条件
+					默认查找期限日在 之前3个月、未来3个月 之间的费用，可手动修改查询条件
 				</div>
 
 				<!-- Table -->
@@ -36,13 +36,13 @@
 								<th>期限日开始时间</th>								
 								<th>客户</th>
 								<th>跟案人</th>
-								<th>已指示付款？</th>
+								<th>已开账单？</th>
 								<th>费用阶段</th>								
 							</tr>
 							
 						</thead>
 						<tbody>
-						<form class="form-inline" method="post" action="__CONTROLLER__/searchNotPatentFee">
+						<form class="form-inline" method="post" action="__CONTROLLER__/searchNotPatentFeeByDueDate">
 							<tr>
 								
 								<td>
@@ -65,9 +65,10 @@
 									</select>
 								</td>
 								<td>
-									<select class="form-control" name="allow_to_pay">
+									<select class="form-control" name="is_billed">
 										<option value="0" }>不限</option>										
-										<option value="1" {$allow_to_pay==1	?	'selected="selected"'	:	''}>已指示</option>
+										<option value="1" {$is_billed==1	?	'selected="selected"'	:	''}>已开</option>
+										<option value="2" {$is_billed==2	?	'selected="selected"'	:	''}>未开</option>
 										</volist>
 									</select>
 								</td>
@@ -112,8 +113,8 @@
 								<td>
 									<select class="form-control" name="is_paid">
 										<option value="0" }>不限</option>
-										<option value="1" {$is_paid==1	?	'selected="selected"'	:	''}}>未缴费</option>										
-										<option value="2" {$is_paid==2	?	'selected="selected"'	:	''}>已缴费</option>
+										<option value="1" {$is_paid==1	?	'selected="selected"'	:	''}}>已缴费</option>										
+										<option value="2" {$is_paid==2	?	'selected="selected"'	:	''}>未缴费</option>
 									</select>
 								</td>								
 								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>						
@@ -154,16 +155,16 @@
 								<th>客户</th>
 								<th>跟案人</th>
 								<th>申请人</th>
-								<th>专利名称</th>
+								<th>商标名称</th>
 								<th>费用阶段</th>
 								<th>申请日</th>
 								<th>申请号</th>
 								<th>费用名称</th>
 								<th>官费</th>
 								<th>服务费</th>
-								<th>官文日期</th>
 								<th>期限日</th>
 								<th>缴费单号及缴费日</th>
+								<th>账单号及账单日</th>
 								<th>常用操作</th>
 								
 							</tr>
@@ -179,25 +180,26 @@
 								<td>{$case_fee_vo['client_name']}</td>
 								<td>{$case_fee_vo['follower_name']}</td>
 								<td>{$case_fee_vo['applicant_name']}</td>
-								<td>{$case_fee_vo['formal_title']}</td>
+								<td>{$case_fee_vo['tentative_title']}</td>
 								<td>{$case_fee_vo['case_phase_name']}</td>
 								<td>{$case_fee_vo['application_date']	?	date("Y-m-d",$case_fee_vo['application_date'])	:	''}</td>
 								<td>{$case_fee_vo['application_number']}</td>
 								<td>{$case_fee_vo['fee_type_name']}</td>
 								<td>{$case_fee_vo['official_fee']/100}</td>
 								<td>{$case_fee_vo['service_fee']/100}</td>
-								<td>{$case_fee_vo['oa_date']	?	date("Y-m-d",$case_fee_vo['oa_date'])	:	''}</td>
 								<td>{$case_fee_vo['due_date']	?	date("Y-m-d",$case_fee_vo['due_date'])	:	''}</td>
 								<td>
-									{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	''}<br>
+									<a href="{:U('CasePayment/view','case_payment_id='.$case_fee_vo['case_payment_id'])}">{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	''}</a><br>
 									{$case_fee_vo['payment_date']	?	date("Y-m-d",$case_fee_vo['payment_date'])	:	''}
 								</td>
+								<td>
+									<a href="{:U('Bill/view','bill_id='.$case_fee_vo['bill_id'])}">{$case_fee_vo['bill_id']	?	$case_fee_vo['bill_id']	:	''}</a><br>
+									{$case_fee_vo['bill_date']	?	date("Y-m-d",$case_fee_vo['bill_date'])	:	''}</td>
 								<td><a href="{:U('CaseFee/update','case_fee_id='.$case_fee_vo['case_fee_id'])}" target="_blank">更新</a></td>
 								</tr>
 							</volist>
 						</tbody>
-					</table> 
-					{$case_fee_page}
+					</table>
 				</div>
 			</div>
         </div>

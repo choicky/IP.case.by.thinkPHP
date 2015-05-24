@@ -39,12 +39,13 @@
 								<th>申请人</th>
 								<th>跟案人</th>
 								<th>已提交？</th>
+								<th>已开账单？</th>
 								<th>&nbsp;</th>
 							</tr>
 							
 						</thead>
 						<tbody>
-						<form class="form-inline" method="post" action="__CONTROLLER__/searchNotPatentFile">
+						<form class="form-inline" method="post" action="__CONTROLLER__/searchNotPatentFileByDueDate">
 							<tr>
 								<td>
 									<input type="date" class="form-control" id="start_due_date" name="start_due_date" value="{$start_due_date|date="Y-m-d",###}">
@@ -79,10 +80,18 @@
 								<td>
 									<select class="form-control" name="is_filed">
 										<option value="0" }>不限</option>
-										<option value="1" {$is_filed==1	?	'selected="selected"'	:	''}>未交</option>										
-										<option value="2" {$is_filed==2	?	'selected="selected"'	:	''}>已交</option>
+										<option value="1" {$is_filed==1	?	'selected="selected"'	:	''}>已交</option>										
+										<option value="2" {$is_filed==2	?	'selected="selected"'	:	''}>未交</option>
 									</select>
-								</td>								
+								</td>
+								<td>
+									<select class="form-control" name="is_billed">
+										<option value="0" }>不限</option>
+										<option value="1" {$is_billed==1	?	'selected="selected"'	:	''}>已开</option>										
+										<option value="2" {$is_billed==2	?	'selected="selected"'	:	''}>未开</option>
+									</select>
+								</td>
+								
 								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>						
 							</tr>
 						</form>

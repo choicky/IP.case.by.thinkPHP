@@ -53,7 +53,7 @@
 							<volist name="balance_list" id="balance_vo">
 							<tr>
 								<td>{$balance_vo.balance_id}</td>
-								<td>{$balance_vo['Account'].account_name}</td>
+								<td>{$balance_vo.account_name}</td>
 								<td>
 									{$balance_vo.deal_date|date="Y-m-d",###}
 								</td>
@@ -61,15 +61,9 @@
 								<td align="right">{$balance_vo['outcome_amount']	?	$balance_vo['outcome_amount']/100	:	''}</td>
 								<td>{$balance_vo.summary}</td>
 								<td>{$balance_vo.other_party}</td>
-								<td>{$balance_vo['Follower'].member_name}</td>
-								<td>
-									<volist name="balance_vo['Claim']" id="bill_vo">
-										<a href="{:U('Bill/view','bill_id='.$bill_vo['bill_id'])}" target="_blank">{$bill_vo['bill_id']	?	$bill_vo['bill_id']	:	''}</a><br>										
-									</volist></td>
-								<td>
-									<volist name="balance_vo['Claim']" id="case_payment_vo">
-										<a href="{:U('CasePayment/view','case_payment_id='.$case_payment_vo['case_payment_id'])}" target="_blank">{$case_payment_vo['case_payment_id']	?	$case_payment_vo['case_payment_id']	:	''}</a><br>										
-									</volist></td>
+								<td>{$balance_vo.member_name}</td>
+								<td><a href="{:U('Bill/view','bill_id='.$balance_vo['bill_id'])}" target="_blank">{$balance_vo['bill_id']	?	$balance_vo['bill_id']	:	''}</a></td>
+								<td><a href="{:U('CasePayment/view','case_payment_id='.$balance_vo['case_payment_id'])}" target="_blank">{$balance_vo['case_payment_id']	?	$balance_vo['case_payment_id']	:	''}</a></td>
 								<td align="right">
 									<volist name="balance_vo['Claim']" id="claim_vo">
 										{$claim_vo.cost_center_name}，{$claim_vo['income_amount']	?	$claim_vo['income_amount']/100	:	$claim_vo['outcome_amount']/100}<br>
@@ -77,7 +71,7 @@
 									<a href="{:U('Claim/view','balance_id='.$balance_vo['balance_id'])}" target="_blank">修改分摊</a>										
 								</td>
 								<td align="right">
-									{$balance_vo['claimed']	?	'Yes'	:	'否'}
+									{$balance_vo['is_claimed']	?	'Yes'	:	'否'}
 								</td>
 								<td>
 									<a href="{:U('Balance/update','balance_id='.$balance_vo['balance_id'])}" target="_blank">更新</a> <br>
@@ -185,6 +179,25 @@
 								</div>
 							</div>
 							
+							<div class="form-group">
+								<label for="bill_id" class="col-lg-3 control-label">账单编号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="bill_id" name="bill_id" placeholder="账单编号">
+								</div>
+								<div class="col-lg-5">
+									营业收入应当填写账单编号。			
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="case_payment_id" class="col-lg-3 control-label">缴费单编号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="case_payment_id" name="case_payment_id" placeholder="缴费单编号">
+								</div>
+								<div class="col-lg-5">
+									如果缴纳专利费，应当填写缴费单编号。			
+								</div>
+							</div>							
 
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">

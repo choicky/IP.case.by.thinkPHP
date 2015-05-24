@@ -17,9 +17,9 @@ class CaseFileModel extends RelationModel {
 	//定义本数据表的自动完成
 	protected $_auto = array(		
 		// 将 yyyy-mm-dd 转换时间戳
-		array('oa_date','strtotime',3,'function') , 
-		array('due_date','strtotime',3,'function') , 
-		array('completion_date','strtotime',3,'function') , 
+		array('oa_date','stringToTimestamp',3,'function') , 
+		array('due_date','stringToTimestamp',3,'function') , 
+		array('completion_date','stringToTimestamp',3,'function') , 
 		
 		// 将金额乘以100，multiplyByHundred 自定义于 common 文件夹的 function.php
 		array('service_fee','multiplyByHundred',3,'function') , 

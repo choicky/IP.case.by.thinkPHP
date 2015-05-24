@@ -6,7 +6,7 @@ class CasePriorityModel extends RelationModel {
 	
 	//定义本数据表的自动完成
 	protected $_auto = array(		
-		array('priority_date','strtotime',3,'function') , // 将 yyyy-mm-dd 转换时间戳
+		array('priority_date','stringToTimestamp',3,'function') , // 将 yyyy-mm-dd 转换时间戳
 	);
 	
 	//定义本数据表的自动验证

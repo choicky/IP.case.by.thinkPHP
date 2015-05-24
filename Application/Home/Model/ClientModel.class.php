@@ -21,7 +21,7 @@ class ClientModel extends RelationModel {
 	protected $_auto = array(		
 		
 		// 将 yyyy-mm-dd 转换时间戳
-		array('update_date','strtotime',3,'function') , 
+		array('update_date','stringToTimestamp',3,'function') , 
 	);
 
    //定义本数据表的自动验证，0为存在字段就验证，1为必须验证，2是值不为空时才验证

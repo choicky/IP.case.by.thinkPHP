@@ -36,12 +36,13 @@
 								<th>缴费日开始时间</th>								
 								<th>客户</th>
 								<th>跟案人</th>
+								<th>已开账单？</th>
 								<th>费用阶段</th>								
 							</tr>
 							
 						</thead>
 						<tbody>
-						<form class="form-inline" method="post" action="__CONTROLLER__/searchPatentFeeList">
+						<form class="form-inline" method="post" action="__CONTROLLER__/searchPatentFeeByCompletionDate">
 							<tr>
 								
 								<td>
@@ -63,7 +64,14 @@
 										</volist>
 									</select>
 								</td>
-								
+								<td>
+									<select class="form-control" name="is_billed">
+										<option value="0" }>不限</option>										
+										<option value="1" {$is_billed==1	?	'selected="selected"'	:	''}>已开</option>
+										<option value="2" {$is_billed==2	?	'selected="selected"'	:	''}>未开</option>
+										</volist>
+									</select>
+								</td>
 								<td>
 									<select class="form-control" name="case_phase_id">
 										<option value="0"}>不限</option>
@@ -78,6 +86,7 @@
 								<th>缴费日截止时间</th>
 								<th>申请人</th>
 								<th>结算账户</th>
+								<th>&nbsp;</th>
 								<th>&nbsp;</th>
 							</tr>
 							
@@ -102,7 +111,9 @@
 									</select>
 								</td>
 															
-								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>						
+								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>
+								<td></td>
+								
 								
 							</tr>
 						</form>

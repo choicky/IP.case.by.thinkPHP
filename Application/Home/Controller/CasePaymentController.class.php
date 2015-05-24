@@ -19,6 +19,17 @@ class CasePaymentController extends Controller {
 		$p	= I("p",1,"int");
 		$page_limit  =   C("RECORDS_PER_PAGE");
 		$case_payment_list = D('CasePaymentView')->listPage($p,$page_limit);
+		
+		//关联到收支流水
+		for($j=0;$j<count($case_payment_list['list']);$j++){
+			$case_payment_id	=	$case_payment_list['list'][$j]['case_payment_id'];
+			
+			$map_balance['case_payment_id']	=	$case_payment_id;
+			$balance_list	=	M('Balance')->field('balance_id,deal_date')->where($map_balance)->select();
+			
+			$case_payment_list['list'][$j]['balance']	=	$balance_list;			
+		}
+		
 		$this->assign('case_payment_list',$case_payment_list['list']);
 		$this->assign('case_payment_page',$case_payment_list['page']);
 		$this->assign('case_payment_count',$case_payment_list['count']);
@@ -117,7 +128,14 @@ class CasePaymentController extends Controller {
 		$map['case_payment_id']	=	$case_payment_id;
 		
 		//取出 CasePayment 的信息
-		$case_payment_list = D('CasePaymentView')->field(true)->getByCasePaymentId($case_payment_id);		
+		$case_payment_list = D('CasePaymentView')->field(true)->getByCasePaymentId($case_payment_id);
+		
+		//关联到收支流水
+		$case_payment_id	=	$case_payment_list['case_payment_id'];		
+		$map_balance['case_payment_id']	=	$case_payment_id;
+		$balance_list	=	M('Balance')->field('balance_id,deal_date')->where($map_balance)->select();		
+		$case_payment_list['balance']	=	$balance_list;	
+		
 		$this->assign('case_payment_list',$case_payment_list);
 
 		//取出 CaseFee 的信息
