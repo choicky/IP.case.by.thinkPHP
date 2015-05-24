@@ -22,7 +22,7 @@ return array(
 	'RECORDS_PER_PAGE'			=>	'100',
 	
 	//自定义分页显示时每页显示200条
-	'200_PER_PAGE'			=>	'200',
+	'200_PER_PAGE'			=>	'100',
 	
 	//自定义下拉选框的最大行数
 	'ROWS_PER_SELECT'			=>	'10',	
