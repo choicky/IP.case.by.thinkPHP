@@ -36,6 +36,8 @@ class CasePaymentViewModel extends ViewModel {
 		'Balance'	=>	array(
 			'balance_id',
 			'deal_date',
+			'income_amount',
+			'outcome_amount',
 			'_on'	=>	'Balance.case_payment_id=CasePayment.case_payment_id'
 		),
 	);
