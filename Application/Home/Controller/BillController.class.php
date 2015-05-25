@@ -134,7 +134,7 @@ class BillController extends Controller {
 			
 		//取出到账信息
 		$map_balance['bill_id']	=	$bill_id;
-		$balance_list	=	D('BalanceView')->where($map_balance)->listAll();		
+		$balance_list	=	D('BalanceView')->field(true)->where($map_balance)->listAll();		
 
 		$balance_count	=	count($balance_list);		
 		$this->assign('balance_list',$balance_list);
@@ -171,7 +171,8 @@ class BillController extends Controller {
 		*/
 		
 		//取出发票信息
-		$invoice_list	=	D('InvoiceView')->where($map_bill)->listAll();
+		$map_bill['bill_id']	=	$bill_id;
+		$invoice_list	=	D('InvoiceView')->field(true)->where($map_bill)->listAll();
 		$invoice_count	=	count($invoice_list);		
 		$this->assign('invoice_list',$invoice_list);
 		$this->assign('invoice_count',$invoice_count);		
