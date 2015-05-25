@@ -20,7 +20,7 @@ class CaseFeeModel extends RelationModel {
 		// 将 yyyy-mm-dd 转换时间戳
 		array('oa_date','stringToTimestamp',3,'function') , 
 		array('due_date','stringToTimestamp',3,'function') , 
-		array('allow_date','stringToTimestamp',3,'function') , 
+		//array('allow_date','stringToTimestamp',3,'function') , 
 		
 		// 将金额乘以100，multiplyByHundred 自定义于 common 文件夹的 function.php
 		array('official_fee','multiplyByHundred',3,'function') , 
