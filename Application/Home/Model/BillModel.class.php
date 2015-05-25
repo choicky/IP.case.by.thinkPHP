@@ -27,7 +27,7 @@ class BillModel extends RelationModel {
 	protected $_validate = array(
 		array('follower_id','require','必须指明跟案人/开单人',1), //必须验证非空
 		array('client_id','require','必须指明客户/收单人',1), //必须验证非空
-		array('total_amount','require','必须填写金额',1), //必须验证非空
+		//array('total_amount','require','必须填写金额',1), //必须验证非空
 		
    );
 	
