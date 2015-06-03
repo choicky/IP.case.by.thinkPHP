@@ -75,8 +75,8 @@ class BalanceController extends Controller {
 	
 	//新增
 	public function add(){
-		$income_amount	=	I('post.income_amount',0,'int');
-		$outcome_amount	=	I('post.outcome_amount',0,'int');
+		$income_amount	=	I('post.income_amount');
+		$outcome_amount	=	I('post.outcome_amount');
 		
 		if(!$income_amount and !$outcome_amount){
 			$this->error('未填写金额');
