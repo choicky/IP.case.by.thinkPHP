@@ -314,8 +314,8 @@ class BalanceController extends Controller {
 				}
 				
 				//统计收入与支出总额
-				$income_amount_total	+=	$balance_income_amount;
-				$outcome_amount_total	=	$balance_outcome_amount;
+				$income_amount_total	+=	$balance_income_amount/100;
+				$outcome_amount_total	+=	$balance_outcome_amount/100;
 			}
 			
 			$this->assign('balance_list',$balance_list);
