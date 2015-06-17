@@ -281,6 +281,10 @@ class BalanceController extends Controller {
 			$balance_list = D('BalanceView')->where($map)->listAll();
 			$balance_count	=	count($balance_list);
 			
+			//初始化收入总额与支出总额
+			$income_amount_total	=	0;
+			$outcome_amount_total	=	0;
+			
 			//判断是否完全分摊、以及统计总金额
 			for($j=0;$j<$balance_count;$j++){
 				//取出 Claim 信息
@@ -308,6 +312,10 @@ class BalanceController extends Controller {
 				}else{
 					$balance_list[$j]['is_claimed']	=	0;
 				}
+				
+				//统计收入与支出总额
+				$income_amount_total	+=	$balance_income_amount;
+				$outcome_amount_total	=	$balance_outcome_amount;
 			}
 			
 			$this->assign('balance_list',$balance_list);
