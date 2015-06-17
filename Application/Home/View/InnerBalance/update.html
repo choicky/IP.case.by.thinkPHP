@@ -58,9 +58,9 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="cost_amount" class="col-lg-3 control-label">结算金额</label>
+								<label for="income_amount" class="col-lg-3 control-label">内部结算收入</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="cost_amount" name="cost_amount" value="{$inner_balance_list['cost_amount']/100}">
+									<input type="text" class="form-control" id="income_amount" name="income_amount" value="{$inner_balance_list['income_amount']/100}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
@@ -68,18 +68,9 @@
 							</div>
 							
 							<div class="form-group">
-								<label for="other_fee" class="col-lg-3 control-label">其他费用</label>
+								<label for="outcome_amount" class="col-lg-3 control-label">内部结算支出</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="other_fee" name="other_fee" value="{$inner_balance_list['other_fee']/100}">
-								</div>
-								<div class="col-lg-5">
-									小数点必须使用英文的“.”
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="total_amount" name="total_amount" value="{$inner_balance_list['total_amount']/100}">
+									<input type="text" class="form-control" id="outcome_amount" name="outcome_amount" value="{$inner_balance_list['outcome_amount']/100}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
