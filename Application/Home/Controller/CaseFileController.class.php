@@ -451,7 +451,7 @@ class CaseFileController extends Controller {
 			}
 			//未开账单
 			if(2==$is_billed){
-				$map_case_file['bill_id']  = array('LT',0);
+				$map_case_file['bill_id']  = array('LT',1);
 				$case_file_list = D('CaseFileView')->field(true)->where($map_case_file)->listAll();
 			}
 			

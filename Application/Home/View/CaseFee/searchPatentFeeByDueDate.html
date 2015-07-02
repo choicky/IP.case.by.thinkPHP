@@ -50,7 +50,7 @@
 								</td>
 								<td>
 									<select class="form-control" name="client_id">
-										<option value="0"}>不限</option>
+										<option value="0">不限</option>
 										<volist name="client_list" id="client_vo">
 										<option value="{$client_vo.client_id}" {$client_vo['client_id']==$client_id	?	'selected="selected"'	:	''}>{$client_vo.client_name}</option>
 										</volist>
@@ -58,7 +58,7 @@
 								</td>
 								<td>
 									<select class="form-control" name="follower_id">
-										<option value="0"}>不限</option>
+										<option value="0">不限</option>
 										<volist name="member_list" id="member_vo">
 										<option value="{$member_vo.member_id}" {$member_vo['member_id']==$follower_id	?	'selected="selected"'	:	''}>{$member_vo.member_name}</option>
 										</volist>
@@ -66,7 +66,7 @@
 								</td>
 								<td>
 									<select class="form-control" name="is_billed">
-										<option value="0" }>不限</option>										
+										<option value="0">不限</option>										
 										<option value="1" {$is_billed==1	?	'selected="selected"'	:	''}>已开</option>
 										<option value="2" {$is_billed==2	?	'selected="selected"'	:	''}>未开</option>
 										</volist>
@@ -74,7 +74,7 @@
 								</td>
 								<td>
 									<select class="form-control" name="case_phase_id">
-										<option value="0"}>不限</option>
+										<option value="0">不限</option>
 										<volist name="case_phase_list" id="case_phase_vo">
 										<option value="{$case_phase_vo.case_phase_id}"} {$case_phase_vo['case_phase_id']==$case_phase_id	?	'selected="selected"'	:	''}>{$case_phase_vo.case_phase_name}</option>
 										</volist>
