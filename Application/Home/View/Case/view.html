@@ -163,11 +163,13 @@
 								
 								<td>{$i}</td>
 								<td>{$case_file_vo.file_type_name}</td>
-								<td>{$case_file_vo['oa_date']	=	$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])		:	''}</td>
-								<td>{$case_file_vo['due_date']	=	$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])		:	''}</td>
-								<td>{$case_file_vo['completion_date']	=	$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])		:	''}</td>
-								<td>{$case_file_vo['service_fee']	=	$case_file_vo['service_fee']	?	$case_file_vo['service_fee']/100		:	''}</td>
-								<td>{$case_file_vo['bill_id']	=	$case_file_vo['bill_id']	?	$case_file_vo['bill_id']		:	''}</td>
+								<td>{$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])		:	''}</td>
+								<td>{$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])		:	''}</td>
+								<td>{$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])		:	''}</td>
+								<td>{$case_file_vo['service_fee']	?	$case_file_vo['service_fee']/100		:	''}</td>
+								<td>
+									<a href="{:U('Bill/view','bill_id='.$case_file_vo['bill_id'])}" target="_blank">{$case_file_vo['bill_id']	?	$case_file_vo['bill_id']	:	''}</a>
+									{$case_file_vo['bill_id']	?	$case_file_vo['bill_id']		:	''}</td>
 								<td>{$case_file_vo['invoice_id']	=	$case_file_vo['invoice_id']	?	$case_file_vo['invoice_id']		:	''}</td>
 								<td>{$case_file_vo['claim_id']	=	$case_file_vo['claim_id']	?	$case_file_vo['claim_id']		:	''}</td>
 								<td><a href="{:U('InnerBalance/view','inner_balance_id='.$case_file_vo['inner_balance_id'])}">{$case_file_vo['inner_balance_id']	=	$case_file_vo['inner_balance_id']	?	$case_file_vo['inner_balance_id']		:	''}</a></td>
