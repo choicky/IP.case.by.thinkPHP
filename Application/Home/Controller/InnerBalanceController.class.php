@@ -117,9 +117,17 @@ class InnerBalanceController extends Controller {
 		$case_file_list	=	D('CaseFileView')->field(true)->where($map_case_file)->listAll();
 		$case_file_count	=	count($case_file_list);
 		
+		//统计信息
+		$file_cost_total	=	0;
+		for($j=0;$j<$case_file_count;$j++){
+			$file_cost_total	+=	$case_file_list[$j]['cost_amount'];
+			}
+		$file_cost_total	=	$file_cost_total/100;
+		
 		$this->assign('inner_balance_list',$inner_balance_list);
 		$this->assign('case_file_list',$case_file_list);
-		$this->assign('case_file_count',$case_file_count);		
+		$this->assign('case_file_count',$case_file_count);
+		$this->assign('file_cost_total',$file_cost_total);		
 
 		$this->display();
 	}
@@ -130,11 +138,8 @@ class InnerBalanceController extends Controller {
 			
 			$data=array();
 			$data['inner_balance_id']	=	trim(I('post.inner_balance_id'));
-			$data['income_amount']	=	100*trim(I('post.income_amount'));
-			
-			$outcome_amount	=	100*trim(I('post.outcome_amount'));
-			$other_outcome	=	100*trim(I('post.other_outcome'));
-			$data['outcome_amount']	=	$outcome_amount	+	$other_outcome;
+			$data['income_amount']	=	100*trim(I('post.income_amount'));			
+			$data['outcome_amount']	=	100*trim(I('post.outcome_amount'));
 
 			$result = M('InnerBalance')->save($data);
 			if(false !== $result){

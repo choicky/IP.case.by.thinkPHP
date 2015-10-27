@@ -51,8 +51,8 @@
 									{$inner_balance_list['inner_balance_date']	?	date("Y-m-d",$inner_balance_list['inner_balance_date'])	:	''}
 								</td>
 								<td>{$inner_balance_list['cost_center_name']}</td>
-								<td align="right">{$inner_balance_list['income_amount']	?	$inner_balance_list['income_amount']/100	:	''}</td>
-								<td align="right">{$inner_balance_list['outcome_amount']	?	$inner_balance_list['outcome_amount']/100	:	''}</td>
+								<td align="right">{$inner_balance_list['income_amount']	?	$inner_balance_list['income_amount']/100	:	0}</td>
+								<td align="right">{$inner_balance_list['outcome_amount']	?	$inner_balance_list['outcome_amount']/100	:	0}</td>
 								<td>
 									<a href="{:U('InnerBalance/view','inner_balance_id='.$inner_balance_list['inner_balance_id'])}" target="_blank">查看详情<a>、
 									<a href="{:U('InnerBalance/update','inner_balance_id='.$inner_balance_list['inner_balance_id'])}" target="_blank">更新<a>
@@ -63,6 +63,22 @@
 					</table> 
 					
 				</div>
+				<form class="form-inline" method="post" action="__CONTROLLER__/adjust">
+				<!-- 隐藏域开始 -->
+				<input	type="hidden" name="inner_balance_id" value="{$inner_balance_list.inner_balance_id}"></input>
+				<!-- 隐藏域结束 -->
+				  <div class="form-group">
+					<label for="income_amount">根据下面的详单，内部结算收入</label>
+					<input type="text" class="form-control" id="income_amount" name="income_amount" size="25" value="{$inner_balance_list['income_amount']	?	$inner_balance_list['income_amount']/100	:	0}">
+				  </div>
+				  <div class="form-group">
+					<label for="outcome_amount">内部结算支出</label>
+					<input type="text" class="form-control" id="outcome_amount" name="outcome_amount" size="6" value="{$file_cost_total}">
+				  </div>				  
+				  
+				<button type="submit" value="submit" class="btn btn-primary">就这样，更新到顶部的结算单</button>						
+			</form>
+				
 			</div>
         </div>
 		
@@ -75,15 +91,7 @@
 			<div class="panel  panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					交文产生的内部结算信息，共{$case_file_count}项。
-					<?php
-					$file_cost_amount	=	0;
-					for($j=0;$j<$case_file_count;$j++){
-						$file_cost_amount	+=	$case_file_list[$j]['cost_amount'];
-					}
-					$file_cost_amount	=	$file_cost_amount/100;
-					?>
-					共结算金额{$file_cost_amount} 元
+					交文产生的内部结算信息，共{$case_file_count}项。共结算金额{$file_cost_total} 元
 				</div>
 			
 				<!-- Table -->
@@ -138,25 +146,7 @@
 					</table> 
 				</div>
 			</div>
-			<form class="form-inline" method="post" action="__CONTROLLER__/adjust">
-				<!-- 隐藏域开始 -->
-				<input	type="hidden" name="inner_balance_id" value="{$inner_balance_list.inner_balance_id}"></input>
-				<!-- 隐藏域结束 -->
-				  <div class="form-group">
-					<label for="outcome_amount">上面详单的结算费用</label>
-					<input type="text" class="form-control" id="outcome_amount" name="outcome_amount" size="6" value="{$file_cost_amount}">
-				  </div>
-				  <div class="form-group">
-					<label for="other_outcome">其他结算费用</label>
-					<input type="text" class="form-control" id="other_outcome" name="other_outcome" size="25" placeholder="其他结算费用，如无就填0">
-				  </div>
-				  <div class="form-group">
-					<label for="income_amount">其他结算收入</label>
-					<input type="text" class="form-control" id="income_amount" name="income_amount" size="25" placeholder="其他结算收入，如无就填0">
-				  </div>
-				  
-				<button type="submit" value="submit" class="btn btn-primary">就这样，更新到顶部的结算单</button>						
-			</form>
+
         </div>
 		
 	  

@@ -75,7 +75,7 @@
 					  </div>
 					  <div class="form-group">
 						<label for="other_fee">&nbsp;&nbsp;&nbsp;杂费金额</label>
-						<input type="text" class="form-control" id="other_fee" name="other_fee" size="25" placeholder="如无就留空或填0">
+						<input type="text" class="form-control" id="other_fee" name="other_fee" size="25" value="{$case_payment_list['other_fee']/100	?	$case_payment_list['other_fee']/100	:	0}">
 					  </div>				  
 					<button type="submit" value="submit" class="btn btn-primary">就这样，更新到该缴费单</button>						
 				</form>
