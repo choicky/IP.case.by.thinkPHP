@@ -34,6 +34,7 @@ class InnerBalanceViewModel extends ViewModel {
 	
 	//返回本数据表的所有数据
 	public function listAll() {			
+		$order['convert(inner_balance_name using gb2312)']	=	'asc';
 		$order['inner_balance_date']	=	'desc';
 		$list	=	$this->order($order)->select();
 		return $list;
@@ -41,6 +42,7 @@ class InnerBalanceViewModel extends ViewModel {
 
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
+		$order['convert(inner_balance_name using gb2312)']	=	'asc';
 		$order['inner_balance_date']	=	'desc';
 		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		

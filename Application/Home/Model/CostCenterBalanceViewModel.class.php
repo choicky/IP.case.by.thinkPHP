@@ -37,6 +37,7 @@ class CostCenterBalanceViewModel extends ViewModel {
 	
 	//返回本数据表的所有数据
 	public function listAll() {			
+		$order['convert(cost_center_name using gb2312)']	=	'asc';
 		$order['start_date']	=	'desc';
 		$list	=	$this->order($order)->select();
 		return $list;
@@ -44,6 +45,7 @@ class CostCenterBalanceViewModel extends ViewModel {
 
 	//分页返回本数据表的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
+		$order['convert(cost_center_name using gb2312)']	=	'asc';
 		$order['start_date']	=	'desc';
 		$list	=	$this->order($order)->page($p.','.$limit)->select();
 		
