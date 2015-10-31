@@ -144,4 +144,69 @@ class ClientController extends Controller {
 			$this->display();
 		}
 	}
+	
+	
+	//该函数暂时只用于搜索某个申请人名下的专利案
+	public function listPatent(){
+		
+		//接收搜索参数
+		$applicant_id	=	I('get.applicant_id','0','int');
+		
+		//构造 maping
+		$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
+		$map['case_type_id']  = array('in',$case_type_list);
+
+		if($applicant_id){
+			$map['applicant_id']	=	$applicant_id;
+		}else{
+			$this->error('未指明要搜索的申请人');
+		}		
+
+		//取出其他参数并搜索
+		$p	= I("p",1,"int");
+		$page_limit  =   C("RECORDS_PER_PAGE");
+		$case_list = D('CaseView')->listPageSearch($p,$page_limit,$map);
+		
+		//取出该客户的名称
+		$client_list = D('Client')->relation(true)->field(true)->getByClientId($applicant_id);			
+		$this->assign('client_list',$client_list);
+		
+		$this->assign('case_list',$case_list['list']);
+		$this->assign('case_page',$case_list['page']);
+		$this->assign('case_count',$case_list['count']);
+
+		$this->display();
+	}
+	
+	//该函数暂时只用于搜索某个申请人名下的非专利案
+	public function listNotPatent(){
+		
+		//接收搜索参数
+		$applicant_id	=	I('get.applicant_id','0','int');
+		
+		//构造 maping
+		$case_type_list	=	D('CaseType')->listNotPatentCaseTypeId();
+		$map['case_type_id']  = array('in',$case_type_list);
+
+		if($applicant_id){
+			$map['applicant_id']	=	$applicant_id;
+		}else{
+			$this->error('未指明要搜索的申请人');
+		}		
+
+		//取出其他参数并搜索
+		$p	= I("p",1,"int");
+		$page_limit  =   C("RECORDS_PER_PAGE");
+		$case_list = D('CaseView')->listPageSearch($p,$page_limit,$map);
+		
+		//取出该客户的名称
+		$client_list = D('Client')->relation(true)->field(true)->getByClientId($applicant_id);			
+		$this->assign('client_list',$client_list);
+		
+		$this->assign('case_list',$case_list['list']);
+		$this->assign('case_page',$case_list['page']);
+		$this->assign('case_count',$case_list['count']);
+
+		$this->display();
+	}
 }

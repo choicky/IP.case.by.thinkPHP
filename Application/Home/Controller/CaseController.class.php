@@ -275,7 +275,7 @@ class CaseController extends Controller {
 			$this->assign('end_time',$end_time);
 			$this->assign('formal_title',$formal_title);		
 		
-		} 
+		}			
 	
 	$this->display();
 	}
