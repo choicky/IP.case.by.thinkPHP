@@ -231,6 +231,9 @@ class CaseController extends Controller {
 			if($case_group_id){
 				$case_type_list	=	D('CaseType')->listCaseTypeId($case_group_id);
 				$map['case_type_id']  = array('in',$case_type_list);
+			}else{
+				$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
+				$map['case_type_id']  = array('in',$case_type_list);
 			}
 			if($case_type_id){
 				$map['case_type_id']	=	$case_type_id;
@@ -330,6 +333,9 @@ class CaseController extends Controller {
 			if($case_group_id){
 				$case_type_list	=	D('CaseType')->listCaseTypeId($case_group_id);
 				$map['case_type_id']  = array('in',$case_type_list);
+			}else{
+				$case_type_list	=	D('CaseType')->listNotPatentCaseTypeId();
+				$map['case_type_id']  = array('in',$case_type_list);
 			}
 			if($case_type_id){
 				$map['case_type_id']	=	$case_type_id;
@@ -426,11 +432,12 @@ class CaseController extends Controller {
 			if($case_year){
 				$map['our_ref']	=	array('like',"%".$case_year."%");
 			}
-			if($case_group_id){
-				
-				$case_type_id_list	=	D('CaseType')->listCaseTypeId($case_group_id);
-				
+			if($case_group_id){				
+				$case_type_id_list	=	D('CaseType')->listCaseTypeId($case_group_id);				
 				$map['case_type_id']  = array('in',$case_type_id_list);
+			}else{
+				$case_type_list	=	D('CaseType')->listPatentCaseTypeId();
+				$map['case_type_id']  = array('in',$case_type_list);
 			}
 						
 			//取出搜索结果
@@ -500,11 +507,12 @@ class CaseController extends Controller {
 			if($case_year){
 				$map['our_ref']	=	array('like',"%".$case_year."%");
 			}
-			if($case_group_id){
-				
-				$case_type_id_list	=	D('CaseType')->listCaseTypeId($case_group_id);
-				
+			if($case_group_id){				
+				$case_type_id_list	=	D('CaseType')->listCaseTypeId($case_group_id);				
 				$map['case_type_id']  = array('in',$case_type_id_list);
+			}else{
+				$case_type_list	=	D('CaseType')->listNotPatentCaseTypeId();
+				$map['case_type_id']  = array('in',$case_type_list);
 			}
 						
 			//取出搜索结果
