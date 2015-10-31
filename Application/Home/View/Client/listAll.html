@@ -52,8 +52,8 @@
 								<td>{$client_vo.client_id_number}</td>
 								<td>{$client_vo.client_business_number}</td>
 								<td>{$client_vo.client_tax_number}</td>
-								<td><a href="{:U('Client/listPatent','applicant_id='.$client_vo['client_id'])}">名下专利案</a></td>
-								<td><a href="{:U('Client/listNotPatent','applicant_id='.$client_vo['client_id'])}">名下非专利案</a></td>
+								<td><a href="{:U('Client/listPatent','applicant_id='.$client_vo['client_id'])}" target="_blank">名下专利案</a></td>
+								<td><a href="{:U('Client/listNotPatent','applicant_id='.$client_vo['client_id'])}" target="_blank">名下非专利案</a></td>
 								<td>
 									<?php
 										$contact_count	=	count($client_vo['ClientContact']);
