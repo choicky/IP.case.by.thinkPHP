@@ -405,10 +405,10 @@ class BillController extends Controller {
 			
 			$data=array();
 			$data['bill_id']	=	trim(I('post.bill_id'));
-			$data['total_amount']	=	100*trim(I('post.total_amount',0,'int'));
-			$data['official_fee']	=	100*trim(I('post.official_fee',0,'int'));
-			$data['service_fee']	=	100*trim(I('post.service_fee',0,'int'));
-			$data['other_fee']	=	100*trim(I('post.other_fee',0,'int'));
+			$data['total_amount']	=	100*trim(I('post.total_amount',0));
+			$data['official_fee']	=	100*trim(I('post.official_fee',0));
+			$data['service_fee']	=	100*trim(I('post.service_fee',0));
+			$data['other_fee']	=	100*trim(I('post.other_fee',0));
 			
 			$data['total_amount']	=	$data['total_amount']	+	$data['other_fee'];
 
