@@ -25,7 +25,7 @@ class IndexController extends Controller {
 			$patent_file_count	=	count($patent_file_list);
 			$this->assign('patent_file_list',$patent_file_list);
 			$this->assign('patent_file_count',$patent_file_count);
-			
+			/*
 			//构造非专利的 mapping
 			$map_case_file['case_type_id']  = array('notin',$patent_file_type_list);
 			
@@ -34,7 +34,7 @@ class IndexController extends Controller {
 			$not_patent_file_count	=	count($not_patent_file_list);
 			$this->assign('not_patent_file_list',$not_patent_file_list);
 			$this->assign('not_patent_file_count',$not_patent_file_count);
-			
+			*/
 			//监控未来两周的缴费任务
 			$fee_due_date	=	strtotime('+1 week');
 			
@@ -51,7 +51,7 @@ class IndexController extends Controller {
 			$patent_fee_count	=	count($patent_fee_list);
 			$this->assign('patent_fee_list',$patent_fee_list);
 			$this->assign('patent_fee_count',$patent_fee_count);
-			
+			/*
 			//构造非专利的 mapping
 			$map_case_fee['case_type_id']  = array('notin',$patent_fee_type_list);
 			
@@ -60,7 +60,7 @@ class IndexController extends Controller {
 			$not_patent_fee_count	=	count($not_patent_fee_list);
 			$this->assign('not_patent_fee_list',$not_patent_fee_list);
 			$this->assign('not_patent_fee_count',$not_patent_fee_count);
-			
+			*/
 		} 
 	
 	$this->display();
