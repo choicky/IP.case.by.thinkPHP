@@ -118,6 +118,7 @@
 								<th>官文日期</th>
 								<th>期限日</th>
 								<th>完成日期</th>
+								<th>服务费</th>
 								<th>常用操作</th>
 								
 							</tr>
@@ -140,6 +141,7 @@
 								<td>{$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])	:	''}</td>
 								<td>{$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])	:	''}</td>
 								<td>{$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])	:	''}</td>
+								<td>{$case_file_vo['service_fee']/100}</td>
 								<td><a href="{:U('CaseFile/update','case_file_id='.$case_file_vo['case_file_id'])}" target="_blank">更新</a></td>
 								</tr>
 							</volist>
