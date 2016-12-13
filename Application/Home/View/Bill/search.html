@@ -134,7 +134,12 @@
 								<td align="right">{$bill_vo['official_fee']	?	$bill_vo['official_fee']/100	:	''}</td>
 								<td align="right">{$bill_vo['service_fee']	?	$bill_vo['service_fee']/100	:	''}</td>
 								<td align="right">{$bill_vo['other_fee']	?	$bill_vo['other_fee']/100	:	''}</td>
-								<td align="right">{$bill_vo.is_paid}</td>
+								<td align="right">
+									<volist name="bill_vo['Balance']" id="balance_vo">
+									<a href="{:U('Claim/view','balance_id='.$balance_vo['balance_id'])}" target="_blank">{$balance_vo.balance_id}</a>, ￥{$balance_vo['income_amount']/100	-	$balance_vo['outcome_amount']/100}<br>
+									</volist>
+									{$bill_vo.is_paid}
+								</td>
 								<td>
 									<a href="{:U('Bill/update','bill_id='.$bill_vo['bill_id'])}">更新</a>、
 									<a href="{:U('Bill/detail','bill_id='.$bill_vo['bill_id'])}">查看明细</a><br>
