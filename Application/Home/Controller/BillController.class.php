@@ -372,6 +372,24 @@ class BillController extends Controller {
 					$bill_id	=	$bill_list_tmp[$j]['bill_id'];
 					$total_amount	=	$bill_list_tmp[$j]['total_amount'];
 					
+					//查找到账情况，并赋值
+					$map_balance['bill_id']	=	$bill_id;
+					$balance_list	=	M('Balance')->field('balance_id,income_amount,outcome_amount')->where($map_balance)->select();
+					$bill_list_tmp[$j]['Balance']	=	$balance_list;
+					
+					//判断是否全额到账
+					$total_income_amount	=	0;
+					$total_outcome_amount	=	0;
+					for($k=0;$k<count($balance_list);$k++){
+						$total_income_amount	+=	$balance_list[$k]['income_amount'];
+						$total_outcome_amount	+=	$balance_list[$k]['outcome_amount'];
+					}			
+					$true_income_amount	=	$total_income_amount	-	$total_outcome_amount;			
+					if($total_amount	==	$true_income_amount){
+						$bill_list[$j]	=	$bill_list_tmp[$j];
+						$bill_list[$j]['is_paid']	=	"全额到账";
+					}
+					/*
 					//查找到账情况
 					$map_balance['bill_id']	=	$bill_id;
 					$balance_list	=	M('Balance')->field('sum(income_amount) as total_income_amount,sum(outcome_amount) as total_outcome_amount')->where($map_balance)->select();
@@ -379,7 +397,7 @@ class BillController extends Controller {
 					if($total_amount	==	$true_income_amount){
 						$bill_list[$j]	=	$bill_list_tmp[$j];
 						$bill_list[$j]['is_paid']	=	"全额到账";
-					}
+					}*/
 				}					
 			}
 			if(2==$is_paid){
