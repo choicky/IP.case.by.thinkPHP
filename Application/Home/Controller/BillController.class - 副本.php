@@ -32,8 +32,8 @@ class BillController extends Controller {
 				$total_income_amount	+=	$balance_list[$k]['income_amount'];
 				$total_outcome_amount	+=	$balance_list[$k]['outcome_amount'];
 			}			
-			$true_income_amount	=	$total_income_amount	-	$total_outcome_amount;			
-			if($total_amount	==	$true_income_amount){
+			$total_income_amount	=	$total_income_amount	-	$total_outcome_amount;			
+			if($total_amount	==	$total_income_amount){
 				$bill_list['list'][$j]['is_paid']	=	"全额到账";
 			}else{
 				$bill_list['list'][$j]['is_paid']	=	"尚未全额到账";
