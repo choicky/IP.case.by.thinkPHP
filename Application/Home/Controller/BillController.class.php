@@ -451,6 +451,9 @@ class BillController extends Controller {
 			$this->assign('follower_id',$follower_id);
 			$this->assign('is_paid',$is_paid);		
 		} 
+	//取出其他的数据
+	$today	=	date("Y-m-d",time());
+	$this->assign('today',$today);
 	
 	$this->display();
 	}

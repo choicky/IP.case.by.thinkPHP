@@ -37,6 +37,7 @@
 								<th>跟案人</th>
 								<th>账单日期</th>
 								<th>收单人（客户）</th>
+								<th>账单名称</th>
 								<th>总金额</th>
 								<th>官费</th>
 								<th>服务费</th>
@@ -51,6 +52,7 @@
 								<td>{$bill_list.member_name}</td>
 								<td>{$bill_list['bill_date']	?	date("Y/m/d",$bill_list['bill_date'])	:	''}</td>
 								<td>{$bill_list.client_name}</td>
+								<td>{$bill_list.bill_name}</td>
 								<td>{$bill_list['total_amount']/100}</td>
 								<td>{$bill_list['official_fee']/100}</td>
 								<td>{$bill_list['service_fee']/100}</td>

@@ -34,6 +34,7 @@
 								<th>跟案人</th>
 								<th>账单日期</th>
 								<th>收单人（客户）</th>
+								<th>账单名称</th>
 								<th>总金额</th>
 								<th>官费</th>
 								<th>服务费</th>
@@ -49,6 +50,7 @@
 								<td>{$bill_vo.member_name}</td>
 								<td>{$bill_vo['bill_date']	?	date("Y/m/d",$bill_vo['bill_date'])	:	''}</td>
 								<td>{$bill_vo.client_name}</td>
+								<td>{$bill_vo.bill_name}</td>
 								<td align="right">{$bill_vo['total_amount']	?	$bill_vo['total_amount']/100	:	''}</td>
 								<td align="right">{$bill_vo['official_fee']	?	$bill_vo['official_fee']/100	:	''}</td>
 								<td align="right">{$bill_vo['service_fee']	?	$bill_vo['service_fee']/100	:	''}</td>
@@ -127,6 +129,14 @@
 							</div>
 							
 							<div class="form-group">
+								<label for="bill_name" class="col-lg-3 control-label">账单名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="bill_name" name="bill_name" placeholder="简单描述这账单">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>							<div class="form-group">
 								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
 								<div class="col-lg-4">
 									<input type="text" class="form-control" id="total_amount" name="total_amount" placeholder="默认金额">

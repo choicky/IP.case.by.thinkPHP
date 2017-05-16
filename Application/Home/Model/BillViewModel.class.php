@@ -24,6 +24,7 @@ class BillViewModel extends ViewModel {
 			'follower_id',
 			'bill_date',
 			'client_id',
+			'bill_name',
 			'total_amount',
 			'official_fee',
 			'service_fee',
