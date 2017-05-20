@@ -50,7 +50,7 @@ class CaseFileController extends Controller {
 		}
     
     if(!(false	!==	strpos($case_type_name,'商标'))){
-      $this->error('案件未含“商标”二字，不能增加续展提醒任务');
+      $this->error('案件类型未含“商标”二字，不能增加续展提醒任务');
 		}
 
 		//计算出下一次续展的期限日
@@ -130,99 +130,64 @@ class CaseFileController extends Controller {
       }
     }
     
-    $this->success('商标续展提醒任务增加完成，请检查是否正确', U('CaseFile/view','case_id='.$case_id));
+    $this->success('商标续展提醒任务增加完成，请检查是否正确', U('Case/view','case_id='.$case_id));
 
 		
 	}
   
-    	//批量增加商标续展提醒	
+    	//批量增加PCT提醒	
 	public function addPctNotice(){
 		
 		//接收参数
 		$case_id	=	trim(I('post.case_id'));
-		$case_type_name	=	trim(I('post.case_type_name'));
+		$our_ref	=	trim(I('post.our_ref'));
 		$application_number	=	trim(I('post.application_number'));
-		$issue_date	=	trim(I('post.issue_date'));
+		$application_date	=	trim(I('post.application_date'));
     
 		//检查合法性
-		if(!$issue_date){
-			$this->error('未填写发证日');
+		if(!(false	!==	strpos($our_ref,'PCT'))){
+      $this->error('案号未含“PCT”，不能增加PCT的提醒任务');
 		}
     
-    if(!$application_number){
-			$this->error('未填写申请号');
-		}
-    
-    if(!(false	!==	strpos($case_type_name,'商标'))){
-      $this->error('案件未含“商标”二字，不能增加续展提醒任务');
+    //定义查询并取出对应的优先权信息，从而确定最早的优先权日
+		$map['case_id']	=	$case_id;
+		$case_priority_list	=	D('CasePriorityView')->where($map)->listAll();
+    if(is_array($case_priority_list)){
+      $priority_date = $case_priority_list[0]['priority_date'];
+    }else{
+      $priority_date = $application_date;
+    }
+    if(!$priority_date){
+			$this->error('本案未填写优先权日、也未填写PCT的申请日，无法建立进入国家阶段的提醒任务');
 		}
 
-		//计算出下一次续展的期限日
-		$today  = time();
-   
-    if($issue_date  > $today){
-      $this->error('发证日无效，并更正；或者手工增加续展提醒任务');
-		}else{
-      $renewal_date = $issue_date;
-      do {
-        $renewal_date = strtotime('+10 year',$renewal_date);
-      } while ($renewal_date < $today);
-    }
-    //dump(date( "Y-m-d", $renewal_date ));
-    
-        
-    //找出提前01个月提醒续展的文件任务的 file_type_id
-    $map_file_type[1]['file_type_name'] =array('like',array('%商标%','%01%','%月%','%续展%'),'AND');
+  
+    //找出提前18个月提醒续展的文件任务的 file_type_id
+    $map_file_type[1]['file_type_name'] =array('like',array('%PCT%','%18%','%月%','%提醒%'),'AND');
     $file_type_list[1]	=	M('FileType')->where($map_file_type[1])->find();
     $file_type_id[1]  = $file_type_list[1]['file_type_id'];
-    //dump($file_type_id[1]);
     
-    //找出提前01个月提醒续展的 due_date
-    $due_date[1]  = strtotime('-1 month',$renewal_date);
-    //dump(date( "Y-m-d", $due_date[1] ));
+    //找出提前18个月提醒续展的 due_date
+    $due_date[1]  = strtotime('+18 month',$priority_date);
     
-    //找出提前06个月提醒续展的文件任务的 file_type_id
-    $map_file_type[2]['file_type_name'] =array('like',array('%商标%','%06%','%月%','%续展%'),'AND');
+    //找出提前24个月提醒续展的文件任务的 file_type_id
+    $map_file_type[2]['file_type_name'] =array('like',array('%PCT%','%24%','%月%','%提醒%'),'AND');
     $file_type_list[2]	=	M('FileType')->where($map_file_type[2])->find();
     $file_type_id[2]  = $file_type_list[2]['file_type_id'];
-    //dump($file_type_id[2]);
     
-    //找出提前06个月提醒续展的 due_date
-    $due_date[2]  = strtotime('-6 month',$renewal_date);
-    //dump(date( "Y-m-d", $due_date[2] ));
+    //找出提前24个月提醒续展的 due_date
+    $due_date[2]  = strtotime('+24 month',$priority_date);
     
-    //找出提前09个月提醒续展的文件任务的 file_type_id
-    $map_file_type[3]['file_type_name'] =array('like',array('%商标%','%09%','%月%','%续展%'),'AND');
+    //找出提前28个月提醒续展的文件任务的 file_type_id
+    $map_file_type[3]['file_type_name'] =array('like',array('%PCT%','%28%','%月%','%提醒%'),'AND');
     $file_type_list[3]	=	M('FileType')->where($map_file_type[3])->find();
     $file_type_id[3]  = $file_type_list[3]['file_type_id'];
-    //dump($file_type_id[3]);
     
-    //找出提前09个月提醒续展的 due_date
-    $due_date[3]  = strtotime('-9 month',$renewal_date);
-    //dump(date( "Y-m-d", $due_date[3] ));
-    
-    //找出提前12个月提醒续展的文件任务的 file_type_id
-    $map_file_type[4]['file_type_name'] =array('like',array('%商标%','%12%','%月%','%续展%'),'AND');
-    $file_type_list[4]	=	M('FileType')->where($map_file_type[4])->find();
-    $file_type_id[4]  = $file_type_list[4]['file_type_id'];
-    //dump($file_type_id[4]);
-    
-    //找出提前12个月提醒续展的 due_date
-    $due_date[4]  = strtotime('-12 month',$renewal_date);
-    //dump(date( "Y-m-d", $due_date[4] ));
-    
-    //找出 提交商标续展文件的 file_type_id
-    $map_file_type[5]['file_type_name'] =array('like',array('%商标%','%提交%','%续展%'),'AND');
-    $file_type_list[5]	=	M('FileType')->where($map_file_type[5])->find();
-    $file_type_id[5]  = $file_type_list[5]['file_type_id'];
-    //dump($file_type_id[5]);
-    
-    //找出提前12个月提醒续展的 due_date
-    $due_date[5]  = $renewal_date;
-    //dump(date( "Y-m-d", $due_date[5] ));
-    
+    //找出提前28个月提醒续展的 due_date
+    $due_date[3]  = strtotime('+28 month',$priority_date);
+        
     //构造数组 & 写入
-		for($i=1;$i<6;$i++){
+		for($i=1;$i<4;$i++){
       $data_case_file['case_id']	=	$case_id;
       $data_case_file['file_type_id']	=	$file_type_id[$i];
       $data_case_file['due_date']	=	$due_date[$i];
@@ -234,7 +199,7 @@ class CaseFileController extends Controller {
       }
     }
     
-    $this->success('商标续展提醒任务增加完成，请检查是否正确', U('CaseFile/view','case_id='.$case_id));
+    $this->success('PCT进入国家阶段提醒任务增加完成，请检查是否正确', U('Case/view','case_id='.$case_id));
 
 		
 	}
