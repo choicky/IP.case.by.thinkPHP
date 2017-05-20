@@ -79,6 +79,26 @@ class CaseController extends Controller {
 		if(false !== $result){
 			$case_id	=	D('Case')->returnCaseId($our_ref);
 			
+      //自动建立一个默认任务，期限为一周
+      //找出该默认认为的 file_type_id
+      $map_file_type[1]['file_type_name'] =array('like',array('%开案%','%自动%','%提醒%'),'AND');
+      $file_type_list[1]	=	M('FileType')->where($map_file_type[1])->find();
+      $file_type_id[1]  = $file_type_list[1]['file_type_id'];
+      
+      //该自动任务的 due_date
+      $due_date[1]  = strtotime('+1 week',time());
+      
+      //构造数组 & 写入
+      $data_case_file['case_id']	=	$case_id;
+      $data_case_file['file_type_id']	=	$file_type_id[1];
+      $data_case_file['due_date']	=	$due_date[1];
+      
+      //写入该默认的提醒任务
+      $result_case_file	=	M('CaseFile')->add($data_case_file);
+      if(!$result_case_file){			
+        $this->error('增加默认任务失败');			
+      }
+          
 			//一对一关联数据表不会更新，这个很麻烦
 			$extend_info['case_id']	=	$case_id;
 			
