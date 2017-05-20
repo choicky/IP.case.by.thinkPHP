@@ -16,9 +16,64 @@
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<div class="page-header">
-					<h3>未来一周的交文监控、缴费监控</h3>
-				</div>
+
+					<h3>开案、默认的提醒任务、每周的提醒</h3>
+
+        <div class="panel-heading panel-title">
+          <p>自2017年5月20日起，开案之后，系统自动添加一个默认的交文任务，期限自开案日起1周。目的是便于提醒。</p>
+          <p>要根据案件情况修改该提醒任务的名称、期限。商标申请的提醒期限一般是1天，专利申请的提醒期限一般是两周。</p>
+          <p>以后，商标部也需要像专利部一样，每周向跟案人提醒一次交文任务。“商标”=><a href="/Home/CaseFile/searchNotPatentFileByDueDate" target="_blank">“文件监控”</a>能筛选出来尚未处理的文件任务</p>
+        </div>
+			</div>
+		</div>
+    
+    <div class="row">
+			<div class="col-lg-12">
+
+					<h3>商标案要补充完整申请号、指定的类别</h3>
+
+        <div class="panel-heading panel-title">
+          <p>需要补充的案件列表在“商标”=><a href="/Home/Check/listNoApplicationNumberNotPatent" target="_blank">“没有填写申请号或分类号的商标列表”</a>。如知道了申请号，可到<a href="http://wsjs.saic.gov.cn/txnS02.do?y7bRbp=qmFnjZB_ljeArEMuNH0WNaU3tz_Jn2Kvc.mGKUNtpLDFYH1889LGLuMRySGhP6azZ3JsrRnSTiR2laNJ0LKjGdSmFnJEwWeRC5vx8YEj.8wnu5elXcwqm1U.T0VlUNa_NAVYIe1xFNLqHEqH&c1K5tw0w6_=3hW9R0zblz8E6H6LvpKadMZqgRK.0wzXMc9aEc..hajybksOoLvLtLVy56tHXK47LPD05DD1HNox2DCHicdWyAYRgtifXRNsRKjb6JiUbveDmz..0uz7GQ72nViUeueT
+" target="_blank">商标局官网</a>查询其他信息。</p>
+          <p>要在2017年6月15日之前补充完整。（如是版权，可在“备注”栏标注为“版权”）</p>
+        </div>
+			</div>
+		</div>
+    
+    <div class="row">
+			<div class="col-lg-12">
+
+					<h3>商标、专利都要填写发证日</h3>
+
+        <div class="panel-heading panel-title">
+          <p>“商标”=><a href="/Home/Check/listNotIssuedNotPatent" target="_blank">“没有填写发证日的商标列表”</a>列出了需要补充发证日的商标案；
+          “专利”=><a href="/Home/Check/listNotIssuedPatent" target="_blank">“没有填写发证日的专利列表”</a>列出了需要补充发证日的专利案。</p>
+          <p>要在2017年7月15日之前补充完整。（没有发证日的在“备注”栏标注原因，例如“被驳回”）</p>
+        </div>
+			</div>
+		</div>
+    
+    <div class="row">
+			<div class="col-lg-12">
+
+					<h3>商标要建立续展监控</h3>
+
+        <div class="panel-heading panel-title">
+          <p>每个案件“增加文件记录”的页面的右侧，有一个“确认增加续展提醒任务”，点击之后，会创建3个续展提醒任务以及1个真正的续展任务。</p>
+          <p>“商标”=><a href="/Home/Check/listNotRenewalNotPatent" target="_blank">“有发证日但没有续展监控的商标列表”</a>列出了需要建立续展提醒任务的商标</p>
+          <p>要在2017年7月15日之前补充完整。（不用提醒续展的要在“备注”栏标注原因，例如“被撤销”或“客户指示放弃”等）</p>
+        </div>
+			</div>
+		</div>
+    
+    <div class="row">
+			<div class="col-lg-12">
+
+					<h3>PCT国际申请要提醒进入国家阶段</h3>
+
+        <div class="panel-heading panel-title">
+          <p>每个案件“增加文件记录”的页面的右侧，有一个“增加PCT进入国家阶段提醒”，点击之后，会创建3个提醒任务。</p>
+        </div>
 			</div>
 		</div>
 		
@@ -159,15 +214,13 @@
 			</div>
         </div>
 		 --> 
-		
+		<!-- 专利的也屏蔽了
 		<div class="row">
 			<div class="panel panel-warning">
-				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
 					专利交文监控（未来一周），共{$patent_file_count}项。<a href="{:U('CaseFile/searchPatentFileByDueDate')}">>>更多的监控选项</a>
 				</div>
 
-				<!-- Table -->
 				<div class="bs-component">
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
@@ -197,7 +250,6 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 将controller assign过来的 case_priority_list 赋给  case_priority_vo--> 
 							<volist name="patent_file_list" id="patent_file_vo">
 							<tr>
 								
@@ -237,12 +289,10 @@
 		
 		<div class="row">
 			<div class="panel panel-warning">
-				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
 					专利缴费监控（未来一周），共{$patent_fee_count}项。<a href="{:U('CaseFee/searchPatentFeeByDueDate')}">>>更多的监控选项</a>
 				</div>
 
-				<!-- Table -->
 				<div class="bs-component">
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
@@ -269,7 +319,6 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 将controller assign过来的 case_fee_list 赋给  case_fee_vo--> 
 							<volist name="patent_fee_list" id="patent_fee_vo">
 							<tr>
 								
@@ -300,7 +349,8 @@
 				</div>
 			</div>
         </div>
-		
+		-->
+    
 		
 
 	</block>

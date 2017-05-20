@@ -44,6 +44,7 @@
 								<th>申请日</th>
 								<th>申请号</th>								
 								<th>专利名称/商标类别</th>
+                <th>备注</th>
 								<th>常用操作</th>								
 							</tr>
 						</thead>
@@ -64,6 +65,7 @@
 								<td>
 									{$case_vo['formal_title'] ? $case_vo['formal_title'] : $case_vo['TmCategory']['tm_category_number']}
 								</td>
+                <td>{$case_vo.remarks}</td>
 								<td>
 									<a href="{:U('CasePriority/view','case_id='.$case_vo['case_id'])}" target="_blank">优先权记录</a><br>
 									<a href="{:U('CaseFile/view','case_id='.$case_vo['case_id'])}" target="_blank">文件记录</a><br>

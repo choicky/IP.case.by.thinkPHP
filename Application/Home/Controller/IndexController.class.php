@@ -8,7 +8,7 @@ class IndexController extends Controller {
 		if(!cookie('name')){
 			//$this->error('尚未登陆',U('User/login'));
 			header('Location: '.U('User/login'));
-		}else{
+		}else{/*
 			//监控未来一周的交文任务
 			$file_due_date	=	strtotime('+1 week');
 			
@@ -34,7 +34,7 @@ class IndexController extends Controller {
 			$not_patent_file_count	=	count($not_patent_file_list);
 			$this->assign('not_patent_file_list',$not_patent_file_list);
 			$this->assign('not_patent_file_count',$not_patent_file_count);
-			*/
+			
 			//监控未来两周的缴费任务
 			$fee_due_date	=	strtotime('+1 week');
 			
