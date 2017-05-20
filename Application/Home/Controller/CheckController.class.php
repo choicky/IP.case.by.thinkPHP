@@ -26,8 +26,47 @@ class CheckController extends Controller {
 
 		$this->display();
 	
+  }
+    
+		//找出没有有发证日但没有续展提醒的商标	
+	public function listNotRenewalNotPatent(){
+		
+		//找到非专利的 case_type_id
+		$case_type_list	=	D('CaseType')->listNotPatentCaseTypeId();
+		
+		//构造 mapping
+		$map['case_type_id']  = array('in',$case_type_list);
+		$map['issue_date']	=	array('GT',0);
+		
+		//获取案件列表
+		$order['our_ref']	=	'asc';
+		$case_list_tmp	=	D('CaseView')->where($map)->order($order)->select();		
+		
+		$case_count	=	count($case_list_tmp);
+    
+    for($i=0;$i<$case_count;$i++){
+      $case_id  = $case_list_tmp[$i]['case_id'];
+      
+      //获取文件任务
+      $map['case_id']	=	$case_id;
+      $case_file_list	=	M('CaseFile')->where($map)->select();	
+      
+      if(count($case_file_list) < 4){
+        $case_list[$i]  = $case_list_tmp[$i];
+      }
     }
+		
+    $case_count	=	count($case_list);
+    $title	=	"有发证日但没有续展任务监控的商标案件清单";
+    
+    
+		$this->assign('case_list',$case_list);
+		$this->assign('case_count',$case_count);
+    $this->assign('title',$title);
+
+		$this->display();
 	
+  }
 	
 	//找出没有费用任务的专利案子
 	public function listNoFeePatent(){
