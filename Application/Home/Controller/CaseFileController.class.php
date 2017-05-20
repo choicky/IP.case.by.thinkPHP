@@ -107,8 +107,18 @@ class CaseFileController extends Controller {
     $due_date[4]  = strtotime('-12 month',$renewal_date);
     //dump(date( "Y-m-d", $due_date[4] ));
     
+    //找出 提交商标续展文件的 file_type_id
+    $map_file_type[5]['file_type_name'] =array('like',array('%商标%','%提交%','%续展%'),'AND');
+    $file_type_list[5]	=	M('FileType')->where($map_file_type[5])->find();
+    $file_type_id[5]  = $file_type_list[5]['file_type_id'];
+    //dump($file_type_id[5]);
+    
+    //找出提前12个月提醒续展的 due_date
+    $due_date[5]  = $renewal_date;
+    //dump(date( "Y-m-d", $due_date[5] ));
+    
     //构造数组 & 写入
-		for($i=1;$i<5;$i++){
+		for($i=1;$i<6;$i++){
       $data_case_file['case_id']	=	$case_id;
       $data_case_file['file_type_id']	=	$file_type_id[$i];
       $data_case_file['due_date']	=	$due_date[$i];
