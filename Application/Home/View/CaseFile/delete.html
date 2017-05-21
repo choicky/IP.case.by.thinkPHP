@@ -48,7 +48,22 @@
 								<td>{$case_file_list.our_ref}</td>
 								<td>{$case_file_list.file_type_name}</td>
 								<td>{$case_file_list['oa_date']	=	$case_file_list['oa_date']	?	date("Y-m-d",$case_file_list['oa_date'])		:	''}</td>
-								<td>{$case_file_list['due_date']	=	$case_file_list['due_date']	?	date("Y-m-d",$case_file_list['due_date'])		:	''}</td>
+								<td>
+                <?php
+                  
+                    //没有完成任务，且超过了时限
+                    if(($case_file_list['completion_date'] < 1) AND ($today > $case_file_list['due_date'])){
+                      echo('<font color="red">'.date("Y-m-d",$case_file_list['due_date']).'</font>');
+                      
+                      //完成了任务，只是超限完成
+                    }elseif($case_file_list['completion_date'] > $case_file_list['due_date']){
+                      echo('<font color="red">'.date("Y-m-d",$case_file_list['due_date']).'</font>');
+                      
+                      //其他情况，也就是没有完成任务且没有超期限，或者在期限内完成任务的
+                    }else{
+                      echo($case_file_list['due_date']	?	date("Y-m-d",$case_file_list['due_date'])		:	'');
+                    }
+                  ?>
 								<td>{$case_file_list['completion_date']	=	$case_file_list['completion_date']	?	date("Y-m-d",$case_file_list['completion_date'])		:	''}</td>
 								<td>{$case_file_list['service_fee']	=	$case_file_list['service_fee']	?	$case_file_list['service_fee']/100		:	''}</td>
 								<td>{$case_file_list['bill_id']	=	$case_file_list['bill_id']	?	$case_file_list['bill_id']		:	''}</td>

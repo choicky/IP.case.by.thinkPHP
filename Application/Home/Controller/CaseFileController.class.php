@@ -319,7 +319,11 @@ class CaseFileController extends Controller {
 			
 			$case_file_list = D('CaseFileView')->field(true)->getByCaseFileId($case_file_id);
 			
-			$this->assign('case_file_list',$case_file_list);			
+			$this->assign('case_file_list',$case_file_list);
+
+      //返回当前时间
+      $today = time();
+      $this->assign('today',$today);			
 
 			$this->display();
 		}
@@ -465,7 +469,10 @@ class CaseFileController extends Controller {
 			$this->assign('end_due_date',$end_due_date);
 		
 		} 
-	
+	//返回当前时间
+  $today = time();
+  $this->assign('today',$today);
+    
 	$this->display();
 	}
 	
@@ -560,9 +567,14 @@ class CaseFileController extends Controller {
 			$this->assign('is_filed',$is_filed);
 			$this->assign('start_due_date',$start_due_date);
 			$this->assign('end_due_date',$end_due_date);
+
 		
 		} 
-	
+	      
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);
+      
 	$this->display();
 	}
 	
@@ -651,7 +663,10 @@ class CaseFileController extends Controller {
 			$this->assign('end_completion_date',$end_completion_date);
 		
 		} 
-	
+	//返回当前时间
+  $today = time();
+  $this->assign('today',$today);
+  
 	$this->display();
 	}
 	
@@ -739,7 +754,11 @@ class CaseFileController extends Controller {
 			$this->assign('end_completion_date',$end_completion_date);
 		
 		} 
-	
+    
+	//返回当前时间
+  $today = time();
+  $this->assign('today',$today);
+  
 	$this->display();
 	}
 	
@@ -757,6 +776,10 @@ class CaseFileController extends Controller {
 		$this->assign('case_file_page',$case_file_list['page']);
 		$this->assign('case_file_count',$case_file_list['count']);
 		
+    //返回当前时间
+    $today = time();
+    $this->assign('today',$today);
+    
 		$this->display();
 	}
 	
@@ -774,6 +797,10 @@ class CaseFileController extends Controller {
 		$this->assign('case_file_page',$case_file_list['page']);
 		$this->assign('case_file_count',$case_file_list['count']);
 		
+    //返回当前时间
+    $today = time();
+    $this->assign('today',$today);
+    
 		$this->display();
 	}
 	

@@ -23,6 +23,10 @@ class CaseFeeController extends Controller {
 		$this->assign('case_fee_page',$case_fee_list['page']);
 		$this->assign('case_fee_count',$case_fee_list['count']);
 		
+    //返回当前时间
+    $today = time();
+    $this->assign('today',$today);
+    
 		$this->display();
 	}
 	
@@ -40,6 +44,10 @@ class CaseFeeController extends Controller {
 		$this->assign('case_fee_page',$case_fee_list['page']);
 		$this->assign('case_fee_count',$case_fee_list['count']);
 		
+    //返回当前时间
+    $today = time();
+    $this->assign('today',$today);
+    
 		$this->display();
 	}
 	
@@ -59,6 +67,10 @@ class CaseFeeController extends Controller {
 		$this->assign('case_fee_page',$case_fee_list['page']);
 		$this->assign('case_fee_count',$case_fee_list['count']);
 		
+    //返回当前时间
+    $today = time();
+    $this->assign('today',$today);
+    
 		$this->display();
 	}
 
@@ -384,6 +396,10 @@ class CaseFeeController extends Controller {
 			$case_fee_list = D('CaseFeeView')->field(true)->getByCaseFeeId($case_fee_id);		
 			$this->assign('case_fee_list',$case_fee_list);
 			
+      //返回当前时间
+      $today = time();
+      $this->assign('today',$today);
+      
 			$this->display();
 		}
 	}
@@ -503,6 +519,10 @@ class CaseFeeController extends Controller {
 		
 		} 
 	
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);
+    
 	$this->display();
 	}
 	
@@ -621,6 +641,10 @@ class CaseFeeController extends Controller {
 		
 		} 
 	
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);
+    
 	$this->display();
 	}
 	
@@ -730,6 +754,10 @@ class CaseFeeController extends Controller {
 		
 		} 
 	
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);
+    
 	$this->display();
 	}
 	
@@ -839,6 +867,10 @@ class CaseFeeController extends Controller {
 		
 		} 
 	
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);
+    
 	$this->display();
 	}
 	
@@ -920,6 +952,10 @@ class CaseFeeController extends Controller {
 		$this->assign('row_limit',$row_limit);
         $this->assign('today',$today);
 
+    //返回当前时间
+    $today = time();
+    $this->assign('today',$today);
+      
 		$this->display();
 	}
 }

@@ -164,7 +164,22 @@
 								<td>{$i}</td>
 								<td>{$case_file_vo.file_type_name}</td>
 								<td>{$case_file_vo['oa_date']	?	date("Y-m-d",$case_file_vo['oa_date'])		:	''}</td>
-								<td>{$case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])		:	''}</td>
+								<td>
+                <?php
+                  
+                    //没有完成任务，且超过了时限
+                    if(($case_file_vo['completion_date'] < 1) AND ($today > $case_file_vo['due_date'])){
+                      echo('<font color="red">'.date("Y-m-d",$case_file_vo['due_date']).'</font>');
+                      
+                      //完成了任务，只是超限完成
+                    }elseif($case_file_vo['completion_date'] > $case_file_vo['due_date']){
+                      echo('<font color="red">'.date("Y-m-d",$case_file_vo['due_date']).'</font>');
+                      
+                      //其他情况，也就是没有完成任务且没有超期限，或者在期限内完成任务的
+                    }else{
+                      echo($case_file_vo['due_date']	?	date("Y-m-d",$case_file_vo['due_date'])		:	'');
+                    }
+                  ?>
 								<td>{$case_file_vo['completion_date']	?	date("Y-m-d",$case_file_vo['completion_date'])		:	''}</td>
 								<td>{$case_file_vo['service_fee']	?	$case_file_vo['service_fee']/100		:	''}</td>
 								<td>
@@ -230,7 +245,22 @@
 								<td>{$case_fee_vo['official_fee']	?	$case_fee_vo['official_fee']/100		:	''}</td>
 								<td>{$service_fee	=	$case_fee_vo['service_fee']	?	$case_fee_vo['service_fee']/100		:	''}</td>
 								<td>{$oa_date	=	$case_fee_vo['oa_date']	?	date("Y-m-d",$case_fee_vo['oa_date'])		:	''}</td>
-								<td>{$due_date	=	$case_fee_vo['due_date']	?	date("Y-m-d",$case_fee_vo['due_date'])		:	''}</td>
+								<td>
+                <?php
+                  
+                    //没有完成任务，且超过了时限
+                    if(($case_fee_vo['payment_date'] < 1) AND ($today > $case_fee_vo['due_date'])){
+                      echo('<font color="red">'.date("Y-m-d",$case_fee_vo['due_date']).'</font>');
+                      
+                      //完成了任务，只是超限完成
+                    }elseif($case_fee_vo['payment_date'] > $case_fee_vo['due_date']){
+                      echo('<font color="red">'.date("Y-m-d",$case_fee_vo['due_date']).'</font>');
+                      
+                      //其他情况，也就是没有完成任务且没有超期限，或者在期限内完成任务的
+                    }else{
+                      echo($case_fee_vo['due_date']	?	date("Y-m-d",$case_fee_vo['due_date'])		:	'');
+                    }
+                  ?>
 								<td>{$case_fee_vo.payer_name}</td>
 								<td>
 									<a href="{:U('CasePayment/view','case_payment_id='.$case_fee_vo['case_payment_id'])}" target="_blank">{$case_fee_vo['case_payment_id']	?	$case_fee_vo['case_payment_id']	:	''} &nbsp;</a>

@@ -23,8 +23,12 @@ class CaseController extends Controller {
 		$this->assign('case_list',$case_list['list']);
 		$this->assign('case_page',$case_list['page']);
 		$this->assign('case_count',$case_list['count']);
-
-		$this->display();
+    
+    //返回当前时间
+    $today = time();
+    $this->assign('today',$today);	
+      
+    $this->display();
 	}
 	
 	//分页显示所有专利案件，其中，$p为当前分页数，$limit为每页显示的记录数
@@ -37,6 +41,10 @@ class CaseController extends Controller {
 		$this->assign('case_page',$case_list['page']);
 		$this->assign('case_count',$case_list['count']);
 		
+    //返回当前时间
+    $today = time();
+    $this->assign('today',$today);	
+    
 		$this->display();
 	}
 	
@@ -50,6 +58,10 @@ class CaseController extends Controller {
 		$this->assign('case_page',$case_list['page']);
 		$this->assign('case_count',$case_list['count']);
 		
+    //返回当前时间
+    $today = time();
+    $this->assign('today',$today);	
+    
 		$this->display();
 	}
 	
@@ -194,6 +206,10 @@ class CaseController extends Controller {
 			$this->assign('row_limit',$row_limit);
 			$this->assign('today',$today);
 
+      //返回当前时间
+      $today = time();
+      $this->assign('today',$today);	
+      
 			$this->display();
 		}
 	}
@@ -297,6 +313,10 @@ class CaseController extends Controller {
 		
 		}			
 	
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);	
+	
 	$this->display();
 	}
 	
@@ -399,6 +419,10 @@ class CaseController extends Controller {
 		
 		} 
 	
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);	
+	
 	$this->display();
 	}
 	
@@ -473,6 +497,10 @@ class CaseController extends Controller {
 			$this->assign('case_year',$case_year);
 			$this->assign('case_group_id',$case_group_id);			
 		} 
+	
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);	
 	
 	$this->display();
 	}
@@ -549,6 +577,10 @@ class CaseController extends Controller {
 			$this->assign('case_group_id',$case_group_id);			
 		} 
 	
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);	
+	
 	$this->display();
 	}
 	
@@ -572,6 +604,10 @@ class CaseController extends Controller {
 		$this->assign('case_application_number_count',$case_list['case_application_number_count']);
 		
 
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);	
+	
 	$this->display();
 	}
 	
@@ -612,5 +648,9 @@ class CaseController extends Controller {
 
 		$this->display();
 
+  //返回当前时间
+  $today = time();
+  $this->assign('today',$today);	
+	
 	}
 }
