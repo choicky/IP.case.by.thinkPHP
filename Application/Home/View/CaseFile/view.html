@@ -121,7 +121,6 @@
 								<td>{$case_file_list['oa_date']	=	$case_file_list['oa_date']	?	date("Y-m-d",$case_file_list['oa_date'])		:	''}</td>
 								<td>
                 <?php
-                  
                     //没有完成任务，且超过了时限
                     if(($case_file_list['completion_date'] < 1) AND ($today > $case_file_list['due_date'])){
                       echo('<font color="red">'.date("Y-m-d",$case_file_list['due_date']).'</font>');

@@ -370,9 +370,9 @@ class CaseFileController extends Controller {
 		//取出其他变量
 		$row_limit  =   C("ROWS_PER_SELECT");
 		$today	=	time();
+
 		$this->assign('row_limit',$row_limit);
 		$this->assign('today',$today);
-
 		$this->display();
 	}
 	

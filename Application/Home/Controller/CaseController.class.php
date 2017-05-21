@@ -645,12 +645,15 @@ class CaseController extends Controller {
 		$this->assign('case_file_count',$case_file_count);
 		$this->assign('case_fee_list',$case_fee_list);
 		$this->assign('case_fee_count',$case_fee_count);
+    
+    //返回当前时间
+    $today = time();
+    
+    $this->assign('today',$today);	
 
 		$this->display();
 
-  //返回当前时间
-  $today = time();
-  $this->assign('today',$today);	
+  
 	
 	}
 }
