@@ -114,7 +114,7 @@ class CaseFileController extends Controller {
     //dump($file_type_id[5]);
     
     //找出提前12个月提醒续展的 due_date
-    $due_date[5]  = $renewal_date;
+    $due_date[5]  = strtotime('-1 day',$renewal_date);
     //dump(date( "Y-m-d", $due_date[5] ));
     
     //构造数组 & 写入
