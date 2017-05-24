@@ -7,18 +7,29 @@ class CaseImportController extends Controller {
 	//默认显示
 	public function index(){
         //$this->display();
-        $map['application_number'] = 19585094; 
-        $case_source_list = M('CaseSource')->where($map)->select();
-
-        dump($case_source_list);
+        $map['application_number'] = 18702085; 
+        $case_source_list = M('CaseSource')->where($map)->find();
         
-        if(count($case_source_list)<1){
-            M('CaseOutput')->field('tentative_title,application_number,application_date,formal_title,issue_date,remarks')->add($case_source_list[0]);
+        $case_source_title = $case_source_list[0][tentative_title];
         
+        function detect_encoding($str) {
+            foreach (array("UTF-8","UTF-8","GB2312","GB18030","GBK","BIG5") as $v) {
+                if ($str === iconv($v, $v.'//IGNORE', $str)) {
+                    return $v;
+                }
+            }
         }
-        $case_output_list = M('CaseOutput')->where($map)->select();
         
-        dump($case_output_list);
+        function is_utf8 ($str) {
+            if ($str === iconv('UTF-8', 'UTF-8//IGNORE', $str)) {
+                return 'UTF-8';
+            }
+        }
+        
+        $result = detect_encoding($case_source_title);
+        
+
+        echo($result);
 
     }
 	
@@ -87,7 +98,7 @@ class CaseImportController extends Controller {
                     //判断商标名称是否相同
                     if(trim( $case_source_list[$i]['tentative_title'])){   //如果 case_source 有相应数据
                         if(trim( $case_data[$case_id]['tentative_title'])){   //如果 case 有相应数据
-                            $tentative_title_test  = strpos( trim( $case_data[$case_id]['tentative_title']),trim( $case_source_list[$i]['tentative_title']));
+                            $tentative_title_test  = mb_strpos( trim( $case_data[$case_id]['tentative_title']),trim( $case_source_list[$i]['tentative_title']),0,'UTF-8');
                             if( FALSE == $tentative_title_test ){   //如果 Case 的数据未包含 Case_Source 的数据
                                 $case_data[$case_id]['tentative_title_test'] = '盈方系统原来登记的商标名称是：'.trim( $case_data[$case_id]['tentative_title']).'，'.'已将白兔的商标名称：'.trim( $case_source_list[$i]['tentative_title']).'加到中括号里';
                                 $case_data[$case_id]['tentative_title'] = trim( $case_data[$case_id]['tentative_title']).'['.trim( $case_source_list[$i]['tentative_title']).']'; 
@@ -148,7 +159,7 @@ class CaseImportController extends Controller {
                     if(false !== $result){
                         // $number_of_diff_case 用来统计有差异的case数量
                         $number_of_diff_case  = $number_of_diff_case  + 1;
-                        echo('case_source表第'.$i.'case表第'.$j.',新增到 case_output<br>');
+                        echo('case_source表第'.$i.'case表第'.$j.',差异案记录到 case_output<br>');
                         dump($case_source_list[$i]);
                         //$this->success('修改成功', U('Case/view','case_id='.$case_id));
                     }else{
@@ -181,7 +192,7 @@ class CaseImportController extends Controller {
                             if(empty( $case_extend_list['remarks'])){   //如果 case_extend 没有相应 remarks
                                 $case_extend_data[$case_id]['remarks'] = trim( $case_source_list[$i]['remarks']);
                             }else{  //如果 case_extend 有相应 remarks
-                                $remarks_test  = strpos( trim( $$case_extend_list['remarks']),trim( $case_source_list[$i]['remarks']));
+                                $remarks_test  = mb_strpos( trim( $$case_extend_list['remarks']),trim( $case_source_list[$i]['remarks']),0,'UTF-8');
                                 if( FALSE == $remarks_test ){   //如果 Case_Extend 的数据未包含 Case_Source 的数据
                                     $case_extend_data[$case_id]['remarks'] = trim( $case_extend_list['remarks']).'['.trim( $case_source_list[$i]['remarks']).']';
                                 }
