@@ -7,29 +7,36 @@ class CaseImportController extends Controller {
 	//默认显示
 	public function index(){
         //$this->display();
-        $map['application_number'] = 18702085; 
+        $map['application_number'] = 18702085;
+        
+        $case_list = M('Case')->where($map)->find();
+        
+        $case_title = $case_list['tentative_title'];
+        
         $case_source_list = M('CaseSource')->where($map)->find();
+        $case_source_title = $case_source_list['tentative_title'];
         
-        $case_source_title = $case_source_list[0][tentative_title];
+        echo($case_title);
         
-        function detect_encoding($str) {
-            foreach (array("UTF-8","UTF-8","GB2312","GB18030","GBK","BIG5") as $v) {
-                if ($str === iconv($v, $v.'//IGNORE', $str)) {
-                    return $v;
-                }
-            }
-        }
+        echo('<br>'.'上面是 $case_title ，下面是 !$case_source_title <br>');
         
-        function is_utf8 ($str) {
-            if ($str === iconv('UTF-8', 'UTF-8//IGNORE', $str)) {
-                return 'UTF-8';
-            }
-        }
+        echo($case_source_title);
         
-        $result = detect_encoding($case_source_title);
+        $result = mb_strrpos($case_source_title, $case_title, 0);
         
+                echo('<br>');
+
 
         echo($result);
+        
+        echo('<br>'.'上面是 $result ，下面是 !$result <br>');
+        
+        echo(!$result);
+        
+        echo('<br>');
+
+        
+
 
     }
 	
@@ -99,7 +106,7 @@ class CaseImportController extends Controller {
                     if(trim( $case_source_list[$i]['tentative_title'])){   //如果 case_source 有相应数据
                         if(trim( $case_data[$case_id]['tentative_title'])){   //如果 case 有相应数据
                             $tentative_title_test  = mb_strpos( trim( $case_data[$case_id]['tentative_title']),trim( $case_source_list[$i]['tentative_title']),0,'UTF-8');
-                            if( FALSE == $tentative_title_test ){   //如果 Case 的数据未包含 Case_Source 的数据
+                            if( !($tentative_title_test >= 0 ) ){   //如果 Case 的数据未包含 Case_Source 的数据
                                 $case_data[$case_id]['tentative_title_test'] = '盈方系统原来登记的商标名称是：'.trim( $case_data[$case_id]['tentative_title']).'，'.'已将白兔的商标名称：'.trim( $case_source_list[$i]['tentative_title']).'加到中括号里';
                                 $case_data[$case_id]['tentative_title'] = trim( $case_data[$case_id]['tentative_title']).'['.trim( $case_source_list[$i]['tentative_title']).']'; 
                             }
@@ -150,7 +157,7 @@ class CaseImportController extends Controller {
                     }
                     
                     // 将有差异的记录存储到 case_output
-                    if($formal_title_test OR (FALSE == $tentative_title_test) OR $application_date_test OR $issue_date_test){
+                    if($formal_title_test OR ($tentative_title_test >=0 ) OR $application_date_test OR $issue_date_test){
                 
                         $result	=	M('CaseOutput')->field('case_id,tentative_title,tentative_title_test,application_number,application_number_test,application_date,application_date_test,formal_title,formal_title_test,issue_date,issue_date_test')->add( $case_data[$case_id]);
 
@@ -193,7 +200,7 @@ class CaseImportController extends Controller {
                                 $case_extend_data[$case_id]['remarks'] = trim( $case_source_list[$i]['remarks']);
                             }else{  //如果 case_extend 有相应 remarks
                                 $remarks_test  = mb_strpos( trim( $$case_extend_list['remarks']),trim( $case_source_list[$i]['remarks']),0,'UTF-8');
-                                if( FALSE == $remarks_test ){   //如果 Case_Extend 的数据未包含 Case_Source 的数据
+                                if( !($remarks_test >= 0)){   //如果 Case_Extend 的数据未包含 Case_Source 的数据
                                     $case_extend_data[$case_id]['remarks'] = trim( $case_extend_list['remarks']).'['.trim( $case_source_list[$i]['remarks']).']';
                                 }
                             }                                                                       
