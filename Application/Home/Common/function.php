@@ -75,8 +75,6 @@ function yearInterval($application_date,$target_date){
 
 //预定义新增到 case_output 的方法，没有成功录入就返回 FALSE
 function addToCaseOutput($case_source_array){
-    echo('addToCaseOutput函数<br>');
-    dump($case_source_array);
     
     //预定义查询 case_output 的字段
     $case_output_field_for_find = 'case_output_id,application_number';
@@ -114,8 +112,6 @@ function addToCaseOutput($case_source_array){
 
 //预定义新增到 case_extend 的方法，没有成功录入就返回 FALSE
 function addToCaseExtend($case_source_array){
-    echo('addToCaseExtend函数<br>');
-    dump($case_source_array);
     
     //预定义查询 case_extend 的字段
     $case_extend_field_for_find = 'case_extend_id,case_id,remarks';
@@ -153,9 +149,6 @@ function addToCaseExtend($case_source_array){
 
 //预定义数字比较函数，相同就返回 True，不相同就返回 FALSE
 function dataCompare($data_1,$data_2){
-    echo('dataCompare函数<br>');
-    dump($data_1);
-    dump($data_2);
     
     //变量初始化
     $result = FALSE;
@@ -169,9 +162,6 @@ function dataCompare($data_1,$data_2){
 
 //预定义字符串比较函数，后者包含前者就返回 True，不包含就返回 FALSE
 function strCompare($str_1,$str_2){
-    echo('strCompare函数<br>');
-    dump($str_1);
-    dump($str_2);
 
     //变量初始化
     $result = FALSE;
@@ -186,9 +176,7 @@ function strCompare($str_1,$str_2){
 
 //预定义案件基本信息比较函数，返回一个数组，数组第一元素为 TRUE 就表示完全相同，为 FALSE 表示不完全相同；数组第二元素为处理过的 $case_array_2
 function caseCompare($case_array_1,$case_array_2){
-    echo('caseCompare函数<br>');
-    dump($case_array_1);
-    dump($case_array_2);
+
     //变量初始化
     $case_data_1 = array();
     $case_data_2 = array();
@@ -278,9 +266,7 @@ function caseCompare($case_array_1,$case_array_2){
 
 //预定义案件备注信息比较函数，返回一个数组，数组第一元素为 TRUE 就表示完全相同，为 FALSE 表示不完全相同；数组第二元素为处理过的 $case_array_2
 function remarksCompare($case_array_1,$case_array_2){
-    echo('remarksCompare函数<br>');
-    dump($case_array_1);
-    dump($case_array_2);
+
     //预定义查询 case_extend 的字段
     $case_extend_field_for_find = 'case_extend_id,case_id,remarks';
     

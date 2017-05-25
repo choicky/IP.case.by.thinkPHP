@@ -49,12 +49,12 @@ class CaseImportController extends Controller {
         $case_field_for_update = 'case_id,formal_title,application_number,tentative_title,application_date,issue_date';
         
         //初始化变量
-        $number_of_new_case = 0; // 为新case数量，
-        $number_of_same_case = 0; // 为信息完全相同的数量
-        $number_of_update_case = 0; // 为更新的case数量，
-        $number_of_diff_case = 0; // 为信息有差异的case数量，
-        $number_of_add_extend = 0; // 为新增到 case_extend 的数量，
-        $number_of_update_extend = 0; // 为修改 case_extend 的数量
+        $number_of_new_case = 1; // 为新case数量，
+        $number_of_same_case = 1; // 为信息完全相同的数量
+        $number_of_update_case = 1; // 为更新的case数量，
+        $number_of_diff_case = 1; // 为信息有差异的case数量，
+        $number_of_add_extend = 1; // 为新增到 case_extend 的数量，
+        $number_of_update_extend = 1; // 为修改 case_extend 的数量
         
         //读取 case_source 表
         $case_source_list = array();
@@ -89,10 +89,10 @@ class CaseImportController extends Controller {
                 $result = addToCaseOutput($case_source_data);
                 
                 dump($case_source_data);
-                echo('第三方提供的案件信息表目前'.$number_of_new_case.'+1个新案，<br>');
+                echo('第三方提供的案件信息表目前有'.$number_of_new_case.'个新案未录入管理系统，<br>');
                 if(false !== $result){
                     // $number_of_new_case 为新case数量
-                    echo('该第'.$number_of_new_case.'+1个新案已保存到 case_output 数据表。<br>');
+                    echo('该第'.$number_of_new_case.'个新案已保存到 case_output 数据表，备查。<br>');
                     $number_of_new_case = $number_of_new_case  + 1;
                 }else{
                     echo('但是，该第'.$number_of_new_case.'个新案未能保存到 case_output 数据表。<br>');
@@ -125,25 +125,24 @@ class CaseImportController extends Controller {
                     
                     if($case_test[0] and $remarks_test[0]){ //如果基本信息与备注信息都相同
                         // $number_of_same_case 为信息完全相同的数量
-                        echo('第三方提供的案件信息表目前共有'.$number_of_same_case.'+1个案件的信息与管理系统的相同。<br>');
+                        echo('第三方提供的案件信息表目前共有'.$number_of_same_case.'个案件的信息与管理系统的相同。<br>');
                         $number_of_same_case = $number_of_same_case +1;
                     }elseif((!$case_test[0]) and (!$remarks_test[0])){ //如果基本信息与备注信息都不相同
                         $case_result = M('Case')->field($case_field_for_update)->save($case_test[1]);
-                        echo('这是saveToCase');
                         dump($case_test[1]);
                         
-                        echo('第三方提供的案件信息表目前共有'.$number_of_update_case.'+1个案件的基本信息与管理系统目前登记的不同，<br>');
+                        echo('第三方提供的案件信息表目前共有'.$number_of_update_case.'个案件的基本信息与管理系统目前登记的不同，<br>');
                         // $number_of_update_case 为更新了基本信息的案件数量，$number_of_update_extend 为更新了备注信息的案件数量 
                         if(FALSE !== $case_result){
-                            echo('该第'.$number_of_update_case.'+1个案件的基本信息更新到管理系统 case 表。<br>');
+                            echo('该第'.$number_of_update_case.'个案件的基本信息更新到管理系统 case 表。<br>');
                             $number_of_update_case = $number_of_update_case +1;
                         }else{
-                            echo('但是，该第'.$number_of_update_case.'+1个案件的基本信息未能更新到管理系统 case 表。<br>');
+                            echo('但是，该第'.$number_of_update_case.'个案件的基本信息未能更新到管理系统 case 表。<br>');
                         }
                         
                         $case_extend_result = addToCaseExtend($remarks_test[1]);
                         dump($remarks_test[1]);
-                        echo('第三方提供的案件信息表目前共有'.$number_of_update_extend.'+1个案件的备注信息与管理系统目前登记的不同，<br>');
+                        echo('第三方提供的案件信息表目前共有'.$number_of_update_extend.'个案件的备注信息与管理系统目前登记的不同，<br>');
                         if(FALSE !== $case_extend_result){
                             echo('该第'.$number_of_update_extend.'+1个案件的备注信息更新到管理系统 case_extend 表。<br>');
                             $number_of_update_extend = $number_of_update_extend +1;
