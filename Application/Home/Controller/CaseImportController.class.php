@@ -182,7 +182,7 @@ class CaseImportController extends Controller {
     
 	//导入
 	public function import(){
-
+        
         //预定义读取 case_source 的字段
         $case_source_field_for_read = 'formal_title,application_number,tentative_title,application_date,issue_date,remarks';
 
@@ -202,8 +202,24 @@ class CaseImportController extends Controller {
         //读取 case_source 表
         $case_source_list = array();
         $case_source_list = M( 'CaseSource')->field($case_source_field_for_read)->select();
+        
+        //读取 case 表
+        $case_list_count = 0;
+        $case_list_count = M( 'Case' )->count();
+        
+        $case_handle_number = 0;
+        $case_handle_number = $case_list_count * count($case_source_list);
+        
+        //进行简单的提示
+        echo('<hr>');
+        echo('开始处理案件信息：<br>');
+        echo('第三方共提供了'.count($case_source_list).'个案件的信息；');
+        echo('管理系统有'.$case_list_count.'个案件的信息；');
+        echo('要进行'.$case_handle_number.'次案件对比，耗时较长……<br>');
+        echo('处理完成后，统计结果会在本页面底部显示；有变化的案件信息会另存到 <a href="/Home/CaseImport/listOutputCaseByPage" target="_blank">case_output</a> 表备查，请在系统处理完成后去核对；<br><br><hr>');
+
                 
-        for( $i=0; $i<50; $i++){
+        for( $i=0; $i<count($case_source_list); $i++){
                    
             //初始化变量
             $case_source_data = array();
@@ -231,7 +247,7 @@ class CaseImportController extends Controller {
                 $result = FALSE;
                 $result = addToCaseOutput($case_source_data);
                 
-                dump($case_source_data);
+                //dump($case_source_data);
                 
                 // $number_of_new_case 为 case_source 表中有的，而 case 表没有的案件数量，要另存到 case_output 表
                 echo('从第三方提供的数据表中发现第'.$number_of_new_case.'个新案，需要事后【手工】把这新案录入系统<br>');
@@ -283,8 +299,8 @@ class CaseImportController extends Controller {
                         $case_result = M('Case')->field($case_field_for_update)->save($case_test[1]);
                         $case_extend_result = addToCaseExtend($remarks_test[1]);
                         
-                        dump($case_test[1]);
-                        dump($remarks_test[1]);
+                        //dump($case_test[1]);
+                        //dump($remarks_test[1]);
                         
                         // $number_of_diff_case 为 case 表中有的，且信息与 case_source 表不相同的案件，该案件被更新后要另存到 case_output 表
                         echo('管理系统中发现第'.$number_of_diff_case.'个信息不同的案件，');
@@ -302,7 +318,7 @@ class CaseImportController extends Controller {
                     }elseif((!$case_test[0]) && ($remarks_test[0])){    //如果基本信息不相同，备注信息相同
                         $case_result = M('Case')->field($case_field_for_update)->save($case_test[1]);
                         
-                        dump($case_test[1]);
+                        //dump($case_test[1]);
                         echo('管理系统中发现第'.$number_of_diff_case.'个信息不同的案件，');
                         
                         if(FALSE !== $case_result){
@@ -318,7 +334,7 @@ class CaseImportController extends Controller {
                     }else{  //如果基本信息相同，备注信息不相同
                         $case_extend_result = addToCaseExtend($remarks_test[1]);
                         
-                        dump($remarks_test[1]);
+                        //dump($remarks_test[1]);
 
                         echo('管理系统中发现第'.$number_of_diff_case.'信息不同的案件，');
                         if(FALSE !== $case_extend_result){
@@ -377,13 +393,13 @@ class CaseImportController extends Controller {
         
         echo('<hr>');
         echo('<hr>');
-        echo('汇总<br>');
+        echo('案件信息处理完成，汇总如下：<br>');
         echo('第三方共提供了'.$i.'个案件的信息；');
-        echo('其中共有'.$number_of_new_case.'个案件是新的，已存入 case_output 表备查，请尽快补录入管理系统<br>');
+        echo('其中共有'.$number_of_new_case.'个案件是新的，已存入 <a href="/Home/CaseImport/listOutputCaseByPage" target="_blank">case_output</a> 表备查，请尽快补录入管理系统<br>');
         echo('管理系统中共有'.$number_of_same_case.'个案件的信息与第三方提供的信息相同<br>');
         echo('管理系统中共有'.$number_of_diff_case.'个案件的信息与第三方提供的信息不相同，');
-        echo('管理系统中本次共有'.$number_of_update_case.'个案件的信息被更新，被更新的信息已另存到 case_output 表备查，请尽快核对 <br>');
-        echo('本次共另存了'.$number_of_output_case.'个案件信息备查，包括管理系统中被更新的案件（'.$number_of_update_case.'个）、以及管理系统中没有而第三方数据源有的案件（'.$number_of_new_case.'个）<br>');
+        echo('管理系统中本次共有'.$number_of_update_case.'个案件的信息被更新，被更新的信息已另存到 <a href="/Home/CaseImport/listOutputCaseByPage" target="_blank">case_output</a> 表备查，请尽快核对 <br>');
+        echo('本次共另存了'.$number_of_output_case.'个案件信息到 <a href="/Home/CaseImport/listOutputCaseByPage" target="_blank">case_output</a> 备查，包括管理系统中被更新的案件（'.$number_of_update_case.'个）、以及管理系统中没有而第三方数据源有的案件（'.$number_of_new_case.'个）<br>');
       
     }
     
