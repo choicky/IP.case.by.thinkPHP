@@ -160,24 +160,24 @@ function dataCompare($data_1,$data_2){
     //变量初始化
     $result = FALSE;
     
-    $result = $data_1 - $data_2;
-    if($result == 0){
+    if(trim($data_1) == trim($data_2)){
         $result = TRUE;
     }
     
     return $result;
 }
 
-//预定义字符串比较函数，前者包含后者就返回 True，不包含就返回 FALSE
+//预定义字符串比较函数，后者包含前者就返回 True，不包含就返回 FALSE
 function strCompare($str_1,$str_2){
     echo('strCompare函数<br>');
     dump($str_1);
     dump($str_2);
+
     //变量初始化
     $result = FALSE;
     
-    $result = mb_strpos( trim( $str_1),trim( str_2),0,'ascii');
-    if($result >= 0){
+    $result = mb_strpos(trim($str_2),trim($str_1),0,'UTF-8');
+    if(FALSE !== $result){
         $result = TRUE;
     }
     
@@ -220,12 +220,12 @@ function caseCompare($case_array_1,$case_array_2){
     }
 
     
-    //判断商标名称是否相同
+    //判断管理系统的商标名称是否包含第三方数据源的商标名称
     if(!trim( $case_data_1['tentative_title']) and !trim( $case_data_2['tentative_title'])){   //两个数组都没有相应数据，即，数据相同
         $tentative_title_test = TRUE;
     }elseif(trim( $case_data_1['tentative_title']) and trim( $case_data_2['tentative_title'])){  //两个数组都有相应数据
-        $tentative_title_test  = strCompare( $case_data_1['tentative_title'], $case_data_2['tentative_title']); //如数据相同则返回 TRUE
-        if( !$tentative_title_test){    //如果数据不相同
+        $tentative_title_test  = strCompare( $case_data_1['tentative_title'], $case_data_2['tentative_title']); //如后者包括前者，则返回 TRUE
+        if( !$tentative_title_test){    //如果后者未包括前者，就将前者以[]的方式附加在后面
             $case_data_2['tentative_title_test'] = '管理系统原来登记的商标名称是：'.trim($case_data_2['tentative_title']).'，'.'已将第三方提供的商标名称：'.$case_data_1['tentative_title'].'，加到中括号里';
             $case_data_2['tentative_title'] = trim( $case_data_2['tentative_title']).'['.trim( $case_data_1['tentative_title']).']';
         }
@@ -304,12 +304,12 @@ function remarksCompare($case_array_1,$case_array_2){
     $case_data_3 = M('CaseExtend')->field($case_extend_field_for_find)->where($map_case_extend_for_find)->find();
     $case_data_2['remarks'] = $case_data_3['remarks'];
     
-    //判断备注信息是否相同
+    //判断管理系统的备注信息是否包含第三方信息源提供的法律状态
     if(!trim( $case_data_1['remarks']) and !trim( $case_data_2['remarks'])){   //两个数组都没有相应数据，即，数据相同
         $remarks_test = TRUE;
     }elseif(trim( $case_data_1['remarks']) and trim( $case_data_2['remarks'])){  //两个数组都有相应数据
-        $remarks_test  = strCompare( $case_data_1['remarks'], $case_data_2['remarks']); //如数据相同则返回 TRUE
-        if( !$remarks_test){    //如果数据不相同
+        $remarks_test  = strCompare( $case_data_1['remarks'], $case_data_2['remarks']); //如后者包含前者，就返回 TRUE
+        if( !$remarks_test){    //如果后者未包含
             $case_data_2['remarks_test'] = '管理系统原来登记的备注信息是：'.trim($case_data_2['remarks']).'，'.'已将第三方提供的备注信息：'.$case_data_1['remarks'].'，加到中括号里';
             $case_data_2['remarks'] = trim( $case_data_2['remarks']).'['.trim( $case_data_1['remarks']).']';
         }

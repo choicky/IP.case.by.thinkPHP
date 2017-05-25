@@ -7,10 +7,31 @@ class CaseImportController extends Controller {
 	//默认显示
 	public function index(){
         
-        $a = 'AINEDEBEAUTE';
-        $b = 'LA FONTAINE DE BEAUTE及图';
-        $result = '';
-        $result = strCompare($a,$b);
+        $result = FALSE;
+        $case_source_data = array();
+        $map_case_source['application_number'] = 12418718;
+        $case_source_data = M('CaseSource')->where($map_case_source)->find();
+        
+        
+        $case_data = array();
+        $map_case['case_id'] = 2797;
+        $case_data = M('Case')->where($map_case)->find();
+        
+        $a = $case_data['tentative_title'];
+        $b = $case_source_data['tentative_title'];
+        
+        echo('$a：');
+        echo($a).'<br>';
+        echo('$b：');
+        echo($b).'<br>';
+        
+        echo('$a 包含 $b 的比较结果：');
+    
+        $result = mb_strpos( trim( $a),trim( $b),0,'UTF-8');
+        if(FALSE !== $result){
+            $result = TRUE;
+        }
+
         echo($result);
     }
 
@@ -39,7 +60,7 @@ class CaseImportController extends Controller {
         $case_source_list = array();
         $case_source_list = M( 'CaseSource')->field($case_source_field_for_read)->select();
                 
-        for( $i=0; $i<100; $i++){
+        for( $i=0; $i<10; $i++){
                    
             //初始化变量
             $case_source_data = array();
