@@ -22,7 +22,7 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					先 Ctrl + F 查找一下是否存在相应的客户/申请人，如果不存在再添加。
+					先 Ctrl + F 查找一下是否存在相应的客户/申请人，如果不存在再添加。<br>每个人/公司应该只录入一次（1个编号），如录入了多次，就把专利/商标汇总到其中一个编号，然后删除名下没有案件的。
 				</div>
 
 				<!-- Table -->
@@ -30,7 +30,7 @@
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
-								<th>序号</th>
+								<th>编号</th>
 								<th>中文全称</th>
 								<th>英文全称</th>								
 								<th>身份证号/组织机构代码</th>
@@ -46,7 +46,7 @@
 						<tbody>
 							<volist name="client_list" id="client_vo">
 							<tr>
-								<td>{$i}</td>
+								<td>{$client_vo.client_id}</td>
 								<td>{$client_vo.client_name}</td>
 								<td>{$client_vo.client_name_en}</td>								
 								<td>{$client_vo.client_id_number}</td>

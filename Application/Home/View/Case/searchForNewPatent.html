@@ -203,17 +203,20 @@
 							<div class="form-group">
 								<label for="client_id" class="col-lg-3 control-label">客源/客户</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="client_id">
+									<!--
+                                    <select class="form-control" name="client_id">
 										<option value=""}></option>
 										<volist name="client_list" id="client_vo">
 										<option value="{$client_vo.client_id}">{$client_vo.client_name}</option>
 										</volist>
 									</select>
+                                    -->
+                                    <input type="text" class="form-control" id="client_id" name="client_id" placeholder="只能填写客户编号">
 								</div>
 								<div class="col-lg-5">
-									必填项；<br>
-									应盈方付款的就是盈方的客户；<br>
-									可通过<a href="{:U('Client/listPage#addNew')}" target="_blank">这里</a>添加更多的客源
+									只能填编号；到<a href="{:U('Client/listAll')}" target="_blank">这里</a>找到客户的编号；<br>
+									同时按 Ctrl、F 两键可搜索，找不到就新建；<br>
+                                    同一个客户应该有唯一的ID。
 								</div>
 							</div>
 							
@@ -230,18 +233,21 @@
 							<div class="form-group">
 								<label for="applicant_id" class="col-lg-3 control-label">申请人</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="applicant_id">
+									<!--
+                                    <select class="form-control" name="applicant_id">
 										<option value=""}></option>
 										<option value="same" style="color:#FF0000">申请人与客户相同</option>
 										<volist name="client_list" id="applicant_vo">
 										<option value="{$applicant_vo.client_id}" >{$applicant_vo.client_name}</option>
 										</volist>
 									</select>
+                                    -->
+                                    <input type="text" class="form-control" id="applicant_id" name="applicant_id" placeholder="只能填写申请人编号">
 								</div>
 								<div class="col-lg-5">
-									必填项；<br>
-									指权利人；如申请人不与盈方直接对接，则该申请人不属于“客户”；<br>
-									可通过<a href="{:U('Client/listPage#addNew')}" target="_blank">这里</a>添加更多的申请人
+									只能填编号；到<a href="{:U('Client/listAll')}" target="_blank">这里</a>找到申请人的编号；<br>
+									同时按 Ctrl、F 两键可搜索，找不到就新建；<br>
+                                    同一个客户应该有唯一的ID。
 								</div>
 							</div>
 							
