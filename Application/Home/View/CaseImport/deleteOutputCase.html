@@ -47,11 +47,11 @@
                                 <td>{$case_list['issue_date']	?	date("Y-m-d",$case_list['issue_date'])		:	''}</td>
                                 <td>{$case_list['notfound'] ? $case_list['notfound']: ''} <br>
                                     <font color = "red">{$case_list['remarks'] ? $case_list['remarks'] : ''}</font><br>
-                                    {$case_list['issue_date_test'] ? $case_list['issue_date_test'] : ''}<br>
-                                    {$case_list['formal_title_test'] ? $case_list['formal_title_test'] : ''}<br>
-                                    {$case_list['application_date_test'] ? $case_list['application_date_test'] : ''}<br>
-                                    {$case_list['tentative_title_test'] ? $case_list['tentative_title_test'] : ''}<br>
-                                    {$case_list['remarks_test'] ? $case_list['remarks_test'] : ''}</td>
+                                    {$case_list['issue_date_notes'] ? $case_list['issue_date_notes'] : ''}<br>
+                                    {$case_list['formal_title_notes'] ? $case_list['formal_title_notes'] : ''}<br>
+                                    {$case_list['application_date_notes'] ? $case_list['application_date_notes'] : ''}<br>
+                                    {$case_list['tentative_title_notes'] ? $case_list['tentative_title_notes'] : ''}<br>
+                                    {$case_list['remarks_notes'] ? $case_list['remarks_notes'] : ''}</td>
                                 <td>{$case_list['confirm'] ? '已核对' : '否'}
                                     <a href="{:U('CaseImport/updateOutputCase','case_output_id='.$case_list['case_output_id'])}" target="_blank">修改<a></td>
                                 <td><a href="{:U('CaseImport/deleteOutputCase','case_output_id='.$case_list['case_output_id'])}" target="_blank">删除<a></td>

@@ -4,7 +4,7 @@
 function yearOption(){
 	$current_year	=	intval(date("Y",time()));
 	$start_year	=	2006;
-	$year_date	=	array();
+	$year_list	=	array();
 	for ($current_year;$current_year>$start_year;$current_year--){
 		$year_list[]	=	$current_year;
 	}
@@ -74,16 +74,16 @@ function yearInterval($application_date,$target_date){
 
 
 //预定义新增到 case_output 的方法，没有成功录入就返回 FALSE
-function addToCaseOutput($case_source_array){
+function addToCaseOutput($case_source_para_array){
     
     //预定义查询 case_output 的字段
     $case_output_field_for_find = 'case_output_id,case_id,application_number';
     
     //预定义新增 case_output 的字段
-    $case_output_field_for_add = 'case_id,notfound,formal_title,formal_title_test,application_number,application_number_test,tentative_title,tentative_title_test,application_date,application_date_test,issue_date,issue_date_test,remarks,remarks_test';
+    $case_output_field_for_add = 'case_id,notfound,formal_title,formal_title_notes,application_number,application_number_notes,tentative_title,tentative_title_notes,application_date,application_date_notes,issue_date,issue_date_notes,remarks,remarks_notes';
     
     //预定义更新 case_output 的字段
-    $case_output_field_for_update = 'case_output_id,case_id,notfound,formal_title,formal_title_test,application_number,application_number_test,tentative_title,tentative_title_test,application_date,application_date_test,issue_date,issue_date_test,remarks,remarks_test';
+    $case_output_field_for_update = 'case_output_id,case_id,notfound,formal_title,formal_title_notes,application_number,application_number_notes,tentative_title,tentative_title_notes,application_date,application_date_notes,issue_date,issue_date_notes,remarks,remarks_notes';
 
     //变量初始化
     $case_source_data = array();
@@ -95,7 +95,7 @@ function addToCaseOutput($case_source_array){
     $case_output_list = array();
     
     //参数赋值到变量
-    $case_source_data = $case_source_array;
+    $case_source_data = $case_source_para_array;
     $application_number = $case_source_data['application_number'];
     $case_id = $case_source_data['case_id'];
     $map_case_output_for_find['application_number'] = $application_number;
@@ -116,7 +116,7 @@ function addToCaseOutput($case_source_array){
 }
 
 //预定义新增到 case_extend 的方法，没有成功录入就返回 FALSE
-function addToCaseExtend($case_source_array){
+function addToCaseExtend($case_source_para_array){
     
     //预定义查询 case_extend 的字段
     $case_extend_field_for_find = 'case_extend_id,case_id,remarks';
@@ -136,184 +136,153 @@ function addToCaseExtend($case_source_array){
     $case_extend_list = array();
     
     //参数赋值到变量
-    $case_source_data = $case_source_array;
+    $case_source_data = $case_source_para_array;
     $case_id = $case_source_data['case_id'];
     $map_case_extend_for_find['case_id'] = $case_id;            
     
-    //根据 case_extend 是否存在相同的申请号进行不同的处理
+    //根据 case_extend 是否存在相同的 case_id 的记录进行不同的处理
     $case_extend_list = M('CaseExtend')->field($case_extend_field_for_find)->where($map_case_extend_for_find)->find();            
     if(!(count($case_extend_list) > 0)){    //如果 case_extend 没有相同案件编号的记录
         $result	=	M('CaseExtend')->field($case_extend_field_for_add)->add($case_source_data);
         return  $result;
-    }else{  //如果 case_extend 有相同申请号的记录
+    }else{  //如果 case_extend 有相同 case_id 的记录
         $case_source_data['case_extend_id'] = $case_extend_list['case_extend_id'];
         $result	=	M('CaseExtend')->field($case_extend_field_for_update)->save($case_source_data);
         return  $result;
     }
 }
 
-//预定义数字比较函数，相同就返回 True，不相同就返回 FALSE
-function dataCompare($data_1,$data_2){
-    
+
+//预定义附加函数，把字符串放在 [] 里面
+function strInBracket($str_para){
+
     //变量初始化
-    $result = FALSE;
+    $str_data = '';
+    $result = '';
     
-    if(trim($data_1) == trim($data_2)){
-        $result = TRUE;
-    }
+    //赋值处理
+    $str_data = $str_para;
+    $result = '['.$str_data.']';
     
     return $result;
 }
 
-//预定义字符串比较函数，后者包含前者就返回 True，不包含就返回 FALSE
-function strCompare($str_1,$str_2){
+//预定义案件基本信息比较函数，返回一个数组，数组第一元素为 TRUE 就表示完全相同，为 FALSE 表示不完全相同；数组第二元素为处理过的 $case_target_para_array
+function caseCompare($case_source_para_array,$case_target_para_array){
 
     //变量初始化
-    $result = FALSE;
-    
-    $result = mb_strpos(trim($str_2),trim($str_1),0,'UTF-8');
-    if(FALSE !== $result){
-        $result = TRUE;
-    }
-    
-    return $result;
-}
-
-//预定义案件基本信息比较函数，返回一个数组，数组第一元素为 TRUE 就表示完全相同，为 FALSE 表示不完全相同；数组第二元素为处理过的 $case_array_2
-function caseCompare($case_array_1,$case_array_2){
-
-    //变量初始化
-    $case_data_1 = array();
-    $case_data_2 = array();
-    $test_result = FALSE;
+    $case_source_data = array();
+    $case_target_data = array();
     $result = array();
-    $formal_title_test = FALSE; //TRUE表示不用修改
-    $tentative_title_test = FALSE;  //TRUE表示不用修改
-    $application_date_test = FALSE; //TRUE表示不用修改
-    $issue_date_test = FALSE;   //TRUE表示不用修改
     
     //参数赋值到变量
-    $case_data_1 = $case_array_1;
-    $case_data_2 = $case_array_2;
-    
-    //判断分类号是否相同
-    if(!trim( $case_data_1['formal_title']) and !trim( $case_data_2['formal_title'])){   //两个数组都没有相应数据，即，数据相同
-        $formal_title_test = TRUE;
-    }elseif(trim( $case_data_1['formal_title']) and trim( $case_data_2['formal_title'])){  //两个数组都有相应数据
-        $formal_title_test  = dataCompare( $case_data_1['formal_title'], $case_data_2['formal_title']); //如数据相同则返回 TRUE
-        if( !$formal_title_test){    //如果数据不相同
-            $case_data_2['formal_title_test'] = '管理系统原来登记的分类号是 【'.trim($case_data_2['formal_title']).'】 ，'.'已将第三方提供的分类号 【'.$case_data_1['formal_title'].'】 放到中括号里附加到后面';
-            $case_data_2['formal_title'] = trim( $case_data_2['formal_title']).'['.trim( $case_data_1['formal_title']).']';
-        }
-    }elseif(trim( $case_data_1['formal_title']) and !trim( $case_data_2['formal_title'])){    //数组1有相应数据，数组2没有
-        $case_data_2['formal_title_test'] = '管理系统原来未登记分类号，已将第三方提供的分类号 【'.$case_data_1['formal_title'].'】 登记到管理系统';
-        $case_data_2['formal_title'] = trim( $case_data_1['formal_title']);
-    }else{  //数组1没有相应数据，数组2有
-        $formal_title_test = TRUE;
-    }
-
+    $case_source_data = $case_source_para_array;
+    $case_target_data = $case_target_para_array;
     
     //判断管理系统的商标名称是否包含第三方数据源的商标名称
-    if(!trim( $case_data_1['tentative_title']) and !trim( $case_data_2['tentative_title'])){   //两个数组都没有相应数据，即，数据相同
-        $tentative_title_test = TRUE;
-    }elseif(trim( $case_data_1['tentative_title']) and trim( $case_data_2['tentative_title'])){  //两个数组都有相应数据
-        $tentative_title_test  = strCompare( $case_data_1['tentative_title'], $case_data_2['tentative_title']); //如后者包括前者，则返回 TRUE
-        if( !$tentative_title_test){    //如果后者未包括前者，就将前者以[]的方式附加在后面
-            $case_data_2['tentative_title_test'] = '管理系统原来登记的商标名称是：'.trim($case_data_2['tentative_title']).'，'.'已将第三方提供的商标名称 【'.$case_data_1['tentative_title'].'】 放到中括号里附加到后面';
-            $case_data_2['tentative_title'] = trim( $case_data_2['tentative_title']).'['.trim( $case_data_1['tentative_title']).']';
-        }
-    }elseif(trim( $case_data_1['tentative_title']) and !trim( $case_data_2['tentative_title'])){    //数组1有相应数据，数组2没有
-        $case_data_2['tentative_title_test'] = '管理系统原来未登记商标名称，已将第三方提供的商标名称 【'.$case_data_1['tentative_title'].'】 登记到管理系统';
-        $case_data_2['tentative_title'] = trim( $case_data_1['tentative_title']);
-    }else{  //数组1没有相应数据，数组2有
-        $tentative_title_test = TRUE;
+    // $tentative_title 的变量初始化
+    $tentative_title_diff = FALSE; //TRUE 表示 case_target 的 $tentative_title 的内容 未包含 case_source 的 $tentative_title 的内容
+    $tentative_title_diff_should_update = FALSE; //TRUE 表示需要更新 case_target 
+    
+    $case_source_data['tentative_title'] = trim($case_source_data['tentative_title']);
+    $case_target_data['tentative_title'] = trim($case_target_data['tentative_title']);
+    $tentative_title_diff = !(FALSE !== mb_strpos($case_target_data['tentative_title'],$case_source_data['tentative_title']));
+    $tentative_title_diff_should_update = ($tentative_title_diff AND $case_source_data['tentative_title']);
+    $case_target_data['tentative_title'] = $tentative_title_diff_should_update ? $case_target_data['tentative_title'].strInBracket($case_source_data['tentative_title']) : $case_target_data['tentative_title'];
+    if($tentative_title_diff_should_update){
+        $case_target_data['tentative_title_notes'] = '管理系统原来登记的商标名称是：'.$case_target_para_array['tentative_title'].'，已把第三方提供商标名称 【'.$case_source_data['tentative_title'].'】放到中括号并附加到后面，请核对';
     }
-      
-    //判断申请日是否相同
-    if(!trim( $case_data_1['application_date']) and !trim( $case_data_2['application_date'])){   //两个数组都没有相应数据，即，数据相同
-        $application_date_test = TRUE;
-    }elseif(trim( $case_data_1['application_date']) and trim( $case_data_2['application_date'])){  //两个数组都有相应数据
-        $application_date_test  = dataCompare( $case_data_1['application_date'], $case_data_2['application_date']); //如数据相同则返回 TRUE
-        if( !$application_date_test){    //如果数据不相同
-            $case_data_2['application_date_test'] = '管理系统原来登记的申请日是：'.date("Y-m-d",$case_data_2['application_date']).'，'.'已用第三方提供的申请日 【'.date("Y-m-d",$case_data_1['application_date']).'】去替换';
-            $case_data_2['application_date'] = trim( $case_data_2['application_date']).'['.trim( $case_data_1['application_date']).']';
-        }
-    }elseif(trim( $case_data_1['application_date']) and !trim( $case_data_2['application_date'])){    //数组1有相应数据，数组2没有
-        $case_data_2['application_date_test'] = '管理系统原来未登记申请日，已将第三方提供的申请日 【'.date("Y-m-d",$case_data_1['application_date']).'】 登记到管理系统';
-        $case_data_2['application_date'] = trim( $case_data_1['application_date']);
-    }else{  //数组1没有相应数据，数组2有
-        $application_date_test = TRUE;
+        
+    //判断分类号是否相同
+    // $formal_title 的变量初始化
+    $formal_title_diff = FALSE; //TRUE 表示 case_target 的 $formal_title 信息未包含 case_source 的 $formal_title 信息
+    $formal_title_diff_should_update = FALSE; //TRUE 表示 formal_title_diff 情况中需要更新到 case 表的记录
+    
+    $case_source_data['formal_title'] = trim($case_source_data['formal_title']);
+    $case_target_data['formal_title'] = trim($case_target_data['formal_title']);
+    $formal_title_diff = !($case_source_data['formal_title'] == $case_target_data['formal_title']);
+    $formal_title_diff_should_update = ($formal_title_diff AND $case_source_data['formal_title']);
+    $case_target_data['formal_title'] = $formal_title_diff_should_update ? $case_target_data['formal_title'].strInBracket($case_source_data['formal_title']) : $case_target_data['formal_title'];
+    if($formal_title_diff_should_update){
+        $case_target_data['formal_title_notes'] = '管理系统原来登记的商标类别是：'.$case_target_para_array['formal_title'].'，已把第三方提供商标名称 【'.$case_source_data['formal_title'].'】放到中括号并附加到后面，请核对';
     }
+    
 
-      
-    //判断发证日是否相同
-    if(!trim( $case_data_1['issue_date']) and !trim( $case_data_2['issue_date'])){   //两个数组都没有相应数据，即，数据相同
-        $issue_date_test = TRUE;
-    }elseif(trim( $case_data_1['issue_date']) and trim( $case_data_2['issue_date'])){  //两个数组都有相应数据
-        $issue_date_test  = dataCompare( $case_data_1['issue_date'], $case_data_2['issue_date']); //如数据相同则返回 TRUE
-        if( !$issue_date_test){    //如果数据不相同
-            $case_data_2['issue_date_test'] = '管理系统原来登记的发证日是：'.date("Y-m-d",$case_data_2['issue_date']).'，'.'已用第三方提供的发证日 【'.date("Y-m-d",$case_data_1['issue_date']).'】去替换';
-            $case_data_2['issue_date'] = trim( $case_data_2['issue_date']).'['.trim( $case_data_1['issue_date']).']';
-        }
-    }elseif(trim( $case_data_1['issue_date']) and !trim( $case_data_2['issue_date'])){    //数组1有相应数据，数组2没有
-        $case_data_2['issue_date_test'] = '管理系统原来未登记发证日，已将第三方提供的发证日 【'.date("Y-m-d",$case_data_1['issue_date']).'】 登记到管理系统';
-        $case_data_2['issue_date'] = trim( $case_data_1['issue_date']);
-    }else{  //数组1没有相应数据，数组2有
-        $issue_date_test = TRUE;
+    //判断申请日是否相同
+    // $application_date 的变量初始化
+    $application_date_diff = FALSE; //TRUE 表示 case_target 的 $application_date 信息未包含 case_source 的 $application_date 信息
+    $application_date_diff_should_update = FALSE; //TRUE 表示 application_date_diff 情况中需要更新到 case 表的记录
+
+    $application_date_diff = !($case_source_data['application_date'] == $case_target_data['application_date']);
+    $application_date_diff_should_update = ($application_date_diff AND $case_source_data['application_date']);
+    $case_target_data['application_date'] = $application_date_diff_should_update ? $case_source_data['application_date'] : $case_target_data['application_date'];
+    if($application_date_diff_should_update){
+        $case_target_data['application_date_notes'] = '管理系统原来登记的申请日是：'.date("Y-m-d",$case_target_para_array['application_date']).'，已用第三方提供的申请日 【'.date("Y-m-d",$case_source_data['application_date']).'】去替换';
     }
     
-    $test_result = ($formal_title_test and $tentative_title_test and $application_date_test and $issue_date_test);
+    //判断发证日是否相同
+    // $issue_date 的变量初始化
+    $issue_date_diff = FALSE; //TRUE 表示 case_target 的 $issue_date 与 case_source 的 $issue_date 不同
+    $issue_date_diff_should_update = FALSE; //TRUE 表示需要更新 case_target
+
+    $issue_date_diff = !($case_source_data['issue_date'] == $case_target_data['issue_date']);
+    $issue_date_diff_should_update = ($issue_date_diff AND $case_source_data['issue_date']);
+    $case_target_data['issue_date'] = $issue_date_diff_should_update ? $case_source_data['issue_date'] : $case_target_data['issue_date'];
+    if($issue_date_diff_should_update){
+        $case_target_data['issue_date_notes'] = '管理系统原来登记的发证日是：'.date("Y-m-d",$case_target_para_array['issue_date']).'，已用第三方提供的发证日 【'.date("Y-m-d",$case_source_data['issue_date']).'】去替换';
+    }
     
-    $result = array($test_result, $case_data_2);
+    //构造反馈结果
+    $result['case_diff'] = $issue_date_diff OR $application_date_diff OR $tentative_title_diff OR $formal_title_diff;
+    $result['case_diff_should_update'] = $issue_date_diff_should_update OR $application_date_diff_should_update OR $tentative_title_diff_should_update OR $formal_title_diff_should_update;
+    
+    $result['case_target_data'] = $case_target_data;
     
     return $result;
 }
 
-//预定义案件备注信息比较函数，返回一个数组，数组第一元素为 TRUE 就表示完全相同，为 FALSE 表示不完全相同；数组第二元素为处理过的 $case_array_2
-function remarksCompare($case_array_1,$case_array_2){
+//预定义案件备注信息比较函数，返回一个数组，数组第一元素为 TRUE 就表示完全相同，为 FALSE 表示不完全相同；数组第二元素为处理过的 $case_target_para_array
+function caseExtendCompare($case_source_para_array,$case_target_para_array){
 
     //预定义查询 case_extend 的字段
     $case_extend_field_for_find = 'case_extend_id,case_id,remarks';
     
     //变量初始化
-    $case_data_1 = array();
-    $case_data_2 = array();
-    $case_data_3 = array();
-    $test_result = FALSE;
+    $case_extend_source_data = array();
+    $case_extend_target_data = array();
+    $case_extend_list = array();
     $result = array();
-    $remarks_test = FALSE;  //TRUE表示不用修改           
     $case_id = '';
     $map_case_extend_for_find = array();
     
     //参数赋值到变量
-    $case_data_1 = $case_array_1;
-    $case_data_2 = $case_array_2;
-    $case_id = $case_data_2['case_id'];
+    $case_extend_source_data = $case_source_para_array;
+    $case_extend_target_data = $case_target_para_array;
+    $case_id = $case_extend_target_data['case_id'];
     $map_case_extend_for_find['case_id'] = $case_id;
     
     //根据 case_extend 是否存在相同的申请号进行不同的处理
-    $case_data_3 = M('CaseExtend')->field($case_extend_field_for_find)->where($map_case_extend_for_find)->find();
-    $case_data_2['remarks'] = $case_data_3['remarks'];
+    $case_extend_list = M('CaseExtend')->field($case_extend_field_for_find)->where($map_case_extend_for_find)->find();
+    $case_extend_target_data['remarks'] = $case_extend_list['remarks'];
     
-    //判断管理系统的备注信息是否包含第三方信息源提供的法律状态
-    if(!trim( $case_data_1['remarks']) and !trim( $case_data_2['remarks'])){   //两个数组都没有相应数据，即，数据相同
-        $remarks_test = TRUE;
-    }elseif(trim( $case_data_1['remarks']) and trim( $case_data_2['remarks'])){  //两个数组都有相应数据
-        $remarks_test  = strCompare( $case_data_1['remarks'], $case_data_2['remarks']); //如后者包含前者，就返回 TRUE
-        if( !$remarks_test){    //如果后者未包含
-            $case_data_2['remarks_test'] = '管理系统原来登记的备注信息是：'.trim($case_data_2['remarks']).'，'.'已将第三方提供的备注信息 【'.$case_data_1['remarks'].'】 放到中括号里附加到后面';
-            $case_data_2['remarks'] = trim( $case_data_2['remarks']).'['.trim( $case_data_1['remarks']).']';
-        }
-    }elseif(trim( $case_data_1['remarks']) and !trim( $case_data_2['remarks'])){    //数组1有相应数据，数组2没有
-        $case_data_2['remarks_test'] = '管理系统原来未登记备注信息，已将第三方提供的备注信息 【'.$case_data_1['remarks'].'】 登记到管理系统';
-        $case_data_2['remarks'] = trim( $case_data_1['remarks']);
-    }else{  //数组1没有相应数据，数组2有
-        $remarks_test = TRUE;
-    }        
+    //判断备注信息是否相同
+    // $remarks 的变量初始化
+    $remarks_diff = FALSE; //TRUE 表示 case_target 的 $remarks 信息未包含 case_source 的 $remarks 信息
+    $remarks_diff_should_update = FALSE; //TRUE 表示 remarks_diff 情况中需要更新到 case 表的记录
     
-    $test_result = $remarks_test ;
+    $case_extend_source_data['remarks'] = trim($case_extend_source_data['remarks']);
+    $case_extend_target_data['remarks'] = trim($case_extend_target_data['remarks']);
+    $remarks_diff = !(FALSE !== mb_strpos($case_extend_source_data['remarks'],$case_extend_target_data['remarks']));
+    $remarks_diff_should_update = ($remarks_diff AND $case_extend_source_data['remarks']);
+    $case_extend_target_data['remarks'] = $remarks_diff_should_update ? $case_extend_target_data['remarks'].strInBracket($case_extend_source_data['remarks']) : $case_extend_target_data['remarks'];
+    if($remarks_diff_should_update){
+        $case_extend_target_data['remarks_notes'] = '管理系统原来登记的备注是：'.$case_target_para_array['remarks'].'，已把第三方提供商标名称 【'.$case_extend_source_data['remarks'].'】放到中括号并附加到后面，请核对';
+    }
+        
+    $result['remarks_diff'] = $remarks_diff;
+    $result['remarks_diff_should_update'] = $remarks_diff_should_update;
     
-    $result = array($test_result, $case_data_2);
-    
+    $result['case_extend_target_data'] = $case_extend_target_data;
+
     return $result;
 }

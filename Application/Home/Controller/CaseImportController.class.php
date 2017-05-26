@@ -8,31 +8,11 @@ class CaseImportController extends Controller {
 	public function index(){
         
         $result = FALSE;
-        $case_source_data = array();
-        $map_case_source['application_number'] = 12418718;
-        $case_source_data = M('CaseSource')->where($map_case_source)->find();
+        $case_source_data['tentative_title'] = '亿漂,EPURBIOSOLUTION';
+        $case_target_data['tentative_title'] = '億漂及图[亿漂,EPURBIOSOLUTION]';
+        $tentative_title_diff = !(FALSE !== mb_strpos($case_target_data['tentative_title'],$case_source_data['tentative_title']));
         
-        
-        $case_data = array();
-        $map_case['case_id'] = 2797;
-        $case_data = M('Case')->where($map_case)->find();
-        
-        $a = $case_data['tentative_title'];
-        $b = $case_source_data['tentative_title'];
-        
-        echo('$a：');
-        echo($a).'<br>';
-        echo('$b：');
-        echo($b).'<br>';
-        
-        echo('$a 包含 $b 的比较结果：');
-    
-        $result = mb_strpos( trim( $a),trim( $b),0,'UTF-8');
-        if(FALSE !== $result){
-            $result = TRUE;
-        }
-
-        echo($result);
+        echo($tentative_title_diff);
     }
     
     //分页显示第三方信息源的案件，其中，$p为当前分页数，$limit为每页显示的记录数
@@ -62,10 +42,10 @@ class CaseImportController extends Controller {
         $page_limit  =   C("RECORDS_PER_PAGE");
         
         $order['notfound']	=	'desc';
-        $order['issue_date_test']	=	'asc';
-        $order['formal_title_test']	=	'asc';
-        $order['tentative_title_test']	=	'asc';
-        $order['remarks_test']	=	'asc';
+        $order['issue_date_notes']	=	'asc';
+        $order['formal_title_notes']	=	'asc';
+        $order['tentative_title_notes']	=	'asc';
+        $order['remarks_notes']	=	'asc';
         
 		$case_source_list	=	M('CaseOutput')->order($order)->page($p.','.$page_limit)->select();
         
@@ -103,7 +83,7 @@ class CaseImportController extends Controller {
 				
 				//判断
 				if($case_output_list['confirm'] == 0){
-					$this->error('本案尚未确认，不能删除', U('CaseImport/listOutputCaseByPage'));
+					$this->error('本案未经核对，不能删除', U('CaseImport/listOutputCaseByPage'));
 				}
                 
 				$result = M('CaseOutput')->where($map)->delete();
@@ -193,11 +173,12 @@ class CaseImportController extends Controller {
         $case_field_for_update = 'case_id,formal_title,application_number,tentative_title,application_date,issue_date';
         
         //初始化变量
-        $number_of_new_case = 1; // $number_of_new_case 为 case_source 表中有的，而 case 表没有的案件数量，要另存到 case_output 表
-        $number_of_same_case = 1; // $number_of_same_case 为 case 表中有的，且信息与 case_source 表相同的案件，不用处理
-        $number_of_diff_case = 1; // $number_of_diff_case 为 case 表中有的，且信息与 case_source 表不相同的案件，该案件被更新后要另存到 case_output 表
-        $number_of_update_case = 1; // $number_of_update_case 为 case 中被更新的记录的数量，如数据库操作正常 number_of_update_case == number_of_diff_case
-        $number_of_output_case = 1; // $number_of_output_case 为存入 case_output 待核对的case数量，如数据库操作正常 number_of_output_case =  number_of_new_case + number_of_diff_case
+        $number_of_new_case = 0; // $number_of_new_case 为 case_source 表中有的，而 case 表没有的案件数量，要另存到 case_output 表
+        $number_of_same_case = 0; // $number_of_same_case 为 case 表中有的，且信息与 case_source 表相同的案件，不用处理
+        $number_of_diff_case = 0; // $number_of_diff_case 为 case 表中有的，且信息与 case_source 表不相同的案件，不一定需要更新
+        $number_of_diff_case_should_update = 0; // $number_of_diff_case_should_update 为 number_of_diff_case 需要被更新、另存的数量，number_of_diff_case_should_update <= number_of_diff_case
+        $number_of_diff_case_updated = 0; // $number_of_diff_case_updated 为 number_of_diff_case_should_update 中被成功更新的案件数量，如数据库操作正常，number_of_diff_case_should_update == number_of_diff_case_updated
+        $number_of_output_case = 0; // $number_of_output_case 为实际存入 case_output 待核对的 case 数量，如数据库操作正常 number_of_output_case =  number_of_new_case + number_of_update_should_output
         
         //读取 case_source 表
         $case_source_list = array();
@@ -229,12 +210,9 @@ class CaseImportController extends Controller {
             
             //赋值到变量
             $case_source_data = $case_source_list[$i];
-            if(trim( $case_source_data['application_date'])){
-                $case_source_data['application_date'] = strtotime(trim( $case_source_data['application_date']));
-            }
-            if(trim( $case_source_data['issue_date'])){
-                $case_source_data['issue_date'] = strtotime(trim( $case_source_data['issue_date']));
-            }            
+            $case_source_data['application_date'] = trim( $case_source_data['application_date']) ? strtotime(trim( $case_source_data['application_date'])) : '';
+            $case_source_data['issue_date'] = trim( $case_source_data['issue_date']) ? strtotime(trim( $case_source_data['issue_date'])) : '';
+       
             $application_number = $case_source_data['application_number'];
             $map_case_for_find['application_number'] = $application_number;
             
@@ -242,37 +220,25 @@ class CaseImportController extends Controller {
             $case_list = M( 'Case' )->field($case_field_for_find)->where( $map_case_for_find)->select();
             
             if(count($case_list) < 1){ //如果 case 表没有匹配的记录，则原数据存入到 CaseOutput 表
-                $case_source_data['notfound'] = '白兔系统找到这个案子，但盈方管理系统没有找到；如该商标是有效的，要录入 管理系统 ';
-
-                $result = FALSE;
-                $result = addToCaseOutput($case_source_data);
-                
-                //dump($case_source_data);
-                
-                // $number_of_new_case 为 case_source 表中有的，而 case 表没有的案件数量，要另存到 case_output 表
-                echo('从第三方提供的数据表中发现第'.$number_of_new_case.'个新案，需要事后【手工】把这新案录入系统<br>');
-                
+                $number_of_new_case = $number_of_new_case + 1;
+                echo('从第三方提供的数据表中发现第'.$number_of_new_case.'个新案，<font color="red">应另存到 case_output 表</font>，且以后<font color="red">【手工录入】</font>管理系统；<br>');                
+                $case_source_data['notfound'] = '第三方系统有这个案件，但盈方管理系统没有；要录入 管理系统 ';
+                $result = addToCaseOutput($case_source_data);                
                 if(false !== $result){
-                    echo('该第'.$number_of_new_case.'个新案已保存到 case_output 数据表，以便事后【手工】把这新案录入系统<br>');
-                    
-                    // $number_of_output_case 为存入 case_output 待核对的case数量，如数据库操作正常 number_of_output_case =  number_of_new_case + number_of_diff_case
+                    echo('该第'.$number_of_new_case.'个新案已保存到 case_output 数据表，以便事后【手工】把这新案录入系统。<hr>');                 
                     $number_of_output_case = $number_of_output_case  + 1;
                 }else{
                     echo('但是，该第'.$number_of_new_case.'个新案未能保存到 case_output 数据表。<br>');
                     
                 }
-                $number_of_new_case = $number_of_new_case  + 1;
-                
-            }else{  //如果 case 表有匹配的记录，则根据差异情况决定是否更新
-                 
-                // $j 为 case 匹配的记录数量，先更新主表
+            }else{  //如果 case 表有匹配的记录，则根据差异情况决定是否更新                 
                 for($j=0;$j<count($case_list);$j++){
                     //初始化变量
                     $case_id = '';
                     $case_data = array();
                     $map_case_for_update = array();
-                    $case_test = array();
-                    $remarks_test = array();
+                    $case_compare = array();
+                    $case_extend_compare = array();
                     $case_result = FALSE;
                     $case_extend_result = FALSE;
                     $case_output_result = FALSE;
@@ -283,123 +249,99 @@ class CaseImportController extends Controller {
                     $case_data = M('Case')->field($case_field_for_update)->where($map_case_for_update)->find();
                     
                     //比较两个案件的基本信息
-                    $case_test = caseCompare($case_source_data,$case_data);
+                    $case_compare = caseCompare($case_source_data,$case_data);
                     
                     //比较两个案件的备注信息
-                    $remarks_test = remarksCompare($case_source_data,$case_data);
+                    $case_extend_compare = caseExtendCompare($case_source_data,$case_data);
                     
-                    if($case_test[0] and $remarks_test[0]){ //如果基本信息与备注信息都相同
+                    //统计信息相同、有差异的案件数量
+                    if($case_compare['case_diff'] OR $case_extend_compare['remarks_diff']){    
+                        $number_of_diff_case = $number_of_diff_case + 1;
+                        echo('管理系统中发现第'.$number_of_diff_case.'个信息不同的案件（基本信息或法律状态不同），');
                         
-                        // $number_of_same_case 为 case 表中有的，且信息与 case_source 表相同的案件，不用处理
-                        echo('管理系统中发现第'.$number_of_same_case.'个信息相同的案件。<br>');
-                        $number_of_same_case = $number_of_same_case +1;
+                    }else{
+                        $number_of_same_case = $number_of_same_case + 1;
+                        echo('管理系统中发现第'.$number_of_same_case.'个信息相同的案件，');
                         
-                    }elseif((!$case_test[0]) and (!$remarks_test[0])){ //如果基本信息与备注信息都不相同
+                    }
+                    
+                    //统计应当更新的案件数量，并把 case_extend 中的数据附加到 case 中
+                    if($case_compare['case_diff_should_update'] OR $case_extend_compare['case_extend_diff_should_update']){    
+                        $number_of_diff_case_should_update = $number_of_diff_case_should_update + 1;
+                        echo('该案件<font color = "red">需要更新到系统</font></a>，');
                         
-                        $case_result = M('Case')->field($case_field_for_update)->save($case_test[1]);
-                        $case_extend_result = addToCaseExtend($remarks_test[1]);
-                        
-                        //dump($case_test[1]);
-                        //dump($remarks_test[1]);
-                        
-                        // $number_of_diff_case 为 case 表中有的，且信息与 case_source 表不相同的案件，该案件被更新后要另存到 case_output 表
-                        echo('管理系统中发现第'.$number_of_diff_case.'个信息不同的案件，');
-                        
+                        $case_compare['case_target_data']['remarks'] = $case_extend_compare['case_extend_target_data']['remarks'];
+                        $case_compare['case_target_data']['remarks_notes'] = $case_extend_compare['case_extend_target_data']['remarks_notes'];
+                        //dump($case_compare['case_target_data']);
+                    }else{
+                        echo('该案件不需要更新到系统</a>。<hr>');
+                    }
+                    
+                    if($case_compare['case_diff_should_update'] and $case_extend_compare['case_extend_diff_should_update']){
+                        $case_result = M('Case')->field($case_field_for_update)->save($case_compare['case_target_data']);
+                        $case_extend_result = addToCaseExtend($case_compare['case_target_data']);
                         if((FALSE !== $case_result) and (FALSE !== $case_extend_result)){
-                            echo('该第'.$number_of_diff_case.'个信息不同案件的信息已被更新。<br>');
+                            $number_of_diff_case_updated = $number_of_diff_case_updated + 1;
+                            echo('该第'.$number_of_diff_case.'个信息不同案件的信息 <font color = "red">已更新到管理系统</font>。<hr>');
                             
-                            // $number_of_update_case 为 case 中被更新的记录的数量，如数据库操作正常 number_of_update_case == number_of_diff_case
-                            $number_of_update_case  = $number_of_update_case  +1;
                         }else{
-                            echo('但是，该第'.$number_of_diff_case.'个信息不同的案件的信息未能被更新。<br>');
+                            echo('但是，该第'.$number_of_diff_case.'个信息不同的案件的信息<font color = "red">未能被更新</font>。<hr>');
                         }
-                        $number_of_diff_case = $number_of_diff_case + 1;
-                        
-                    }elseif((!$case_test[0]) && ($remarks_test[0])){    //如果基本信息不相同，备注信息相同
-                        $case_result = M('Case')->field($case_field_for_update)->save($case_test[1]);
-                        
-                        //dump($case_test[1]);
-                        echo('管理系统中发现第'.$number_of_diff_case.'个信息不同的案件，');
-                        
+                    }elseif($case_compare['case_diff_should_update']){
+                        $case_result = M('Case')->field($case_field_for_update)->save($case_compare['case_target_data']);
                         if(FALSE !== $case_result){
-                            echo('该第'.$number_of_diff_case.'个信息不同案件的信息已被更新。<br>');
+                            $number_of_diff_case_updated = $number_of_diff_case_updated + 1;
+                            echo('该第'.$number_of_diff_case.'个信息不同案件的信息 <font color = "red">已更新到管理系统</font>。<hr>');
                             
-                            // $number_of_update_case 为 case 中被更新的记录的数量，如数据库操作正常 number_of_update_case == number_of_diff_case
-                            $number_of_update_case  = $number_of_update_case  +1;
                         }else{
-                            echo('但是，该第'.$number_of_diff_case.'个信息不同的案件的信息未能被更新。<br>');
+                            echo('但是，该第'.$number_of_diff_case.'个信息不同的案件的信息<font color = "red">未能被更新</font>。<hr>');
                         }
-                        $number_of_diff_case = $number_of_diff_case + 1;
-                        
-                    }else{  //如果基本信息相同，备注信息不相同
-                        $case_extend_result = addToCaseExtend($remarks_test[1]);
-                        
-                        //dump($remarks_test[1]);
-
-                        echo('管理系统中发现第'.$number_of_diff_case.'信息不同的案件，');
+                    }elseif($case_extend_compare['case_extend_diff_should_update']){
+                        $case_extend_result = addToCaseExtend($case_compare['case_target_data']);
                         if(FALSE !== $case_extend_result){
-                            echo('该第'.$number_of_diff_case.'个信息不同案件的信息已被更新。<br>');
+                            $number_of_diff_case_updated = $number_of_diff_case_updated + 1;
+                            echo('该第'.$number_of_diff_case.'个信息不同案件的信息 <font color = "red">已更新到管理系统</font>。<hr>');
                             
-                            // $number_of_update_case 为 case 中被更新的记录的数量，如数据库操作正常 number_of_update_case == number_of_diff_case
-                            $number_of_update_case  = $number_of_update_case  +1;
                         }else{
-                            echo('但是，该第'.$number_of_diff_case.'个信息不同的案件的信息未能被更新。<br>');
+                            echo('但是，该第'.$number_of_diff_case.'个信息不同的案件的信息<font color = "red">未能被更新</font>。<hr>');
                         }
-                        $number_of_diff_case = $number_of_diff_case + 1;
                     }
                     
-                    if((!$case_test[0]) OR (!$remarks_test[0])){ //如果基本信息与备注信息不完全相同，则另存到 case_output
-                        $case_test[1]['remarks_test'] = $remarks_test[1]['remarks_test'];
-                        $case_output_result = addToCaseOutput($case_test[1]);
-                        
-                        if(FALSE !== $case_output_result){
-                            
-                            $number_of_diff_case = $number_of_diff_case - 1;
-                            echo('已将管理系统中第'.$number_of_diff_case.'个信息不同的案件另存入了 case_output 表备查<br>');
-                            $number_of_diff_case = $number_of_diff_case + 1;
-                            
+                    //将应当更新的案件信息存入 case_output
+                    if($case_compare['case_diff_should_update'] OR $case_extend_compare['case_extend_diff_should_update']){    
+                        //dump($case_compare['case_target_data']);
+                        $case_output_result = addToCaseOutput($case_compare['case_target_data']);
+
+                        if(FALSE !== $case_output_result){                            
                             $number_of_output_case = $number_of_output_case + 1;
+                            echo('已将管理系统中第'.$number_of_diff_case.'个基本信息或法律状态不同的案件<font color = "red">成功另存入 case_output 表备查</font>。<hr>');
+                                                        
                         }else{
-                            $number_of_diff_case = $number_of_diff_case - 1;
-                            echo('管理系统中第'.$number_of_diff_case.'个信息不同的案件未能存入了 case_output 表备查<br>');
-                            $number_of_diff_case = $number_of_diff_case + 1;
+                            echo('管理系统中第'.$number_of_diff_case.'个信息不同的案件<font color = "red">未能另存到 case_output 表</font>。<hr>');
                         }
                     }
-
                 }  
             }
         }
         
-        // $number_of_new_case 为 case_source 表中有的，而 case 表没有的案件数量，要另存到 case_output 表
-        // $number_of_same_case 为 case 表中有的，且信息与 case_source 表相同的案件，不用处理
-        // $number_of_diff_case 为 case 表中有的，且信息与 case_source 表不相同的案件，该案件被更新后要另存到 case_output 表
-        // $number_of_update_case 为 case 中被更新的记录的数量，如数据库操作正常 number_of_update_case == number_of_diff_case
-        // $number_of_output_case 为存入 case_output 待核对的case数量，如数据库操作正常 number_of_output_case =  number_of_new_case + number_of_diff_case
-        if($number_of_new_case > 1){
-            $number_of_new_case = $number_of_new_case - 1;
-        }
-        if($number_of_same_case > 1){
-            $number_of_same_case = $number_of_same_case - 1;
-        }
-        if($number_of_diff_case > 1){
-            $number_of_diff_case = $number_of_diff_case - 1;
-        }
-        if($number_of_update_case > 1){
-            $number_of_update_case = $number_of_update_case - 1;
-        }
-        if($number_of_output_case > 1){
-            $number_of_output_case = $number_of_output_case - 1;
-        }
-        
-        echo('<hr>');
+        /*
+        $number_of_new_case = 0; // $number_of_new_case 为 case_source 表中有的，而 case 表没有的案件数量，要另存到 case_output 表
+        $number_of_same_case = 0; // $number_of_same_case 为 case 表中有的，且信息与 case_source 表相同的案件，不用处理
+        $number_of_diff_case = 0; // $number_of_diff_case 为 case 表中有的，且信息与 case_source 表不相同的案件，不一定需要更新
+        $number_of_diff_case_should_update = 0; // $number_of_diff_case_should_update 为 number_of_diff_case 需要被更新、另存的数量，number_of_diff_case_should_update <= number_of_diff_case
+        $number_of_diff_case_updated = 0; // $number_of_diff_case_updated 为 number_of_diff_case_should_update 中被成功更新的案件数量，如数据库操作正常，number_of_diff_case_should_update == number_of_diff_case_updated
+        $number_of_output_case = 0; // $number_of_output_case 为实际存入 case_output 待核对的 case 数量，如数据库操作正常 number_of_output_case =  number_of_new_case + number_of_update_should_output
+        */
+                
+        echo('<br>');
         echo('<hr>');
         echo('案件信息处理完成，汇总如下：<br>');
         echo('第三方共提供了'.$i.'个案件的信息；');
-        echo('其中共有'.$number_of_new_case.'个案件是新的，已存入 <a href="/Home/CaseImport/listOutputCaseByPage" target="_blank">case_output</a> 表备查，请尽快补录入管理系统<br>');
+        echo('其中共有<font color = "red">'.$number_of_new_case.'个案件是新的</font>，应存入 <a href="/Home/CaseImport/listOutputCaseByPage" target="_blank">case_output</a> 表备查，要<font color = "red">尽快补录入管理系统</font><br>');
         echo('管理系统中共有'.$number_of_same_case.'个案件的信息与第三方提供的信息相同<br>');
         echo('管理系统中共有'.$number_of_diff_case.'个案件的信息与第三方提供的信息不相同，');
-        echo('管理系统中本次共有'.$number_of_update_case.'个案件的信息被更新，被更新的信息已另存到 <a href="/Home/CaseImport/listOutputCaseByPage" target="_blank">case_output</a> 表备查，请尽快核对 <br>');
-        echo('本次共另存了'.$number_of_output_case.'个案件信息到 <a href="/Home/CaseImport/listOutputCaseByPage" target="_blank">case_output</a> 备查，包括管理系统中被更新的案件（'.$number_of_update_case.'个）、以及管理系统中没有而第三方数据源有的案件（'.$number_of_new_case.'个）<br>');
+        echo('其中有<font color = "red">'.$number_of_diff_case_should_update.'个案件的信息应当更新到数据库</font>，实际<font color = "red">成功更新了'.$number_of_diff_case_updated.'个</font>案件。<br>');
+        echo('本次实际上<font color = "red">共另存了'.$number_of_output_case.'个案件</font>信息到 <a href="/Home/CaseImport/listOutputCaseByPage" target="_blank">case_output</a> 备查，包括管理系统中因更新而另存的案件（<font color = "red">'.$number_of_diff_case_should_update.'个</font>）、以及管理系统中没有而第三方数据源有的案件（<font color = "red">'.$number_of_new_case.'个</font>）<br>');
       
     }
     
