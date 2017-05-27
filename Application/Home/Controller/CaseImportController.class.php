@@ -273,7 +273,7 @@ class CaseImportController extends Controller {
                         
                         $case_compare['case_target_data']['remarks'] = $case_extend_compare['case_extend_target_data']['remarks'];
                         $case_compare['case_target_data']['remarks_notes'] = $case_extend_compare['case_extend_target_data']['remarks_notes'];
-                        dump($case_compare['case_target_data']);
+                        //dump($case_compare['case_target_data']);
                     }else{
                         echo('该案件不需要更新到系统</a>。<hr>');
                     }
