@@ -188,8 +188,8 @@ function caseCompare($case_source_para_array,$case_target_para_array){
     $case_target_data['tentative_title'] = trim($case_target_data['tentative_title']);
     $tentative_title_diff = (0 == substr_count($case_target_data['tentative_title'],$case_source_data['tentative_title']));
     $tentative_title_diff_should_update = ($tentative_title_diff AND $case_source_data['tentative_title']);
-    $case_target_data['tentative_title'] = $tentative_title_diff_should_update ? $case_target_data['tentative_title'].strInBracket($case_source_data['tentative_title']) : $case_target_data['tentative_title'];
     if($tentative_title_diff_should_update){
+        $case_target_data['tentative_title'] = $case_target_data['tentative_title'].strInBracket($case_source_data['tentative_title']);    
         $case_target_data['tentative_title_notes'] = '管理系统原来登记的商标名称是：'.$case_target_para_array['tentative_title'].'，已把第三方提供商标名称 【'.$case_source_data['tentative_title'].'】放到中括号并附加到后面，请核对';
     }
         
@@ -202,8 +202,8 @@ function caseCompare($case_source_para_array,$case_target_para_array){
     $case_target_data['formal_title'] = trim($case_target_data['formal_title']);
     $formal_title_diff = !($case_source_data['formal_title'] == $case_target_data['formal_title']);
     $formal_title_diff_should_update = ($formal_title_diff AND $case_source_data['formal_title']);
-    $case_target_data['formal_title'] = $formal_title_diff_should_update ? $case_target_data['formal_title'].strInBracket($case_source_data['formal_title']) : $case_target_data['formal_title'];
     if($formal_title_diff_should_update){
+        $case_target_data['formal_title'] = $case_target_data['formal_title'].strInBracket($case_source_data['formal_title']);
         $case_target_data['formal_title_notes'] = '管理系统原来登记的商标类别是：'.$case_target_para_array['formal_title'].'，已把第三方提供商标名称 【'.$case_source_data['formal_title'].'】放到中括号并附加到后面，请核对';
     }
     
@@ -215,8 +215,8 @@ function caseCompare($case_source_para_array,$case_target_para_array){
 
     $application_date_diff = !($case_source_data['application_date'] == $case_target_data['application_date']);
     $application_date_diff_should_update = ($application_date_diff AND $case_source_data['application_date']);
-    $case_target_data['application_date'] = $application_date_diff_should_update ? $case_source_data['application_date'] : $case_target_data['application_date'];
     if($application_date_diff_should_update){
+        $case_target_data['application_date'] = $case_source_data['application_date'];
         $case_target_data['application_date_notes'] = '管理系统原来登记的申请日是：'.date("Y-m-d",$case_target_para_array['application_date']).'，已用第三方提供的申请日 【'.date("Y-m-d",$case_source_data['application_date']).'】去替换';
     }
     
@@ -227,8 +227,8 @@ function caseCompare($case_source_para_array,$case_target_para_array){
 
     $issue_date_diff = !($case_source_data['issue_date'] == $case_target_data['issue_date']);
     $issue_date_diff_should_update = ($issue_date_diff AND $case_source_data['issue_date']);
-    $case_target_data['issue_date'] = $issue_date_diff_should_update ? $case_source_data['issue_date'] : $case_target_data['issue_date'];
     if($issue_date_diff_should_update){
+        $case_target_data['issue_date'] = $case_source_data['issue_date'];
         $case_target_data['issue_date_notes'] = '管理系统原来登记的发证日是：'.date("Y-m-d",$case_target_para_array['issue_date']).'，已用第三方提供的发证日 【'.date("Y-m-d",$case_source_data['issue_date']).'】去替换';
     }
     
@@ -274,8 +274,8 @@ function caseExtendCompare($case_source_para_array,$case_target_para_array){
     $case_extend_target_data['remarks'] = trim($case_extend_target_data['remarks']);
     $remarks_diff = (0 == substr_count($case_extend_target_data['remarks'],$case_extend_source_data['remarks']));
     $remarks_diff_should_update = ($remarks_diff AND $case_extend_source_data['remarks']);
-    $case_extend_target_data['remarks'] = $remarks_diff_should_update ? $case_extend_target_data['remarks'].strInBracket($case_extend_source_data['remarks']) : $case_extend_target_data['remarks'];
     if($remarks_diff_should_update){
+        $case_extend_target_data['remarks'] = $case_extend_target_data['remarks'].strInBracket($case_extend_source_data['remarks']);
         $case_extend_target_data['remarks_notes'] = '管理系统原来登记的备注是：'.$case_target_para_array['remarks'].'，已把第三方提供商标名称 【'.$case_extend_source_data['remarks'].'】放到中括号并附加到后面，请核对';
     }
         
