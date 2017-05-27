@@ -201,6 +201,7 @@ class CaseImportController extends Controller {
 
                 
         for( $i=0; $i<count($case_source_list); $i++){
+        //for( $i=0; $i<100; $i++){
                    
             //初始化变量
             $case_source_data = array();
@@ -266,18 +267,18 @@ class CaseImportController extends Controller {
                     }
                     
                     //统计应当更新的案件数量，并把 case_extend 中的数据附加到 case 中
-                    if($case_compare['case_diff_should_update'] OR $case_extend_compare['case_extend_diff_should_update']){    
+                    if($case_compare['case_diff_should_update'] OR $case_extend_compare['remarks_diff_should_update']){    
                         $number_of_diff_case_should_update = $number_of_diff_case_should_update + 1;
                         echo('该案件<font color = "red">需要更新到系统</font></a>，');
                         
                         $case_compare['case_target_data']['remarks'] = $case_extend_compare['case_extend_target_data']['remarks'];
                         $case_compare['case_target_data']['remarks_notes'] = $case_extend_compare['case_extend_target_data']['remarks_notes'];
-                        //dump($case_compare['case_target_data']);
+                        dump($case_compare['case_target_data']);
                     }else{
                         echo('该案件不需要更新到系统</a>。<hr>');
                     }
                     
-                    if($case_compare['case_diff_should_update'] and $case_extend_compare['case_extend_diff_should_update']){
+                    if($case_compare['case_diff_should_update'] and $case_extend_compare['remarks_diff_should_update']){
                         $case_result = M('Case')->field($case_field_for_update)->save($case_compare['case_target_data']);
                         $case_extend_result = addToCaseExtend($case_compare['case_target_data']);
                         if((FALSE !== $case_result) and (FALSE !== $case_extend_result)){
@@ -296,19 +297,18 @@ class CaseImportController extends Controller {
                         }else{
                             echo('但是，该第'.$number_of_diff_case.'个信息不同的案件的信息<font color = "red">未能被更新</font>。<hr>');
                         }
-                    }elseif($case_extend_compare['case_extend_diff_should_update']){
+                    }elseif($case_extend_compare['remarks_diff_should_update']){
                         $case_extend_result = addToCaseExtend($case_compare['case_target_data']);
                         if(FALSE !== $case_extend_result){
                             $number_of_diff_case_updated = $number_of_diff_case_updated + 1;
                             echo('该第'.$number_of_diff_case.'个信息不同案件的信息 <font color = "red">已更新到管理系统</font>。<hr>');
-                            
                         }else{
                             echo('但是，该第'.$number_of_diff_case.'个信息不同的案件的信息<font color = "red">未能被更新</font>。<hr>');
                         }
                     }
                     
                     //将应当更新的案件信息存入 case_output
-                    if($case_compare['case_diff_should_update'] OR $case_extend_compare['case_extend_diff_should_update']){    
+                    if($case_compare['case_diff_should_update'] OR $case_extend_compare['remarks_diff_should_update']){    
                         //dump($case_compare['case_target_data']);
                         $case_output_result = addToCaseOutput($case_compare['case_target_data']);
 
