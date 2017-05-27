@@ -24,15 +24,17 @@ class CaseImportController extends Controller {
         
 		$case_source_list	=	M('CaseSource')->order($order)->page($p.','.$page_limit)->select();
         
-        $count	=	M('CaseSource')->count();
+        $case_source_count	=	M('CaseSource')->count();
+        $case_target_count = M('Case')->count();
         
         $Page	= new \Think\Page($count,$page_limit);
 		$show	= $Page->show();
-		
+        
 		$this->assign('case_list',$case_source_list);
 		$this->assign('case_page',$show);
-		$this->assign('case_count',$count);
-        
+		$this->assign('case_source_count',$case_source_count);
+        $this->assign('case_target_count',$case_target_count);
+		
         $this->display();
 	}
     
@@ -196,7 +198,8 @@ class CaseImportController extends Controller {
         echo('开始处理案件信息：<br>');
         echo('第三方共提供了'.count($case_source_list).'个案件的信息；');
         echo('管理系统有'.$case_list_count.'个案件的信息；');
-        echo('要进行'.$case_handle_number.'次案件对比，耗时较长……<br>');
+        $case_compare_number = count($case_source_list) * $case_list_count * 7;
+        echo('要进行'.$case_compare_number.'次案件对比，耗时较长……<br>');
         echo('处理完成后，统计结果会在本页面底部显示；有变化的案件信息会另存到 <a href="/Home/CaseImport/listOutputCaseByPage" target="_blank">case_output</a> 表备查，请在系统处理完成后去核对；<br><br><hr>');
 
                 

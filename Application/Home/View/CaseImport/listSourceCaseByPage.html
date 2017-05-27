@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3>来源于第三方的商标案件信息列表（共{$case_count}项）：</h3>
+					<h3>来源于第三方的商标案件信息列表（共{$case_source_count}项）：</h3>
 				</div>
 			</div>
 		</div>
@@ -25,7 +25,8 @@
 			<div class="panel panel-warning">
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
-					来源于第三方的商标案件信息列表，点击<a href="{:U('CaseImport/import')}" target="_blank"> 【这里尝试导入系统】 </a>
+					来源于第三方的商标案件信息列表，共点击<a href="{:U('CaseImport/import')}" target="_blank"> 【这里尝试导入系统】 </a><br>
+                    注：第三方案件数量共{$case_source_count}项，管理系统现有共{$case_target_count}项，导入时需要进行 {$case_source_count * $case_target_count * 7} 次匹配，大概需要25~40秒钟。
 				</div>
 
 				<!-- Table -->
