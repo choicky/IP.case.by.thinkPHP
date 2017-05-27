@@ -186,7 +186,7 @@ function caseCompare($case_source_para_array,$case_target_para_array){
     
     $case_source_data['tentative_title'] = trim($case_source_data['tentative_title']);
     $case_target_data['tentative_title'] = trim($case_target_data['tentative_title']);
-    $tentative_title_diff = !(FALSE !== mb_strpos($case_target_data['tentative_title'],$case_source_data['tentative_title']));
+    $tentative_title_diff = (0 == substr_count($case_target_data['tentative_title'],$case_source_data['tentative_title']));
     $tentative_title_diff_should_update = ($tentative_title_diff AND $case_source_data['tentative_title']);
     $case_target_data['tentative_title'] = $tentative_title_diff_should_update ? $case_target_data['tentative_title'].strInBracket($case_source_data['tentative_title']) : $case_target_data['tentative_title'];
     if($tentative_title_diff_should_update){
@@ -272,7 +272,7 @@ function caseExtendCompare($case_source_para_array,$case_target_para_array){
     
     $case_extend_source_data['remarks'] = trim($case_extend_source_data['remarks']);
     $case_extend_target_data['remarks'] = trim($case_extend_target_data['remarks']);
-    $remarks_diff = !(FALSE !== mb_strpos($case_extend_source_data['remarks'],$case_extend_target_data['remarks']));
+    $remarks_diff = (0 == substr_count($case_extend_target_data['remarks'],$case_extend_source_data['remarks']));
     $remarks_diff_should_update = ($remarks_diff AND $case_extend_source_data['remarks']);
     $case_extend_target_data['remarks'] = $remarks_diff_should_update ? $case_extend_target_data['remarks'].strInBracket($case_extend_source_data['remarks']) : $case_extend_target_data['remarks'];
     if($remarks_diff_should_update){
