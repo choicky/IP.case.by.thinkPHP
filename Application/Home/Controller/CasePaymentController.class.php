@@ -56,9 +56,9 @@ class CasePaymentController extends Controller {
 		$data['payment_name']	=	trim(I('post.payment_name'));
 		$data['payment_date']	=	strtotime(trim(I('post.payment_date')));
 		$data['payer_id']	=	trim(I('post.payer_id'));
-		$data['official_fee']	=	trim(I('post.official_fee'))*100;
-		$data['other_fee']	=	trim(I('post.other_fee'))*100;
-		$data['total_amount']	=	trim(I('post.total_amount'))*100;
+		$data['official_fee']	=	bcmul(trim(I('post.official_fee')),100);
+		$data['other_fee']	=	bcmul(trim(I('post.other_fee')),100);
+		$data['total_amount']	=	bcmul(trim(I('post.total_amount')),100);
 		
 		if(!$data['payment_name']){
 			$this->error('未填写缴费单名称');
@@ -82,9 +82,9 @@ class CasePaymentController extends Controller {
 			$data['payment_name']	=	trim(I('post.payment_name'));
 			$data['payment_date']	=	strtotime(trim(I('post.payment_date')));
 			$data['payer_id']	=	trim(I('post.payer_id'));
-			$data['official_fee']	=	trim(I('post.official_fee'))*100;
-			$data['other_fee']	=	trim(I('post.other_fee'))*100;
-			$data['total_amount']	=	trim(I('post.total_amount'))*100;
+			$data['official_fee']	=	bcmul(trim(I('post.official_fee')),100);
+			$data['other_fee']	=	bcmul(trim(I('post.other_fee')),100);
+			$data['total_amount']	=	bcmul(trim(I('post.total_amount')),100);
 
 			$result = M('CasePayment')->save($data);
 			if(false !== $result){
@@ -146,8 +146,8 @@ class CasePaymentController extends Controller {
 		$service_fee_total	=0;
 		$official_fee_total	=0;
 		for($j=0;$j<$case_fee_count;$j++){
-			$service_fee_total	+=	$case_fee_list[$j]['service_fee']/100;
-			$official_fee_total	+=	$case_fee_list[$j]['official_fee']/100;
+			$service_fee_total	+=	bcdiv($case_fee_list[$j]['service_fee'],100,2);
+			$official_fee_total	+=	bcdiv($case_fee_list[$j]['official_fee'],100,2);
 		}
 		$fee_total	=	$service_fee_total	+	$official_fee_total;
 		
@@ -167,8 +167,8 @@ class CasePaymentController extends Controller {
 			
 			$data=array();
 			$data['case_payment_id']	=	trim(I('post.case_payment_id'));
-			$data['official_fee']	=	100*trim(I('post.official_fee'));
-			$data['other_fee']	=	100*trim(I('post.other_fee'));
+			$data['official_fee']	=	bcmul(trim(I('post.official_fee')),100);
+			$data['other_fee']	=	bcmul(trim(I('post.other_fee')),100);
 			$data['total_amount']	=	$data['official_fee']	+	$data['other_fee'];
 
 			$result = M('CasePayment')->save($data);
