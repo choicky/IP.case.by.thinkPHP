@@ -76,6 +76,7 @@
 								<td>
 									<select class="form-control" name="follower_id">
                                         <?php
+                                            //如 user_group_id 小于 11 ，则只能搜索自己跟进的账单
                                                 if(cookie('user_group_id') < 11){
                                                     $member_id = cookie('member_id');
                                                     $member_name = cookie('member_name');?>
