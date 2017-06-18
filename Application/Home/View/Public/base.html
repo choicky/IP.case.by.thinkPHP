@@ -1,5 +1,5 @@
 <?php
-if(!cookie('member_id') and !cookie('user_group_id')){
+if(!cookie('member_id') and !cookie('user_group_id') and !cookie('member_name')){
 	//header('Location: '.U('User/login'));
 	header('Location: __APP__/Home/User/login');
 	exit;

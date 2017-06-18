@@ -22,6 +22,7 @@ class UserController extends Controller {
 		if(1==$list['result']){			
 			cookie('member_id',$list['member_id']);
 			cookie('user_group_id',$list['user_group_id']);
+            cookie('member_name',$list['member_name']);
 			$this->success('登陆成功',U('Index/index'));
 		}else{
 			$this->error('用户名与密码不匹配');
@@ -34,7 +35,8 @@ class UserController extends Controller {
 	public function logout(){
         cookie('member_id',null);
 		cookie('user_group_id',null);
-		if(!cookie('member_id') and !cookie('user_group_id')){
+        cookie('member_name',null);
+		if(!cookie('member_id') and !cookie('user_group_id') and !cookie('member_name')){
 			$this->success('注销成功',U('User/login'));
 		}
     }

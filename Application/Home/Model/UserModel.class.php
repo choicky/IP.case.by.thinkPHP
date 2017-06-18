@@ -19,19 +19,20 @@ class UserModel extends RelationModel {
 		$map_user['user_password']	=	md5($user_password);
 		
 		//从数据库获取数据
-		$list	=	$this->where($map_user)->field('member_id,user_group_id')->select();
+		$list	=	$this->where($map_user)->field('member_id,user_group_id,member_name')->select();
 		
 		//检测是否匹配
 		if(is_array($list) and 1==count($list)){
 			$result	=	1;
 			$member_id	=	$list[0]['member_id'];
 			$user_group_id	=	$list[0]['user_group_id'];
+            $member_name	=	$list[0]['member_name'];
 		}else{
 			$result	=	0;
 		}
 
 		//返回
-		return array("result"=>$result,"member_id"=>$member_id,"user_group_id"=>$user_group_id);
+		return array("result"=>$result,"member_id"=>$member_id,"user_group_id"=>$user_group_id,"member_name"=>$member_name);
 	}
 
 	//检测 $member_id 与 $user_password 是否匹配
