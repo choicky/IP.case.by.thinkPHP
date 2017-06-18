@@ -75,10 +75,22 @@
 									<input type="text" class="form-control" id="end_amount" name="end_amount" size="5" value="{$end_amount/100}"></td>
 								<td>
 									<select class="form-control" name="follower_id">
+                                        <?php
+                                                if(cookie('user_group_id') < 11){
+                                                    $member_id = cookie('member_id');
+                                                    $member_name = cookie('member_name');?>
+                                                    
+                                                    <option value="{$member_id}"> {$member_name} </option>
+                                                <?php
+                                                }else{?>
+                                                
+                                                
 										<option value="0"> 不限 </option>
 										<volist name="member_list" id="member_vo">
 										<option value="{$member_vo.member_id}"} {$member_vo['member_id']==$follower_id	?	'selected="selected"'	:	''}>{$member_vo.member_name}</option>
 										</volist>
+                                                <?php
+                                                }?>
 									</select></td>								
 								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>
 							</form>
