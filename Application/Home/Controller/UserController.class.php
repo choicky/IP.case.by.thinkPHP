@@ -4,9 +4,9 @@ use Think\Controller;
 
 class UserController extends Controller {
     
-	//默认跳转到listPage，分页显示
+	//默认跳转到 Index/index  
 	public function index(){
-        header("Location: listPage");
+        header('Location: '.U('Index/index'));
     }
 	
 	//登陆页面
@@ -20,8 +20,8 @@ class UserController extends Controller {
 		$user_password	=	trim(I('post.user_password'));
 		$list	=	D('User')->checkLogin($user_name,$user_password);
 		if(1==$list['result']){			
-			cookie('id',$list['id']);
-			cookie('name',$list['name']);
+			cookie('member_id',$list['member_id']);
+			cookie('user_group_id',$list['user_group_id']);
 			$this->success('登陆成功',U('Index/index'));
 		}else{
 			$this->error('用户名与密码不匹配');
@@ -32,9 +32,9 @@ class UserController extends Controller {
 	
 	//注销
 	public function logout(){
-        cookie('id',null);
-		cookie('name',null);
-		if(!cookie('id') and !cookie('name')){
+        cookie('member_id',null);
+		cookie('user_group_id',null);
+		if(!cookie('member_id') and !cookie('user_group_id')){
 			$this->success('注销成功',U('User/login'));
 		}
     }
@@ -46,8 +46,8 @@ class UserController extends Controller {
 	
 	//检测是否能够修改密码
 	public function checkPassword(){
-        $user_id	=	cookie('id');
-		if(!$user_id){
+        $member_id	=	cookie('member_id');
+		if(!$member_id){
 			$this->error('尚未登陆',U('User/login'));
 		}
 		
@@ -62,12 +62,12 @@ class UserController extends Controller {
 			$this->error('新密码不匹配');
 		}
 		
-		$result	=	D('User')->checkPassword($user_id,$current_password);
+		$result	=	D('User')->checkPassword($member_id,$current_password);
 		if(!$result){
 			$this->error('当前密码验证失败');
 		}
 		
-		$map_user['user_id']	=	$user_id;
+		$map_user['member_id']	=	$member_id;
 		$data_user['user_password']	=	md5($new_password);
 		
 		$result	=	D('User')->where($map_user)->save($data_user);

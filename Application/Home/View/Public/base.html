@@ -1,5 +1,5 @@
 <?php
-if(!cookie('name')){
+if(!cookie('member_id') and !cookie('user_group_id')){
 	//header('Location: '.U('User/login'));
 	header('Location: __APP__/Home/User/login');
 	exit;
@@ -124,7 +124,7 @@ if(!cookie('name')){
             </li>
 			
 			<?php
-				if('财务部'==cookie('name')){
+				if(cookie('user_group_id') > 10){
 				//这部分菜单仅对符合要求的用户显示
 			?>
 
