@@ -1,5 +1,5 @@
 <?php
-if(!cookie('name')){
+if(!cookie('member_id') and !cookie('user_group_id') and !cookie('member_name')){
 	//header('Location: '.U('User/login'));
 	header('Location: __APP__/Home/User/login');
 	exit;
@@ -124,7 +124,7 @@ if(!cookie('name')){
             </li>
 			
 			<?php
-				if('财务部'==cookie('name')){
+				if(cookie('user_group_id') > 10){
 				//这部分菜单仅对符合要求的用户显示
 			?>
 
@@ -175,7 +175,7 @@ if(!cookie('name')){
             
 			
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">基础信息配置 <span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">配置 <span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="download">
                 <li><h5>客户与申请人管理</h5></li>
 				<li><a href="{:U('Client/listPage')}">列表、编辑</a></li>
@@ -248,15 +248,14 @@ if(!cookie('name')){
           <ul class="nav navbar-nav navbar-right">			
 			
 			<?php
-				if(cookie('name')){?>
+				if(cookie('member_id')){ $member_name = cookie('member_name')?>
 				<li class="dropdown">
-				  <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">已登陆<span class="caret"></span></a>
+				  <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">{$member_name}<span class="caret"></span></a>
 				  <ul class="dropdown-menu" aria-labelledby="themes">
 					<li><a href="__MODULE__/User/changePassword">修改密码</a></li>
 					<li><a href="__MODULE__/User/logout">注销</a></li>				   
 				  </ul>
 				</li>
-				<li><a href="__MODULE__/User/logout">注销</a></li>
 			<?php }else { ?>
 				<li><a href="__MODULE__/User/login">登陆</a></li>
 			<?php } ?>
