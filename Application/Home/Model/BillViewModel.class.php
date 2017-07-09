@@ -60,9 +60,16 @@ class BillViewModel extends ViewModel {
 	
 	//分页返回本数据视图的所有数据，$p为当前页数，$limit为每页显示的记录条数
 	public function listPage($p,$limit) {
-		$order['bill_date']	=	'desc';	
-		$list	=	$this->order($order)->page($p.','.$limit)->select();
-		
+		$order['bill_date']	=	'desc';
+        
+        //如 user_group_id 小于 11 ，则只显示自己跟进的账单
+        if(cookie('user_group_id') < 11){
+            $map['follower_id'] = cookie('member_id');
+            $list	=	$this->order($order)->page($p.','.$limit)->where($map)->select();
+        }else{
+            $list	=	$this->order($order)->page($p.','.$limit)->select();
+        }        
+				
 		$count	= $this->count();
 		
 		$Page	= new \Think\Page($count,$limit);

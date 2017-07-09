@@ -5,7 +5,7 @@ use Think\Controller;
 class IndexController extends Controller {
 
 	public function index(){
-		if(!cookie('name')){
+		if(!cookie('member_id') and !cookie('user_group_id') and !cookie('member_name')){
 			//$this->error('尚未登陆',U('User/login'));
 			header('Location: '.U('User/login'));
 		}else{/*

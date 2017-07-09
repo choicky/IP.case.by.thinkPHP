@@ -1,15 +1,20 @@
-
+<?php
+if(!cookie('member_id') and !cookie('user_group_id') and !cookie('member_name')){
+	//header('Location: '.U('User/login'));
+	header('Location: __APP__/Home/User/login');
+	exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="zh">
   <head>
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
-<!-- 区块 title 开始-->
+	<!-- 定义区块 title -->
 	<block name="title">
     <title>Bootswatch: Cerulean</title>
 	</block>
-<!-- 区块 title 结束-->
 	
 	<!-- Bootstrap -->
     <link rel="stylesheet" href="__ROOT__/Application/Home/View/Public/css/bootstrap.css" media="screen">
@@ -22,7 +27,6 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min-1.4.2.js"></script>
     <![endif]-->
 	
-	<!-- 引入 jQuery 和 bootstrap -->
 	<script src="__ROOT__/Application/Home/View/Public/js/jquery-1.10.2.min.js"></script>
 	<script src="__ROOT__/Application/Home/View/Public/js/bootstrap.min.js"></script>
 
@@ -32,66 +36,242 @@
      <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
 		
-<!-- 区块 navbar-header 开始-->
+		<!-- 定义区块 navbar-header -->
 		<block name="navbar-header">
         <div class="navbar-header">
           <a href="__ROOT__/" class="navbar-brand">首页</a>
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+          <button type="reset" value="reset" class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
         </div>
 		</block>
-<!-- 区块 navbar-header 结束-->
-
+		
+		<!-- 定义区块 navbar-nav -->
+		<block name="navbar-nav">
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">分组（Group） <span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="patent">专利 <span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
-                <li><a href="__APP__/Home/Group/listAll">显示所有分组</a></li>
-                <li class="divider"></li>
-                <li><a href="__APP__/Home/Group/listAll#addNew">新建分组</a></li>               
+                <li><h5>案件</h5></li>
+				<li><a href="__MODULE__/Case/searchForNewPatent">开案登记</a></li>
+				<li><a href="__MODULE__/Case/searchPatent">查询</a></li>
+				<li><a href="__MODULE__/Case/listPagePatent">总览</a></li>
+				<li><h5>费用</h5></li>
+				<li><a href="__MODULE__/CaseFee/searchPatentFeeByDueDate">监控</a></li>
+				<li><a href="__MODULE__/CaseFee/listPagePatentFee">费用记录总览</a></li>
+				<li><a href="__MODULE__/CaseFee/searchPatentFeeByCompletionDate">按缴费日查询</a></li>				
+				<li><h5>文件</h5></li>
+				<li><a href="__MODULE__/CaseFile/searchPatentFileByDueDate">监控</a></li>
+				<li><a href="__MODULE__/CaseFile/listPagePatentFile">文件记录总览</a></li>
+				<li><a href="__MODULE__/CaseFile/searchPatentFileByCompletionDate">按交文日查询</a></li>
+				<li><h5>优先权</h5></li>
+				<li><a href="__MODULE__/CasePriority/search">搜索</a></li>
+				<li><a href="__MODULE__/CasePriority/listPage">优先权记录总览</a></li>
+				<li><h5>补全案件信息</h5></li>
+				<li><a href="__MODULE__/Check/listNotIssuedPatent">没有填写发证日的专利列表</a></li>
+				<li><a href="__MODULE__/Check/listNoFeePatent">没有费用任务的专利列表</a></li>					
+				
               </ul>
             </li>
 			<li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">分类（Type） <span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="trademark">商标<span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
-                <li><a href="__APP__/Home/Type/listAll">显示所有分类</a></li>
+                <li><h5>案件</h5></li>
+				<li><a href="__MODULE__/Case/searchForNewNotPatent">开案登记</a></li>
+				<li><a href="__MODULE__/Case/searchNotPatent">查询</a></li>
+				<li><a href="__MODULE__/Case/listPageNotPatent">总览</a></li>
+				<li><h5>费用</h5></li>
+				<li><a href="__MODULE__/CaseFee/searchNotPatentFeeByDueDate">监控</a></li>
+				<li><a href="__MODULE__/CaseFee/listPageNotPatentFee">费用记录总览</a></li>
+				<li><a href="__MODULE__/CaseFee/searchNotPatentFeeByCompletionDate">按缴费日查询</a></li>				
+				<li><h5>文件</h5></li>
+				<li><a href="__MODULE__/CaseFile/searchNotPatentFileByDueDate">监控</a></li>
+				<li><a href="__MODULE__/CaseFile/listPageNotPatentFile">文件记录总览</a></li>
+				<li><a href="__MODULE__/CaseFile/searchNotPatentFileByCompletionDate">按交文日查询</a></li>
+				<li><h5>优先权</h5></li>
+				<li><a href="__MODULE__/CasePriority/search">搜索</a></li>
+				<li><a href="__MODULE__/CasePriority/listPage">优先权记录总览</a></li>	
+				<li><h5>商标分类管理</h5></li>
+				<li><a href="__MODULE__/TmCategory/listAll">商标分类列表、编辑</a></li>
+				<li><h5>补全案件信息</h5></li>
+				<li><a href="__MODULE__/Check/listNotIssuedNotPatent">没有填写发证日的商标列表</a></li>
+				<li><a href="__MODULE__/Check/listNoFeeNotPatent">没有费用任务的商标列表</a></li>	
+				<li><a href="__MODULE__/Check/listNoApplicationNumberNotPatent">没有填写申请号或分类号的商标列表</a></li>	
                 <li class="divider"></li>
-                <li><a href="__APP__/Home/Type/listAll#addNew">新建分类</a></li>    
-               
+                <li><a href="__MODULE__/CaseImport/listSourceCaseByPage">第三方提供的商标信息列表</a></li>
+                <li><a href="__MODULE__/CaseImport/listOutputCaseByPage">第三方商标信息更新后待确认的清单</a></li>
+              </ul>
+            </li>
+			<li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="payment">缴费与内部结算<span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+                <li><h5>缴费单</h5></li>
+				<li><a href="__MODULE__/CasePayment/listPage">缴费单列表、管理</a></li>
+                <li><a href="__MODULE__/CasePayment/listPage#addNew">新增缴费单</a></li>
+				<li><h5>缴费人</h5></li>
+				<li><a href="__MODULE__/Payer/listAll">缴费人列表、编辑</a></li>
+                <li><a href="__MODULE__/Payer/listAll#addNew">录入新缴费人</a></li>
+				<li class="divider"></li>
+				<li><h5>内部结算</h5></li>
+				<li><a href="__MODULE__/InnerBalance/listPage">内部结算单列表、管理</a></li>
+                <li><a href="__MODULE__/InnerBalance/listPage#addNew">新增内部结算单</a></li>
+				<li><a href="__MODULE__/CostCenter/listPage">管理内部结算账户</a></li>
+				
               </ul>
             </li>
 			
+			<?php
+				if(cookie('user_group_id') > 10){
+				//这部分菜单仅对符合要求的用户显示
+			?>
+
+			<li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">财务 <span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+				<li><h5>实际收支流水</h5></li>
+				<li><a href="__MODULE__/Balance/listPage">实际收支流水总览</a></li>
+				<li><a href="__MODULE__/Balance/listPage#addNew">登记实际收支流水</a></li>
+				<li><a href="__MODULE__/Balance/search">查询收支流水</a></li>
+
+				<li><h5>收支流水的分摊</h5></li>
+                <li><a href="__MODULE__/Claim/listPage">分摊总列表</a></li>
+                <li><a href="__MODULE__/Claim/search">查询分摊</a></li>
+
+				<li><h5>发票类</h5></li>
+                <li><a href="__MODULE__/Invoice/listPage">发票总列表</a></li>
+                <li><a href="__MODULE__/Invoice/search">查询发票</a></li>
+
+				<li><h5>实际财务账户</h5></li>
+                <li><a href="__MODULE__/Account/listPage">总列表</a></li>
+				
+				<li><h5>内部结算账户</h5></li>
+                <li><a href="__MODULE__/CostCenter/listPage">内部结算账户列表</a></li>
+				<li><a href="__MODULE__/CostCenterBalance/listPage">各结算账户周期汇总</a></li>
+				<li><a href="__MODULE__/CostCenter/listBalance">各个结算账户的当前余额</a></li>
+				<li class="divider"></li>
+              </ul>
+            </li>
+			
+			<?php } 
+			//上面这部分菜单仅对于满足条件的用户显示
+			?>
+
+			<li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">业务 <span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+                <li><h5>账单</h5></li>				
+				<li><a href="__MODULE__/Bill/listPage">账单列表</a></li>
+                <li><a href="__MODULE__/Bill/listPage#addNew">录入新账单</a></li>
+                <li><a href="__MODULE__/Bill/search">搜索账单</a></li>
+                <li><h5>收支认领</h5></li>
+				<li><a href="__MODULE__/Claim/listPage">收支认领列表</a></li>
+                <li><a href="__MODULE__/Claim/listPage#addNew">录入新收支认领</a></li>
+				<li class="divider"></li>
+              </ul>
+            </li>
+            
+			
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">配置 <span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="download">
+                <li><h5>客户与申请人管理</h5></li>
+				<li><a href="{:U('Client/listPage')}">列表、编辑</a></li>
+				<li><a href="{:U('Client/listPage#addNew')}">录入新客户/申请人</a></li>
+                <li><h5>人员管理</h5></li>				
+				<li><a href="__MODULE__/Member/listPage">列表、编辑</a></li>
+				<li><a href="__MODULE__/Member/listPage#addNew">录入新跟案人员/处理人员</a></li>
+				<li><h5>案件阶段管理</h5></li>
+                <li><a href="__MODULE__/CasePhase/listPage">列表、管理</a></li>
+				<li><h5>案件类型管理</h5></li>
+                <li><a href="{:U('CaseGroup/listPage')}">案件类型列表、管理</a></li>
+                <li><a href="{:U('CaseType/listPage')}">案件小类列表、管理</a></li>
+				<li><h5>文件类型管理</h5></li>
+				<li><a href="__MODULE__/FileType/listPage">交文类型列表、编辑</a></li>
+                <li><a href="__MODULE__/FileType/listPage#addNew">录入新交文类型</a></li>
+				<li><h5>费用类型管理</h5></li>
+				<li><a href="__MODULE__/FeeType/listPage">费用类型列表、编辑</a></li>
+                <li><a href="__MODULE__/FeeType/listPage#addNew">录入新费用类型</a></li>
+				<li><h5>优先权国家管理</h5></li>
+				<li><a href="__MODULE__/Country/listPage">费用类型列表、编辑</a></li>
+                <li><a href="__MODULE__/Country/listPage#addNew">录入新费用类型</a></li>			
+				
+				<li class="divider"></li>
+              </ul>
+            </li>
 			
           </ul>
+		  </block>
 		  
-<!-- 定义区块 navbar-form 开始-->
+		  <!-- 定义区块 navbar-form -->
 		  <block name="navbar-form">
-		  <form class="navbar-form navbar-left" role="search" method="post" action="xxxx">
+		  <form class="navbar-form navbar-left" role="search" method="get" action="__MODULE__/Case/searchAll">
 			<div class="form-group">
-               <input type="text" class="form-control" placeholder="Search">
+               <input type="text" class="form-control" name="key_word" placeholder="盈方案号、申请号或客户案号" size="25">
             </div>
-            <button type="submit" class="btn btn-warning">搜</button>
+            <button type="submit" value="submit" class="btn btn-warning">搜</button>
           </form>
 		  </block>
-<!-- 定义区块 navbar-form 结束-->
+		  
+		  <!-- 定义区块 guide -->
+		  <block name="guide">
+		  <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="patent">使用帮助 <span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+                <li><h5>案件</h5></li>
+				<li><a href="{:U('Guide/caseGuide')}">如何新建、修改、查找案件</a></li>				
+				<li><h5>文件任务</h5></li>
+				<li><a href="{:U('Guide/feeGuide')}">如何新建、修改、查找文件任务</a></li>			
+				<li><h5>费用任务</h5></li>
+				<li><a href="{:U('Guide/fileGuide')}">如何新建、修改、查找费用任务</a></li>
+				<li><a href="{:U('Guide/fileGuide')}">如何新建、修改、查找缴费清单</a></li>
+				<li><h5>账单与发票</h5></li>
+				<li><a href="{:U('Guide/billGuide')}">如何新建、修改、查找账单</a></li>
+				<li><a href="{:U('Guide/invoiceGuide')}">如何记录、修改发票、建立发票与账单的关联</a></li>				
+				<li><h5>收支流水与结算</h5></li>
+				<li><a href="{:U('Guide/balanceGuide')}">如何记录收支流水、建立收支认领结算</a></li>
+				<li><a href="{:U('Guide/claimGuide')}">收支认领结算与账单的关联</a></li>
+				<li><h5>内部结算</h5></li>
+				<li><a href="{:U('Guide/costGuide')}">如何新建、修改、查找内部结算单</a></li>				
+              </ul>
+            </li>
+		  </ul>
+		  </block>
 
-          <ul class="nav navbar-nav navbar-right">
-           <li><a href="https://wrapbootstrap.com/?ref=bsw" target="_blank">页面</a></li>
+
+		  
+		  <!-- 定义区块 user-form -->
+		  <block name="user-form">
+          <ul class="nav navbar-nav navbar-right">			
+			
+			<?php
+				if(cookie('member_id')){ $member_name = cookie('member_name')?>
+				<li class="dropdown">
+				  <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">{$member_name}<span class="caret"></span></a>
+				  <ul class="dropdown-menu" aria-labelledby="themes">
+					<li><a href="__MODULE__/User/changePassword">修改密码</a></li>
+					<li><a href="__MODULE__/User/logout">注销</a></li>				   
+				  </ul>
+				</li>
+			<?php }else { ?>
+				<li><a href="__MODULE__/User/login">登陆</a></li>
+			<?php } ?>
           </ul>
+		  
 
         </div>
-      </div>
+		</block>
+	  </div>
     </div>
 
 	
 
 
     <div class="container">
-<!-- 区块 page 开始-->
+	<!-- 定义区块 page -->
 	  <block name="page">
       <div class="page-header" id="banner">
         <div class="row">
@@ -107,13 +287,11 @@
         </div>
       </div>
 	  </block>
-<!-- 区块 page 结束-->
+	  
 
     
 
-<!-- 区块 footer 开始-->
       <footer>
-	  <block name="footer">
         <div class="row">
           <div class="col-lg-12">
 
@@ -132,16 +310,11 @@
 
           </div>
         </div>
-		</block>
-<!-- 区块 footer 结束-->
 
       </footer>
 
 
-    </div>
-
-
-    
+    </div>    
     
     
   </body>
