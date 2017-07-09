@@ -170,6 +170,8 @@ class CaseFeeController extends Controller {
 		}
 		
 		//根据 $case_type_name 构造对应的检索条件以搜出年费的的ID
+        $map_fee_type = array();
+        $result_case_fee = array();
 		if(false	!==	strpos($case_type_name,'发明')){
 			$map_fee_type[0]['fee_type_name']	=	array('like','%发明%'.$annual_number.'年%');
 		}elseif(false	!==	strpos($case_type_name,'实用新型')){
@@ -245,7 +247,29 @@ class CaseFeeController extends Controller {
 			$data_case_fee['fee_type_id']	=	$fee_type_id[2];
 			$data_case_fee['official_fee']	=	$fee_default_amount[2];
 			$result_case_fee[2]	=	M('CaseFee')->add($data_case_fee);
-			if(!$result_case_fee[2]){			
+            if(!$result_case_fee[2]){			
+				$this->error('增加失败');			
+			}
+            
+            //公告印刷费部分
+			if(false	!==	strpos($case_type_name,'发明')){
+				$map_fee_type[3]['fee_type_name']	=	array('like','%发明%公告印刷%');
+			}elseif(false	!==	strpos($case_type_name,'实用新型')){
+				$map_fee_type[3]['fee_type_name']	=	array('like','%实用新型%公告印刷%');
+			}elseif(false	!==	strpos($case_type_name,'外观设计')){
+				$map_fee_type[3]['fee_type_name']	=	array('like','%外观设计%公告印刷%');
+			}			
+			//找到对应的 fee_type_id 和 fee_default_amount
+			$fee_type_list[3]	=	M('FeeType')->field(true)->where($map_fee_type[3])->find();
+			$fee_type_id[3]	=	$fee_type_list[3]['fee_type_id'];
+			$fee_default_amount[3]	=	$fee_type_list[3]['fee_default_amount'];
+			
+			//写入公告印刷费
+			$data_case_fee['fee_type_id']	=	$fee_type_id[3];
+			$data_case_fee['official_fee']	=	$fee_default_amount[3];
+			$data_case_fee['service_fee']	=	"";
+			$result_case_fee[3]	=	M('CaseFee')->add($data_case_fee);
+			if(!$result_case_fee[3]){			
 				$this->error('增加失败');			
 			}else{			
 				// 提醒
