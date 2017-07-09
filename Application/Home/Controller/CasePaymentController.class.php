@@ -151,6 +151,10 @@ class CasePaymentController extends Controller {
 		}
 		$fee_total	=	$service_fee_total	+	$official_fee_total;
 		
+        //返回当前时间
+        $today = time();
+        $this->assign('today',$today);
+        
 		$this->assign('case_fee_list',$case_fee_list);
 		$this->assign('case_fee_count',$case_fee_count);
 		$this->assign('service_fee_total',$service_fee_total);
