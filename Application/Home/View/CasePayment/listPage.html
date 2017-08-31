@@ -37,10 +37,11 @@
 								<th>缴费单名称</th>
 								<th>缴费日期</th>
 								<th>缴费人</th>
+                                <th>已报销</th>
 								<th>官费金额</th>
 								<th>其他费用</th>
 								<th>总金额</th>
-								<th>收支流水信息</th>
+								<th>收支流水</th>
 								<th>常用操作</th>								
 							</tr>
 						</thead>
@@ -54,6 +55,9 @@
 									{$case_payment_vo['payment_date']	?	date("Y-m-d",$case_payment_vo['payment_date'])	:	''}
 								</td>
 								<td>{$case_payment_vo['payer_name']}</td>
+                                <td>
+									{$case_payment_vo['claim']	?	'是'	:	''}
+								</td>
 								<td align="right">{$case_payment_vo['official_fee']	?	$case_payment_vo['official_fee']/100	:	''}</td>
 								<td align="right">{$case_payment_vo['other_fee']	?	$case_payment_vo['other_fee']/100	:	''}</td>
 								<td align="right">{$case_payment_vo['total_amount']	?	$case_payment_vo['total_amount']/100	:	''}</td>
