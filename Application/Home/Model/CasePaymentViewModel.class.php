@@ -21,6 +21,7 @@ class CasePaymentViewModel extends ViewModel {
 			'payment_name',
 			'payment_date',
 			'payer_id',
+            'claim',
 			'official_fee',
 			'other_fee',
 			'total_amount',			

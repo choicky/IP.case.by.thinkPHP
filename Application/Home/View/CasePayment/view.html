@@ -54,7 +54,7 @@
 								</td>
 								<td>{$case_payment_list['payer_name']}</td>
                                 <td>
-									{$case_payment_vo['claim']	?	'是'	:	''}
+									{$case_payment_list['claim']==1	?	'是'	:	''}
 								</td>
 								<td align="right">{$case_payment_list['official_fee']/100}</td>
 								<td align="right">{$case_payment_list['other_fee']/100}</td>

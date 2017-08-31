@@ -4,7 +4,7 @@
 	
 <!-- 区块 title 替换开始 --> 	
 	<block name="title">
-		<title>搜索</title>
+		<title>搜索缴费单</title>
 	</block>
 <!-- 区块 title 替换结束 --> 	
 	
@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1>搜索条件</h1>
+					<h3>搜索条件</h3>
 				</div>
 			</div>
 		</div>
@@ -27,28 +27,27 @@
 				<div class="panel-heading">
 					<form class="form-inline" method="post" action="__CONTROLLER__/search">
 					  <div class="form-group">
-						<label for="account_id">账户</label>
-						<select class="form-control" name="account_id">
+						<label for="payer_id">缴费人</label>
+						<select class="form-control" name="payer_id">
 							<option value="0"> 不限 </option>
-							<volist name="account_list" id="account_vo">
-							<option value="{$account_vo.account_id}"}>{$account_vo.account_name}年 &nbsp;</option>
+							<volist name="payer_list" id="payer_vo">
+							<option value="{$payer_vo.payer_id}"} {$payer_vo['payer_id']==$payer_id	?	'selected="selected"'	:	''}>{$payer_vo.payer_name} &nbsp;</option>
 							</volist>
 						</select>
 					  </div>
 					  <div class="form-group">
-						<label for="start_time">最早的交易日期</label>
-							<input type="date" class="form-control" id="start_time" name="start_time" placeholder="最早的交易日期" value="{$start_time|date="Y-m-d",###}">
+						<label for="start_time">最早的缴费日期</label>
+							<input type="date" class="form-control" id="start_time" name="start_time" placeholder="最早的缴费日期" value="{$start_time	?	date("Y-m-d",$start_time)	:	''}">
 					  </div>
-					  <div class="form-group">最晚的交易日期</label>
-							<input type="date" class="form-control" id="end_time" name="end_time" placeholder="最晚的交易日期" value="{$end_time|date="Y-m-d",###}">
+					  <div class="form-group">最晚的缴费日期</label>
+							<input type="date" class="form-control" id="end_time" name="end_time" placeholder="最晚的缴费日期" value="{$end_time	?	date("Y-m-d",$end_time)	:	''}">
 					  </div>
 					  <div class="form-group">
-						<label for="follower_id">跟进人员</label>
-						<select class="form-control" name="follower_id">
-							<option value="0"> 不限 </option>
-							<volist name="member_list" id="member_vo">
-							<option value="{$member_vo.member_id}"}>{$member_vo.member_name}年 &nbsp;</option>
-							</volist>
+						<label for="claim">报销状态</label>
+						<select class="form-control" name="claim">
+							<option value="0" {$claim==0	?	'selected="selected"'	:	''}> 不限 </option>
+                            <option value="1" {$claim==1	?	'selected="selected"'	:	''}> 已报销 </option>
+                            <option value="2" {$claim==2	?	'selected="selected"'	:	''}> 尚未报销 </option>
 						</select>
 					  </div>
 					  <button type="submit" value="submit" class="btn btn-primary">搜</button>
@@ -60,17 +59,16 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1>搜索结果</h1>
+					<h3>搜索结果（共{$case_payment_count}项，共支出{$case_payment_total}元）</h3>
 				</div>
 			</div>
 		</div>
 		
 		<div class="row">
 			<div class="panel panel-warning">
-				
 				<!-- Default panel contents -->
-				<div class="panel-heading">
-					“编号”是唯一的；表格底部有换页按钮；页面底部可以新增
+				<div class="panel-heading panel-title">
+					“编号”是唯一的；每个要缴费的案子的费用标记了“缴费单编号”之后，就会出现在该缴费单里面
 				</div>
 
 				<!-- Table -->
@@ -79,65 +77,48 @@
 						<thead>
 							<tr class="info">
 								<th>编号</th>
-								<th>交易账户</th>
-								<th>交易日期</th>
-								<th>收入金额</th>
-								<th>支出金额</th>
-								<th>摘要</th>
-								<th>对方当事人</th>
-								<th>跟进人员</th>
-								<th>账单编号</th>
-								<th>其他操作</th>
-								<th>&nbsp;|&nbsp;</th>
-								<th>结算账户</th>
-								<th>已结算金额</th>
+								<th>缴费单名称</th>
+								<th>缴费日期</th>
+								<th>缴费人</th>
+                                <th>已报销</th>
+								<th>官费金额</th>
+								<th>其他费用</th>
+								<th>总金额</th>
+								<th>收支流水</th>
+								<th>常用操作</th>								
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 将controller assign过来的 balance_list 赋给  balance_vo--> 
-							<volist name="balance_list" id="balance_vo">
+							<!-- 将controller assign过来的 case_payment_list 赋给  case_payment_vo--> 
+							<volist name="case_payment_list" id="case_payment_vo">
 							<tr>
-								<td>{$balance_vo.balance_id}</td>
-								<td>{$balance_vo.account_name}</td>
-								<td>{$balance_vo.deal_date|date="Y-m-d",###}</td>
-								<td align="right">{$balance_vo['income_amount']/100}</td>
-								<td align="right">{$balance_vo['outcome_amount']/100}</td>
-								<td>{$balance_vo.summary}</td>
-								<td>{$balance_vo.other_party}</td>
-								<td>{$balance_vo.member_name}</td>
-								<td>{$balance_vo.bill_id}</td>
-								<td><a href="__CONTROLLER__/update/balance_id/{$balance_vo.balance_id}">更新</a> <a href="__CONTROLLER__/delete/balance_id/{$balance_vo.balance_id}">删除</td>
-								<td>&nbsp;|&nbsp;</td>
+								<td>{$case_payment_vo.case_payment_id}</td>
+								<td>{$case_payment_vo.payment_name}</td>
 								<td>
-									<?php
-										$claim_income	=	0;
-										$claim_outcome	=	0;
-									?>
-									<volist name="balance_vo['Claim']" id="claim_vo">
-										{$claim_vo.cost_center_name}；
-										<?php
-											$claim_income	+=	$claim_vo['income_amount'];
-											$claim_outcome	+=	$claim_vo['outcome_amount'];
-										?>
-									</volist>
-									<a href="__APP__/Home/Claim/view/balance_id/{$balance_vo.balance_id}">详情</a>
+									{$case_payment_vo['payment_date']	?	date("Y-m-d",$case_payment_vo['payment_date'])	:	''}
 								</td>
-								<td align="right">
-									<?php
-										$income_bool	=	$balance_vo['income_amount']	==	$claim_income	?	1	:	0;
-										$outcome_bool	=	$balance_vo['outcome_amount']	==	$claim_outcome	?	1	:	0;										
-									?>
-									{$income_bool && outcome_bool 	?	''	:	'未全部结算' }
-									{$claim_income/100	+	$claim_outcome/100}
+								<td>{$case_payment_vo['payer_name']}</td>
+                                <td>
+									{$case_payment_vo['claim']==1	?	'是'	:	''}
 								</td>
+								<td align="right">{$case_payment_vo['official_fee']	?	$case_payment_vo['official_fee']/100	:	''}</td>
+								<td align="right">{$case_payment_vo['other_fee']	?	$case_payment_vo['other_fee']/100	:	''}</td>
+								<td align="right">{$case_payment_vo['total_amount']	?	$case_payment_vo['total_amount']/100	:	''}</td>
+								<td>
+									<a href="{:U('Claim/view','balance_id='.$case_payment_vo['balance_id'])}" target="_blank">{$case_payment_vo['balance_id']	?	$case_payment_vo['balance_id']	:	''}</a>  
+									{$case_payment_vo['outcome_amount']	==	$case_payment_vo['total_amount']	?	'金额相符'	:	'金额不相符'}
+								</td>
+								<td>
+									<a href="{:U('CasePayment/view','case_payment_id='.$case_payment_vo['case_payment_id'])}" target="_blank">查看详情</a>、
+									<a href="{:U('CasePayment/update','case_payment_id='.$case_payment_vo['case_payment_id'])}" target="_blank">更新</a>
+								</td>								
 							</tr>
 							</volist>                 
 						</tbody>
 					</table> 
-					{$balance_page}
 				</div>
 			</div>
-        </div>	  
+        </div>
 
 	</block>
 <!-- 区块 page 替换结束 --> 
