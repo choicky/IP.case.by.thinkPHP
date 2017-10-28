@@ -1,0 +1,16 @@
+<!-- 选择案件小类类型，1行，3列 -->
+							<div class="form-group">
+								<label for="case_type_id" class="col-lg-3 control-label">案件类型</label>
+								<div class="col-lg-4">
+									<select class="form-control" name="case_type_id">
+										<option value=""}></option>
+										<volist name="case_type_list" id="case_type_vo">
+										<option value="{$case_type_vo.case_type_id}"}>{$case_type_vo.case_type_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									必填项；<br>
+									可通过<a href="{:U('CaseType/listPage#addNew')}" target="_blank">这里</a>添加更多案件类型
+								</div>
+							</div>

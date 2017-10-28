@@ -1,0 +1,20 @@
+<!-- 填写客源/客户编号，1行，3列 -->
+							<div class="form-group">
+								<label for="client_id" class="col-lg-3 control-label">客源/客户</label>
+								<div class="col-lg-4">
+									<!--
+                                    <select class="form-control" name="client_id">
+										<option value=""}></option>
+										<volist name="client_list" id="client_vo">
+										<option value="{$client_vo.client_id}">{$client_vo.client_name}</option>
+										</volist>
+									</select>
+                                    -->
+                                    <input type="text" class="form-control" id="client_id" name="client_id" placeholder="只能填写客户编号">
+								</div>
+								<div class="col-lg-5">
+									只能填编号；到<a href="{:U('Client/listAll')}" target="_blank">这里</a>找到客户的编号；<br>
+									同时按 Ctrl、F 两键可搜索，找不到就新建；<br>
+                                    同一个客户应该有唯一的ID。
+								</div>
+							</div>

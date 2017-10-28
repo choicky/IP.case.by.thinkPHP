@@ -1,0 +1,17 @@
+<!-- 选择跟案人，1行，3列 -->
+							<div class="form-group">
+								<label for="follower_id" class="col-lg-3 control-label">跟案人</label>
+								<div class="col-lg-4">
+									<select class="form-control" name="follower_id">
+										<option value=""}></option>
+										<volist name="member_list" id="follower_vo">
+										<option value="{$follower_vo.member_id}" >{$follower_vo.member_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									必填项；<br>
+									负责跟客户对接业务的人；<br>
+									可通过<a href="{:U('Account/listPage#addNew')}" target="_blank">这里</a>添加更多的跟案人
+								</div>
+							</div>
