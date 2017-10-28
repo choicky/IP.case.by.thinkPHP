@@ -23,104 +23,8 @@
 		
 		<div class="row">
 			<div class="panel panel-warning">
-				<!-- Default panel contents -->
-				<div class="panel-heading panel-title">
-					点击“盈方案号”能查看、修改案子的所有信息；表格底部有换页按钮；表格右侧可查看/修改优先权信息、交文信息、缴费信息
-				</div>
-
-				<!-- Table -->
-				<div class="bs-component">
-					<table class="table table-striped table-hover table-bordered table-condensed">
-						<thead>
-							<tr class="info">
-								<th>案号对应的年份</th>
-								<th>案件类别</th>
-								<th>跟案人</th>
-								<th>客户</th>
-								<th>最早发证日</th>
-								<th>专利名称</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-							<form class="form-inline" id="form_for_search_new" method="post" action="__CONTROLLER__/searchPatent">
-								<td>
-									<select  class="form-control" name="case_year" id="case_year">
-										<option value="0"}>不限</option>
-										<volist name="year_list" id="year_vo">
-										<option value="{$year_vo}"} {$year_vo==$case_year	?	'selected="selected"'	:	''}>{$year_vo} &nbsp;</option>
-										</volist>
-									</select></td>
-								<td>
-									<select  class="form-control" name="case_group_id" id="case_group_id">
-										<option value="0"}>不限</option>
-										<volist name="case_group_list" id="case_group_vo">
-										<option value="{$case_group_vo['case_group_id']}" {$case_group_vo['case_group_id']==$case_group_id	?	'selected="selected"'	:	''}>{$case_group_vo['case_group_name']}</option>
-										</volist>
-									</select></td>
-								<td>
-									<select  class="form-control" name="follower_id" id="follower_id">
-										<option value="0"}>不限</option>
-										<volist name="member_list" id="follower_vo">
-										<option value="{$follower_vo['member_id']}"} {$follower_vo['member_id']==$follower_id	?	'selected="selected"'	:	''}>{$follower_vo['member_name']}</option>
-										</volist>
-									</select></td>
-								<td>
-									<select  class="form-control" name="client_id" id="client_id">
-										<option value="0"}>不限</option>
-										<volist name="client_list" id="client_vo">
-										<option value="{$client_vo['client_id']}"} {$client_vo['client_id']==$client_id	?	'selected="selected"'	:	''}>{$client_vo['client_name']}</option>
-										</volist>
-									</select></td>
-								<td>
-									<input type="date" class="form-control" id="start_time" name="start_time" value="{$start_time	?	date("Y-m-d",$start_time)	:	''}"></td>
-								<td>
-									<input type="text" class="form-control" id="formal_title" name="formal_title" placeholder="专利名称" value="{$formal_title	?	$formal_title	:	''}"></td>
-								
-							</tr>
-							<tr class="info">
-								<th></th>
-								<th>案件小类</th>
-								<th>处理人</th>
-								<th>申请人</th>
-								<th>最晚发证日</th>
-								<th></th>
-								
-							</tr>
-							<tr>
-								<td>
-									</td>
-								<td>
-									<select  class="form-control" name="case_type_id" id="case_type_id">
-										<option value="0"}>不限</option>
-										<volist name="case_type_list" id="case_type_vo">
-										<option value="{$case_type_vo['case_type_id']}"} {$case_type_vo['case_type_id']==$case_type_id	?	'selected="selected"'	:	''}>{$case_type_vo['case_type_name']}</option>
-										</volist>
-									</select></td>
-								<td>
-									<select  class="form-control" name="handler_id" id="handler_id">
-										<option value="0"}>不限</option>
-										<volist name="member_list" id="handler_vo">
-										<option value="{$handler_vo['member_id']}"} {$case_type_vo['case_type_id']==$handler_id	?	'selected="selected"'	:	''}>{$handler_vo['member_name']}</option>
-										</volist>
-									</select></td>
-								<td>
-									<select  class="form-control" name="applicant_id" id="applicant_id">
-										<option value="0"}>不限</option>
-										<volist name="client_list" id="applicant_vo">
-										<option value="{$applicant_vo['client_id']}"} {$applicant_vo['client_id']==$applicant_id	?	'selected="selected"'	:	''}>{$applicant_vo['client_name']}</option>
-										</volist>
-									</select></td>
-								<td>
-									<input type="date" class="form-control" id="end_time" name="end_time" placeholder="最晚的交易日期" value="{$end_time|date="Y-m-d",###}"></td>
-								<td><button type="submit" value="submit" class="btn btn-primary">搜</button></td>
-							</form>
-							</tr>
-						</tbody>
-					</table> 
-				</div>
-				
-				
+				<include file="Public:search_form_head-1r1c" /> <!-- 搜索框第一行，解释如何搜索，1行，3列 -->
+				<include file="Public:search_case-table" /> <!-- 搜索专利、商标案件的搜索框 -->
 			</div>
 		</div>
 		
@@ -129,64 +33,12 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3>所有专利案件列表（共{$case_count}项）：</h3>
+					<h3>专利案件搜索结果（共{$case_count}项）：</h3>
 				</div>
 			</div>
 		</div>
 		
-		<div class="row">
-			<div class="panel panel-warning">
-				<!-- Default panel contents -->
-				<div class="panel-heading panel-title">
-					点击“盈方案号”能查看、修改案子的所有信息；表格底部有换页按钮；表格右侧可查看/修改优先权信息、交文信息、缴费信息
-				</div>
-
-				<!-- Table -->
-				<div class="bs-component">
-					<table class="table table-striped table-hover table-bordered table-condensed">
-						<thead>
-							<tr class="info">
-								<th>盈方案号</th>
-								<th>跟案人</th>								
-								<th>开案日</th>								
-								<th>客户</th>
-								<th>客户案号</th>
-								<th>申请人</th>
-								<th>暂定名称</th>								
-								<th>申请日</th>
-								<th>申请号</th>								
-								<th>专利名称/商标类别</th>
-								<th>常用操作</th>								
-							</tr>
-						</thead>
-						<tbody>
-							<!-- 将controller assign过来的 case_vo 赋给  case_vo--> 
-							<volist name="case_list" id="case_vo">
-							<tr>
-								<td><a href="{:U('Case/view','case_id='.$case_vo['case_id'])}" target="_blank">{$case_vo.our_ref}<a></td>
-								<td>{$case_vo['follower_name']}</td>
-								<td>{$create_date	=	$case_vo['create_date']	?	date("Y-m-d",$case_vo['create_date'])		:	''}</td>
-								<td>{$case_vo['client_name']}</td>
-								<td>{$case_vo.client_ref}</td>
-								<td>{$case_vo['applicant_name']}</td>
-								<td>{$case_vo.tentative_title}</td>
-								<td>{$application_date	=	$case_vo['application_date']	?	date("Y-m-d",$case_vo['application_date'])		:	''}</td>
-								<td>{$case_vo.application_number}</td>
-								<td>
-									{$case_vo['formal_title'] ? $case_vo['formal_title'] : $case_vo['TmCategory']['tm_category_number']}
-								</td>
-								<td>
-									<a href="{:U('CasePriority/view','case_id='.$case_vo['case_id'])}" target="_blank">优先权记录</a><br>
-									<a href="{:U('CaseFile/view','case_id='.$case_vo['case_id'])}" target="_blank">文件记录</a><br>
-									<a href="{:U('CaseFee/view','case_id='.$case_vo['case_id'])}" target="_blank">费用记录</a></td>
-							</tr>
-							</volist>                 
-						</tbody>
-					</table> 
-					{$case_page}
-				</div>
-			</div>
-        </div>	  
+		<include file="Public:case_list-table" /> <!-- 分页显示案件列表，专利与商标模版相同 -->
 
 	</block>
 <!-- 区块 page 替换结束 --> 
