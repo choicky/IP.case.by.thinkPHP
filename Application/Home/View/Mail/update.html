@@ -1,7 +1,7 @@
 <extend name="Public:base" />
 	
 	<block name="title">
-		<title>更新</title>
+		<title>更新寄件记录</title>
 	</block>
 	
 	<block name="page">
@@ -11,7 +11,7 @@
         <div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h3 id="forms">更新</h3>
+					<h3 id="forms">更新寄件记录</h3>
 				</div>
 			</div>
         </div>
@@ -19,94 +19,126 @@
         <div class="row">
 			<div class="col-lg-9">
 				<div class="well bs-component">
-					<form class="form-horizontal" method="post" action="{:U('Bill/update')}">
+					<form class="form-horizontal" method="post" action="{:U('Mail/update')}">
 						<fieldset>
 							<legend>尽量填写完整每一项</legend>
 							<!-- 隐藏域开始 -->
-								<input type="hidden" class="form-control" id="bill_id" name="bill_id" value="{$bill_list.bill_id}">
+								<input type="hidden" class="form-control" id="mail_id" name="mail_id" value="{$mail_list.mail_id}">
 							<!-- 隐藏域结束 -->
 							<div class="form-group">
-								<label for="bill_number" class="col-lg-3 control-label">跟案人</label>
+								<label for="mail_number" class="col-lg-3 control-label">寄件人/跟案人</label>
 								<div class="col-lg-4">									
 									<select class="form-control" name="follower_id">
-										<option value="" {$bill_list['follower_id']==0	? 'selected="selected"' :'' }></option>
+										<option value="" {$mail_list['follower_id']==0	? 'selected="selected"' :'' }></option>
 										<volist name="member_list" id="member_vo">
-										<option value="{$member_vo.member_id}" {$member_vo['member_id']==$bill_list['follower_id']? 'selected="selected"' :'' }>{$member_vo.member_name}</option>
+										<option value="{$member_vo.member_id}" {$member_vo['member_id']==$mail_list['follower_id']? 'selected="selected"' :'' }>{$member_vo.member_name}</option>
 										</volist>
 									</select>
 								</div>
 								<div class="col-lg-5">
-									发票号码是必须的			
+									  
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="bill_date" class="col-lg-3 control-label">账单日期</label>
+								<label for="mail_date" class="col-lg-3 control-label">寄件日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="bill_date" name="bill_date" value="{$bill_list['bill_date']	?	date("Y-m-d",$bill_list['bill_date'])	:	''}">
+									<input type="date" class="form-control" id="mail_date" name="mail_date" value="{$mail_list['mail_date']	?	date("Y-m-d",$mail_list['mail_date'])	:	''}">
 								</div>
 								<div class="col-lg-5">
 									日期格式为 yyyy-mm-dd，可用鼠标选择
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="client_id" class="col-lg-3 control-label">客户</label>
+								<label for="mail_summary" class="col-lg-3 control-label">摘要</label>
 								<div class="col-lg-4">
-									<select class="form-control" name="client_id">
-										<option value="" {$bill_list['client_id']==0	? 'selected="selected"' :'' }></option>
-										<volist name="client_list" id="client_vo">
-										<option value="{$client_vo.client_id}" {$client_vo['client_id']==$bill_list['client_id']? 'selected="selected"' :'' }>{$client_vo.client_name}</option>
-										</volist>
-									</select>
+									<input type="text" class="form-control" id="mail_summary" name="mail_summary" value="{$mail_list['mail_summary']}">
 								</div>
 								<div class="col-lg-5">
-									如找不到就到<a href="{:U('Client/listPage#addNew')}" target="_blank">这里</a>添加
+									无
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="recipient_name" class="col-lg-3 control-label">收件人名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="recipient_name" name="recipient_name" value="{$mail_list['recipient_name']}">
+								</div>
+								<div class="col-lg-5">
+									无
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="recipient_phone" class="col-lg-3 control-label">收件人联系方式</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="recipient_phone" name="recipient_phone" value="{$mail_list['recipient_phone']}">
+								</div>
+								<div class="col-lg-5">
+									无
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="recipient_entity" class="col-lg-3 control-label">收件人单位</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="recipient_entity" name="recipient_entity" value="{$mail_list['recipient_entity']}">
+								</div>
+								<div class="col-lg-5">
+									无
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="recipient_address" class="col-lg-3 control-label">收件人地址</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="recipient_address" name="recipient_address" value="{$mail_list['recipient_address']}">
+								</div>
+								<div class="col-lg-5">
+									无
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="recipient_zipcode" class="col-lg-3 control-label">收件人邮编</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="recipient_zipcode" name="recipient_zipcode" value="{$mail_list['recipient_zipcode']}">
+								</div>
+								<div class="col-lg-5">
+									无
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="deliver_name" class="col-lg-3 control-label">快递公司名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="deliver_name" name="deliver_name" value="{$mail_list['deliver_name']}">
+								</div>
+								<div class="col-lg-5">
+									无
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="tacking_number" class="col-lg-3 control-label">快递单号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="tacking_number" name="tacking_number" value="{$mail_list['tacking_number']}">
+								</div>
+								<div class="col-lg-5">
+									无
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="bill_name" class="col-lg-3 control-label">账单名称</label>
+								<label for="mail_fee" class="col-lg-3 control-label">费用</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="bill_name" name="bill_name" value="{$bill_list['bill_name']}">
-								</div>
-								<div class="col-lg-5">
-									小数点必须使用英文的“.”
-								</div>
-							</div>							<div class="form-group">
-								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="total_amount" name="total_amount" value="{$bill_list['total_amount']	?	$bill_list['total_amount']/100	:	''}">
+									<input type="text" class="form-control" id="mail_fee" name="mail_fee" value="{$mail_list['mail_fee']	?	$mail_list['mail_fee']/100	:	''}">
 								</div>
 								<div class="col-lg-5">
 									小数点必须使用英文的“.”
 								</div>
 							</div>
-							<div class="form-group">
-								<label for="official_fee" class="col-lg-3 control-label">官费金额</label>
+                            <div class="form-group">
+								<label for="mail_summary" class="col-lg-3 control-label">内部结算单编号</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="official_fee" name="official_fee" value="{$bill_list['official_fee']	?	$bill_list['official_fee']/100	:	''}">
+									<input type="text" class="form-control" id="mail_summary" name="mail_summary" value="{$mail_list['mail_summary']}">
 								</div>
 								<div class="col-lg-5">
-									小数点必须使用英文的“.”
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="service_fee" class="col-lg-3 control-label">服务费金额</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="service_fee" name="service_fee" value="{$bill_list['service_fee']	?	$bill_list['service_fee']/100	:	''}">
-								</div>
-								<div class="col-lg-5">
-									小数点必须使用英文的“.”
+									无
 								</div>
 							</div>
 							
-							<div class="form-group">
-								<label for="other_fee" class="col-lg-3 control-label">其他费用</label>
-								<div class="col-lg-4">
-									<input type="text" class="form-control" id="other_fee" name="other_fee" value="{$bill_list['other_fee']	?	$bill_list['other_fee']/100	:	''}">
-								</div>
-								<div class="col-lg-5">
-									小数点必须使用英文的“.”
-								</div>
-							</div>
 		
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">
