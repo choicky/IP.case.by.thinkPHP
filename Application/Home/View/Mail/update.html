@@ -1,0 +1,122 @@
+<extend name="Public:base" />
+	
+	<block name="title">
+		<title>更新</title>
+	</block>
+	
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3 id="forms">更新</h3>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="col-lg-9">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="{:U('Bill/update')}">
+						<fieldset>
+							<legend>尽量填写完整每一项</legend>
+							<!-- 隐藏域开始 -->
+								<input type="hidden" class="form-control" id="bill_id" name="bill_id" value="{$bill_list.bill_id}">
+							<!-- 隐藏域结束 -->
+							<div class="form-group">
+								<label for="bill_number" class="col-lg-3 control-label">跟案人</label>
+								<div class="col-lg-4">									
+									<select class="form-control" name="follower_id">
+										<option value="" {$bill_list['follower_id']==0	? 'selected="selected"' :'' }></option>
+										<volist name="member_list" id="member_vo">
+										<option value="{$member_vo.member_id}" {$member_vo['member_id']==$bill_list['follower_id']? 'selected="selected"' :'' }>{$member_vo.member_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									发票号码是必须的			
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="bill_date" class="col-lg-3 control-label">账单日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="bill_date" name="bill_date" value="{$bill_list['bill_date']	?	date("Y-m-d",$bill_list['bill_date'])	:	''}">
+								</div>
+								<div class="col-lg-5">
+									日期格式为 yyyy-mm-dd，可用鼠标选择
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="client_id" class="col-lg-3 control-label">客户</label>
+								<div class="col-lg-4">
+									<select class="form-control" name="client_id">
+										<option value="" {$bill_list['client_id']==0	? 'selected="selected"' :'' }></option>
+										<volist name="client_list" id="client_vo">
+										<option value="{$client_vo.client_id}" {$client_vo['client_id']==$bill_list['client_id']? 'selected="selected"' :'' }>{$client_vo.client_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									如找不到就到<a href="{:U('Client/listPage#addNew')}" target="_blank">这里</a>添加
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="bill_name" class="col-lg-3 control-label">账单名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="bill_name" name="bill_name" value="{$bill_list['bill_name']}">
+								</div>
+								<div class="col-lg-5">
+									小数点必须使用英文的“.”
+								</div>
+							</div>							<div class="form-group">
+								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="total_amount" name="total_amount" value="{$bill_list['total_amount']	?	$bill_list['total_amount']/100	:	''}">
+								</div>
+								<div class="col-lg-5">
+									小数点必须使用英文的“.”
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="official_fee" class="col-lg-3 control-label">官费金额</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="official_fee" name="official_fee" value="{$bill_list['official_fee']	?	$bill_list['official_fee']/100	:	''}">
+								</div>
+								<div class="col-lg-5">
+									小数点必须使用英文的“.”
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="service_fee" class="col-lg-3 control-label">服务费金额</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="service_fee" name="service_fee" value="{$bill_list['service_fee']	?	$bill_list['service_fee']/100	:	''}">
+								</div>
+								<div class="col-lg-5">
+									小数点必须使用英文的“.”
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="other_fee" class="col-lg-3 control-label">其他费用</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="other_fee" name="other_fee" value="{$bill_list['other_fee']	?	$bill_list['other_fee']/100	:	''}">
+								</div>
+								<div class="col-lg-5">
+									小数点必须使用英文的“.”
+								</div>
+							</div>
+		
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button type="reset" value="reset" class="btn btn-default"> 取消 </button>
+									<button type="submit" value="submit" class="btn btn-primary"> 确认 </button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+        </div>
+	</block>

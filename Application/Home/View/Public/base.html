@@ -162,12 +162,16 @@ if(!cookie('member_id') and !cookie('user_group_id') and !cookie('member_name'))
 			?>
 
 			<li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">业务 <span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">业务与寄件 <span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
                 <li><h5>账单</h5></li>				
 				<li><a href="__MODULE__/Bill/listPage">账单列表</a></li>
                 <li><a href="__MODULE__/Bill/listPage#addNew">录入新账单</a></li>
                 <li><a href="__MODULE__/Bill/search">搜索账单</a></li>
+                <li><h5>寄件记录</h5></li>				
+				<li><a href="__MODULE__/Mail/listPage">寄件记录</a></li>
+                <li><a href="__MODULE__/Mail/listPage#addNew">录入寄件记录</a></li>
+                <li><a href="__MODULE__/Mail/search">搜索账单</a></li>
                 <li><h5>收支认领</h5></li>
 				<li><a href="__MODULE__/Claim/listPage">收支认领列表</a></li>
                 <li><a href="__MODULE__/Claim/listPage#addNew">录入新收支认领</a></li>

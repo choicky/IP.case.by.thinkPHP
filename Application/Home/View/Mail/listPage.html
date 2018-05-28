@@ -1,0 +1,213 @@
+<extend name="Public:base" />
+	
+	
+	<block name="title">
+		<title>寄件记录管理</title>
+	</block>
+	
+	
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>寄件记录列表</h3>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					<p>“编号”是唯一的，由系统自动生成。</p>
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								<th>编号</th>
+								<th>跟案人</th>
+								<th>寄件日期</th>
+								<th>摘要</th>
+								<th>收件人名称</th>
+                                <th>收件人电话</th>
+								<th>收件人单位</th>
+								<th>收件人地址</th>
+								<th>收件人邮编</th>
+								<th>快递公司</th>
+								<th>快递单号</th>
+                                <th>费用</th>
+                                <th>内部结算单编号</th>
+								<th>常用操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="mail_list" id="mail_vo">
+							<tr>
+								<td><a href="{:U('Mail/view','mail_id='.$mail_vo['mail_id'])}">{$mail_vo.mail_id}</a></td>
+								<td>{$mail_vo.member_name}</td>
+								<td>{$mail_vo['mail_date']	?	date("Y/m/d",$mail_vo['mail_date'])	:	''}</td>
+								<td>{$mail_vo.mail_summary}</td>
+								<td>{$mail_vo.recipient_name}</td>
+                                <td>{$mail_vo.recipient_phone}</td>
+                                <td>{$mail_vo.recipient_entity}</td>
+                                <td>{$mail_vo.recipient_address}</td>
+                                <td>{$mail_vo.recipient_zipcode}</td>
+                                <td>{$mail_vo.deliver_name}</td>
+                                <td>{$mail_vo.tacking_number}</td>
+								<td align="right">{$mail_vo['mail_fee']	?	$mail_vo['mail_fee']/100	:	''}</td>
+								<td>{$mail_vo.inner_balance_id}</td>
+								<td>
+									<a href="{:U('Mail/update','mail_id='.$mail_vo['mail_id'])}">更新</a>
+								</td>
+							</tr>
+							</volist>                 
+						</tbody>
+					</table> 
+					{$mail_page}
+				</div><!-- /example -->
+			</div>
+        </div>
+	  
+	  
+		<a name="addNew"></a>
+		<!-- Forms
+			================================================== -->
+	    <div class="row">
+			<div class="col-lg-9">
+				<div class="page-header">
+					<h3 id="forms">增加新寄件记录</h3>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="col-lg-9">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="{:U('Mail/add')}">
+						<fieldset>
+							<legend>“寄件人/跟案人”是必须的</legend>
+							<div class="form-group">
+								<label for="follower_id" class="col-lg-3 control-label">寄件人/跟案人</label>
+								<div class="col-lg-4">
+									<select class="form-control" name="follower_id">
+										<option value=""></option>
+										<volist name="member_list" id="member_vo">
+										<option value="{$member_vo.member_id}"  >{$member_vo.member_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									必选项
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="mail_date" class="col-lg-3 control-label">出单日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="mail_date" name="mail_date" placeholder="认领日期" value="{$today}">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>							
+							<div class="form-group">
+								<label for="mail_summary" class="col-lg-3 control-label">摘要</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="mail_summary" name="mail_summary" placeholder="简单描述这份快递">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="recipient_name" class="col-lg-3 control-label">收件人名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="recipient_name" name="recipient_name" placeholder="收件人名称">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="recipient_phone" class="col-lg-3 control-label">收件人电话</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="recipient_phone" name="recipient_phone" placeholder="收件人电话">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="recipient_entity" class="col-lg-3 control-label">收件人单位</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="recipient_entity" name="recipient_entity" placeholder="收件人单位">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="recipient_address" class="col-lg-3 control-label">收件人地址</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="recipient_address" name="recipient_address" placeholder="收件人地址">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="recipient_zipcode" class="col-lg-3 control-label">收件人邮编</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="recipient_zipcode" name="recipient_zipcode" placeholder="收件人邮编">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="deliver_name" class="col-lg-3 control-label">快递公司名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="deliver_name" name="deliver_name" placeholder="快递公司名称">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+                            <div class="form-group">
+								<label for="tacking_number" class="col-lg-3 control-label">快递单号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="tacking_number" name="tacking_number" placeholder="快递单号">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="mail_fee" class="col-lg-3 control-label">运费</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="mail_fee" name="mail_fee" placeholder="运费">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+
+						  
+							<div class="form-group">
+								<div class="col-lg-4 col-lg-offset-3">
+									<button type="reset" value="reset" class="btn btn-default">Cancel</button>
+									<button type="submit" value="submit" class="btn btn-primary">Submit</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+        </div>
+
+	</block>
