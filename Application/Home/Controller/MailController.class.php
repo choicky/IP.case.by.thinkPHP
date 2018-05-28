@@ -96,7 +96,7 @@ class MailController extends Controller {
 			}
 
 			if(false !== $result){
-				$this->success('修改成功', U('Mail/view','mail_id='.$mail_id));
+				$this->success('新增成功',U('Mail/listPage'));
 			}else{
 				$this->error('修改失败');
 			}
