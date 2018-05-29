@@ -59,7 +59,7 @@
                                 <td>{$mail_vo.recipient_address}</td>
                                 <td>{$mail_vo.recipient_zipcode}</td>
                                 <td>{$mail_vo.deliver_name}</td>
-                                <td>{$mail_vo.tacking_number}</td>
+                                <td><a href="http://m.kuaidi100.com/result.jsp?nu={$mail_vo.tacking_number}" target="_blank">{$mail_vo.tacking_number}</a></td>
 								<td align="right">{$mail_vo['mail_fee']	?	$mail_vo['mail_fee']/100	:	''}</td>
 								<td>{$mail_vo.inner_balance_id}</td>
 								<td>
@@ -107,9 +107,9 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="mail_date" class="col-lg-3 control-label">出单日期</label>
+								<label for="mail_date" class="col-lg-3 control-label">寄件日期</label>
 								<div class="col-lg-4">
-									<input type="date" class="form-control" id="mail_date" name="mail_date" placeholder="认领日期" value="{$today}">
+									<input type="date" class="form-control" id="mail_date" name="mail_date" placeholder="寄件日期" value="{$today}">
 								</div>
 								<div class="col-lg-5">
 									*注意*
@@ -175,7 +175,7 @@
 									<input type="text" class="form-control" id="deliver_name" name="deliver_name" placeholder="快递公司名称">
 								</div>
 								<div class="col-lg-5">
-									*注意*
+									EMS、顺丰、圆通、中通、优速等
 								</div>
 							</div>
                             <div class="form-group">
@@ -188,7 +188,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="mail_fee" class="col-lg-3 control-label">运费</label>
+								<label for="mail_fee" class="col-lg-3 control-label">运费（元）</label>
 								<div class="col-lg-4">
 									<input type="text" class="form-control" id="mail_fee" name="mail_fee" placeholder="运费">
 								</div>
@@ -199,10 +199,10 @@
                             <div class="form-group">
 								<label for="inner_balance_id" class="col-lg-3 control-label">内部结算单编号</label>
 								<div class="col-lg-4">
-									<input type="text" class="form-control" id="inner_balance_id" name="inner_balance_id" placeholder="inner_balance_id">
+									<input type="text" class="form-control" id="inner_balance_id" name="inner_balance_id" placeholder="内部结算单编号">
 								</div>
 								<div class="col-lg-5">
-									*注意*
+									大部分情况下不用填写
 								</div>
 							</div>
 

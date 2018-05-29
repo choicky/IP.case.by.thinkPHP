@@ -18,6 +18,7 @@ class MailModel extends RelationModel {
 	protected $_auto = array(		
 		array('mail_date','stringToTimestamp',3,'function') , // 将 yyyy-mm-dd 转换时间戳
 		array('mail_fee','multiplyByHundred',3,'function') , // 将金额乘以100
+        array('tacking_number','trim',3,'function'), //去掉快递单号的前后空格
 	);
 	
 	//定义本数据表的自动验证

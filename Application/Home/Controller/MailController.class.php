@@ -58,7 +58,8 @@ class MailController extends Controller {
 	
 	//新增
 	public function add(){
-		$Model	=	D('Mail');
+		$tacking_number	=	trim(I('post.tacking_number'));
+        $Model	=	D('Mail');
 		if (!$Model->create()){ // 创建数据对象
 			 // 如果创建失败 表示验证没有通过 输出错误提示信息
 			 $this->error($Model->getError());
@@ -84,7 +85,7 @@ class MailController extends Controller {
 			if(!$mail_id){
 				$this->error('未指明要编辑的寄件记录');
 			}
-			
+
 			$Model	=	D('Mail');
 			if (!$Model->create()){ // 创建数据对象
 				 // 如果创建失败 表示验证没有通过 输出错误提示信息
@@ -96,7 +97,8 @@ class MailController extends Controller {
 			}
 
 			if(false !== $result){
-				$this->success('新增成功',U('Mail/listPage'));
+				//$this->success('修改成功',U('Mail/listPage'));
+                $this->success('修改成功', U('Mail/view','mail_id='.$mail_id));
 			}else{
 				$this->error('修改失败');
 			}
@@ -125,7 +127,7 @@ class MailController extends Controller {
 		}
 	}
 	
-	//查看主键为 $mail_id 对应的开票信息、到账信息
+	//查看主键为 $mail_id 对应的寄件
 	public function view(){
 		
 		//接收对应的 $mail_id
@@ -137,50 +139,7 @@ class MailController extends Controller {
 		//取出寄件的基本信息
 		$mail_list = D('MailView')->field(true)->getByMailId($mail_id);
 			
-		//取出到账信息
-		$map_balance['mail_id']	=	$mail_id;
-		$balance_list	=	D('BalanceView')->field(true)->where($map_balance)->listAll();		
-
-		$balance_count	=	count($balance_list);		
-		$this->assign('balance_list',$balance_list);
-		$this->assign('balance_count',$balance_count);
-		
-		//判断到账情况
-		$total_amount	=	$mail_list['total_amount'];
-		
-		$total_income_amount	=	0;
-		$total_outcome_amount	=	0;		
-		for($j=0;$j<$balance_count;$j++){
-			$balance_id_list[$j]	=	$balance_list[$j]['balance_id'];
-			
-			$total_income_amount	+=	$balance_list[$j]['income_amount'];
-			$total_outcome_amount	+=	$balance_list[$j]['outcome_amount'];
-		}
-		
-		$true_income_amount	=	$total_income_amount	-	$total_outcome_amount;		
-		
-		if($total_amount	==	$true_income_amount){
-			$mail_list['is_paid']	=	1;
-		}else{
-			$mail_list['is_paid']	=	0;
-		}
-		
 		$this->assign('mail_list',$mail_list);
-		
-		/*
-		$map_claim['balance_id']	=	array('in',$balance_id_list);
-		$claim_list	=	D('ClaimView')->where($map_claim)->listAll();
-		$claim_count	=	count($claim_list);		
-		$this->assign('claim_list',$claim_list);
-		$this->assign('claim_count',$claim_count);
-		*/
-		
-		//取出发票信息
-		$map_mail['mail_id']	=	$mail_id;
-		$invoice_list	=	D('InvoiceView')->field(true)->where($map_mail)->listAll();
-		$invoice_count	=	count($invoice_list);		
-		$this->assign('invoice_list',$invoice_list);
-		$this->assign('invoice_count',$invoice_count);		
 
 		$this->display();
 	}

@@ -36,7 +36,7 @@
 									</select>
 								</div>
 								<div class="col-lg-5">
-									  
+									必选
 								</div>
 							</div>
 							<div class="form-group">
@@ -108,7 +108,7 @@
 									<input type="text" class="form-control" id="deliver_name" name="deliver_name" value="{$mail_list['deliver_name']}">
 								</div>
 								<div class="col-lg-5">
-									无
+									EMS、顺丰、圆通、中通、优速等
 								</div>
 							</div>
                             <div class="form-group">
@@ -121,12 +121,12 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="mail_fee" class="col-lg-3 control-label">费用</label>
+								<label for="mail_fee" class="col-lg-3 control-label">费用（元）</label>
 								<div class="col-lg-4">
 									<input type="text" class="form-control" id="mail_fee" name="mail_fee" value="{$mail_list['mail_fee']	?	$mail_list['mail_fee']/100	:	''}">
 								</div>
 								<div class="col-lg-5">
-									小数点必须使用英文的“.”
+									无
 								</div>
 							</div>
                             <div class="form-group">
@@ -135,7 +135,7 @@
 									<input type="text" class="form-control" id="inner_balance_id" name="inner_balance_id" value="{$mail_list['inner_balance_id']}">
 								</div>
 								<div class="col-lg-5">
-									无
+									大部分情况下不用填写
 								</div>
 							</div>
 							
