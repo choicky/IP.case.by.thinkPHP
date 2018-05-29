@@ -33,6 +33,7 @@ class MailViewModel extends ViewModel {
             'tacking_number',
             'mail_fee',
             'inner_balance_id',
+			'remarks',
 			'_type'=>'LEFT'
 		),
 		

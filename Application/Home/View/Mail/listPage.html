@@ -31,8 +31,8 @@
 						<thead>
 							<tr class="info">
 								<th>编号</th>
-								<th>跟案人</th>
 								<th>寄件日期</th>
+								<th>跟案人</th>
 								<th>摘要</th>
 								<th>收件人名称</th>
                                 <th>收件人电话</th>
@@ -43,6 +43,7 @@
 								<th>快递单号</th>
                                 <th>费用</th>
                                 <th>内部结算单编号</th>
+								<th>备注</th>
 								<th>常用操作</th>
 							</tr>
 						</thead>
@@ -50,8 +51,8 @@
 							<volist name="mail_list" id="mail_vo">
 							<tr>
 								<td><a href="{:U('Mail/view','mail_id='.$mail_vo['mail_id'])}">{$mail_vo.mail_id}</a></td>
-								<td>{$mail_vo.member_name}</td>
 								<td>{$mail_vo['mail_date']	?	date("Y/m/d",$mail_vo['mail_date'])	:	''}</td>
+								<td>{$mail_vo.member_name}</td>
 								<td>{$mail_vo.mail_summary}</td>
 								<td>{$mail_vo.recipient_name}</td>
                                 <td>{$mail_vo.recipient_phone}</td>
@@ -61,7 +62,8 @@
                                 <td>{$mail_vo.deliver_name}</td>
                                 <td><a href="http://m.kuaidi100.com/result.jsp?nu={$mail_vo.tacking_number}" target="_blank">{$mail_vo.tacking_number}</a></td>
 								<td align="right">{$mail_vo['mail_fee']	?	$mail_vo['mail_fee']/100	:	''}</td>
-								<td>{$mail_vo.inner_balance_id  ?   $mail_vo.inner_balance_id   :   ''}</td>
+								<td>{$mail_vo['inner_balance_id']  ?   $mail_vo['inner_balance_id']   :   ''}</td>
+								<td>{$mail_vo['remarks']  ?   $mail_vo['remarks']   :   ''}</td>
 								<td>
 									<a href="{:U('Mail/update','mail_id='.$mail_vo['mail_id'])}">更新</a>
 								</td>
@@ -93,6 +95,15 @@
 						<fieldset>
 							<legend>“寄件人/跟案人”是必须的</legend>
 							<div class="form-group">
+								<label for="mail_date" class="col-lg-3 control-label">寄件日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="mail_date" name="mail_date" placeholder="寄件日期" value="{$today}">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>							
+							<div class="form-group">
 								<label for="follower_id" class="col-lg-3 control-label">寄件人/跟案人</label>
 								<div class="col-lg-4">
 									<select class="form-control" name="follower_id">
@@ -106,15 +117,6 @@
 									必选项
 								</div>
 							</div>
-							<div class="form-group">
-								<label for="mail_date" class="col-lg-3 control-label">寄件日期</label>
-								<div class="col-lg-4">
-									<input type="date" class="form-control" id="mail_date" name="mail_date" placeholder="寄件日期" value="{$today}">
-								</div>
-								<div class="col-lg-5">
-									*注意*
-								</div>
-							</div>							
 							<div class="form-group">
 								<label for="mail_summary" class="col-lg-3 control-label">摘要</label>
 								<div class="col-lg-4">
