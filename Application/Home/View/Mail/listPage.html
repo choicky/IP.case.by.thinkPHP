@@ -61,7 +61,7 @@
                                 <td>{$mail_vo.deliver_name}</td>
                                 <td><a href="http://m.kuaidi100.com/result.jsp?nu={$mail_vo.tacking_number}" target="_blank">{$mail_vo.tacking_number}</a></td>
 								<td align="right">{$mail_vo['mail_fee']	?	$mail_vo['mail_fee']/100	:	''}</td>
-								<td>{$mail_vo.inner_balance_id}</td>
+								<td>{$mail_vo.inner_balance_id  ?   $mail_vo.inner_balance_id   :   ''}</td>
 								<td>
 									<a href="{:U('Mail/update','mail_id='.$mail_vo['mail_id'])}">更新</a>
 								</td>
