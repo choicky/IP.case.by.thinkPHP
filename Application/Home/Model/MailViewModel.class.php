@@ -51,6 +51,13 @@ class MailViewModel extends ViewModel {
 		$list	=	$this->order($order)->select();
 		return $list;
 	}
+    
+    //返回本数据视图的所有数据，先后顺序排列
+	public function searchAll() {
+		$order['mail_date']	=	'asc';
+		$list	=	$this->order($order)->select();
+		return $list;
+	}
 		
 	//返回本数据视图的基本数据
 	public function listBasic() {

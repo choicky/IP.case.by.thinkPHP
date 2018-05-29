@@ -175,7 +175,7 @@ class MailController extends Controller {
 				$map_mail['follower_id']	=	$follower_id;
 			}	
 			
-			$mail_list = D('MailView')->field(true)->where($map_mail)->listAll();
+			$mail_list = D('MailView')->field(true)->where($map_mail)->searchAll();
 			//var_dump($mail_list);
 			//统计金额
             //初始化总邮费
