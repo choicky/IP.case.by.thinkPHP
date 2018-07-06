@@ -163,9 +163,9 @@ class BillController extends Controller {
 		$true_income_amount	=	$total_income_amount	-	$total_outcome_amount;		
 		
 		if($total_amount	==	$true_income_amount){
-			$bill_list['is_paid']	=	1;
+			$bill_list['is_paid']	=	"全额到账";
 		}else{
-			$bill_list['is_paid']	=	0;
+			$bill_list['is_paid']	=	"尚未全额到账";
 		}
 		
 		$this->assign('bill_list',$bill_list);
