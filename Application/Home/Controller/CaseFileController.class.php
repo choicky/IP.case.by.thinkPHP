@@ -56,16 +56,15 @@ class CaseFileController extends Controller {
 		}
 
 		//计算出下一次续展的期限日
-        dump("'+ '.$annual_number.' year'");
         $renewal_date	=	strtotime ("+".$annual_number." year", $issue_date);
-    dump(date( "Y-m-d", $renewal_date ));
+        //dump(date( "Y-m-d", $renewal_date ));
     
         
     //找出提前01个月提醒续展的文件任务的 file_type_id
     $map_file_type[1]['file_type_name'] =array('like',array('%商标%','%01%','%月%','%续展%'),'AND');
     $file_type_list[1]	=	M('FileType')->where($map_file_type[1])->find();
     $file_type_id[1]  = $file_type_list[1]['file_type_id'];
-    dump($file_type_id[1]);
+    //dump($file_type_id[1]);
     
     //找出提前01个月提醒续展的 due_date
     $due_date[1]  = strtotime('-1 month',$renewal_date);
