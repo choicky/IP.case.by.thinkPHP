@@ -39,6 +39,8 @@ class CaseFileController extends Controller {
 		$case_type_name	=	trim(I('post.case_type_name'));
 		$application_number	=	trim(I('post.application_number'));
 		$issue_date	=	trim(I('post.issue_date'));
+        $annual_number	=	trim(I('post.annual_number'));
+        //dump($annual_number);
     
 		//检查合法性
 		if(!$issue_date){
@@ -54,24 +56,16 @@ class CaseFileController extends Controller {
 		}
 
 		//计算出下一次续展的期限日
-		$today  = time();
-   
-    if($issue_date  > $today){
-      $this->error('发证日无效，并更正；或者手工增加续展提醒任务');
-		}else{
-      $renewal_date = $issue_date;
-      do {
-        $renewal_date = strtotime('+10 year',$renewal_date);
-      } while ($renewal_date < $today);
-    }
-    //dump(date( "Y-m-d", $renewal_date ));
+        dump("'+ '.$annual_number.' year'");
+        $renewal_date	=	strtotime ("+".$annual_number." year", $issue_date);
+    dump(date( "Y-m-d", $renewal_date ));
     
         
     //找出提前01个月提醒续展的文件任务的 file_type_id
     $map_file_type[1]['file_type_name'] =array('like',array('%商标%','%01%','%月%','%续展%'),'AND');
     $file_type_list[1]	=	M('FileType')->where($map_file_type[1])->find();
     $file_type_id[1]  = $file_type_list[1]['file_type_id'];
-    //dump($file_type_id[1]);
+    dump($file_type_id[1]);
     
     //找出提前01个月提醒续展的 due_date
     $due_date[1]  = strtotime('-1 month',$renewal_date);
@@ -359,7 +353,11 @@ class CaseFileController extends Controller {
 			$map_file_type['file_type_name']	=	array('like','%专利%');
 		}else{
 			$map_file_type['file_type_name']	=	array('notlike','%专利%');
+            $annual_list	=	tenYearOption(20);
 		}
+        
+        //输出 annual_list
+		$this->assign('annual_list',$annual_list);
 			
 		//取出 FileType 表的内容以及数量
 		$file_type_list	=	D('FileType')->where($map_file_type)->listBasic();

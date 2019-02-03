@@ -39,6 +39,14 @@ function numberOption($j){
 	return $number_list;
 }
 
+//10年序列，商标续展用
+function tenYearOption($j){
+	for($i=1;$i<=$j;$i++){
+		$number_list[$i]=bcmul($i,'10');
+	}
+	return $number_list;
+}
+
 //返回两个时间戳相差的年数，进1法返回
 function yearInterval($application_date,$target_date){
 	
