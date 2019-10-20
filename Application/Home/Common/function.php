@@ -26,7 +26,7 @@ function multiplyByHundred($number = ''){
 }
 
 //自定义 strtotime
-function stringToTimestamp($time_string){
+function stringToTimestamp($time_string = ''){
 	$result	=	$time_string	?	strtotime($time_string)	:	'';
 	return $result;
 }
