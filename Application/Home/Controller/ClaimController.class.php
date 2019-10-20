@@ -148,9 +148,9 @@ class ClaimController extends Controller {
 		$this->assign('start_time',$start_time);
 		$this->assign('end_time',$end_time);
 				
-		//默认查询 0 元 至 20000 元
+		//默认查询 0 元 至 200000 元
 		$start_amount	=	0;
-		$end_amount	=	2000000;
+		$end_amount	=	20000000;
 		$this->assign('start_income_amount',$start_amount);
 		$this->assign('end_income_amount',$end_amount);
 		$this->assign('start_outcome_amount',$start_amount);
