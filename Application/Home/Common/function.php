@@ -20,8 +20,8 @@ function patentCaseGroupOption(){
 }
 
 //100倍的函数
-function multiplyByHundred($number){
-	$number	=	$number	*	100;	
+function multiplyByHundred($number = ''){
+	$number	=	bcmul($number,'100');	
 	return $number;
 }
 
