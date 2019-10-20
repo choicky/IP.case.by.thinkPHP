@@ -148,9 +148,9 @@ class ClaimController extends Controller {
 		$this->assign('start_time',$start_time);
 		$this->assign('end_time',$end_time);
 				
-		//默认查询 0 元 至 200000 元
+		//默认查询 0 元 至 2000000 元
 		$start_amount	=	0;
-		$end_amount	=	20000000;
+		$end_amount	=	200000000;
 		$this->assign('start_income_amount',$start_amount);
 		$this->assign('end_income_amount',$end_amount);
 		$this->assign('start_outcome_amount',$start_amount);
@@ -209,13 +209,16 @@ class ClaimController extends Controller {
 			
 			//返回统计信息
 			$income_amount_total	=	0;
-			$outcome_amount_total	=	0;			
+			$outcome_amount_total	=	0;
+            $surplus_amount_total   =   0;
 			for($j=0;$j<$claim_count;$j++){
-				$income_amount_total	+=	$claim_list[$j]['income_amount']/100;
-				$outcome_amount_total	+=	$claim_list[$j]['outcome_amount']/100;
+				$income_amount_total	=	bcadd(bcdiv($claim_list[$j]['income_amount'],'100',2),$income_amount_total, 2);
+                $outcome_amount_total	=	bcadd(bcdiv($claim_list[$j]['outcome_amount'],'100',2),$outcome_amount_total, 2);
 			}
+            $surplus_amount_total   =   bcsub($income_amount_total, $outcome_amount_total, 2);
 			$this->assign('income_amount_total',$income_amount_total);
 			$this->assign('outcome_amount_total',$outcome_amount_total);
+            $this->assign('surplus_amount_total',$surplus_amount_total);
 			
 			//返回搜索参数
 			$this->assign('claimer_id',$claimer_id);
