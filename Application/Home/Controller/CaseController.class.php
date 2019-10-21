@@ -588,7 +588,8 @@ class CaseController extends Controller {
 	public function searchAll(){
 
 		//接收搜索参数
-		$key_word	=	trim(I('get.key_word'));
+		//$key_word	=	trim(I('get.key_word'));
+		$key_word	=	trim(I('post.key_word'));
 		
 		if(!$key_word){
 			$this->error('要填写申请号、我方案号、或对方案号');

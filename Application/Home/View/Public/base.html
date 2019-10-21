@@ -213,7 +213,7 @@ if(!cookie('member_id') and !cookie('user_group_id') and !cookie('member_name'))
 		  
 		  <!-- 定义区块 navbar-form -->
 		  <block name="navbar-form">
-		  <form class="navbar-form navbar-left" role="search" method="get" action="__MODULE__/Case/searchAll">
+		  <form class="navbar-form navbar-left" role="search" method="post" action="__MODULE__/Case/searchAll">
 			<div class="form-group">
                <input type="text" class="form-control" name="key_word" placeholder="盈方案号、申请号或客户案号" size="25">
             </div>
