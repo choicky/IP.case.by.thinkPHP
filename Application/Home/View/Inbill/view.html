@@ -57,7 +57,7 @@
 								<td>{$inbill_list.monetary_unit}</td>
 								<td>{$inbill_list['due_date']	?	date("Y/m/d",$inbill_list['due_date'])	:	''}</td>
 								<td>{$inbill_list.member_name}</td>
-								<td><a href="{:U('CasePayment/view','case_payment_id='.$inbill_list['case_payment_id'])}" target="_blank">{$inbill_list.case_payment_id}</a></td>
+								<td><a href="{:U('CasePayment/view','case_payment_id='.$inbill_list['case_payment_id'])}" target="_blank">{$inbill_list.case_payment_id	?	$inbill_list.case_payment_id	:	''}</a></td>
 								<td>
 									<a href="{:U('Inbill/update','inbill_id='.$inbill_list['inbill_id'])}">更新</a>
 								</td>
