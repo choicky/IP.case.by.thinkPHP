@@ -149,7 +149,7 @@
 								<td>{$inbill_vo.monetary_unit}</td>
 								<td>{$inbill_vo['due_date']	?	date("Y/m/d",$inbill_vo['due_date'])	:	''}</td>
 								<td>{$inbill_vo.member_name}</td>
-								<td><a href="{:U('CasePayment/view','case_payment_id='.$inbill_vo['case_payment_id'])}" target="_blank">{$inbill_vo.case_payment_id	?	$inbill_vo.case_payment_id	:	''}</a></td>
+								<td><a href="{:U('CasePayment/view','case_payment_id='.$inbill_vo['case_payment_id'])}" target="_blank">{$inbill_vo['case_payment_id']	?	$inbill_vo['case_payment_id']	:	''}</a></td>
 								<td>
 									<a href="{:U('Inbill/update','inbill_id='.$inbill_vo['inbill_id'])}">更新</a>
 								</td>
