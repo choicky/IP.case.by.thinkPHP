@@ -1,0 +1,128 @@
+<extend name="Public:base" />
+	
+	<block name="title">
+		<title>更新收到的账单</title>
+	</block>
+	
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+        <div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3 id="forms">更新收到的账单</h3>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="col-lg-9">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="{:U('Inbill/update')}">
+						<fieldset>
+							<legend>尽量填写完整每一项</legend>
+							<!-- 隐藏域开始 -->
+								<input type="hidden" class="form-control" id="inbill_id" name="inbill_id" value="{$inbill_list.inbill_id}">
+							<!-- 隐藏域结束 -->
+							<div class="form-group">
+								<label for="inbill_date" class="col-lg-3 control-label">出单日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="inbill_date" name="inbill_date" value="{$inbill_list['inbill_date']	?	date("Y-m-d",$inbill_list['inbill_date'])	:	''}">
+								</div>
+								<div class="col-lg-5">
+									日期格式为 yyyy-mm-dd，可用鼠标选择
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="supplier_id" class="col-lg-3 control-label">供应商（发账单的人）</label>
+								<div class="col-lg-4">
+									<select class="form-control" name="supplier_id">
+										<option value="" {$inbill_list['supplier_id']==0	? 'selected="selected"' :'' }></option>
+										<volist name="supplier_list" id="supplier_vo">
+										<option value="{$supplier_vo.supplier_id}" {$supplier_vo['supplier_id']==$inbill_list['supplier_id']? 'selected="selected"' :'' }>{$supplier_vo.supplier_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									如找不到就到<a href="{:U('Supplier/listPage#addNew')}" target="_blank">这里</a>添加
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inbill_number" class="col-lg-3 control-label">供应商账单号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="inbill_number" name="inbill_number" value="{$inbill_list['inbill_number']}">
+								</div>
+								<div class="col-lg-5">
+									
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inbill_name" class="col-lg-3 control-label">账单名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="inbill_name" name="inbill_name" value="{$inbill_list['inbill_name']}">
+								</div>
+								<div class="col-lg-5">
+									
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="total_amount" name="total_amount" value="{$inbill_list['total_amount']	?	bcdiv($inbill_list['total_amount'],100,2)	:	''}">
+								</div>
+								<div class="col-lg-5">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="monetary_unit" class="col-lg-3 control-label">货币单位</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="monetary_unit" name="monetary_unit" value="{$inbill_list['monetary_unit']}">
+								</div>
+								<div class="col-lg-5">
+									英文缩写的货币单位，例如USD HKD EUR CHF RMB 等
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="due_date" class="col-lg-3 control-label">应付日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="due_date" name="due_date" value="{$inbill_list['due_date']	?	date("Y-m-d",$inbill_list['due_date'])	:	''}">
+								</div>
+								<div class="col-lg-5">
+									日期格式为 yyyy-mm-dd，可用鼠标选择
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inbill_number" class="col-lg-3 control-label">跟案人</label>
+								<div class="col-lg-4">									
+									<select class="form-control" name="follower_id">
+										<option value="" {$inbill_list['follower_id']==0	? 'selected="selected"' :'' }></option>
+										<volist name="member_list" id="member_vo">
+										<option value="{$member_vo.member_id}" {$member_vo['member_id']==$inbill_list['follower_id']? 'selected="selected"' :'' }>{$member_vo.member_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="case_payment_id" class="col-lg-3 control-label">付款单编号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="case_payment_id" name="case_payment_id" value="{$inbill_list['case_payment_id']}">
+								</div>
+								<div class="col-lg-5">
+									如已经付款，要填写付款单编号
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+									<button type="reset" value="reset" class="btn btn-default"> 取消 </button>
+									<button type="submit" value="submit" class="btn btn-primary"> 确认 </button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+        </div>
+	</block>

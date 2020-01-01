@@ -106,15 +106,15 @@ if(!cookie('member_id') and !cookie('user_group_id') and !cookie('member_name'))
               </ul>
             </li>
 			<li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="payment">缴费与内部结算<span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="payment">付款与内部结算<span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
-                <li><h5>缴费单</h5></li>
-				<li><a href="__MODULE__/CasePayment/listPage">缴费单列表、管理</a></li>
-                <li><a href="__MODULE__/CasePayment/listPage#addNew">新增缴费单</a></li>
-                <li><a href="__MODULE__/CasePayment/search">缴费单查询</a></li>
-				<li><h5>缴费人</h5></li>
-				<li><a href="__MODULE__/Payer/listAll">缴费人列表、编辑</a></li>
-                <li><a href="__MODULE__/Payer/listAll#addNew">录入新缴费人</a></li>
+                <li><h5>付款单</h5></li>
+				<li><a href="__MODULE__/CasePayment/listPage">付款单列表、管理</a></li>
+                <li><a href="__MODULE__/CasePayment/listPage#addNew">新增付款单</a></li>
+                <li><a href="__MODULE__/CasePayment/search">付款单查询</a></li>
+				<li><h5>付款人</h5></li>
+				<li><a href="__MODULE__/Payer/listAll">付款人列表、编辑</a></li>
+                <li><a href="__MODULE__/Payer/listAll#addNew">录入新付款人</a></li>
 				<li class="divider"></li>
 				<li><h5>内部结算</h5></li>
 				<li><a href="__MODULE__/InnerBalance/listPage">内部结算单列表、管理</a></li>
@@ -164,7 +164,7 @@ if(!cookie('member_id') and !cookie('user_group_id') and !cookie('member_name'))
 			<li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">业务与寄件 <span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
-                <li><h5>账单</h5></li>				
+                <li><h5>外发账单</h5></li>				
 				<li><a href="__MODULE__/Bill/listPage">账单列表</a></li>
                 <li><a href="__MODULE__/Bill/listPage#addNew">录入新账单</a></li>
                 <li><a href="__MODULE__/Bill/search">搜索账单</a></li>
@@ -174,7 +174,11 @@ if(!cookie('member_id') and !cookie('user_group_id') and !cookie('member_name'))
                 <li><a href="__MODULE__/Mail/search">搜索寄件记录</a></li>
                 <li><h5>收支认领</h5></li>
 				<li><a href="__MODULE__/Claim/listPage">收支认领列表</a></li>
-                <li><a href="__MODULE__/Claim/listPage#addNew">录入新收支认领</a></li>
+                <li><a href="__MODULE__/Claim/listPage#addNew">录入新收支认领</a></li>				
+				<li><h5>收到账单</h5></li>
+				<li><a href="__MODULE__/Inbill/listPage">账单列表</a></li>
+                <li><a href="__MODULE__/Inbill/listPage#addNew">录入新账单</a></li>
+				<li><a href="__MODULE__/Inbill/search">搜索账单</a></li>
 				<li class="divider"></li>
               </ul>
             </li>

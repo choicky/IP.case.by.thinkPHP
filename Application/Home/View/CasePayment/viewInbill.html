@@ -75,14 +75,14 @@
 					<input	type="hidden" name="case_payment_id" value="{$case_payment_list.case_payment_id}"></input>
 					<!-- 隐藏域结束 -->
 					  <div class="form-group">
-						<label for="official_fee">下面详单的结算总官费</label>
+						<label for="official_fee">下面详单的应外付费用（不含手续费；手续费放在杂费栏）</label>
 						<input type="text" class="form-control" id="official_fee" name="official_fee" size="6" value="{$official_fee_total}">
 					  </div>
 					  <div class="form-group">
 						<label for="other_fee">&nbsp;&nbsp;&nbsp;杂费金额</label>
-						<input type="text" class="form-control" id="other_fee" name="other_fee" size="25" value="{$case_payment_list['other_fee']/100	?	$case_payment_list['other_fee']/100	:	0}">
+						<input type="text" class="form-control" id="other_fee" name="other_fee" size="25" value="{$case_payment_list['other_fee']/100	?	bcdiv($case_payment_list['other_fee'],100,2)	:	0}">
 					  </div>				  
-					<button type="submit" value="submit" class="btn btn-primary">就这样，更新到该缴费单</button>						
+					<button type="submit" value="submit" class="btn btn-primary">就这样，更新到该单</button>						
 				</form>
 				
 			</div>
@@ -96,7 +96,7 @@
 				<!-- Default panel contents -->
 				<div class="panel-heading panel-title">
 
-					费用信息，共{$case_fee_count}项，总费用{$fee_total}元，其中官费{$official_fee_total}元，服务费{$service_fee_total}元。
+					费用信息，共{$inbill_count}项，总费用{$fee_total}，请注意货币单位
 				</div>
 			
 				<!-- Table -->
@@ -104,77 +104,41 @@
 					<table class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
 							<tr class="info">
-								
-								<th>序号</th>								
-								<th>我方案号</th>								
-								<th>对方案号</th>
-								<th>客户</th>
+								<th>编号</th>								
+								<th>账单日期</th>
+								<th>供应商名单</th>
+								<th>供应商账单号</th>
+								<th>账单名称</th>
+								<th>总金额</th>
+								<th>货币单位</th>
+								<th>付款期限</th>
 								<th>跟案人</th>
-								<th>申请人</th>								
-								<th>专利名称</th>
-								<th>费用阶段</th>
-								<th>申请日</th>
-								<th>申请号</th>
-								<th>费用名称</th>
-								<th>CPC官费名称</th>
-								<th>官费</th>
-								<th>服务费</th>
-								<th>官文日期</th>
-								<th>期限日</th>
-								<th>指示日期</th>
-								<th>结算账户</th>
-								<th>结算金额</th>
+								<th>盈方付款单编号</th>
 								<th>常用操作</th>
-								
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 将controller assign过来的 case_fee_list 赋给  case_fee_vo--> 
-							<volist name="case_fee_list" id="case_fee_vo">
+							<volist name="inbill_list" id="inbill_vo">
 							<tr>
-								
-								<td>{$i}</td>								
+								<td><a href="{:U('Inbill/view','inbill_id='.$inbill_vo['inbill_id'])}">{$inbill_vo.inbill_id}</a></td>
+								<td>{$inbill_vo['inbill_date']	?	date("Y/m/d",$inbill_vo['inbill_date'])	:	''}</td>
+								<td>{$inbill_vo.supplier_name}</td>
+								<td>{$inbill_vo.inbill_number}</td>
+								<td>{$inbill_vo.inbill_name}</td>
+								<td align="right">{$inbill_vo['total_amount']	?	bcdiv($inbill_vo['total_amount'],100,2)	:	''}</td>
+								<td>{$inbill_vo.monetary_unit}</td>
+								<td>{$inbill_vo['due_date']	?	date("Y/m/d",$inbill_vo['due_date'])	:	''}</td>
+								<td>{$inbill_vo.member_name}</td>
+								<td><a href="{:U('CasePayment/view','case_payment_id='.$inbill_vo['case_payment_id'])}" target="_blank">{$inbill_vo.case_payment_id}</a></td>
 								<td>
-									<a href="{:U('Case/view','case_id='.$case_fee_vo['case_id'])}" target="_blank">{$case_fee_vo['our_ref']}</a></td>								
-								<td>{$case_fee_vo['client_ref']}</td>
-								<td>{$case_fee_vo.client_name}</td>
-								<td>{$case_fee_vo.follower_name}</td>
-								<td>{$case_fee_vo.applicant_name}</td>								
-								<td>{$case_fee_vo['formal_title']}</td>
-								<td>{$case_fee_vo['case_phase_name']}</td>
-								<td>{$case_fee_vo['application_date']	?	date("Y-m-d",$case_fee_vo['application_date'])	:	''}</td>
-								<td>{$case_fee_vo['application_number']}</td>
-								<td>{$case_fee_vo['fee_type_name']}</td>
-								<td>{$case_fee_vo['fee_type_name_cpc']}</td>
-								<td>{$case_fee_vo['official_fee']/100}</td>
-								<td>{$case_fee_vo['service_fee']/100}</td>
-								<td>{$case_fee_vo['oa_date']	?	date("Y-m-d",$case_fee_vo['oa_date'])	:	''}</td>
-                                <td>
-                                    <?php                  
-                                        //没有完成任务，且超过了时限
-                                        if(($case_fee_vo['case_payment_id'] < 1) AND ($today > $case_fee_vo['due_date'])){
-                                          echo('<font color="red">'.date("Y-m-d",$case_fee_vo['due_date']).'</font>');
-                                          
-                                          //完成了任务，只是超限完成
-                                        }elseif($case_payment_list['payment_date'] > $case_fee_vo['due_date']){
-                                          echo('<font color="red">'.date("Y-m-d",$case_fee_vo['due_date']).'</font>');
-                                          
-                                          //其他情况，也就是没有完成任务且没有超期限，或者在期限内完成任务的
-                                        }else{
-                                          echo($case_fee_vo['due_date']	?	date("Y-m-d",$case_fee_vo['due_date'])		:	'');
-                                        }
-                                    ?>
-                                </td>                                
-								<td>{$case_fee_vo['allow_date']	?	date("Y-m-d",$case_fee_vo['allow_date'])	:	''}</td>
-								
-								<td>{$case_fee_vo['cost_center_name']}</td>
-								<td>{$case_fee_vo['cost_amount']/100}</td>
-								<td><a href="{:U('CaseFee/update','case_fee_id='.$case_fee_vo['case_fee_id'])}" target="_blank">更新</a></td>
-								</tr>
-							</volist>
+									<a href="{:U('Inbill/update','inbill_id='.$inbill_vo['inbill_id'])}">更新</a>
+								</td>
+							</tr>
+							</volist>                 
 						</tbody>
 					</table> 
-				</div>
+					{$inbill_page}
+				</div><!-- /example -->
 			</div>		
         </div>
 	  

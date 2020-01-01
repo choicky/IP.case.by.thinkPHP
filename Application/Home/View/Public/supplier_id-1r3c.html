@@ -1,0 +1,20 @@
+<!-- 填写供应商名单/供应商编号，1行，3列 -->
+							<div class="form-group">
+								<label for="supplier_id" class="col-lg-3 control-label">供应商（发账单的人）</label>
+								<div class="col-lg-4">
+									<!--
+                                    <select class="form-control" name="supplier_id">
+										<option value=""}></option>
+										<volist name="supplier_list" id="supplier_vo">
+										<option value="{$supplier_vo.supplier_id}">{$supplier_vo.supplier_name}</option>
+										</volist>
+									</select>
+                                    -->
+                                    <input type="text" class="form-control" id="supplier_id" name="supplier_id" placeholder="只能填写供应商编号">
+								</div>
+								<div class="col-lg-5">
+									只能填编号；<br>到<a href="{:U('Supplier/listAll')}" target="_blank">这里</a>同时按 Ctrl、F 两键搜索供应商名称，找到其编号；
+									如找不到就<a href="{:U('Supplier/listAll#addNew')}" target="_blank">录入</a>；<br>
+                                    每个供应商应该有唯一的ID。
+								</div>
+							</div>

@@ -1,0 +1,71 @@
+<!-- 继承模板页面 base --> 
+<!-- 该模板位于  ./Application\Home\View\Public --> 
+<extend name="Public:base" />
+	
+<!-- 区块 title 替换开始 --> 	
+	<block name="title">
+		<title>本账单信息</title>
+	</block>
+<!-- 区块 title 替换结束 --> 	
+	
+<!-- 区块 page 替换开始 --> 
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>本账单的信息</h3>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					账单信息
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								<th>编号</th>								
+								<th>账单日期</th>
+								<th>供应商名单</th>
+								<th>供应商账单号</th>
+								<th>账单名称</th>
+								<th>总金额</th>
+								<th>货币单位</th>
+								<th>付款期限</th>
+								<th>跟案人</th>
+								<th>盈方付款单编号</th>
+								<th>常用操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{:U('Inbill/view','inbill_id='.$inbill_list['inbill_id'])}">{$inbill_list.inbill_id}</a></td>
+								<td>{$inbill_list['inbill_date']	?	date("Y/m/d",$inbill_list['inbill_date'])	:	''}</td>
+								<td>{$inbill_list.supplier_name}</td>
+								<td>{$inbill_list.inbill_number}</td>
+								<td>{$inbill_list.inbill_name}</td>
+								<td align="right">{$inbill_list['total_amount']	?	bcdiv($inbill_list['total_amount'],100,2)	:	''}</td>
+								<td>{$inbill_list.monetary_unit}</td>
+								<td>{$inbill_list['due_date']	?	date("Y/m/d",$inbill_list['due_date'])	:	''}</td>
+								<td>{$inbill_list.member_name}</td>
+								<td><a href="{:U('CasePayment/view','case_payment_id='.$inbill_list['case_payment_id'])}" target="_blank">{$inbill_list.case_payment_id}</a></td>
+								<td>
+									<a href="{:U('Inbill/update','inbill_id='.$inbill_list['inbill_id'])}">更新</a>
+								</td>
+							</tr>
+						</tbody>
+					</table> 
+				</div><!-- /example -->
+
+
+	</block>
+<!-- 区块 page 替换结束 --> 

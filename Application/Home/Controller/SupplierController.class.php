@@ -100,8 +100,8 @@ class SupplierController extends Controller {
 			if(1==$yes_btn){
 				
 				//判断是否有账单信息
-				$map_bill['exbill_id']	=	$supplier_id;
-				$condition_bill	=	M('Exbill')->where($map_bill)->find();
+				$map_bill['inbill_id']	=	$supplier_id;
+				$condition_bill	=	M('Inbill')->where($map_bill)->find();
 				if(is_array($condition_bill)){
 					$this->error('该供应商已关联过账单，不可删除，只能修改');
 				}

@@ -1,0 +1,178 @@
+<extend name="Public:base" />
+	
+	
+	<block name="title">
+		<title>收到的账单列表</title>
+	</block>
+	
+	
+	<block name="page">
+	  
+		<!-- Page Header
+		================================================== -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h3>收到的账单列表</h3>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="panel panel-warning">
+				<!-- Default panel contents -->
+				<div class="panel-heading panel-title">
+					<p>“编号”是唯一的，付费记录单关联到这个“编号”。点击编号能查看详情。</p>
+				</div>
+
+				<!-- Table -->
+				<div class="bs-component">
+					<table class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<tr class="info">
+								<th>编号</th>								
+								<th>账单日期</th>
+								<th>供应商名单</th>
+								<th>供应商账单号</th>
+								<th>账单名称</th>
+								<th>总金额</th>
+								<th>货币单位</th>
+								<th>付款期限</th>
+								<th>跟案人</th>
+								<th>盈方付款单编号</th>
+								<th>常用操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="inbill_list" id="inbill_vo">
+							<tr>
+								<td><a href="{:U('Inbill/view','inbill_id='.$inbill_vo['inbill_id'])}">{$inbill_vo.inbill_id}</a></td>
+								<td>{$inbill_vo['inbill_date']	?	date("Y/m/d",$inbill_vo['inbill_date'])	:	''}</td>
+								<td>{$inbill_vo.supplier_name}</td>
+								<td>{$inbill_vo.inbill_number}</td>
+								<td>{$inbill_vo.inbill_name}</td>
+								<td align="right">{$inbill_vo['total_amount']	?	bcdiv($inbill_vo['total_amount'],100,2)	:	''}</td>
+								<td>{$inbill_vo.monetary_unit}</td>
+								<td>{$inbill_vo['due_date']	?	date("Y/m/d",$inbill_vo['due_date'])	:	''}</td>
+								<td>{$inbill_vo.member_name}</td>
+								<td><a href="{:U('CasePayment/view','case_payment_id='.$inbill_vo['case_payment_id'])}" target="_blank">{$inbill_vo.case_payment_id}</a></td>
+								<td>
+									<a href="{:U('Inbill/update','inbill_id='.$inbill_vo['inbill_id'])}">更新</a>
+								</td>
+							</tr>
+							</volist>                 
+						</tbody>
+					</table> 
+					{$inbill_page}
+				</div><!-- /example -->
+			</div>
+        </div>
+	  
+	  
+		<a name="addNew"></a>
+		<!-- Forms
+			================================================== -->
+	    <div class="row">
+			<div class="col-lg-9">
+				<div class="page-header">
+					<h3 id="forms">增加新收的账单</h3>
+				</div>
+			</div>
+        </div>
+
+        <div class="row">
+			<div class="col-lg-9">
+				<div class="well bs-component">
+					<form class="form-horizontal" method="post" action="{:U('Inbill/add')}">
+						<fieldset>
+							<legend>“盈方跟案人”、“供应商名称”是必须的</legend>
+							<div class="form-group">
+								<label for="inbill_date" class="col-lg-3 control-label">出单日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="inbill_date" name="inbill_date" placeholder="出账单日期" value="{$today}">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>	
+							<include file="Public:supplier_id-1r3c" /> <!-- 填写客源/客户编号，1行，3列 -->
+							<div class="form-group">
+								<label for="inbill_number" class="col-lg-3 control-label">账单号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="inbill_number" name="inbill_number" placeholder="供应商的账单编号">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inbill_name" class="col-lg-3 control-label">账单名称</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="inbill_name" name="inbill_name" placeholder="简单描述这账单">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>							<div class="form-group">
+								<label for="total_amount" class="col-lg-3 control-label">总金额</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="total_amount" name="total_amount" placeholder="默认金额">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="monetary_unit" class="col-lg-3 control-label">货币单位</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="monetary_unit" name="monetary_unit" placeholder="英文缩写，例如USD、EUR、HKD、GBP、CHF、RMB等">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>	
+							<div class="form-group">
+								<label for="due_date" class="col-lg-3 control-label">应付日期</label>
+								<div class="col-lg-4">
+									<input type="date" class="form-control" id="due_date" name="due_date" placeholder="应付日期" value="{$today}">
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="follower_id" class="col-lg-3 control-label">盈方跟案人</label>
+								<div class="col-lg-4">
+									<select class="form-control" name="follower_id">
+										<option value=""></option>
+										<volist name="member_list" id="member_vo">
+										<option value="{$member_vo.member_id}"  >{$member_vo.member_name}</option>
+										</volist>
+									</select>
+								</div>
+								<div class="col-lg-5">
+									*注意*
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="case_payment_id" class="col-lg-3 control-label">盈方付款单编号</label>
+								<div class="col-lg-4">
+									<input type="text" class="form-control" id="case_payment_id" name="case_payment_id" placeholder="盈方付款单编号">
+								</div>
+								<div class="col-lg-5">
+									*如已付款，应当填写付款单编号*
+								</div>
+							</div>						  
+							<div class="form-group">
+								<div class="col-lg-4 col-lg-offset-3">
+									<button type="reset" value="reset" class="btn btn-default">Cancel</button>
+									<button type="submit" value="submit" class="btn btn-primary">Submit</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+        </div>
+
+	</block>
