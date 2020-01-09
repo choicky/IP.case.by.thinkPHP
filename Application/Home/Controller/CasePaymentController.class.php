@@ -121,7 +121,6 @@ class CasePaymentController extends Controller {
 	//查看主键为 $case_payment_id 的收支流水的所有 case_file
 	public function view(){
 		$case_payment_id = I('get.case_payment_id',0,'int');
-
 		if(!$case_payment_id){
 			$this->error('未指明要查看的缴费单');
 		}
@@ -139,30 +138,27 @@ class CasePaymentController extends Controller {
 		$case_payment_list['balance']	=	$balance_list;	
 		
 		$this->assign('case_payment_list',$case_payment_list);
-
-		//取出 Inbill 的信息
-		$inbill_list = D('InbillView')->field(true)->where($map)->listAll();	
-		$inbill_count	=	count($inbill_list);		
-
+		//取出 CaseFee 的信息
+		$case_fee_list = D('CaseFeeView')->field(true)->where($map)->listAll();	
+		$case_fee_count	=	count($case_fee_list);		
 		//统计信息
-		$total_amount	=0;
+		$service_fee_total	=0;
 		$official_fee_total	=0;
-		for($j=0;$j<$inbill_count;$j++){
-			$total_amount	+=	bcdiv($inbill_list[$j]['total_amount'],100,2);
-			$official_fee_total	+=	bcdiv($inbill_list[$j]['official_fee'],100,2);
+		for($j=0;$j<$case_fee_count;$j++){
+			$service_fee_total	+=	bcdiv($case_fee_list[$j]['service_fee'],100,2);
+			$official_fee_total	+=	bcdiv($case_fee_list[$j]['official_fee'],100,2);
 		}
-		$fee_total	=	$total_amount	+	$official_fee_total;
+		$fee_total	=	$service_fee_total	+	$official_fee_total;
 		
         //返回当前时间
         $today = time();
         $this->assign('today',$today);
         
-		$this->assign('inbill_list',$inbill_list);
-		$this->assign('inbill_count',$inbill_count);
-		$this->assign('total_amount',$total_amount);
+		$this->assign('case_fee_list',$case_fee_list);
+		$this->assign('case_fee_count',$case_fee_count);
+		$this->assign('service_fee_total',$service_fee_total);
 		$this->assign('official_fee_total',$official_fee_total);
 		$this->assign('fee_total',$fee_total);
-
 		$this->display();
 	}
 	
